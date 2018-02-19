@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class UISkillList : UIDataItemList<UISkill, BaseSkill>
+public class UISkillList : UIDataItemList<UISkill, Skill>
 {
-    public void SetListItems(List<BaseSkill> list, UnityAction<UISkill> onSetListItem = null)
+    public void SetListItems(List<Skill> list, UnityAction<UISkill> onSetListItem = null)
     {
         ClearListItems();
         foreach (var entry in list)
@@ -16,7 +16,7 @@ public class UISkillList : UIDataItemList<UISkill, BaseSkill>
         }
     }
 
-    public UISkill SetListItem(BaseSkill data)
+    public UISkill SetListItem(Skill data)
     {
         if (data == null || string.IsNullOrEmpty(data.Id))
             return null;

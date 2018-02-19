@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UISkill : UIDataItem<BaseSkill>
+public class UISkill : UIDataItem<Skill>
 {
     public Text textTitle;
     public Text textDescription;
@@ -19,7 +19,7 @@ public class UISkill : UIDataItem<BaseSkill>
         SetupInfo(data);
     }
 
-    private void SetupInfo(BaseSkill data)
+    private void SetupInfo(Skill data)
     {
         if (textTitle != null)
             textTitle.text = data == null ? "" : data.title;
