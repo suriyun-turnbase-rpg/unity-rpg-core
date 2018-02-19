@@ -22,7 +22,7 @@ public class UIFormationManager : UIBase
     public Transform togglerContainer;
     public Transform formationContainer;
     public UIItemList uiCharacterList;
-    public GamePlayFormation characterFormation;
+    public BaseGamePlayFormation characterFormation;
     private readonly Dictionary<string, UIFormationToggleData> UIFormationToggles = new Dictionary<string, UIFormationToggleData>();
     public UIFormationToggleData SelectedFormation { get; private set; }
     public UIItem SelectedItem { get; private set; }

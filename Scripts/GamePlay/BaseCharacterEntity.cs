@@ -52,10 +52,14 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             gameObject.SetActive(true);
         }
     }
+    public BaseGamePlayFormation Formation { get; protected set; }
+    public int Position { get; protected set; }
+
     public int MaxHp
     {
         get { return (int)GetTotalAttributes().hp; }
     }
+
     private int hp;
     public int Hp
     {
@@ -166,4 +170,16 @@ public abstract class BaseCharacterEntity : MonoBehaviour
 
         return result;
     }
+
+    public virtual void SetFormation(BaseGamePlayFormation formation, int position)
+    {
+        if (formation == null || position < 0 || position >= formation.containers.Length)
+            return;
+
+        Formation = formation;
+        Position = position;
+        Container = formation.containers[position];
+    }
+
+    public abstract void ApplyBuff(BaseCharacterEntity caster, Skill skill, int buffIndex);
 }
