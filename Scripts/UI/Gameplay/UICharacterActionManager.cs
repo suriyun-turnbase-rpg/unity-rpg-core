@@ -64,7 +64,7 @@ public class UICharacterActionManager : UIBase
             if (i >= UICharacterSkills.Count)
                 break;
             var ui = UICharacterSkills[i];
-            ui.skill = skill;
+            ui.skill = skill as CharacterSkill;
             ui.Show();
             ++i;
         }

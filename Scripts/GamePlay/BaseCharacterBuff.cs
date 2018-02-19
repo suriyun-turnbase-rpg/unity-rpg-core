@@ -24,4 +24,15 @@ public abstract class BaseCharacterBuff
     public CalculationAttributes Attributes { get { return Buff.GetAttributes(Level); } }
     public float PAtkHealRate { get { return Buff.GetPAtkHealRate(Level); } }
     public float MAtkHealRate { get { return Buff.GetMAtkHealRate(Level); } }
+    protected readonly List<GameEffect> effects = new List<GameEffect>();
+
+    public void BuffRemove()
+    {
+        foreach (var effect in effects)
+        {
+            if (effect != null)
+                effect.DestroyEffect();
+        }
+        effects.Clear();
+    }
 }

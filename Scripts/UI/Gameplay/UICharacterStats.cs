@@ -64,7 +64,7 @@ public class UICharacterStats : UIBase
             if (i >= uiBuffs.Length)
                 break;
             var ui = uiBuffs[i];
-            ui.buff = character.Buffs[buffKey];
+            ui.buff = character.Buffs[buffKey] as CharacterBuff;
             ui.Show();
             ++i;
         }

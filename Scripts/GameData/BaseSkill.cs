@@ -12,6 +12,7 @@ public class BaseSkillBuff
 {
     public Sprite icon;
     public BuffType type;
+    public CharacterEffectData buffEffects;
     [Header("Attributes")]
     public CalculationAttributes attributes;
     public CalculationAttributes attributesIncreaseEachLevel;

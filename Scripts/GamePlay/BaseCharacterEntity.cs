@@ -35,8 +35,8 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             Revive();
         }
     }
-    public readonly Dictionary<string, CharacterBuff> Buffs = new Dictionary<string, CharacterBuff>();
-    public readonly List<CharacterSkill> Skills = new List<CharacterSkill>();
+    public readonly Dictionary<string, BaseCharacterBuff> Buffs = new Dictionary<string, BaseCharacterBuff>();
+    public readonly List<BaseCharacterSkill> Skills = new List<BaseCharacterSkill>();
 
     private Transform container;
     public Transform Container
@@ -140,7 +140,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         var equipmentBonus = Item.EquipmentBonus;
         result += equipmentBonus;
 
-        var buffs = new List<CharacterBuff>(Buffs.Values);
+        var buffs = new List<BaseCharacterBuff>(Buffs.Values);
         foreach (var buff in buffs)
         {
             result += buff.Attributes;
