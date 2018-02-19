@@ -36,4 +36,6 @@ public abstract class BaseDamage : MonoBehaviour
             return tempTargetingRigidbody;
         }
     }
+
+    public abstract void Setup(CharacterEntity attacker, CharacterEntity target, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0);
 }
