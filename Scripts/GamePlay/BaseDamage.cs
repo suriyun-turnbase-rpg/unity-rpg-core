@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(TargetingRigidbody))]
 public abstract class BaseDamage : MonoBehaviour
 {
     private Transform tempTransform;
@@ -26,16 +25,6 @@ public abstract class BaseDamage : MonoBehaviour
             return tempRigidbody;
         }
     }
-    private TargetingRigidbody tempTargetingRigidbody;
-    public TargetingRigidbody TempTargetingRigidbody
-    {
-        get
-        {
-            if (tempTargetingRigidbody == null)
-                tempTargetingRigidbody = GetComponent<TargetingRigidbody>();
-            return tempTargetingRigidbody;
-        }
-    }
 
-    public abstract void Setup(CharacterEntity attacker, CharacterEntity target, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0);
+    public abstract void Setup(BaseCharacterEntity attacker, BaseCharacterEntity target, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0);
 }
