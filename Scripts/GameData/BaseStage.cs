@@ -15,7 +15,27 @@ public class BaseStage : BaseGameData
     public int rewardCharacterExp;
     public ItemDrop[] rewardItems;
     [Header("Unlock")]
-    public Stage[] unlockStages;
+    public BaseStage[] unlockStages;
+
+    public virtual List<PlayerItem> GetCharacters()
+    {
+        return new List<PlayerItem>();
+    }
+
+    public virtual List<PlayerItem> GetRewardItems()
+    {
+        var dict = new Dictionary<string, PlayerItem>();
+        foreach (var rewardItem in rewardItems)
+        {
+            var item = rewardItem.item;
+            var newEntry = new PlayerItem();
+            newEntry.Id = item.Id;
+            newEntry.DataId = item.Id;
+            newEntry.Amount = 1;
+            dict[item.Id] = newEntry;
+        }
+        return new List<PlayerItem>(dict.Values);
+    }
 
     public virtual string ToJson()
     {

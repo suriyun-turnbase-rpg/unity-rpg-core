@@ -29,7 +29,7 @@ public class GameDatabase : ScriptableObject
 
     [Header("Stage database")]
     [Tooltip("List of game stages, place all stages here")]
-    public List<Stage> stages;
+    public List<BaseStage> stages;
 
     [Header("Loot Box database")]
     [Tooltip("List of game loot boxes, place all loot boxes here")]
@@ -41,7 +41,7 @@ public class GameDatabase : ScriptableObject
     [Tooltip("List of start characters, characters in this list will joined team formation when begin the game")]
     public List<CharacterItem> startCharacters;
     [Tooltip("List of stages that will be unlocked when begin the game")]
-    public List<Stage> unlockStages;
+    public List<BaseStage> unlockStages;
 
     [Header("Gameplay")]
     [Tooltip("Base attributes for all characters while battle")]
@@ -59,7 +59,7 @@ public class GameDatabase : ScriptableObject
     public readonly Dictionary<string, Currency> Currencies = new Dictionary<string, Currency>();
     public readonly Dictionary<string, Stamina> Staminas = new Dictionary<string, Stamina>();
     public readonly Dictionary<string, Formation> Formations = new Dictionary<string, Formation>();
-    public readonly Dictionary<string, Stage> Stages = new Dictionary<string, Stage>();
+    public readonly Dictionary<string, BaseStage> Stages = new Dictionary<string, BaseStage>();
     public readonly Dictionary<string, LootBox> LootBoxes = new Dictionary<string, LootBox>();
 
     public void Setup()
@@ -113,7 +113,7 @@ public class GameDatabase : ScriptableObject
         }
     }
 
-    private void AddStagesToDatabase(List<Stage> stages)
+    private void AddStagesToDatabase(List<BaseStage> stages)
     {
         foreach (var stage in stages)
         {
@@ -174,7 +174,7 @@ public class GameDatabase : ScriptableObject
         }
         items = validatedItemList;
 
-        var validatedStageList = new List<Stage>();
+        var validatedStageList = new List<BaseStage>();
         foreach (var stage in stages)
         {
             var containsId = false;

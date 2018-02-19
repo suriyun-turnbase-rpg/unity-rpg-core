@@ -92,7 +92,7 @@ public class PlayerClearStage : BasePlayerData, IPlayerClearStage
         RemoveDataRange(Player.CurrentPlayerId);
     }
 
-    public static bool IsUnlock(string playerId, Stage checkStage)
+    public static bool IsUnlock(string playerId, BaseStage checkStage)
     {
         var unlockStages = GameDatabase.unlockStages;
         foreach (var unlockStage in unlockStages)
@@ -106,7 +106,7 @@ public class PlayerClearStage : BasePlayerData, IPlayerClearStage
             if (!DataMap.ContainsKey(GetId(playerId, stage.Id)))
                 continue;
 
-            unlockStages = new List<Stage>(stage.unlockStages);
+            unlockStages = new List<BaseStage>(stage.unlockStages);
             foreach (var unlockStage in unlockStages)
             {
                 if (unlockStage.Id == checkStage.Id)
@@ -116,7 +116,7 @@ public class PlayerClearStage : BasePlayerData, IPlayerClearStage
         return false;
     }
 
-    public static bool IsUnlock(Stage checkStage)
+    public static bool IsUnlock(BaseStage checkStage)
     {
         return IsUnlock(Player.CurrentPlayerId, checkStage);
     }

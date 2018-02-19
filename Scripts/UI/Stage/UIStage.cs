@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public class UIStage : UIDataItem<Stage>
+public class UIStage : UIDataItem<BaseStage>
 {
     [Header("General")]
     public Text textTitle;
@@ -38,7 +38,7 @@ public class UIStage : UIDataItem<Stage>
         SetupInfo(data);
     }
 
-    private void SetupInfo(Stage data)
+    private void SetupInfo(BaseStage data)
     {
         if (textTitle != null)
             textTitle.text = data.title;
@@ -64,58 +64,15 @@ public class UIStage : UIDataItem<Stage>
         if (textRewardCharacterExp != null)
             textRewardCharacterExp.text = data.rewardCharacterExp.ToString("N0");
 
-        var sampleIdCount = 0;
         if (uiRewardsItemList != null)
         {
-            var list = new List<PlayerItem>();
-            var rewardItems = data.rewardItems;
-            foreach (var rewardItem in rewardItems)
-            {
-                var item = rewardItem.item;
-                var newEntry = new PlayerItem();
-                newEntry.Id = (++sampleIdCount).ToString("N0");
-                newEntry.DataId = item.Id;
-                newEntry.Amount = 1;
-                list.Add(newEntry);
-            }
+            var list = data.GetRewardItems();
             uiRewardsItemList.SetListItems(list, (ui) => ui.displayStats = UIItem.DisplayStats.Hidden);
         }
 
         if (uiEnemyItemList != null)
         {
-            var dict = new Dictionary<string, PlayerItem>();
-            var randomFoes = data.randomFoes;
-            foreach (var randomFoe in randomFoes)
-            {
-                foreach (var foe in randomFoe.foes)
-                {
-                    if (foe.character != null)
-                    {
-                        var newEntry = PlayerItem.CreateActorItemWithLevel(foe.character, foe.level);
-                        newEntry.Id = foe.character.Id + "_" + foe.level;
-                        dict[foe.character.Id + "_" + foe.level] = newEntry;
-                    }
-                }
-            }
-            var waves = data.waves;
-            foreach (var wave in waves)
-            {
-                if (wave.useRandomFoes)
-                    continue;
-
-                var foes = wave.foes;
-                foreach (var foe in foes)
-                {
-                    var item = foe.character;
-                    if (item != null)
-                    {
-                        var newEntry = PlayerItem.CreateActorItemWithLevel(item, foe.level);
-                        newEntry.Id = foe.character.Id + "_" + foe.level;
-                        dict[foe.character.Id + "_" + foe.level] = newEntry;
-                    }
-                }
-            }
-            var list = new List<PlayerItem>(dict.Values);
+            var list = data.GetCharacters();
             list.SortLevel();
             uiEnemyItemList.SetListItems(list, (ui) => ui.displayStats = UIItem.DisplayStats.Level);
         }

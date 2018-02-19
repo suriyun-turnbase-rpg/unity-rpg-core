@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIStagePreparation : UIDataItem<Stage>
+public class UIStagePreparation : UIDataItem<BaseStage>
 {
     public UIFormation uiCurrentFormation;
     public UIItem uiFormationSlotPrefab;

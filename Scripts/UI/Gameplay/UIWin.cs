@@ -15,7 +15,7 @@ public class UIWin : UIDataItem<FinishStageResult>
     public Button buttonRestart;
     public Button buttonGoToManageScene;
     public Button buttonGoToNextStage;
-    public Stage NextStage
+    public BaseStage NextStage
     {
         get
         {
