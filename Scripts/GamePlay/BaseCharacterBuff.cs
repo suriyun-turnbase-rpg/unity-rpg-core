@@ -35,4 +35,7 @@ public abstract class BaseCharacterBuff
         }
         effects.Clear();
     }
+
+    public abstract float GetCoolDownRate();
+    public abstract float GetCoolDown();
 }
