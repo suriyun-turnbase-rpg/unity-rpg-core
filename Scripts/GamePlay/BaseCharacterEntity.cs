@@ -181,5 +181,5 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         Container = formation.containers[position];
     }
 
-    public abstract void ApplyBuff(BaseCharacterEntity caster, Skill skill, int buffIndex);
+    public abstract void ApplyBuff(BaseCharacterEntity caster, BaseSkill skill, int buffIndex);
 }
