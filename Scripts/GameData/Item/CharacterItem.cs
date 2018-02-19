@@ -5,20 +5,10 @@ using UnityEngine;
 public class CharacterItem : BaseActorItem
 {
     [Header("Character Data")]
-    public AttackAnimationData attackAnimation;
+    public BaseAttackAnimationData attackAnimation;
     public List<BaseSkill> skills;
-    public CharacterEntity model;
+    public BaseCharacterEntity model;
     public CharacterItemEvolve evolveInfo;
-
-    public AttackAnimationData AttackAnimation
-    {
-        get
-        {
-            if (attackAnimation == null)
-                return AttackAnimationData.GetEmptyData();
-            return attackAnimation;
-        }
-    }
 
     public override SpecificItemEvolve GetSpecificItemEvolve()
     {

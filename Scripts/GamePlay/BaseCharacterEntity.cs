@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseCharacterEntity : MonoBehaviour
+public abstract class BaseCharacterEntity : MonoBehaviour
 {
     [Tooltip("The transform where we're going to spawn uis")]
     public Transform uiContainer;
@@ -12,4 +12,158 @@ public class BaseCharacterEntity : MonoBehaviour
     public Transform floorEffectContainer;
     [Tooltip("The transform where we're going to spawn damage")]
     public Transform damageContainer;
+
+    private PlayerItem item;
+    public PlayerItem Item
+    {
+        get { return item; }
+        set
+        {
+            if (value == null || item == value || value.CharacterData == null)
+                return;
+            item = value;
+            Skills.Clear();
+            var skills = item.CharacterData.skills;
+            foreach (var skill in skills)
+            {
+                if (skill != null)
+                {
+                    // TODO: Implement skill level
+                    Skills.Add(new CharacterSkill(1, skill));
+                }
+            }
+            Revive();
+        }
+    }
+    public readonly Dictionary<string, CharacterBuff> Buffs = new Dictionary<string, CharacterBuff>();
+    public readonly List<CharacterSkill> Skills = new List<CharacterSkill>();
+
+    private Transform container;
+    public Transform Container
+    {
+        get { return container; }
+        set
+        {
+            container = value;
+            TempTransform.SetParent(container);
+            TempTransform.localPosition = Vector3.zero;
+            TempTransform.localEulerAngles = Vector3.zero;
+            TempTransform.localScale = Vector3.one;
+            gameObject.SetActive(true);
+        }
+    }
+    public int MaxHp
+    {
+        get { return (int)GetTotalAttributes().hp; }
+    }
+    private int hp;
+    public int Hp
+    {
+        get { return hp; }
+        set
+        {
+            hp = value;
+            if (hp <= 0)
+                Dead();
+            if (hp >= MaxHp)
+                hp = MaxHp;
+        }
+    }
+
+    private Transform tempTransform;
+    public Transform TempTransform
+    {
+        get
+        {
+            if (tempTransform == null)
+                tempTransform = GetComponent<Transform>();
+            return tempTransform;
+        }
+    }
+    private Animator tempAnimator;
+    public Animator TempAnimator
+    {
+        get
+        {
+            if (tempAnimator == null)
+                tempAnimator = GetComponent<Animator>();
+            return tempAnimator;
+        }
+    }
+    private Rigidbody tempRigidbody;
+    public Rigidbody TempRigidbody
+    {
+        get
+        {
+            if (tempRigidbody == null)
+                tempRigidbody = GetComponent<Rigidbody>();
+            return tempRigidbody;
+        }
+    }
+    private CapsuleCollider tempCapsuleCollider;
+    public CapsuleCollider TempCapsuleCollider
+    {
+        get
+        {
+            if (tempCapsuleCollider == null)
+                tempCapsuleCollider = GetComponent<CapsuleCollider>();
+            return tempCapsuleCollider;
+        }
+    }
+
+    public void Revive()
+    {
+        if (Item == null)
+            return;
+
+        Hp = MaxHp;
+    }
+
+    public virtual void Dead()
+    {
+        var keys = new List<string>(Buffs.Keys);
+        for (var i = keys.Count - 1; i >= 0; --i)
+        {
+            var key = keys[i];
+            if (!Buffs.ContainsKey(key))
+                continue;
+
+            var buff = Buffs[key];
+            buff.BuffRemove();
+            Buffs.Remove(key);
+        }
+    }
+
+    public CalculationAttributes GetTotalAttributes()
+    {
+        var result = Item.Attributes;
+        var equipmentBonus = Item.EquipmentBonus;
+        result += equipmentBonus;
+
+        var buffs = new List<CharacterBuff>(Buffs.Values);
+        foreach (var buff in buffs)
+        {
+            result += buff.Attributes;
+        }
+
+        // If this is character item, applies rate attributes
+        result.hp += Mathf.CeilToInt(result.hpRate * result.hp);
+        result.pAtk += Mathf.CeilToInt(result.pAtkRate * result.pAtk);
+        result.pDef += Mathf.CeilToInt(result.pDefRate * result.pDef);
+        result.mAtk += Mathf.CeilToInt(result.mAtkRate * result.mAtk);
+        result.mDef += Mathf.CeilToInt(result.mDefRate * result.mDef);
+        result.spd += Mathf.CeilToInt(result.spdRate * result.spd);
+        result.eva += Mathf.CeilToInt(result.evaRate * result.eva);
+        result.acc += Mathf.CeilToInt(result.accRate * result.acc);
+        result.hpRate = 0;
+        result.pAtkRate = 0;
+        result.pDefRate = 0;
+        result.mAtkRate = 0;
+        result.mDefRate = 0;
+        result.spdRate = 0;
+        result.evaRate = 0;
+        result.accRate = 0;
+
+        return result;
+    }
 }
