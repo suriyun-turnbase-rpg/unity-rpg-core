@@ -108,6 +108,6 @@ public class UIStage : UIDataItem<BaseStage>
 
     public void OnClickStartStage()
     {
-        GamePlayManager.StartStage(data);
+        BaseGamePlayManager.StartStage(data);
     }
 }

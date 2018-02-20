@@ -183,15 +183,11 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     
     public virtual void ApplyBuff(BaseCharacterEntity caster, BaseSkill skill, int buffIndex)
     {
-        if (skill == null)
-            return;
-
-        var castedSkill = skill as Skill;
-        if (castedSkill == null || buffIndex < 0 || buffIndex >= castedSkill.buffs.Length || castedSkill.buffs[buffIndex] == null || Hp <= 0)
+        if (skill == null || buffIndex < 0 || buffIndex >= skill.GetBuffs().Count || skill.GetBuffs()[buffIndex] == null || Hp <= 0)
             return;
 
         // TODO: Implement skill level
-        var buff = NewBuff(1, castedSkill, buffIndex, caster, this);
+        var buff = NewBuff(1, skill, buffIndex, caster, this);
         if (buff.GetDuration() > 0f)
         {
             // Buff cannot stack so remove old buff
