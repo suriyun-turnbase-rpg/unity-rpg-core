@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseStage : BaseGameData
+public abstract class BaseStage : BaseGameData
 {
     public string stageNumber;
     public Sprite icon;

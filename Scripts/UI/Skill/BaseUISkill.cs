@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
 
-public class UISkill : UIDataItem<BaseSkill>
+public abstract class BaseUISkill<TSkill> : UIDataItem<TSkill>
+    where TSkill : BaseSkill
 {
     public Text textTitle;
     public Text textDescription;
@@ -19,7 +19,7 @@ public class UISkill : UIDataItem<BaseSkill>
         SetupInfo(data);
     }
 
-    private void SetupInfo(BaseSkill data)
+    private void SetupInfo(TSkill data)
     {
         if (textTitle != null)
             textTitle.text = data == null ? "" : data.title;

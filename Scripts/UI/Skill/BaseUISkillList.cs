@@ -1,22 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Events;
 
-public class UISkillList : UIDataItemList<UISkill, BaseSkill>
+public abstract class BaseUISkillList<TUI, TSkill> : UIDataItemList<TUI, TSkill>
+    where TUI : UIDataItem<TSkill>
+    where TSkill : BaseSkill
 {
-    public void SetListItems(List<BaseSkill> list, UnityAction<UISkill> onSetListItem = null)
+    public void SetListItems(List<BaseSkill> list, UnityAction<TUI> onSetListItem = null)
     {
         ClearListItems();
         foreach (var entry in list)
         {
-            var ui = SetListItem(entry);
+            var ui = SetListItem(entry as TSkill);
             if (ui != null && onSetListItem != null)
                 onSetListItem(ui);
         }
     }
 
-    public UISkill SetListItem(BaseSkill data)
+    public TUI SetListItem(TSkill data)
     {
         if (data == null || string.IsNullOrEmpty(data.Id))
             return null;

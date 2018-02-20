@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
-public class UIStage : UIDataItem<BaseStage>
+public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
+    where TPreparation : UIDataItem<TStage>
+    where TStage : BaseStage
 {
     [Header("General")]
     public Text textTitle;
@@ -20,7 +22,6 @@ public class UIStage : UIDataItem<BaseStage>
     public Button[] interactableButtonsWhenUnlocked;
     public GameObject[] activeObjectsWhenUnlocked;
     public GameObject[] inactiveObjectsWhenUnlocked;
-    public UIStagePreparation uiStagePreparation;
     public UnityEvent eventSetStagePreparation;
 
     public override void Clear()
@@ -38,7 +39,7 @@ public class UIStage : UIDataItem<BaseStage>
         SetupInfo(data);
     }
 
-    private void SetupInfo(BaseStage data)
+    private void SetupInfo(TStage data)
     {
         if (textTitle != null)
             textTitle.text = data.title;
@@ -99,9 +100,9 @@ public class UIStage : UIDataItem<BaseStage>
 
     public void SetStagePreparationData()
     {
-        if (uiStagePreparation != null)
+        if (StagePreparation != null)
         {
-            uiStagePreparation.data = data;
+            StagePreparation.data = data;
             eventSetStagePreparation.Invoke();
         }
     }
@@ -110,4 +111,6 @@ public class UIStage : UIDataItem<BaseStage>
     {
         BaseGamePlayManager.StartStage(data);
     }
+
+    public abstract TPreparation StagePreparation { get; }
 }

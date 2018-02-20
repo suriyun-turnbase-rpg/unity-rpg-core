@@ -49,12 +49,9 @@ public class BaseSkillBuff
     }
 }
 
-public class BaseSkill : BaseGameData
+public abstract class BaseSkill : BaseGameData
 {
     public Sprite icon;
 
-    public virtual List<BaseSkillBuff> GetBuffs()
-    {
-        return new List<BaseSkillBuff>();
-    }
+    public abstract List<BaseSkillBuff> GetBuffs();
 }

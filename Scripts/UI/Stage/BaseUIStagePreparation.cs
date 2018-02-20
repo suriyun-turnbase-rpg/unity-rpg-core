@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIStagePreparation : UIDataItem<BaseStage>
+public abstract class BaseUIStagePreparation<TUI, TStage> : UIDataItem<TStage>
+    where TUI : UIDataItem<TStage>
+    where TStage : BaseStage
 {
     public UIFormation uiCurrentFormation;
     public UIItem uiFormationSlotPrefab;
-    public UIStage uiStage;
+    public TUI uiStage;
     public override void Clear()
     {
         // Don't clear
