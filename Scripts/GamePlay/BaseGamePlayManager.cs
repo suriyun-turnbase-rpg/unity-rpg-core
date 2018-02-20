@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public abstract class BaseGamePlayManager : MonoBehaviour
 {
     public static string BattleSession { get; private set; }
-    public static Stage PlayingStage { get; protected set; }
+    public static BaseStage PlayingStage { get; protected set; }
     [Header("Combat Texts")]
     public Transform combatTextContainer;
     public UICombatText combatDamagePrefab;
