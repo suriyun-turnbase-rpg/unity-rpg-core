@@ -26,6 +26,15 @@ public abstract class BaseCharacterBuff
     public float MAtkHealRate { get { return Buff.GetMAtkHealRate(Level); } }
     protected readonly List<GameEffect> effects = new List<GameEffect>();
 
+    public BaseCharacterBuff(int level, BaseSkill skill, int buffIndex, BaseCharacterEntity giver, BaseCharacterEntity receiver)
+    {
+        Level = level;
+        Skill = skill;
+        BuffIndex = buffIndex;
+        Giver = giver;
+        Receiver = receiver;
+    }
+
     public void BuffRemove()
     {
         foreach (var effect in effects)
@@ -38,4 +47,5 @@ public abstract class BaseCharacterBuff
 
     public abstract float GetCoolDownRate();
     public abstract float GetCoolDown();
+    public abstract float GetDuration();
 }

@@ -29,7 +29,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
                 if (skill != null)
                 {
                     // TODO: Implement skill level
-                    Skills.Add(new CharacterSkill(1, skill));
+                    Skills.Add(NewSkill(1, skill));
                 }
             }
             Revive();
@@ -180,6 +180,30 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         Position = position;
         Container = formation.containers[position];
     }
+    
+    public virtual void ApplyBuff(BaseCharacterEntity caster, BaseSkill skill, int buffIndex)
+    {
+        if (skill == null)
+            return;
 
-    public abstract void ApplyBuff(BaseCharacterEntity caster, BaseSkill skill, int buffIndex);
+        var castedSkill = skill as Skill;
+        if (castedSkill == null || buffIndex < 0 || buffIndex >= castedSkill.buffs.Length || castedSkill.buffs[buffIndex] == null || Hp <= 0)
+            return;
+
+        // TODO: Implement skill level
+        var buff = NewBuff(1, castedSkill, buffIndex, caster, this);
+        if (buff.GetDuration() > 0f)
+        {
+            // Buff cannot stack so remove old buff
+            if (Buffs.ContainsKey(buff.Id))
+            {
+                buff.BuffRemove();
+                Buffs.Remove(buff.Id);
+            }
+            Buffs[buff.Id] = buff;
+        }
+    }
+
+    public abstract BaseCharacterSkill NewSkill(int level, BaseSkill skill);
+    public abstract BaseCharacterBuff NewBuff(int level, BaseSkill skill, int buffIndex, BaseCharacterEntity giver, BaseCharacterEntity receiver);
 }

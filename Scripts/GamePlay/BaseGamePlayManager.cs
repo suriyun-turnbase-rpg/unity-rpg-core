@@ -132,7 +132,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
 
     public static void StartStage(BaseStage data)
     {
-        PlayingStage = data as Stage;
+        PlayingStage = data;
         GameInstance.GameService.StartStage(data.Id, (result) =>
         {
             GameInstance.Singleton.OnGameServiceStartStageResult(result);
