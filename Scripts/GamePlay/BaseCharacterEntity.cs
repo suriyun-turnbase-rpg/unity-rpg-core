@@ -188,7 +188,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
 
         // TODO: Implement skill level
         var buff = NewBuff(1, skill, buffIndex, caster, this);
-        if (buff.GetDuration() > 0f)
+        if (buff.GetApplyDuration() > 0f)
         {
             // Buff cannot stack so remove old buff
             if (Buffs.ContainsKey(buff.Id))
@@ -198,6 +198,8 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             }
             Buffs[buff.Id] = buff;
         }
+        else
+            buff.BuffRemove();
     }
 
     public abstract BaseCharacterSkill NewSkill(int level, BaseSkill skill);

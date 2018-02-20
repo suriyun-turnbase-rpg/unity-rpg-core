@@ -78,7 +78,6 @@ public class UIItem : UIDataItem<PlayerItem>
     [Header("Character")]
     public Transform characterModelContainer;
     public int characterModelLayer;
-    public UISkillList uiSkillList;
     [Header("Options")]
     public bool useFormatForInfo;
     public bool excludeEquipmentAttributes;
@@ -385,16 +384,6 @@ public class UIItem : UIDataItem<PlayerItem>
                 {
                     characterRenderer.gameObject.layer = characterModelLayer;
                 }
-            }
-        }
-
-        if (uiSkillList != null)
-        {
-            uiSkillList.Hide();
-            if (data.CharacterData != null)
-            {
-                uiSkillList.SetListItems(data.CharacterData.skills);
-                uiSkillList.Show();
             }
         }
     }

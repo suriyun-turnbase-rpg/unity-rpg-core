@@ -33,6 +33,9 @@ public abstract class BaseCharacterBuff
         BuffIndex = buffIndex;
         Giver = giver;
         Receiver = receiver;
+
+        if (Buff.buffEffects != null)
+            effects.AddRange(Buff.buffEffects.InstantiatesTo(receiver));
     }
 
     public void BuffRemove()
@@ -45,7 +48,6 @@ public abstract class BaseCharacterBuff
         effects.Clear();
     }
 
-    public abstract float GetCoolDownRate();
-    public abstract float GetCoolDown();
-    public abstract float GetDuration();
+    public abstract float GetApplyDurationRate();
+    public abstract float GetApplyDuration();
 }
