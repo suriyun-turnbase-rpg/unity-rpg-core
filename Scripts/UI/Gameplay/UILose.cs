@@ -9,6 +9,17 @@ public class UILose : UIBase
     public Button buttonRestart;
     public Button buttonGiveUp;
 
+    private BaseGamePlayManager manager;
+    public BaseGamePlayManager Manager
+    {
+        get
+        {
+            if (manager == null)
+                manager = FindObjectOfType<BaseGamePlayManager>();
+            return manager;
+        }
+    }
+
     public override void Show()
     {
         base.Show();
@@ -23,18 +34,18 @@ public class UILose : UIBase
     public void OnClickRevive()
     {
         Hide();
-        GamePlayManager.Singleton.Revive(Show);
+        Manager.Revive(Show);
     }
 
     public void OnClickRestart()
     {
         Hide();
-        GamePlayManager.Singleton.Restart();
+        Manager.Restart();
     }
 
     public void OnClickGiveUp()
     {
         Hide();
-        GamePlayManager.Singleton.Giveup(Show);
+        Manager.Giveup(Show);
     }
 }

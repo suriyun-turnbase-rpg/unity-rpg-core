@@ -19,10 +19,21 @@ public class UIWin : UIDataItem<FinishStageResult>
     {
         get
         {
-            var unlockStages = GamePlayManager.PlayingStage.unlockStages;
+            var unlockStages = BaseGamePlayManager.PlayingStage.unlockStages;
             if (unlockStages != null && unlockStages.Length > 0)
                 return unlockStages[0];
             return null;
+        }
+    }
+
+    private BaseGamePlayManager manager;
+    public BaseGamePlayManager Manager
+    {
+        get
+        {
+            if (manager == null)
+                manager = FindObjectOfType<BaseGamePlayManager>();
+            return manager;
         }
     }
 
@@ -94,7 +105,7 @@ public class UIWin : UIDataItem<FinishStageResult>
 
     public void OnClickRestart()
     {
-        GamePlayManager.Singleton.Restart();
+        Manager.Restart();
     }
 
     public void OnClickGoToManageScene()
@@ -106,6 +117,6 @@ public class UIWin : UIDataItem<FinishStageResult>
     {
         var nextStage = NextStage;
         if (nextStage != null)
-            GamePlayManager.StartStage(nextStage);
+            BaseGamePlayManager.StartStage(nextStage);
     }
 }

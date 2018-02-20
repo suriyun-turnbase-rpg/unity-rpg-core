@@ -1,15 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
 
-public class UIGamePlay : UIBase
+public class UIGamePlayGeneric : UIBase
 {
-    public Text textWave;
     public Toggle toggleAutoPlay;
     public Toggle toggleSpeedMultiply;
     private bool isAutoPlayDirty;
     private bool isSpeedMultiplyDirty;
+
+    private BaseGamePlayManager manager;
+    public BaseGamePlayManager Manager
+    {
+        get
+        {
+            if (manager == null)
+                manager = FindObjectOfType<BaseGamePlayManager>();
+            return manager;
+        }
+    }
 
     protected override void Awake()
     {
@@ -28,36 +37,30 @@ public class UIGamePlay : UIBase
         }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
-        var gamePlayManager = GamePlayManager.Singleton;
-        if (textWave != null)
-            textWave.text = gamePlayManager.CurrentWave <= 0 ? "" : "Wave " + gamePlayManager.CurrentWave + "/" + gamePlayManager.MaxWave;
-
-        if (gamePlayManager.IsAutoPlay != isAutoPlayDirty)
+        if (Manager.IsAutoPlay != isAutoPlayDirty)
         {
             if (toggleAutoPlay != null)
-            toggleAutoPlay.isOn = gamePlayManager.IsAutoPlay;
-            isAutoPlayDirty = gamePlayManager.IsAutoPlay;
+                toggleAutoPlay.isOn = Manager.IsAutoPlay;
+            isAutoPlayDirty = Manager.IsAutoPlay;
         }
 
-        if (gamePlayManager.IsSpeedMultiply != isSpeedMultiplyDirty)
+        if (Manager.IsSpeedMultiply != isSpeedMultiplyDirty)
         {
             if (toggleSpeedMultiply != null)
-                toggleSpeedMultiply.isOn = gamePlayManager.IsSpeedMultiply;
-            isSpeedMultiplyDirty = gamePlayManager.IsSpeedMultiply;
+                toggleSpeedMultiply.isOn = Manager.IsSpeedMultiply;
+            isSpeedMultiplyDirty = Manager.IsSpeedMultiply;
         }
     }
 
     public void OnToggleAutoPlay(bool isOn)
     {
-        var gamePlayManager = GamePlayManager.Singleton;
-        gamePlayManager.IsAutoPlay = isOn;
+        Manager.IsAutoPlay = isOn;
     }
 
     public void OnToggleSpeedMultiply(bool isOn)
     {
-        var gamePlayManager = GamePlayManager.Singleton;
-        gamePlayManager.IsSpeedMultiply = isOn;
+        Manager.IsSpeedMultiply = isOn;
     }
 }
