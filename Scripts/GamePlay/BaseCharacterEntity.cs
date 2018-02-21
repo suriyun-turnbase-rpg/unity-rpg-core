@@ -38,21 +38,6 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     public List<BaseAttackAnimationData> AttackAnimations { get { return Item.CharacterData.attackAnimations; } }
     public readonly Dictionary<string, BaseCharacterBuff> Buffs = new Dictionary<string, BaseCharacterBuff>();
     public readonly List<BaseCharacterSkill> Skills = new List<BaseCharacterSkill>();
-
-    private Transform container;
-    public Transform Container
-    {
-        get { return container; }
-        set
-        {
-            container = value;
-            TempTransform.SetParent(container);
-            TempTransform.localPosition = Vector3.zero;
-            TempTransform.localEulerAngles = Vector3.zero;
-            TempTransform.localScale = Vector3.one;
-            gameObject.SetActive(true);
-        }
-    }
     public BaseGamePlayFormation Formation { get; protected set; }
     public int Position { get; protected set; }
 
@@ -75,6 +60,21 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         }
     }
 
+    private Transform container;
+    public Transform Container
+    {
+        get { return container; }
+        set
+        {
+            container = value;
+            TempTransform.SetParent(container);
+            TempTransform.localPosition = Vector3.zero;
+            TempTransform.localEulerAngles = Vector3.zero;
+            TempTransform.localScale = Vector3.one;
+            gameObject.SetActive(true);
+        }
+    }
+
     private Transform tempTransform;
     public Transform TempTransform
     {
@@ -83,36 +83,6 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             if (tempTransform == null)
                 tempTransform = GetComponent<Transform>();
             return tempTransform;
-        }
-    }
-    private Animator tempAnimator;
-    public Animator TempAnimator
-    {
-        get
-        {
-            if (tempAnimator == null)
-                tempAnimator = GetComponent<Animator>();
-            return tempAnimator;
-        }
-    }
-    private Rigidbody tempRigidbody;
-    public Rigidbody TempRigidbody
-    {
-        get
-        {
-            if (tempRigidbody == null)
-                tempRigidbody = GetComponent<Rigidbody>();
-            return tempRigidbody;
-        }
-    }
-    private CapsuleCollider tempCapsuleCollider;
-    public CapsuleCollider TempCapsuleCollider
-    {
-        get
-        {
-            if (tempCapsuleCollider == null)
-                tempCapsuleCollider = GetComponent<CapsuleCollider>();
-            return tempCapsuleCollider;
         }
     }
 
@@ -126,7 +96,6 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             floorEffectContainer = TempTransform;
         if (damageContainer == null)
             damageContainer = TempTransform;
-        TempCapsuleCollider.isTrigger = true;
     }
 
     public void Revive()
