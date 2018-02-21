@@ -46,8 +46,8 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         get { return (int)GetTotalAttributes().hp; }
     }
 
-    private int hp;
-    public int Hp
+    private float hp;
+    public float Hp
     {
         get { return hp; }
         set
