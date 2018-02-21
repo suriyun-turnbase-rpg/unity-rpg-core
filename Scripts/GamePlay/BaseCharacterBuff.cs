@@ -48,6 +48,6 @@ public abstract class BaseCharacterBuff
         effects.Clear();
     }
 
-    public abstract float GetApplyDurationRate();
-    public abstract float GetApplyDuration();
+    public abstract float GetRemainsDurationRate();
+    public abstract float GetRemainsDuration();
 }

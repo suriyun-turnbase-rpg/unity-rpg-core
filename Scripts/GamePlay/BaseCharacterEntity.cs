@@ -171,7 +171,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
 
         // TODO: Implement skill level
         var buff = NewBuff(1, skill, buffIndex, caster, this);
-        if (buff.GetApplyDuration() > 0f)
+        if (buff.GetRemainsDuration() > 0f)
         {
             // Buff cannot stack so remove old buff
             if (Buffs.ContainsKey(buff.Id))

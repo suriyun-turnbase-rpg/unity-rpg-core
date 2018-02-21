@@ -15,13 +15,13 @@ public class UICharacterBuff : UIBase
         if (buff == null)
             return;
 
-        var rate = buff.GetApplyDurationRate();
+        var rate = buff.GetRemainsDurationRate();
 
         if (imageIcon != null)
             imageIcon.sprite = buff.Buff.icon;
 
         if (textRemainsTurns != null)
-            textRemainsTurns.text = buff.GetApplyDuration() <= 0 ? "" : buff.GetApplyDuration().ToString("N2");
+            textRemainsTurns.text = buff.GetRemainsDuration() <= 0 ? "" : buff.GetRemainsDuration().ToString("N2");
 
         if (imageRemainsTurnsGage != null)
             imageRemainsTurnsGage.fillAmount = rate;

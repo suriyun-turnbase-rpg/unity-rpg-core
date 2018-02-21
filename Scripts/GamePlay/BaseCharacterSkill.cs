@@ -12,4 +12,7 @@ public abstract class BaseCharacterSkill
         Level = level;
         Skill = skill;
     }
+
+    public abstract float GetCoolDownDurationRate();
+    public abstract float GetCoolDownDuration();
 }
