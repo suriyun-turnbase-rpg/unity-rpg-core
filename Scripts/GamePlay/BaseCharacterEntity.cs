@@ -35,6 +35,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             Revive();
         }
     }
+    public List<BaseAttackAnimationData> AttackAnimations { get { return Item.CharacterData.attackAnimations; } }
     public readonly Dictionary<string, BaseCharacterBuff> Buffs = new Dictionary<string, BaseCharacterBuff>();
     public readonly List<BaseCharacterSkill> Skills = new List<BaseCharacterSkill>();
 
@@ -113,6 +114,19 @@ public abstract class BaseCharacterEntity : MonoBehaviour
                 tempCapsuleCollider = GetComponent<CapsuleCollider>();
             return tempCapsuleCollider;
         }
+    }
+
+    protected virtual void Awake()
+    {
+        if (uiContainer == null)
+            uiContainer = TempTransform;
+        if (bodyEffectContainer == null)
+            bodyEffectContainer = TempTransform;
+        if (floorEffectContainer == null)
+            floorEffectContainer = TempTransform;
+        if (damageContainer == null)
+            damageContainer = TempTransform;
+        TempCapsuleCollider.isTrigger = true;
     }
 
     public void Revive()

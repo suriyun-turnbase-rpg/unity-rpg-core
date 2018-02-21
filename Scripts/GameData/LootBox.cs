@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [System.Serializable]
 public class LootBoxReward
@@ -66,7 +69,8 @@ public class LootBox : BaseGameData
         }
         return WeightedRandomizer.From(weight).TakeOne();
     }
-
+    
+#if UNITY_EDITOR
     private void OnValidate()
     {
         if (lootboxPacks == null || lootboxPacks.Length == 0)
@@ -79,8 +83,10 @@ public class LootBox : BaseGameData
                     price = requireCurrencyAmount,
                 }
             };
+            EditorUtility.SetDirty(this);
         }
     }
+#endif
 
     public virtual string ToJson()
     {
