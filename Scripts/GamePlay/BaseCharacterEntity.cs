@@ -164,13 +164,12 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         Container = formation.containers[position];
     }
     
-    public virtual void ApplyBuff(BaseCharacterEntity caster, BaseSkill skill, int buffIndex)
+    public virtual void ApplyBuff(BaseCharacterEntity caster, int level, BaseSkill skill, int buffIndex)
     {
         if (skill == null || buffIndex < 0 || buffIndex >= skill.GetBuffs().Count || skill.GetBuffs()[buffIndex] == null || Hp <= 0)
             return;
-
-        // TODO: Implement skill level
-        var buff = NewBuff(1, skill, buffIndex, caster, this);
+        
+        var buff = NewBuff(level, skill, buffIndex, caster, this);
         if (buff.GetRemainsDuration() > 0f)
         {
             // Buff cannot stack so remove old buff
