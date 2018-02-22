@@ -55,9 +55,9 @@ public class GameEffect : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    public GameEffect InstantiateTo(Transform parent)
+    public GameEffect InstantiateTo(Transform parent, bool asChildren = true)
     {
-        var effect = Instantiate(this, parent);
+        var effect = Instantiate(this, asChildren ? parent : null);
         effect.TempTransform.localPosition = Vector3.zero;
         effect.TempTransform.localEulerAngles = Vector3.zero;
         effect.TempTransform.localScale = Vector3.one;
