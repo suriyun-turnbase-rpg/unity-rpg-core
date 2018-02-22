@@ -8,11 +8,16 @@ public enum BuffType
     Nerf,
 }
 
-public class BaseSkillBuff
+public abstract class BaseSkillBuff
 {
     public Sprite icon;
     public BuffType type;
     public CharacterEffectData buffEffects;
+    [Header("Apply chance, 1 = 100%")]
+    [Range(0f, 1f)]
+    public float applyChance;
+    [Range(0f, 1f)]
+    public float applyChanceIncreaseEachLevel;
     [Header("Attributes")]
     public CalculationAttributes attributes;
     public CalculationAttributes attributesIncreaseEachLevel;
@@ -32,6 +37,16 @@ public class BaseSkillBuff
     public int clearNerfs = 0;
     [Tooltip("If this is True, chance to stun will be equals to apply chance")]
     public bool isStun;
+
+    public bool RandomToApply(int level = 1)
+    {
+        return Random.value < GetApplyChance(level);
+    }
+
+    public float GetApplyChance(int level = 1)
+    {
+        return applyChance + (applyChanceIncreaseEachLevel * level);
+    }
 
     public CalculationAttributes GetAttributes(int level = 1)
     {
