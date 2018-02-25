@@ -6,12 +6,15 @@ using UnityEngine.UI;
 [RequireComponent(typeof(UIFollowWorldObject))]
 public class UICharacterStatsGeneric : UIBase
 {
+    public Text textTitle;
+    public Image imageIcon;
     public Text textHpPerMaxHp;
     public Text textHpPercent;
     public Image imageHpGage;
     public UILevel uiLevel;
     public UICharacterBuff[] uiBuffs;
     public BaseCharacterEntity character;
+    public bool notFollowCharacter;
 
     private UIFollowWorldObject tempObjectFollower;
     public UIFollowWorldObject TempObjectFollower
@@ -24,12 +27,25 @@ public class UICharacterStatsGeneric : UIBase
         }
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        if (notFollowCharacter)
+        {
+            TempObjectFollower.enabled = false;
+            TempObjectFollower.TempPositionFollower.enabled = false;
+        }
+    }
+
     protected virtual void Update()
     {
         if (character == null)
             return;
 
-        TempObjectFollower.targetObject = character.uiContainer;
+        if (!notFollowCharacter)
+            TempObjectFollower.targetObject = character.uiContainer;
+
+        var itemData = character.Item.ItemData;
         var rate = (float)character.Hp / (float)character.MaxHp;
 
         if (textHpPerMaxHp != null)
@@ -40,6 +56,12 @@ public class UICharacterStatsGeneric : UIBase
 
         if (imageHpGage != null)
             imageHpGage.fillAmount = rate;
+
+        if (textTitle != null)
+            textTitle.text = itemData.title;
+
+        if (imageIcon != null)
+            imageIcon.sprite = itemData.icon;
 
         if (uiLevel != null)
         {
