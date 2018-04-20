@@ -81,7 +81,9 @@ public class GameInstance : MonoBehaviour
 
     public void OnGameServiceError(string error, UnityAction errorAction)
     {
-        messageDialogData.Enqueue(new UIMessageDialog.Data(LanguageManager.Texts[GameText.TITLE_ERROR_DIALOG], LanguageManager.Texts[error], errorAction));
+        Debug.LogError("OnGameServiceError: " + error);
+        var errorText = string.IsNullOrEmpty(error) || !LanguageManager.Texts.ContainsKey(error) ? "" : LanguageManager.Texts[error];
+        messageDialogData.Enqueue(new UIMessageDialog.Data(LanguageManager.Texts[GameText.TITLE_ERROR_DIALOG], errorText, errorAction));
         ShowError();
     }
 
