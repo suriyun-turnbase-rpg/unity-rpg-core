@@ -80,6 +80,13 @@ public class GameDatabase : ScriptableObject
         }
         AddItemsToDatabase(startItemList);
 
+        var startCharacterList = new List<BaseItem>();
+        foreach (var startCharacter in startCharacters)
+        {
+            startCharacterList.Add(startCharacter);
+        }
+        AddItemsToDatabase(startCharacterList);
+
         Currencies[softCurrency.id] = softCurrency;
         Currencies[hardCurrency.id] = hardCurrency;
         Staminas[stageStamina.id] = stageStamina;
