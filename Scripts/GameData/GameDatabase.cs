@@ -89,108 +89,59 @@ public class GameDatabase : ScriptableObject
         AddLootBoxesToDatabase(lootBoxes);
     }
 
-    private void AddItemsToDatabase(List<BaseItem> items)
+    private void AddItemsToDatabase(IEnumerable<BaseItem> items)
     {
         foreach (var item in items)
         {
+            if (item == null)
+                continue;
             var dataId = item.Id;
-            if (!string.IsNullOrEmpty(dataId))
+            if (!string.IsNullOrEmpty(dataId) && !Items.ContainsKey(dataId))
             {
                 Items[dataId] = item;
             }
         }
     }
 
-    private void AddStageFormationsToDatabase(List<Formation> formations)
+    private void AddStageFormationsToDatabase(IEnumerable<Formation> formations)
     {
         foreach (var formation in formations)
         {
+            if (formation == null)
+                continue;
             var dataId = formation.id;
-            if (!string.IsNullOrEmpty(dataId))
+            if (!string.IsNullOrEmpty(dataId) && !Formations.ContainsKey(dataId))
             {
-                Formations[formation.id] = formation;
+                Formations[dataId] = formation;
             }
         }
     }
 
-    private void AddStagesToDatabase(List<BaseStage> stages)
+    private void AddStagesToDatabase(IEnumerable<BaseStage> stages)
     {
         foreach (var stage in stages)
         {
+            if (stage == null)
+                continue;
             var dataId = stage.Id;
-            if (!string.IsNullOrEmpty(dataId))
+            if (!string.IsNullOrEmpty(dataId) && !Stages.ContainsKey(dataId))
             {
-                Stages[stage.Id] = stage;
+                Stages[dataId] = stage;
             }
         }
     }
 
-    private void AddLootBoxesToDatabase(List<LootBox> lootBoxes)
+    private void AddLootBoxesToDatabase(IEnumerable<LootBox> lootBoxes)
     {
         foreach (var lootBox in lootBoxes)
         {
+            if (lootBox == null)
+                continue;
             var dataId = lootBox.Id;
-            if (!string.IsNullOrEmpty(dataId))
+            if (!string.IsNullOrEmpty(dataId) && !LootBoxes.ContainsKey(dataId))
             {
-                LootBoxes[lootBox.Id] = lootBox;
+                LootBoxes[dataId] = lootBox;
             }
         }
     }
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        var validatedStageFormations = new List<Formation>();
-        foreach (var stageFormation in stageFormations)
-        {
-            var containsId = false;
-            foreach (var validatedStageFormation in validatedStageFormations)
-            {
-                if (stageFormation != null && validatedStageFormation.id == stageFormation.id)
-                {
-                    containsId = true;
-                    break;
-                }
-            }
-            if (!containsId && stageFormation != null && !validatedStageFormations.Contains(stageFormation))
-                validatedStageFormations.Add(stageFormation);
-        }
-        stageFormations = validatedStageFormations;
-
-        var validatedItemList = new List<BaseItem>();
-        foreach (var item in items)
-        {
-            var containsId = false;
-            foreach (var validatedItem in validatedItemList)
-            {
-                if (item != null && validatedItem.Id == item.Id)
-                {
-                    containsId = true;
-                    break;
-                }
-            }
-            if (!containsId && item != null && !validatedItemList.Contains(item))
-                validatedItemList.Add(item);
-        }
-        items = validatedItemList;
-
-        var validatedStageList = new List<BaseStage>();
-        foreach (var stage in stages)
-        {
-            var containsId = false;
-            foreach (var validatedStage in validatedStageList)
-            {
-                if (stage != null && validatedStage.Id == stage.Id)
-                {
-                    containsId = true;
-                    break;
-                }
-            }
-            if (!containsId && stage != null && !validatedStageList.Contains(stage))
-                validatedStageList.Add(stage);
-        }
-        stages = validatedStageList;
-        EditorUtility.SetDirty(this);
-    }
-#endif
 }
