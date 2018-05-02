@@ -1,9 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
+[RequireComponent(typeof(Animator))]
 public abstract class BaseCharacterEntity : MonoBehaviour
 {
+    public const string ANIM_ACTION_STATE = "_Action";
+    [Header("Animator")]
+    [SerializeField]
+    private RuntimeAnimatorController animatorController;
+
+    [Header("UIs/Effects/Entities Containers")]
     [Tooltip("The transform where we're going to spawn uis")]
     public Transform uiContainer;
     [Tooltip("The transform where we're going to spawn body effects")]
@@ -12,6 +22,31 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     public Transform floorEffectContainer;
     [Tooltip("The transform where we're going to spawn damage")]
     public Transform damageContainer;
+
+    private Animator cacheAnimator;
+    public Animator CacheAnimator
+    {
+        get
+        {
+            if (cacheAnimator == null)
+            {
+                cacheAnimator = GetComponent<Animator>();
+                cacheAnimator.runtimeAnimatorController = CacheAnimatorController;
+            }
+            return cacheAnimator;
+        }
+    }
+
+    private AnimatorOverrideController cacheAnimatorController;
+    public AnimatorOverrideController CacheAnimatorController
+    {
+        get
+        {
+            if (cacheAnimatorController == null)
+                cacheAnimatorController = new AnimatorOverrideController(animatorController);
+            return cacheAnimatorController;
+        }
+    }
 
     private PlayerItem item;
     public PlayerItem Item
@@ -98,6 +133,16 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             damageContainer = TempTransform;
     }
 
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        var cacheAnimator = GetComponent<Animator>();
+        if (animatorController == null && cacheAnimator != null)
+            animatorController = cacheAnimator.runtimeAnimatorController;
+        EditorUtility.SetDirty(gameObject);
+    }
+#endif
+
     public void Revive()
     {
         if (Item == null)
@@ -182,6 +227,11 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         }
         else
             buff.BuffRemove();
+    }
+
+    public void ChangeActionClip(AnimationClip clip)
+    {
+        CacheAnimatorController[ANIM_ACTION_STATE] = clip;
     }
 
     public abstract BaseCharacterSkill NewSkill(int level, BaseSkill skill);

@@ -5,8 +5,11 @@ using UnityEngine;
 public abstract class BaseSkillCastAnimationData : AnimationData
 {
     public CharacterEffectData castEffects;
+}
 
-    public static CharacterEffectData GetCastEffects(BaseSkillCastAnimationData skillCastAnimation)
+public static class BaseSkillCastAnimationDataExtension
+{
+    public static CharacterEffectData GetCastEffects(this BaseSkillCastAnimationData skillCastAnimation)
     {
         return skillCastAnimation == null ? null : skillCastAnimation.castEffects;
     }
