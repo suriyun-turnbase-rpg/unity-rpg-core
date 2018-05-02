@@ -55,8 +55,6 @@ public class LootBox : BaseGameData
 {
     public Sprite icon;
     public LootBoxRequirementType requirementType;
-    [System.Obsolete("This will be removed on next version")]
-    public int requireCurrencyAmount;
     public LootBoxPack[] lootboxPacks;
     public LootBoxReward[] lootboxRewards;
 
@@ -69,24 +67,6 @@ public class LootBox : BaseGameData
         }
         return WeightedRandomizer.From(weight).TakeOne();
     }
-    
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (lootboxPacks == null || lootboxPacks.Length == 0)
-        {
-            lootboxPacks = new LootBoxPack[]
-            {
-                new LootBoxPack()
-                {
-                    openAmount = 1,
-                    price = requireCurrencyAmount,
-                }
-            };
-            EditorUtility.SetDirty(this);
-        }
-    }
-#endif
 
     public virtual string ToJson()
     {

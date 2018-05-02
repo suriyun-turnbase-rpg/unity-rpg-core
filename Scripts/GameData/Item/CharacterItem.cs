@@ -8,8 +8,6 @@ using UnityEditor;
 public class CharacterItem : BaseActorItem
 {
     [Header("Character Data")]
-    [System.Obsolete("This will be removed on next version")]
-    public BaseAttackAnimationData attackAnimation;
     public List<BaseAttackAnimationData> attackAnimations;
     public List<BaseSkill> skills;
     public BaseCharacterEntity model;
@@ -21,16 +19,6 @@ public class CharacterItem : BaseActorItem
     }
 
 #if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (attackAnimations == null || attackAnimations.Count == 0)
-        {
-            attackAnimations = new List<BaseAttackAnimationData>();
-            attackAnimations.Add(attackAnimation);
-            EditorUtility.SetDirty(this);
-        }
-    }
-
     public override BaseActorItem CreateEvolveItemAsset(CreateEvolveItemData createEvolveItemData)
     {
         var newItem = ScriptableObjectUtility.CreateAsset<CharacterItem>(name);
