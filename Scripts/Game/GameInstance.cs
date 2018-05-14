@@ -101,7 +101,7 @@ public class GameInstance : MonoBehaviour
         Player.CurrentPlayer = player;
         GameService.SetPrefsLogin(player.Id, player.LoginToken);
 
-        if (string.IsNullOrEmpty(player.ProfileName))
+        if (string.IsNullOrEmpty(player.ProfileName.Trim()))
             SetProfileName();
         else
             GetAllPlayerData(LoadAllPlayerDataState.GoToManageScene);
