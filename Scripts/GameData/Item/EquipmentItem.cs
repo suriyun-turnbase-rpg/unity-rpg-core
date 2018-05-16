@@ -32,7 +32,7 @@ public class EquipmentItem : BaseActorItem
         {
             if (!string.IsNullOrEmpty(jsonEquippablePositions))
                 jsonEquippablePositions += ",";
-            jsonEquippablePositions += entry;
+            jsonEquippablePositions += "\"" + entry + "\"";
         }
         jsonEquippablePositions = "[" + jsonEquippablePositions + "]";
         return "{\"id\":\"" + Id + "\"," +
