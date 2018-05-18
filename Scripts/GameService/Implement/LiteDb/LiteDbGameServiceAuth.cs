@@ -37,7 +37,7 @@ public partial class LiteDbGameService
     protected override void DoGuestLogin(string deviceId, UnityAction<PlayerResult> onFinish)
     {
         var result = new PlayerResult();
-        if (string.IsNullOrEmpty(deviceId) || string.IsNullOrEmpty(deviceId))
+        if (string.IsNullOrEmpty(deviceId))
             result.error = GameServiceErrorCode.EMPTY_USERNMAE_OR_PASSWORD;
         else if (IsPlayerWithUsernameFound(AUTH_GUEST, deviceId))
         {
@@ -66,7 +66,9 @@ public partial class LiteDbGameService
     protected override void DoValidateLoginToken(string playerId, string loginToken, bool refreshToken, UnityAction<PlayerResult> onFinish)
     {
         var result = new PlayerResult();
-        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        DbPlayer player = null;
+        if (!string.IsNullOrEmpty(playerId) && !string.IsNullOrEmpty(loginToken))
+            player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
         if (player == null)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else
@@ -84,7 +86,9 @@ public partial class LiteDbGameService
     protected override void DoSetProfileName(string playerId, string loginToken, string profileName, UnityAction<PlayerResult> onFinish)
     {
         var result = new PlayerResult();
-        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        DbPlayer player = null;
+        if (!string.IsNullOrEmpty(playerId) && !string.IsNullOrEmpty(loginToken))
+            player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
         var playerWithName = colPlayer.FindOne(a => a.ProfileName == profileName);
         if (player == null)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
