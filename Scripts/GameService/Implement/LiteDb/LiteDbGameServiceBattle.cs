@@ -141,24 +141,7 @@ public partial class LiteDbGameService
                     // End add item condition
                 }
                 // End reward items loop
-                var clearedStage = colPlayerClearStage.FindOne(a => a.PlayerId == playerId && a.DataId == stage.Id);
-                if (clearedStage == null)
-                {
-                    clearedStage = new DbPlayerClearStage();
-                    clearedStage.Id = PlayerClearStage.GetId(playerId, stage.Id);
-                    clearedStage.PlayerId = playerId;
-                    clearedStage.DataId = stage.Id;
-                    clearedStage.BestRating = rating;
-                    colPlayerClearStage.Insert(clearedStage);
-                }
-                else
-                {
-                    if (clearedStage.BestRating < rating)
-                    {
-                        clearedStage.BestRating = rating;
-                        colPlayerClearStage.Update(clearedStage);
-                    }
-                }
+                var clearedStage = HelperClearStage(playerId, stage.Id, rating);
                 var resultClearedStage = new PlayerClearStage();
                 PlayerClearStage.CloneTo(clearedStage, resultClearedStage);
                 result.clearStage = resultClearedStage;

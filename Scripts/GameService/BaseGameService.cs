@@ -73,6 +73,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void Register(string username, string password, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: Register");
         HandleServiceCall();
         DoRegister(username, password, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
@@ -86,6 +87,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void Login(string username, string password, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: Login");
         HandleServiceCall();
         DoLogin(username, password, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
@@ -99,6 +101,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void RegisterOrLogin(string username, string password, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: RegisterOrLogin");
         HandleServiceCall();
         DoRegisterOrLogin(username, password, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
@@ -111,6 +114,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void GuestLogin(string deviceId, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: GuestLogin");
         HandleServiceCall();
         DoGuestLogin(deviceId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
@@ -123,6 +127,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void ValidateLoginToken(bool refreshToken, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: ValidateLoginToken");
         var playerId = GetPrefsPlayerId();
         var loginToken = GetPrefsLoginToken();
         HandleServiceCall();
@@ -137,6 +142,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void SetProfileName(string profileName, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: SetProfileName");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -153,6 +159,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void LevelUpItem(string itemId, Dictionary<string, int> materials, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: LevelUpItem");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -169,6 +176,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void EvolveItem(string itemId, Dictionary<string, int> materials, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: EvolveItem");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -184,6 +192,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void SellItems(Dictionary<string, int> items, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: SellItems");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -200,6 +209,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void StartStage(string stageDataId, UnityAction<StartStageResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: StartStage");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -216,6 +226,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void FinishStage(string session, ushort battleResult, int deadCharacters, UnityAction<FinishStageResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: FinishStage");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -230,6 +241,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void ReviveCharacters(UnityAction<CurrencyResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: ReviveCharacters");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -245,6 +257,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void SelectFormation(string formationName, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: SelectFormation");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -262,6 +275,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void EquipItem(string characterId, string equipmentId, string equipPosition, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: EquipItem");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -277,6 +291,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void UnEquipItem(string equipmentId, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: UnEquipItem");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -293,6 +308,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void OpenLootBox(string lootBoxDataId, int packIndex, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: OpenLootBox");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -307,6 +323,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void GetAuthList(UnityAction<AuthListResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: GetAuthList");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -321,6 +338,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void GetItemList(UnityAction<ItemListResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: GetItemList");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -335,6 +353,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void GetCurrencyList(UnityAction<CurrencyListResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: GetCurrencyList");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -349,6 +368,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void GetStaminaList(UnityAction<StaminaListResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: GetStaminaList");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -363,6 +383,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void GetFormationList(UnityAction<FormationListResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: GetFormationList");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -380,6 +401,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void SetFormation(string characterId, string formationName, int position, UnityAction<FormationListResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: SetFormation");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -394,6 +416,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void GetUnlockItemList(UnityAction<UnlockItemListResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: GetUnlockItemList");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -408,6 +431,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void GetClearStageList(UnityAction<ClearStageListResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: GetClearStageList");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -422,6 +446,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="onError"></param>
     public void GetAvailableLootBoxList(UnityAction<AvailableLootBoxListResult> onSuccess = null, UnityAction<string> onError = null)
     {
+        Debug.Log("Call Service: GetAvailableLootBoxList");
         HandleServiceCall();
         DoGetAvailableLootBoxList((finishResult) => HandleResult(finishResult, onSuccess, onError));
     }

@@ -342,7 +342,7 @@ public partial class LiteDbGameService
         }
     }
 
-    private void HelperUnlockItem(string playerId, string dataId)
+    private DbPlayerUnlockItem HelperUnlockItem(string playerId, string dataId)
     {
         var unlockItem = colPlayerUnlockItem.FindById(PlayerUnlockItem.GetId(playerId, dataId));
         if (unlockItem == null)
@@ -354,9 +354,10 @@ public partial class LiteDbGameService
             unlockItem.Amount = 0;
             colPlayerUnlockItem.Insert(unlockItem);
         }
+        return unlockItem;
     }
 
-    private void HelperClearStage(string playerId, string dataId, int grade)
+    private DbPlayerClearStage HelperClearStage(string playerId, string dataId, int grade)
     {
         var clearStage = colPlayerClearStage.FindById(PlayerClearStage.GetId(playerId, dataId));
         if (clearStage == null)
@@ -376,5 +377,6 @@ public partial class LiteDbGameService
                 colPlayerClearStage.Update(clearStage);
             }
         }
+        return clearStage;
     }
 }
