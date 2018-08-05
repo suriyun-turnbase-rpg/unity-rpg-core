@@ -444,11 +444,11 @@ public partial class SQLiteGameService
         PlayerFormation oldFormation = null;
             if (!string.IsNullOrEmpty(characterId))
         {
-            var oldFormations = ExecuteReader(@"SELECT * FROM playerFormation WHERE playerId=@playerId AND dataId=@dataId AND itemId=@itemId LIMIT 1",
+            var oldFormations = ExecuteReader(@"SELECT * FROM playerFormation WHERE playerId=@playerId AND dataId=@dataId AND itemId=@itemId",
                 new SqliteParameter("@playerId", playerId),
                 new SqliteParameter("@dataId", formationName),
                 new SqliteParameter("@itemId", characterId));
-            if (oldFormations.Read())
+            while (oldFormations.Read())
             {
                 oldFormation = new PlayerFormation();
                 oldFormation.Id = oldFormations.GetString(0);
@@ -460,7 +460,7 @@ public partial class SQLiteGameService
             if (oldFormation != null)
             {
                 ExecuteNonQuery(@"UPDATE playerFormation SET itemId=@itemId WHERE id=@id",
-                    new SqliteParameter("@itemId", oldFormation.ItemId),
+                    new SqliteParameter("@itemId", ""),
                     new SqliteParameter("@id", oldFormation.Id));
             }
         }
