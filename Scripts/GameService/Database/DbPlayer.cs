@@ -14,6 +14,10 @@ public class DbPlayer : IPlayer
     public int Exp { get { return exp; } set { exp = value; } }
     public string selectedFormation;
     public string SelectedFormation { get { return selectedFormation; } set { selectedFormation = value; } }
+    public string mainCharacter;
+    public string MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
+    public int mainCharacterExp;
+    public int MainCharacterExp { get { return mainCharacterExp; } set { mainCharacterExp = value; } }
 
     public static List<Player> CloneList(IEnumerable<DbPlayer> list)
     {

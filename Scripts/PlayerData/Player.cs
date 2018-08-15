@@ -36,6 +36,10 @@ public class Player : BasePlayerData, ILevel, IPlayer
     public int Exp { get { return exp; } set { exp = value; } }
     public string selectedFormation;
     public string SelectedFormation { get { return selectedFormation; } set { selectedFormation = value; } }
+    public string mainCharacter;
+    public string MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
+    public int mainCharacterExp;
+    public int MainCharacterExp { get { return mainCharacterExp; } set { mainCharacterExp = value; } }
 
     private int level = -1;
     private int collectExp = -1;
@@ -63,6 +67,8 @@ public class Player : BasePlayerData, ILevel, IPlayer
         to.LoginToken = from.LoginToken;
         to.Exp = from.Exp;
         to.SelectedFormation = from.SelectedFormation;
+        to.MainCharacter = from.MainCharacter;
+        to.MainCharacterExp = from.MainCharacterExp;
     }
 
     #region Non Serialize Fields

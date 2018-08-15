@@ -25,6 +25,7 @@ public class GameServiceErrorCode
     public const string NOT_ENOUGH_STAGE_STAMINA = ERROR_PREFIX + "NOT_ENOUGH_STAGE_STAMINA";
     public const string NOT_ENOUGH_ITEMS = ERROR_PREFIX + "NOT_ENOUGH_ITEMS";
     public const string CANNOT_EVOLVE = ERROR_PREFIX + "CANNOT_EVOLVE";
+    public const string NOT_AVAILABLE = ERROR_PREFIX + "NOT_AVAILABLE";
 }
 
 public class GameServiceResult
@@ -109,4 +110,9 @@ public class ClearStageListResult : GameServiceResult
 public class AvailableLootBoxListResult : GameServiceResult
 {
     public List<string> list = new List<string>();
+}
+
+public class FriendListResult : GameServiceResult
+{
+    public List<Player> list = new List<Player>();
 }
