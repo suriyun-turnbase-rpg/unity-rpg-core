@@ -52,16 +52,16 @@ public class UIItemSell : UIItemSelection
         ui.displayStats = UIItem.DisplayStats.SellPrice;
     }
 
-    protected override void SelectItem(UIItem ui)
+    protected override void SelectItem(UIDataItem ui)
     {
-        if (ui.data.CanSell)
+        if ((ui as UIItem).data.CanSell)
             base.SelectItem(ui);
         else
             ui.Selected = false;
         Calculate();
     }
 
-    protected override void DeselectItem(UIItem ui)
+    protected override void DeselectItem(UIDataItem ui)
     {
         base.DeselectItem(ui);
         Calculate();

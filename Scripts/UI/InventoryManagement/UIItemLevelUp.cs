@@ -71,13 +71,13 @@ public class UIItemLevelUp : UIItemWithMaterials
         ui.displayStats = UIItem.DisplayStats.RewardExp;
     }
 
-    protected override void SelectItem(UIItem ui)
+    protected override void SelectItem(UIDataItem ui)
     {
         base.SelectItem(ui);
         SetupLevelUp();
     }
 
-    protected override void DeselectItem(UIItem ui)
+    protected override void DeselectItem(UIDataItem ui)
     {
         base.DeselectItem(ui);
         SetupLevelUp();

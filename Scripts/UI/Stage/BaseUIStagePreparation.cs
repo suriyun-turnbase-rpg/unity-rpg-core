@@ -9,6 +9,7 @@ public abstract class BaseUIStagePreparation<TUI, TStage> : UIDataItem<TStage>
     public UIFormation uiCurrentFormation;
     public UIItem uiFormationSlotPrefab;
     public TUI uiStage;
+    public UIRandomPlayerList uiRandomPlayerList;
     public override void Clear()
     {
         // Don't clear

@@ -90,16 +90,16 @@ public class UIItemEvolve : UIItemWithMaterials
         return new List<PlayerItem>();
     }
 
-    protected override void SelectItem(UIItem ui)
+    protected override void SelectItem(UIDataItem ui)
     {
-        if (uiSelectedItemList == null || !uiSelectedItemList.UIEntries.ContainsKey(ui.data.DataId))
+        if (uiSelectedItemList == null || !uiSelectedItemList.UIEntries.ContainsKey((ui as UIItem).data.DataId))
             return;
-        UpdateSelectMaterialAmount(ui.data);
+        UpdateSelectMaterialAmount((ui as UIItem).data);
     }
 
-    protected override void DeselectItem(UIItem ui)
+    protected override void DeselectItem(UIDataItem ui)
     {
-        UpdateSelectMaterialAmount(ui.data);
+        UpdateSelectMaterialAmount((ui as UIItem).data);
     }
 
     private void UpdateSelectMaterialAmount(PlayerItem item)

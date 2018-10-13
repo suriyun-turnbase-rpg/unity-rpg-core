@@ -43,18 +43,18 @@ public abstract class UIItemSelection : UIBase
             uiSelectedItemList.ClearListItems();
     }
 
-    protected virtual void SelectItem(UIItem ui)
+    protected virtual void SelectItem(UIDataItem ui)
     {
         if (uiSelectedItemList == null)
             return;
-        uiSelectedItemList.SetListItem(ui.data);
+        uiSelectedItemList.SetListItem((ui as UIItem).data);
     }
 
-    protected virtual void DeselectItem(UIItem ui)
+    protected virtual void DeselectItem(UIDataItem ui)
     {
         if (uiSelectedItemList == null)
             return;
-        uiSelectedItemList.RemoveListItem(ui.data.Id);
+        uiSelectedItemList.RemoveListItem((ui as UIItem).data.Id);
     }
 
     public Dictionary<string, UIItem> GetAvailableItems()

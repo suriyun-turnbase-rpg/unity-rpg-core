@@ -53,15 +53,15 @@ public class UIInventoryManager : UIBase
             uiItemList.ClearListItems();
     }
 
-    protected virtual void SelectItem(UIItem ui)
+    protected virtual void SelectItem(UIDataItem ui)
     {
         if (uiSelectedInfo != null)
-            uiSelectedInfo.SetData(ui.data);
+            uiSelectedInfo.SetData((ui as UIItem).data);
     }
 
-    protected virtual void DeselectItem(UIItem ui)
+    protected virtual void DeselectItem(UIDataItem ui)
     {
         // Don't deselect
-        ui.Selected = true;
+        (ui as UIItem).Selected = true;
     }
 }

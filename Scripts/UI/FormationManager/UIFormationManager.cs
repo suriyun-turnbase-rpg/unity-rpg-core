@@ -139,13 +139,13 @@ public class UIFormationManager : UIBase
             characterFormation.SetFormationCharacters();
     }
 
-    private void SelectItem(UIItem ui)
+    private void SelectItem(UIDataItem ui)
     {
         SelectedFormation.uiFormation.ShowGuideObject();
-        SelectedItem = ui;
+        SelectedItem = ui as UIItem;
     }
 
-    private void DeselectItem(UIItem ui)
+    private void DeselectItem(UIDataItem ui)
     {
         SelectedFormation.uiFormation.HideGuideObject();
         SelectedItem = null;

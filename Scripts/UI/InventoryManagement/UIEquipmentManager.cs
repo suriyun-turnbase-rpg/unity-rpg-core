@@ -133,12 +133,12 @@ public class UIEquipmentManager : UIBase
             uiEquipmentList.ClearListItems();
     }
 
-    private void SelectItem(UIItem ui)
+    private void SelectItem(UIDataItem ui)
     {
-        SelectedItem = ui;
+        SelectedItem = ui as UIItem;
     }
 
-    private void DeselectItem(UIItem ui)
+    private void DeselectItem(UIDataItem ui)
     {
         SelectedItem = null;
     }
