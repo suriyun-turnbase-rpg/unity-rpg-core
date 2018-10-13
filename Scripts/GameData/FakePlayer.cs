@@ -8,9 +8,9 @@ public class FakePlayer
 
     public int GetExp()
     {
-        var exp = 1;
+        var exp = 0;
         var gameDb = GameInstance.GameDatabase;
-        for (var i = 0; i < level; ++i)
+        for (var i = 0; i < level - 1; ++i)
         {
             exp += gameDb.playerExpTable.Calculate(i + 1, gameDb.playerMaxLevel);
         }
@@ -21,9 +21,9 @@ public class FakePlayer
     {
         if (mainCharacter == null)
             return 0;
-        var exp = 1;
+        var exp = 0;
         var itemTier = mainCharacter.itemTier;
-        for (var i = 0; i < level; ++i)
+        for (var i = 0; i < mainCharacterLevel - 1; ++i)
         {
             exp += itemTier.expTable.Calculate(i + 1, itemTier.maxLevel);
         }
