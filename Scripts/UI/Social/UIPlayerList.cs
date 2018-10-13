@@ -20,6 +20,7 @@ public class UIPlayerList : UIDataItemList<UIPlayer, Player>
         if (data == null || string.IsNullOrEmpty(data.Id))
             return null;
         var item = SetListItem(data.Id);
+        item.uiPlayerList = this;
         item.SetData(data);
         return item;
     }
