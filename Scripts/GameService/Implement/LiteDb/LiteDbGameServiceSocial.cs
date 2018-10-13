@@ -15,7 +15,7 @@ public partial class LiteDbGameService
             if (fakePlayer.level <= 0 || fakePlayer.mainCharacter == null || fakePlayer.mainCharacterLevel <= 0)
                 continue;
             var entry = new Player();
-            entry.ProfileName = fakePlayer.title;
+            entry.ProfileName = fakePlayer.profileName;
             entry.Exp = fakePlayer.GetExp();
             entry.MainCharacter = fakePlayer.mainCharacter.Id;
             entry.MainCharacterExp = fakePlayer.GetMainCharacterExp();
