@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class FakePlayer : BaseGameData
+﻿[System.Serializable]
+public class FakePlayer
 {
+    public string profileName;
     public int level;
     public CharacterItem mainCharacter;
     public int mainCharacterLevel;
