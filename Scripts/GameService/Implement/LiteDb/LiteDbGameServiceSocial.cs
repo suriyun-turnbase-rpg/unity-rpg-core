@@ -28,7 +28,6 @@ public partial class LiteDbGameService
     {
         // Return empty, this service (offline service) is not support it
         var result = new FriendListResult();
-        result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }
 
@@ -36,7 +35,6 @@ public partial class LiteDbGameService
     {
         // Return empty, this service (offline service) is not support it
         var result = new FriendListResult();
-        result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }
 
