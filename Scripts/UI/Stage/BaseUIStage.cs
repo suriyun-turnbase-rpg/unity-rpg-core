@@ -109,8 +109,9 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
 
     public void OnClickStartStage()
     {
-        BaseGamePlayManager.StartStage(data);
+        BaseGamePlayManager.StartStage(data, GetHelper());
     }
 
     public abstract TPreparation StagePreparation { get; }
+    public abstract Player GetHelper();
 }

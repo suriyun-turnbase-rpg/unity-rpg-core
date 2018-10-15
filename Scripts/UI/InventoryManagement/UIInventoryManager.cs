@@ -62,6 +62,6 @@ public class UIInventoryManager : UIBase
     protected virtual void DeselectItem(UIDataItem ui)
     {
         // Don't deselect
-        (ui as UIItem).Selected = true;
+        ui.Selected = true;
     }
 }

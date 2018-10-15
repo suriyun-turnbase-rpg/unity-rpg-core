@@ -7,6 +7,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
 {
     public static string BattleSession { get; private set; }
     public static BaseStage PlayingStage { get; protected set; }
+    public static Player Helper { get; protected set; }
     [Header("Combat Texts")]
     public Transform combatTextContainer;
     public UICombatText combatDamagePrefab;
@@ -127,12 +128,13 @@ public abstract class BaseGamePlayManager : MonoBehaviour
 
     public void Restart()
     {
-        StartStage(PlayingStage);
+        StartStage(PlayingStage, Helper);
     }
 
-    public static void StartStage(BaseStage data)
+    public static void StartStage(BaseStage data, Player helper)
     {
         PlayingStage = data;
+        Helper = helper;
         GameInstance.GameService.StartStage(data.Id, (result) =>
         {
             GameInstance.Singleton.OnGameServiceStartStageResult(result);
