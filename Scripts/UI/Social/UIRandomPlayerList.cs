@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIRandomPlayerList : UIPlayerList
+public class UIHelperList : UIPlayerList
 {
     private void OnEnable()
     {
@@ -10,7 +10,7 @@ public class UIRandomPlayerList : UIPlayerList
 
     public void RefreshList()
     {
-        GameInstance.GameService.GetRandomPlayerList(OnRefreshListSuccess, OnRefreshListFail);
+        GameInstance.GameService.GetHelperList(OnRefreshListSuccess, OnRefreshListFail);
     }
 
     private void OnRefreshListSuccess(FriendListResult result)

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public partial class LiteDbGameService
 {
-    protected override void DoGetRandomPlayerList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoGetHelperList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
     {
         // Random players from fake players list
         var result = new FriendListResult();

@@ -9,7 +9,7 @@ public abstract class BaseUIStagePreparation<TUI, TStage> : UIDataItem<TStage>
     public UIFormation uiCurrentFormation;
     public UIItem uiFormationSlotPrefab;
     public TUI uiStage;
-    public UIRandomPlayerList uiRandomPlayerList;
+    public UIHelperList uiHelperList;
     public override void Clear()
     {
         // Don't clear
@@ -43,9 +43,9 @@ public abstract class BaseUIStagePreparation<TUI, TStage> : UIDataItem<TStage>
 
     public Player GetHelper()
     {
-        if (uiRandomPlayerList != null)
+        if (uiHelperList != null)
         {
-            var list = uiRandomPlayerList.GetSelectedDataList();
+            var list = uiHelperList.GetSelectedDataList();
             if (list.Count > 0)
                 return list[0];
         }
