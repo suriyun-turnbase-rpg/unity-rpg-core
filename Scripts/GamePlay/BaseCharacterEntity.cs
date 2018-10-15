@@ -199,14 +199,14 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         return result;
     }
 
-    public virtual void SetFormation(BaseGamePlayFormation formation, int position)
+    public virtual void SetFormation(BaseGamePlayFormation formation, int position, Transform container)
     {
-        if (formation == null || position < 0 || position >= formation.containers.Length)
+        if (container == null)
             return;
 
         Formation = formation;
         Position = position;
-        Container = formation.containers[position];
+        Container = container;
     }
     
     public virtual void ApplyBuff(BaseCharacterEntity caster, int level, BaseSkill skill, int buffIndex)

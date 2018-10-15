@@ -35,4 +35,20 @@ public abstract class BaseUIStagePreparation<TUI, TStage> : UIDataItem<TStage>
             uiCurrentFormation.SetFormationData(uiFormationSlotPrefab);
         }
     }
+
+    public void OnClickStartStage()
+    {
+        BaseGamePlayManager.StartStage(data, GetHelper());
+    }
+
+    public Player GetHelper()
+    {
+        if (uiRandomPlayerList != null)
+        {
+            var list = uiRandomPlayerList.GetSelectedDataList();
+            if (list.Count > 0)
+                return list[0];
+        }
+        return null;
+    }
 }
