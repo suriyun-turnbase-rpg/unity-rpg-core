@@ -491,7 +491,7 @@ public abstract class BaseGameService : MonoBehaviour
         DoFriendRequest(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void FriendAccept(string targetPlayerId, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
+    public void FriendAccept(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: SendFriendAccept");
         var player = Player.CurrentPlayer;
@@ -501,7 +501,7 @@ public abstract class BaseGameService : MonoBehaviour
         DoFriendAccept(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void FriendDecline(string targetPlayerId, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
+    public void FriendDecline(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: SendFriendDecline");
         var player = Player.CurrentPlayer;
@@ -511,7 +511,7 @@ public abstract class BaseGameService : MonoBehaviour
         DoFriendDecline(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void FriendDelete(string targetPlayerId, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
+    public void FriendDelete(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: SendFriendDelete");
         var player = Player.CurrentPlayer;
@@ -550,7 +550,7 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoGetFriendList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoFriendRequest(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
-    protected abstract void DoFriendAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<PlayerResult> onFinish);
-    protected abstract void DoFriendDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<PlayerResult> onFinish);
-    protected abstract void DoFriendDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<PlayerResult> onFinish);
+    protected abstract void DoFriendAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoFriendDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoFriendDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
 }

@@ -43,19 +43,19 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoFriendAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<PlayerResult> onFinish)
+    protected override void DoFriendAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
     {
         var result = new PlayerResult();
         onFinish(result);
     }
 
-    protected override void DoFriendDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<PlayerResult> onFinish)
+    protected override void DoFriendDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
     {
         var result = new PlayerResult();
         onFinish(result);
     }
 
-    protected override void DoFriendDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<PlayerResult> onFinish)
+    protected override void DoFriendDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
     {
         var result = new PlayerResult();
         onFinish(result);

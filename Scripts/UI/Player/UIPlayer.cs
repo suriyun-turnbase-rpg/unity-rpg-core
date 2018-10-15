@@ -120,10 +120,10 @@ public class UIPlayer : UIDataItem<Player>
         GameInstance.GameService.FriendAccept(data.Id, OnFriendAcceptSuccess, OnFriendAcceptFail);
     }
 
-    private void OnFriendAcceptSuccess(PlayerResult result)
+    private void OnFriendAcceptSuccess(GameServiceResult result)
     {
         if (uiPlayerList != null)
-            uiPlayerList.RemoveListItem(result.player.Id);
+            uiPlayerList.RemoveListItem(data.Id);
         if (eventFriendAcceptSuccess != null)
             eventFriendAcceptSuccess.Invoke();
     }
@@ -140,10 +140,10 @@ public class UIPlayer : UIDataItem<Player>
         GameInstance.GameService.FriendDecline(data.Id, OnFriendDeclineSuccess, OnFriendDeclineFail);
     }
 
-    private void OnFriendDeclineSuccess(PlayerResult result)
+    private void OnFriendDeclineSuccess(GameServiceResult result)
     {
         if (uiPlayerList != null)
-            uiPlayerList.RemoveListItem(result.player.Id);
+            uiPlayerList.RemoveListItem(data.Id);
         if (eventFriendDeclineSuccess != null)
             eventFriendDeclineSuccess.Invoke();
     }
@@ -160,10 +160,10 @@ public class UIPlayer : UIDataItem<Player>
         GameInstance.GameService.FriendDelete(data.Id, OnFriendDeleteSuccess, OnFriendDeleteFail);
     }
 
-    private void OnFriendDeleteSuccess(PlayerResult result)
+    private void OnFriendDeleteSuccess(GameServiceResult result)
     {
         if (uiPlayerList != null)
-            uiPlayerList.RemoveListItem(result.player.Id);
+            uiPlayerList.RemoveListItem(data.Id);
         if (eventFriendDeleteSuccess != null)
             eventFriendDeleteSuccess.Invoke();
     }
