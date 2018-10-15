@@ -27,47 +27,37 @@ public partial class SQLiteGameService
 
     protected override void DoGetFriendList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
     {
-        // Return empty, this service (offline service) is not support it
         var result = new FriendListResult();
         onFinish(result);
     }
 
     protected override void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
     {
-        // Return empty, this service (offline service) is not support it
         var result = new FriendListResult();
         onFinish(result);
     }
 
     protected override void DoFriendRequest(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
     {
-        // Return fail, this service (offline service) is not support it
         var result = new GameServiceResult();
-        result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }
 
     protected override void DoFriendAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<FriendListResult> onFinish)
     {
-        // Return fail, this service (offline service) is not support it
         var result = new FriendListResult();
-        result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }
 
     protected override void DoFriendDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
     {
-        // Return fail, this service (offline service) is not support it
         var result = new GameServiceResult();
-        result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }
 
     protected override void DoFriendDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<FriendListResult> onFinish)
     {
-        // Return fail, this service (offline service) is not support it
         var result = new FriendListResult();
-        result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }
 }
