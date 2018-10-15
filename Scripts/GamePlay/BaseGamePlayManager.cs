@@ -19,6 +19,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     [Header("Gameplay UI")]
     public UIWin uiWin;
     public UILose uiLose;
+    public UIPlayer uiFriendRequest;
     public UIPauseGame uiPauseGame;
     public float winGameDelay = 2f;
     public float loseGameDelay = 2f;
@@ -87,7 +88,23 @@ public abstract class BaseGamePlayManager : MonoBehaviour
             Time.timeScale = 1;
             GameInstance.Singleton.OnGameServiceFinishStageResult(result);
             uiWin.SetData(result);
-            uiWin.Show();
+            if (uiFriendRequest != null && Helper != null && !Helper.isFriend)
+            {
+                uiFriendRequest.SetData(Helper);
+                uiFriendRequest.eventFriendRequestSuccess.AddListener(() =>
+                {
+                    uiFriendRequest.Hide();
+                });
+                uiFriendRequest.eventHide.AddListener(() =>
+                {
+                    uiWin.Show();
+                });
+                uiFriendRequest.Show();
+            }
+            else
+            {
+                uiWin.Show();
+            }
         }, (error) =>
         {
             GameInstance.Singleton.OnGameServiceError(error, WinGame);

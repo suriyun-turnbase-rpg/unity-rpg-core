@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 [System.Serializable]
 public class Player : BasePlayerData, ILevel, IPlayer
@@ -40,6 +39,7 @@ public class Player : BasePlayerData, ILevel, IPlayer
     public string MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
     public int mainCharacterExp;
     public int MainCharacterExp { get { return mainCharacterExp; } set { mainCharacterExp = value; } }
+    public bool isFriend;
 
     private int level = -1;
     private int collectExp = -1;
