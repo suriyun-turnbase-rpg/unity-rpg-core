@@ -316,6 +316,14 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
+    protected override void DoGetIAPPackageList(UnityAction<AvailableIAPPackageListResult> onFinish)
+    {
+        var result = new AvailableIAPPackageListResult();
+        var gameDb = GameInstance.GameDatabase;
+        result.list.AddRange(gameDb.IAPPackages.Keys);
+        onFinish(result);
+    }
+
     protected override void DoOpenLootBox(string playerId, string loginToken, string lootBoxDataId, int packIndex, UnityAction<ItemResult> onFinish)
     {
         var result = new ItemResult();
@@ -383,6 +391,61 @@ public partial class LiteDbGameService
                             PlayerItem.CloneTo(updateEntry, resultItem);
                             result.updateItems.Add(resultItem);
                         }
+                    }
+                }
+            }
+        }
+        onFinish(result);
+    }
+
+    protected override void DoOpenIAPPackage(string playerId, string loginToken, string iapPackageDataId, UnityAction<ItemResult> onFinish)
+    {
+        var result = new ItemResult();
+        var gameDb = GameInstance.GameDatabase;
+        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        IAPPackage iapPackage;
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!gameDb.IAPPackages.TryGetValue(iapPackageDataId, out iapPackage))
+            result.error = GameServiceErrorCode.INVALID_IAP_PACKAGE_DATA;
+        else
+        {
+            // TODO: May validate IAP here
+            var resultCurrency = new PlayerCurrency();
+            // Add soft currency
+            var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+            softCurrency.Amount += iapPackage.rewardSoftCurrency;
+            colPlayerCurrency.Update(softCurrency);
+            PlayerCurrency.CloneTo(softCurrency, resultCurrency);
+            result.updateCurrencies.Add(resultCurrency);
+            // Add hard currency
+            var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+            hardCurrency.Amount += iapPackage.rewardHardCurrency;
+            colPlayerCurrency.Update(hardCurrency);
+            PlayerCurrency.CloneTo(hardCurrency, resultCurrency);
+            result.updateCurrencies.Add(resultCurrency);
+            // Add items
+            foreach (var rewardItem in iapPackage.rewardItems)
+            {
+                var createItems = new List<DbPlayerItem>();
+                var updateItems = new List<DbPlayerItem>();
+                if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
+                {
+                    foreach (var createEntry in createItems)
+                    {
+                        createEntry.Id = System.Guid.NewGuid().ToString();
+                        colPlayerItem.Insert(createEntry);
+                        var resultItem = new PlayerItem();
+                        PlayerItem.CloneTo(createEntry, resultItem);
+                        result.createItems.Add(resultItem);
+                        HelperUnlockItem(player.Id, rewardItem.Id);
+                    }
+                    foreach (var updateEntry in updateItems)
+                    {
+                        colPlayerItem.Update(updateEntry);
+                        var resultItem = new PlayerItem();
+                        PlayerItem.CloneTo(updateEntry, resultItem);
+                        result.updateItems.Add(resultItem);
                     }
                 }
             }

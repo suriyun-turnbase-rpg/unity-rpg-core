@@ -18,6 +18,7 @@ public class GameServiceErrorCode
     public const string INVALID_FORMATION_DATA = ERROR_PREFIX + "INVALID_FORMATION_DATA";
     public const string INVALID_STAGE_DATA = ERROR_PREFIX + "INVALID_STAGE_DATA";
     public const string INVALID_LOOT_BOX_DATA = ERROR_PREFIX + "INVALID_LOOT_BOX_DATA";
+    public const string INVALID_IAP_PACKAGE_DATA = ERROR_PREFIX + "INVALID_IAP_PACKAGE_DATA";
     public const string INVALID_EQUIP_POSITION = ERROR_PREFIX + "INVALID_EQUIP_POSITION";
     public const string INVALID_BATTLE_SESSION = ERROR_PREFIX + "INVALID_BATTLE_SESSION";
     public const string NOT_ENOUGH_SOFT_CURRENCY = ERROR_PREFIX + "NOT_ENOUGH_SOFT_CURRENCY";
@@ -108,6 +109,11 @@ public class ClearStageListResult : GameServiceResult
 }
 
 public class AvailableLootBoxListResult : GameServiceResult
+{
+    public List<string> list = new List<string>();
+}
+
+public class AvailableIAPPackageListResult : GameServiceResult
 {
     public List<string> list = new List<string>();
 }

@@ -315,6 +315,14 @@ public partial class SQLiteGameService
         onFinish(result);
     }
 
+    protected override void DoGetIAPPackageList(UnityAction<AvailableIAPPackageListResult> onFinish)
+    {
+        var result = new AvailableIAPPackageListResult();
+        var gameDb = GameInstance.GameDatabase;
+        result.list.AddRange(gameDb.IAPPackages.Keys);
+        onFinish(result);
+    }
+
     protected override void DoOpenLootBox(string playerId, string loginToken, string lootBoxDataId, int packIndex, UnityAction<ItemResult> onFinish)
     {
         var result = new ItemResult();
@@ -393,6 +401,73 @@ public partial class SQLiteGameService
                                 new SqliteParameter("@id", updateEntry.Id));
                             result.updateItems.Add(updateEntry);
                         }
+                    }
+                }
+            }
+        }
+        onFinish(result);
+    }
+
+    protected override void DoOpenIAPPackage(string playerId, string loginToken, string iapPackageDataId, UnityAction<ItemResult> onFinish)
+    {
+        var result = new ItemResult();
+        var gameDb = GameInstance.GameDatabase;
+        var player = GetPlayerByLoginToken(playerId, loginToken);
+        IAPPackage iapPackage;
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!gameDb.IAPPackages.TryGetValue(iapPackageDataId, out iapPackage))
+            result.error = GameServiceErrorCode.INVALID_IAP_PACKAGE_DATA;
+        else
+        {
+            // TODO: May validate IAP here
+            // Add soft currency
+            var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+            softCurrency.Amount += iapPackage.rewardSoftCurrency;
+            ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                new SqliteParameter("@amount", softCurrency.Amount),
+                new SqliteParameter("@id", softCurrency.Id));
+            result.updateCurrencies.Add(softCurrency);
+            // Add hard currency
+            var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+            hardCurrency.Amount += iapPackage.rewardHardCurrency;
+            ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                new SqliteParameter("@amount", hardCurrency.Amount),
+                new SqliteParameter("@id", hardCurrency.Id));
+            result.updateCurrencies.Add(hardCurrency);
+            // Add items
+            foreach (var rewardItem in iapPackage.rewardItems)
+            {
+                var createItems = new List<PlayerItem>();
+                var updateItems = new List<PlayerItem>();
+                if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
+                {
+
+                    foreach (var createEntry in createItems)
+                    {
+                        createEntry.Id = System.Guid.NewGuid().ToString();
+                        ExecuteNonQuery(@"INSERT INTO playerItem (id, playerId, dataId, amount, exp, equipItemId, equipPosition) VALUES (@id, @playerId, @dataId, @amount, @exp, @equipItemId, @equipPosition)",
+                            new SqliteParameter("@id", createEntry.Id),
+                            new SqliteParameter("@playerId", createEntry.PlayerId),
+                            new SqliteParameter("@dataId", createEntry.DataId),
+                            new SqliteParameter("@amount", createEntry.Amount),
+                            new SqliteParameter("@exp", createEntry.Exp),
+                            new SqliteParameter("@equipItemId", createEntry.EquipItemId),
+                            new SqliteParameter("@equipPosition", createEntry.EquipPosition));
+                        result.createItems.Add(createEntry);
+                        HelperUnlockItem(player.Id, rewardItem.Id);
+                    }
+                    foreach (var updateEntry in updateItems)
+                    {
+                        ExecuteNonQuery(@"UPDATE playerItem SET playerId=@playerId, dataId=@dataId, amount=@amount, exp=@exp, equipItemId=@equipItemId, equipPosition=@equipPosition WHERE id=@id",
+                            new SqliteParameter("@playerId", updateEntry.PlayerId),
+                            new SqliteParameter("@dataId", updateEntry.DataId),
+                            new SqliteParameter("@amount", updateEntry.Amount),
+                            new SqliteParameter("@exp", updateEntry.Exp),
+                            new SqliteParameter("@equipItemId", updateEntry.EquipItemId),
+                            new SqliteParameter("@equipPosition", updateEntry.EquipPosition),
+                            new SqliteParameter("@id", updateEntry.Id));
+                        result.updateItems.Add(updateEntry);
                     }
                 }
             }

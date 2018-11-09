@@ -317,6 +317,22 @@ public abstract class BaseGameService : MonoBehaviour
     }
 
     /// <summary>
+    /// OpenIAPPackage
+    /// </summary>
+    /// <param name="iapPackageDataId"></param>
+    /// <param name="onSuccess"></param>
+    /// <param name="onError"></param>
+    public void OpenIAPPackage(string iapPackageDataId, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: OpenIAPPackage");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoOpenIAPPackage(playerId, loginToken, iapPackageDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    /// <summary>
     /// GetAuthList
     /// </summary>
     /// <param name="onSuccess"></param>
@@ -451,6 +467,18 @@ public abstract class BaseGameService : MonoBehaviour
         DoGetAvailableLootBoxList((finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    /// <summary>
+    /// GetAvailableIAPPackageList
+    /// </summary>
+    /// <param name="onSuccess"></param>
+    /// <param name="onError"></param>
+    public void GetAvailableIAPPackageList(UnityAction<AvailableIAPPackageListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetAvailableIAPPackageList");
+        HandleServiceCall();
+        DoGetIAPPackageList((finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     public void GetHelperList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetRandomPlayerList");
@@ -544,8 +572,10 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoGetUnlockItemList(string playerId, string loginToken, UnityAction<UnlockItemListResult> onFinish);
     protected abstract void DoGetClearStageList(string playerId, string loginToken, UnityAction<ClearStageListResult> onFinish);
     protected abstract void DoGetAvailableLootBoxList(UnityAction<AvailableLootBoxListResult> onFinish);
+    protected abstract void DoGetIAPPackageList(UnityAction<AvailableIAPPackageListResult> onFinish);
     protected abstract void DoSetFormation(string playerId, string loginToken, string characterId, string formationName, int position, UnityAction<FormationListResult> onFinish);
     protected abstract void DoOpenLootBox(string playerId, string loginToken, string lootBoxDataId, int packIndex, UnityAction<ItemResult> onFinish);
+    protected abstract void DoOpenIAPPackage(string playerId, string loginToken, string iapPackageDataId, UnityAction<ItemResult> onFinish);
     protected abstract void DoGetHelperList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoGetFriendList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
