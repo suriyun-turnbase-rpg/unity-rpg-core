@@ -398,7 +398,15 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoOpenIAPPackage(string playerId, string loginToken, string iapPackageDataId, UnityAction<ItemResult> onFinish)
+    protected override void DoOpenIAPPackage_iOS(string playerId, string loginToken, string receipt, UnityAction<ItemResult> onFinish)
+    {
+    }
+
+    protected override void DoOpenIAPPackage_Android(string playerId, string loginToken, string receipt, UnityAction<ItemResult> onFinish)
+    {
+    }
+
+    protected void DoOpenIAPPackage(string playerId, string loginToken, string iapPackageDataId, UnityAction<ItemResult> onFinish)
     {
         var result = new ItemResult();
         var gameDb = GameInstance.GameDatabase;
@@ -410,7 +418,6 @@ public partial class LiteDbGameService
             result.error = GameServiceErrorCode.INVALID_IAP_PACKAGE_DATA;
         else
         {
-            // TODO: May validate IAP here
             var resultCurrency = new PlayerCurrency();
             // Add soft currency
             var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);

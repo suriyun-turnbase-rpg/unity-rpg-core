@@ -317,19 +317,35 @@ public abstract class BaseGameService : MonoBehaviour
     }
 
     /// <summary>
-    /// OpenIAPPackage
+    /// OpenIAPPackage_iOS
     /// </summary>
-    /// <param name="iapPackageDataId"></param>
+    /// <param name="receipt"></param>
     /// <param name="onSuccess"></param>
     /// <param name="onError"></param>
-    public void OpenIAPPackage(string iapPackageDataId, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
+    public void OpenIAPPackage_iOS(string receipt, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
     {
-        Debug.Log("Call Service: OpenIAPPackage");
+        Debug.Log("Call Service: OpenIAPPackage_iOS");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
         HandleServiceCall();
-        DoOpenIAPPackage(playerId, loginToken, iapPackageDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+        DoOpenIAPPackage_iOS(playerId, loginToken, receipt, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    /// <summary>
+    /// OpenIAPPackage_Android
+    /// </summary>
+    /// <param name="receipt"></param>
+    /// <param name="onSuccess"></param>
+    /// <param name="onError"></param>
+    public void OpenIAPPackage_Android(string receipt, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: DoOpenIAPPackage_Android");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoOpenIAPPackage_Android(playerId, loginToken, receipt, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     /// <summary>
@@ -575,7 +591,8 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoGetIAPPackageList(UnityAction<AvailableIAPPackageListResult> onFinish);
     protected abstract void DoSetFormation(string playerId, string loginToken, string characterId, string formationName, int position, UnityAction<FormationListResult> onFinish);
     protected abstract void DoOpenLootBox(string playerId, string loginToken, string lootBoxDataId, int packIndex, UnityAction<ItemResult> onFinish);
-    protected abstract void DoOpenIAPPackage(string playerId, string loginToken, string iapPackageDataId, UnityAction<ItemResult> onFinish);
+    protected abstract void DoOpenIAPPackage_iOS(string playerId, string loginToken, string receipt, UnityAction<ItemResult> onFinish);
+    protected abstract void DoOpenIAPPackage_Android(string playerId, string loginToken, string receipt, UnityAction<ItemResult> onFinish);
     protected abstract void DoGetHelperList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoGetFriendList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
