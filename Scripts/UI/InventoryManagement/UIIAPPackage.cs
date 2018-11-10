@@ -45,30 +45,6 @@ public class UIIAPPackage : UIDataItem<IAPPackage>
         if (!gameInstance.gameDatabase.IAPPackages.ContainsKey(data.Id))
             return;
 
-        // TODO: add receipt / signature
-        if (Application.platform == RuntimePlatform.Android)
-            gameService.OpenIAPPackage_Android(data.Id, "", "", OnOpenIAPPackageSuccess, OnOpenIAPPackageFail);
-        else if (Application.platform == RuntimePlatform.IPhonePlayer)
-            gameService.OpenIAPPackage_iOS(data.Id, "", OnOpenIAPPackageSuccess, OnOpenIAPPackageFail);
-    }
-
-    private void OnOpenIAPPackageSuccess(ItemResult result)
-    {
-        GameInstance.Singleton.OnGameServiceItemResult(result);
-        var updateCurrencies = result.updateCurrencies;
-        foreach (var updateCurrency in updateCurrencies)
-        {
-            PlayerCurrency.SetData(updateCurrency);
-        }
-        var items = new List<PlayerItem>();
-        items.AddRange(result.createItems);
-        items.AddRange(result.updateItems);
-        if (items.Count > 0)
-            GameInstance.Singleton.ShowRewardItemsDialog(items);
-    }
-
-    private void OnOpenIAPPackageFail(string error)
-    {
-        GameInstance.Singleton.OnGameServiceError(error);
+        // TODO: processes purchasing
     }
 }

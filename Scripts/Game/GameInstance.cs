@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+#if ENABLE_PURCHASING && UNITY_PURCHASING && (UNITY_IOS || UNITY_ANDROID)
+using UnityEngine.Purchasing;
+#endif
 
-public class GameInstance : MonoBehaviour
+#if ENABLE_PURCHASING && UNITY_PURCHASING && (UNITY_IOS || UNITY_ANDROID)
+public partial class GameInstance : MonoBehaviour, IStoreListener
+#else
+public partial class GameInstance : MonoBehaviour
+#endif
 {
     public enum LoadAllPlayerDataState
     {
@@ -55,6 +61,8 @@ public class GameInstance : MonoBehaviour
             Debug.LogError("`Game Database` has not been set");
         else
             GameDatabase.Setup();
+
+        SetupPurchasing();
 
         GameService = GetComponent<BaseGameService>();
         if (GameService == null)
