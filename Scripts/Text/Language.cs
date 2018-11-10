@@ -124,6 +124,7 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_STAGE_STAMINA, "Not enough " + Texts[GameText.TITLE_STAGE_STAMINA]);
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_ITEMS, "Not enough items");
         Texts.Add(GameServiceErrorCode.CANNOT_EVOLVE, "Cannot evolve");
+        Texts.Add(GameServiceErrorCode.NOT_AVAILABLE, "Services not available");
     }
 }
 
