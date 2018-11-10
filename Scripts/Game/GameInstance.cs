@@ -25,6 +25,7 @@ public class GameInstance : MonoBehaviour
     public static GameDatabase GameDatabase { get; private set; }
     public static BaseGameService GameService { get; private set; }
     public static readonly List<string> AvailableLootBoxes = new List<string>();
+    public static readonly List<string> AvailableIAPPackages = new List<string>();
 
     private readonly Queue<UIMessageDialog.Data> messageDialogData = new Queue<UIMessageDialog.Data>();
     private LoadAllPlayerDataState loadAllPlayerDataState;
@@ -36,6 +37,7 @@ public class GameInstance : MonoBehaviour
     private static bool isPlayerUnlockItemListLoaded;
     private static bool isPlayerClearStageListLoaded;
     private static bool isAvailableLootBoxListLoaded;
+    private static bool isAvailableIAPPackageListLoaded;
     private static int countLoading = 0;
 
     private void Awake()
@@ -117,6 +119,7 @@ public class GameInstance : MonoBehaviour
         isPlayerUnlockItemListLoaded = false;
         isPlayerClearStageListLoaded = false;
         isAvailableLootBoxListLoaded = false;
+        isAvailableIAPPackageListLoaded = false;
         LoadLoginScene();
     }
 
@@ -224,6 +227,15 @@ public class GameInstance : MonoBehaviour
 
         AvailableLootBoxes.Clear();
         AvailableLootBoxes.AddRange(result.list);
+    }
+
+    public void OnGameServiceAvailableIAPPackageListResult(AvailableIAPPackageListResult result)
+    {
+        if (!result.Success)
+            return;
+
+        AvailableIAPPackages.Clear();
+        AvailableIAPPackages.AddRange(result.list);
     }
 
     #region Current Player Data Validation
@@ -386,6 +398,22 @@ public class GameInstance : MonoBehaviour
     }
 
     /// <summary>
+    /// Get list of available to open iap packages
+    /// </summary>
+    private void GetAvailableIAPPackageList()
+    {
+        isAvailableIAPPackageListLoaded = false;
+        GameService.GetAvailableIAPPackageList(OnGetAvailableIAPPackageListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
+    }
+
+    private void OnGetAvailableIAPPackageListSuccess(AvailableIAPPackageListResult result)
+    {
+        OnGameServiceAvailableIAPPackageListResult(result);
+        isAvailableIAPPackageListLoaded = true;
+        ValidatePlayerData();
+    }
+
+    /// <summary>
     /// When receive all current player data, load manage scene
     /// </summary>
     private void ValidatePlayerData()
@@ -397,7 +425,8 @@ public class GameInstance : MonoBehaviour
             isPlayerStaminaListLoaded &&
             isPlayerUnlockItemListLoaded &&
             isPlayerClearStageListLoaded &&
-            isAvailableLootBoxListLoaded)
+            isAvailableLootBoxListLoaded &&
+            isAvailableIAPPackageListLoaded)
         {
             switch (loadAllPlayerDataState)
             {
