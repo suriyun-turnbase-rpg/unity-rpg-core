@@ -398,12 +398,16 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoOpenIAPPackage_iOS(string playerId, string loginToken, string receipt, UnityAction<ItemResult> onFinish)
+    protected override void DoOpenIAPPackage_iOS(string playerId, string loginToken, string iapPackageDataId, string receipt, UnityAction<ItemResult> onFinish)
     {
+        // Don't validate IAP for offline services
+        DoOpenIAPPackage(playerId, loginToken, iapPackageDataId, onFinish);
     }
 
-    protected override void DoOpenIAPPackage_Android(string playerId, string loginToken, string receipt, UnityAction<ItemResult> onFinish)
+    protected override void DoOpenIAPPackage_Android(string playerId, string loginToken, string iapPackageDataId, string data, string signature, UnityAction<ItemResult> onFinish)
     {
+        // Don't validate IAP for offline services
+        DoOpenIAPPackage(playerId, loginToken, iapPackageDataId, onFinish);
     }
 
     protected void DoOpenIAPPackage(string playerId, string loginToken, string iapPackageDataId, UnityAction<ItemResult> onFinish)
