@@ -44,7 +44,17 @@ public class UIIAPPackage : UIDataItem<IAPPackage>
         var gameService = GameInstance.GameService;
         if (!gameInstance.gameDatabase.IAPPackages.ContainsKey(data.Id))
             return;
+        
+        GameInstance.PurchaseCallback = ResponsePurchase;
+        GameInstance.Singleton.Purchase(data.Id);
+    }
 
-        // TODO: processes purchasing
+    private void ResponsePurchase(bool success, string errorMessage)
+    {
+        if (!success)
+        {
+            // TODO: show error message
+            return;
+        }
     }
 }

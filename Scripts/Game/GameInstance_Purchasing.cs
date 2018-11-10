@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 #if ENABLE_PURCHASING && UNITY_PURCHASING && (UNITY_IOS || UNITY_ANDROID)
 using UnityEngine.Purchasing;
+using UnityEngine.Purchasing.Security;
 #endif
 
 public partial class GameInstance
@@ -118,14 +119,24 @@ public partial class GameInstance
     {
         var id = args.purchasedProduct.definition.id;
 
+        if (!args.purchasedProduct.hasReceipt)
+            return PurchaseProcessingResult.Complete;
+
         IAPPackage package;
         if (GameDatabase.IAPPackages.TryGetValue(id, out package))
         {
-            // TODO: add receipt / signature
+
+            // add receipt data
+            var receiptObject = MiniJson.JsonDecode(args.purchasedProduct.receipt);
+            var payload = (receiptObject as Dictionary<string, object>)["Payload"];
+
             if (Application.platform == RuntimePlatform.Android)
-                GameService.OpenIAPPackage_Android(id, "", "", OnOpenIAPPackageSuccess, OnOpenIAPPackageFail);
+            {
+                var payloadObject = MiniJson.JsonDecode(payload.ToString()) as Dictionary<string, object>;
+                GameService.OpenIAPPackage_Android(id, payloadObject["json"].ToString(), payloadObject["signature"].ToString(), OnOpenIAPPackageSuccess, OnOpenIAPPackageFail);
+            }
             else if (Application.platform == RuntimePlatform.IPhonePlayer)
-                GameService.OpenIAPPackage_iOS(id, "", OnOpenIAPPackageSuccess, OnOpenIAPPackageFail);
+                GameService.OpenIAPPackage_iOS(id, payload.ToString(), OnOpenIAPPackageSuccess, OnOpenIAPPackageFail);
         }
         else
             PurchaseResult(false, "Package not found");
