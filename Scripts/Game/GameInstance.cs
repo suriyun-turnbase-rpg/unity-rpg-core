@@ -267,6 +267,7 @@ public class GameInstance : MonoBehaviour
         GetUnlockItemList();
         GetClearStageList();
         GetAvailableLootBoxList();
+        GetAvailableIAPPackageList();
     }
 
     /// <summary>
