@@ -9,12 +9,12 @@ public partial class SQLiteGameService
     {
         var result = new PlayerResult();
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            result.error = GameServiceErrorCode.EMPTY_USERNMAE_OR_PASSWORD;
+            result.error = GameServiceErrorCode.EMPTY_USERNAME_OR_PASSWORD;
         else
         {
             Player player = null;
             if (!TryGetPlayer(AUTH_NORMAL, username, password, out player))
-                result.error = GameServiceErrorCode.INVALID_USERNMAE_OR_PASSWORD;
+                result.error = GameServiceErrorCode.INVALID_USERNAME_OR_PASSWORD;
             else
             {
                 player = UpdatePlayerLoginToken(player);
@@ -37,12 +37,12 @@ public partial class SQLiteGameService
     {
         var result = new PlayerResult();
         if (string.IsNullOrEmpty(deviceId))
-            result.error = GameServiceErrorCode.EMPTY_USERNMAE_OR_PASSWORD;
+            result.error = GameServiceErrorCode.EMPTY_USERNAME_OR_PASSWORD;
         else if (IsPlayerWithUsernameFound(AUTH_GUEST, deviceId))
         {
             Player player = null;
             if (!TryGetPlayer(AUTH_GUEST, deviceId, deviceId, out player))
-                result.error = GameServiceErrorCode.INVALID_USERNMAE_OR_PASSWORD;
+                result.error = GameServiceErrorCode.INVALID_USERNAME_OR_PASSWORD;
             else
             {
                 player = UpdatePlayerLoginToken(player);
@@ -100,7 +100,7 @@ public partial class SQLiteGameService
     {
         var result = new PlayerResult();
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            result.error = GameServiceErrorCode.EMPTY_USERNMAE_OR_PASSWORD;
+            result.error = GameServiceErrorCode.EMPTY_USERNAME_OR_PASSWORD;
         else if (IsPlayerWithUsernameFound(AUTH_NORMAL, username))
             result.error = GameServiceErrorCode.EXISTED_USERNAME;
         else

@@ -105,11 +105,11 @@ public static class DefaultLocale
         Texts.Add(GameText.FORMAT_ATTRIBUTE, "{0}: {1}{2}");
         Texts.Add(GameText.FORMAT_BONUS, "{0}{1}");
         // Error texts
-        Texts.Add(GameServiceErrorCode.EMPTY_USERNMAE_OR_PASSWORD, "Username or password is empty");
+        Texts.Add(GameServiceErrorCode.EMPTY_USERNAME_OR_PASSWORD, "Username or password is empty");
         Texts.Add(GameServiceErrorCode.EXISTED_USERNAME, "Username is already used");
         Texts.Add(GameServiceErrorCode.EMPTY_PROFILE_NAME, "Name is empty");
         Texts.Add(GameServiceErrorCode.EXISTED_PROFILE_NAME, "Name is already used");
-        Texts.Add(GameServiceErrorCode.INVALID_USERNMAE_OR_PASSWORD, "Username or password is invalid");
+        Texts.Add(GameServiceErrorCode.INVALID_USERNAME_OR_PASSWORD, "Username or password is invalid");
         Texts.Add(GameServiceErrorCode.INVALID_LOGIN_TOKEN, "Invalid login token");
         Texts.Add(GameServiceErrorCode.INVALID_PLAYER_DATA, "Invalid player data");
         Texts.Add(GameServiceErrorCode.INVALID_PLAYER_ITEM_DATA, "Invalid player item data");
