@@ -202,7 +202,7 @@ public partial class SQLiteGameService
         var maxStamina = staminaTable.maxAmountTable.Calculate(player.Level, gameDb.playerMaxLevel);
         if (stamina.Amount >= decreaseAmount)
         {
-            if (stamina.Amount == maxStamina)
+            if (stamina.Amount == maxStamina && stamina.Amount - decreaseAmount < maxStamina)
                 stamina.RecoveredTime = System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond;
             stamina.Amount -= decreaseAmount;
             ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime WHERE id=@id",
@@ -240,7 +240,6 @@ public partial class SQLiteGameService
                     devideAmount = 1000;
                     break;
             }
-            var countDownInMillisecond = (staminaTable.recoverDuration * devideAmount) - diffTimeInMillisecond;
             var recoveryAmount = (int)(diffTimeInMillisecond / devideAmount) / staminaTable.recoverDuration;
             if (recoveryAmount > 0)
             {

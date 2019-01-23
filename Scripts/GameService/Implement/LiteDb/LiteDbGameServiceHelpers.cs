@@ -128,7 +128,7 @@ public partial class LiteDbGameService
         var maxStamina = staminaTable.maxAmountTable.Calculate(gamePlayer.Level, gameDb.playerMaxLevel);
         if (stamina.Amount >= decreaseAmount)
         {
-            if (stamina.Amount == maxStamina)
+            if (stamina.Amount == maxStamina && stamina.Amount - decreaseAmount < maxStamina)
                 stamina.RecoveredTime = System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond;
             stamina.Amount -= decreaseAmount;
             colPlayerStamina.Update(stamina);
@@ -166,7 +166,6 @@ public partial class LiteDbGameService
                     devideAmount = 1000;
                     break;
             }
-            var countDownInMillisecond = (staminaTable.recoverDuration * devideAmount) - diffTimeInMillisecond;
             var recoveryAmount = (int)(diffTimeInMillisecond / devideAmount) / staminaTable.recoverDuration;
             if (recoveryAmount > 0)
             {
