@@ -18,6 +18,9 @@ public class UIAllPlayerInfo : UIBase
         if (uiHardCurrency != null)
             uiHardCurrency.SetData(PlayerCurrency.HardCurrency);
         if (uiStageStamina != null)
+        {
             uiStageStamina.SetData(PlayerStamina.StageStamina);
+            uiStageStamina.isCurrentPlayerStamina = true;
+        }
     }
 }
