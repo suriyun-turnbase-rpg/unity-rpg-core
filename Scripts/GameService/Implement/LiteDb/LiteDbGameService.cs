@@ -116,4 +116,11 @@ public partial class LiteDbGameService : BaseGameService
             result.list.AddRange(DbPlayerClearStage.CloneList(colPlayerClearStage.Find(a => a.PlayerId == playerId)));
         onFinish(result);
     }
+
+    protected override void DoGetServiceTime(UnityAction<ServiceTimeResult> onFinish)
+    {
+        var result = new ServiceTimeResult();
+        result.serviceTime = System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond;
+        onFinish(result);
+    }
 }

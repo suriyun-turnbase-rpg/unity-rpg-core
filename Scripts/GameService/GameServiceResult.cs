@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class GameServiceErrorCode
 {
@@ -31,8 +30,13 @@ public class GameServiceErrorCode
 
 public class GameServiceResult
 {
-    public string error = "";
+    public string error;
     public bool Success { get { return string.IsNullOrEmpty(error); } }
+}
+
+public class ServiceTimeResult : GameServiceResult
+{
+    public long serviceTime;
 }
 
 public class PlayerResult : GameServiceResult

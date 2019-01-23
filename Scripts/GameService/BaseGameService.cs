@@ -12,6 +12,19 @@ public abstract class BaseGameService : MonoBehaviour
     public const ushort BATTLE_RESULT_WIN = 2;
     public UnityEvent onServiceStart;
     public UnityEvent onServiceFinish;
+    public long ServiceTimeOffset { get; private set; }
+    private float updateTimeCounter;
+
+    private void Update()
+    {
+        updateTimeCounter -= Time.unscaledDeltaTime;
+        if (updateTimeCounter <= 0f)
+        {
+            // Update time offset every five seconds
+            updateTimeCounter = 5f;
+            GetServiceTime();
+        }
+    }
 
     public void SetPrefsLogin(string playerId, string loginToken)
     {
@@ -571,6 +584,14 @@ public abstract class BaseGameService : MonoBehaviour
         HandleServiceCall();
         DoFriendDelete(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
+
+    public void GetServiceTime()
+    {
+        DoGetServiceTime((finishResult) =>
+        {
+            ServiceTimeOffset = finishResult.serviceTime - (System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond);
+        });
+    }
     
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -607,4 +628,5 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoFriendAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoGetServiceTime(UnityAction<ServiceTimeResult> onFinish);
 }
