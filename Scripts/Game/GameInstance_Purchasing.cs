@@ -126,7 +126,7 @@ public partial class GameInstance
         if (GameDatabase.IapPackages.TryGetValue(id, out package))
         {
 
-            // add receipt data
+            // add receipt data, information https://docs.unity3d.com/Manual/UnityIAPPurchaseReceipts.html
             var receiptObject = MiniJson.JsonDecode(args.purchasedProduct.receipt);
             var payload = (receiptObject as Dictionary<string, object>)["Payload"];
 
