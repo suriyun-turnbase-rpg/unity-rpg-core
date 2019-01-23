@@ -15,19 +15,26 @@ public abstract class BaseGameService : MonoBehaviour
 
     public void SetPrefsLogin(string playerId, string loginToken)
     {
-        PlayerPrefs.SetString("PLAYER_ID", playerId);
-        PlayerPrefs.SetString("LOGIN_TOKEN", loginToken);
+        string oldPlayerId = PlayerPrefs.GetString(Consts.KeyPlayerId, string.Empty);
+        // Delete gameplay settings when difference player login
+        if (!oldPlayerId.Equals(playerId))
+        {
+            PlayerPrefs.DeleteKey(Consts.KeyIsAutoPlay);
+            PlayerPrefs.DeleteKey(Consts.KeyIsSpeedMultiply);
+        }
+        PlayerPrefs.SetString(Consts.KeyPlayerId, playerId);
+        PlayerPrefs.SetString(Consts.KeyLoginToken, loginToken);
         PlayerPrefs.Save();
     }
 
     public string GetPrefsPlayerId()
     {
-        return PlayerPrefs.GetString("PLAYER_ID");
+        return PlayerPrefs.GetString(Consts.KeyPlayerId);
     }
 
     public string GetPrefsLoginToken()
     {
-        return PlayerPrefs.GetString("LOGIN_TOKEN");
+        return PlayerPrefs.GetString(Consts.KeyLoginToken);
     }
 
     public void Logout(UnityAction onLogout = null)

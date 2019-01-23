@@ -24,8 +24,37 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public float winGameDelay = 2f;
     public float loseGameDelay = 2f;
 
-    public bool IsAutoPlay { get; set; }
-    public bool IsSpeedMultiply { get; set; }
+    private bool? isAutoPlay;
+    public bool IsAutoPlay {
+        get
+        {
+            if (!isAutoPlay.HasValue)
+                isAutoPlay = PlayerPrefs.GetInt(Consts.KeyIsAutoPlay, 0) > 0;
+            return isAutoPlay.Value;
+        }
+        set
+        {
+            isAutoPlay = value;
+            PlayerPrefs.SetInt(Consts.KeyIsAutoPlay, value ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+    }
+    private bool? isSpeedMultiply;
+    public bool IsSpeedMultiply
+    {
+        get
+        {
+            if (!isSpeedMultiply.HasValue)
+                isSpeedMultiply = PlayerPrefs.GetInt(Consts.KeyIsSpeedMultiply, 0) > 0;
+            return isSpeedMultiply.Value;
+        }
+        set
+        {
+            isSpeedMultiply = value;
+            PlayerPrefs.SetInt(Consts.KeyIsSpeedMultiply, value ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+    }
     protected bool isAutoPlayDirty;
     protected bool isEnding;
 
