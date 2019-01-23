@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class UIIAPPackageList : UIDataItemList<UIIAPPackage, IAPPackage>
+public class UIIapPackageList : UIDataItemList<UIIapPackage, IapPackage>
 {
-    public void SetListItems(List<IAPPackage> list, UnityAction<UIIAPPackage> onSetListItem = null)
+    public void SetListItems(List<IapPackage> list, UnityAction<UIIapPackage> onSetListItem = null)
     {
         ClearListItems();
         foreach (var entry in list)
@@ -16,7 +16,7 @@ public class UIIAPPackageList : UIDataItemList<UIIAPPackage, IAPPackage>
         }
     }
 
-    public UIIAPPackage SetListItem(IAPPackage data)
+    public UIIapPackage SetListItem(IapPackage data)
     {
         if (data == null || string.IsNullOrEmpty(data.Id))
             return null;

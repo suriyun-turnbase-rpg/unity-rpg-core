@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Purchasing;
 #endif
 
-public class IAPPackage : BaseGameData
+public class IapPackage : BaseGameData
 {
     [HideInInspector]
     public string productId;
@@ -98,5 +98,23 @@ public class IAPPackage : BaseGameData
         Debug.LogWarning("Cannot get IAP product price, Unity Purchasing is not enabled.");
         return "N/A";
 #endif
+    }
+
+    public virtual string ToJson()
+    {
+        // Items
+        var jsonRewardItems = "";
+        foreach (var entry in rewardItems)
+        {
+            if (!string.IsNullOrEmpty(jsonRewardItems))
+                jsonRewardItems += ",";
+            jsonRewardItems += entry.ToJson();
+        }
+        jsonRewardItems = "[" + jsonRewardItems + "]";
+        // Combine
+        return "{\"id\":\"" + Id + "\"," +
+            "\"rewardSoftCurrency\":" + rewardSoftCurrency + "," +
+            "\"rewardHardCurrency\":" + rewardHardCurrency + "," +
+            "\"rewardItems\":" + jsonRewardItems + "}";
     }
 }

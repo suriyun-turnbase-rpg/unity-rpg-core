@@ -117,7 +117,7 @@ public class AvailableLootBoxListResult : GameServiceResult
     public List<string> list = new List<string>();
 }
 
-public class AvailableIAPPackageListResult : GameServiceResult
+public class AvailableIapPackageListResult : GameServiceResult
 {
     public List<string> list = new List<string>();
 }

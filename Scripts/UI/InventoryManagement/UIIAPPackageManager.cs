@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class UIIAPPackageManager : UIBase
+public class UIIapPackageManager : UIBase
 {
-    public UIIAPPackageList uiIAPPackageList;
+    public UIIapPackageList uiIAPPackageList;
 
     public override void Show()
     {
@@ -14,7 +14,7 @@ public class UIIAPPackageManager : UIBase
         if (uiIAPPackageList != null)
         {
             var availableIAPPackagees = GameInstance.AvailableIAPPackages;
-            var allIAPPackagees = GameInstance.GameDatabase.IAPPackages;
+            var allIAPPackagees = GameInstance.GameDatabase.IapPackages;
             var list = allIAPPackagees.Values.Where(a => availableIAPPackagees.Contains(a.Id)).ToList();
             uiIAPPackageList.SetListItems(list);
         }

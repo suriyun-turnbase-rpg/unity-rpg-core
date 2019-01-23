@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIIAPPackage : UIDataItem<IAPPackage>
+public class UIIapPackage : UIDataItem<IapPackage>
 {
     public Text textTitle;
     public Text textDescription;
@@ -20,7 +20,7 @@ public class UIIAPPackage : UIDataItem<IAPPackage>
         SetupInfo(data);
     }
 
-    private void SetupInfo(IAPPackage data)
+    private void SetupInfo(IapPackage data)
     {
         if (textTitle != null)
             textTitle.text = data == null ? "" : data.title;
@@ -42,7 +42,7 @@ public class UIIAPPackage : UIDataItem<IAPPackage>
     {
         var gameInstance = GameInstance.Singleton;
         var gameService = GameInstance.GameService;
-        if (!gameInstance.gameDatabase.IAPPackages.ContainsKey(data.Id))
+        if (!gameInstance.gameDatabase.IapPackages.ContainsKey(data.Id))
             return;
         
         GameInstance.PurchaseCallback = ResponsePurchase;

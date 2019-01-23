@@ -316,11 +316,11 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoGetIAPPackageList(UnityAction<AvailableIAPPackageListResult> onFinish)
+    protected override void DoGetAvailableIapPackageList(UnityAction<AvailableIapPackageListResult> onFinish)
     {
-        var result = new AvailableIAPPackageListResult();
+        var result = new AvailableIapPackageListResult();
         var gameDb = GameInstance.GameDatabase;
-        result.list.AddRange(gameDb.IAPPackages.Keys);
+        result.list.AddRange(gameDb.IapPackages.Keys);
         onFinish(result);
     }
 
@@ -398,13 +398,13 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoOpenIAPPackage_iOS(string playerId, string loginToken, string iapPackageDataId, string receipt, UnityAction<ItemResult> onFinish)
+    protected override void DoOpenIapPackage_iOS(string playerId, string loginToken, string iapPackageDataId, string receipt, UnityAction<ItemResult> onFinish)
     {
         // Don't validate IAP for offline services
         DoOpenIAPPackage(playerId, loginToken, iapPackageDataId, onFinish);
     }
 
-    protected override void DoOpenIAPPackage_Android(string playerId, string loginToken, string iapPackageDataId, string data, string signature, UnityAction<ItemResult> onFinish)
+    protected override void DoOpenIapPackage_Android(string playerId, string loginToken, string iapPackageDataId, string data, string signature, UnityAction<ItemResult> onFinish)
     {
         // Don't validate IAP for offline services
         DoOpenIAPPackage(playerId, loginToken, iapPackageDataId, onFinish);
@@ -415,10 +415,10 @@ public partial class LiteDbGameService
         var result = new ItemResult();
         var gameDb = GameInstance.GameDatabase;
         var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
-        IAPPackage iapPackage;
+        IapPackage iapPackage;
         if (player == null)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
-        else if (!gameDb.IAPPackages.TryGetValue(iapPackageDataId, out iapPackage))
+        else if (!gameDb.IapPackages.TryGetValue(iapPackageDataId, out iapPackage))
             result.error = GameServiceErrorCode.INVALID_IAP_PACKAGE_DATA;
         else
         {

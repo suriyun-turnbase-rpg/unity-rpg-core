@@ -37,7 +37,7 @@ public class GameDatabase : ScriptableObject
 
     [Header("In-App Purchasing Package database")]
     [Tooltip("List of game IAP packages, place all IAP packages here")]
-    public List<IAPPackage> iapPackages;
+    public List<IapPackage> iapPackages;
 
     [Header("Game beginning")]
     [Tooltip("List of start items, place items that you want to give to players when begin the game")]
@@ -69,7 +69,7 @@ public class GameDatabase : ScriptableObject
     public readonly Dictionary<string, Formation> Formations = new Dictionary<string, Formation>();
     public readonly Dictionary<string, BaseStage> Stages = new Dictionary<string, BaseStage>();
     public readonly Dictionary<string, LootBox> LootBoxes = new Dictionary<string, LootBox>();
-    public readonly Dictionary<string, IAPPackage> IAPPackages = new Dictionary<string, IAPPackage>();
+    public readonly Dictionary<string, IapPackage> IapPackages = new Dictionary<string, IapPackage>();
 
     public void Setup()
     {
@@ -79,7 +79,7 @@ public class GameDatabase : ScriptableObject
         Formations.Clear();
         Stages.Clear();
         LootBoxes.Clear();
-        IAPPackages.Clear();
+        IapPackages.Clear();
 
         AddItemsToDatabase(items);
 
@@ -104,7 +104,7 @@ public class GameDatabase : ScriptableObject
         AddStagesToDatabase(stages);
         AddStagesToDatabase(unlockStages);
         AddLootBoxesToDatabase(lootBoxes);
-        AddIAPPackagesToDatabase(iapPackages);
+        AddIapPackagesToDatabase(iapPackages);
     }
 
     private void AddItemsToDatabase(IEnumerable<BaseItem> items)
@@ -163,16 +163,16 @@ public class GameDatabase : ScriptableObject
         }
     }
 
-    private void AddIAPPackagesToDatabase(IEnumerable<IAPPackage> iapPackages)
+    private void AddIapPackagesToDatabase(IEnumerable<IapPackage> iapPackages)
     {
         foreach (var iapPackage in iapPackages)
         {
             if (iapPackage == null)
                 continue;
             var dataId = iapPackage.Id;
-            if (!string.IsNullOrEmpty(dataId) && !IAPPackages.ContainsKey(dataId))
+            if (!string.IsNullOrEmpty(dataId) && !IapPackages.ContainsKey(dataId))
             {
-                IAPPackages[dataId] = iapPackage;
+                IapPackages[dataId] = iapPackage;
             }
         }
     }

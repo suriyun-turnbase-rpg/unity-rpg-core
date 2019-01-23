@@ -7,9 +7,9 @@ using UnityEditor.Purchasing;
 using UnityEngine.Purchasing;
 #endif
 
-[CustomEditor(typeof(IAPPackage))]
+[CustomEditor(typeof(IapPackage))]
 [CanEditMultipleObjects]
-public class IAPPackageEditor : Editor
+public class IapPackageEditor : Editor
 {
     private const string kNoProduct = "<None>";
 
@@ -25,7 +25,7 @@ public class IAPPackageEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        IAPPackage package = (IAPPackage)target;
+        IapPackage package = (IapPackage)target;
 
         serializedObject.Update();
 

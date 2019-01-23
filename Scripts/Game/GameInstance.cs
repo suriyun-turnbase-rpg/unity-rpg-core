@@ -237,7 +237,7 @@ public partial class GameInstance : MonoBehaviour
         AvailableLootBoxes.AddRange(result.list);
     }
 
-    public void OnGameServiceAvailableIAPPackageListResult(AvailableIAPPackageListResult result)
+    public void OnGameServiceAvailableIAPPackageListResult(AvailableIapPackageListResult result)
     {
         if (!result.Success)
             return;
@@ -412,10 +412,10 @@ public partial class GameInstance : MonoBehaviour
     private void GetAvailableIAPPackageList()
     {
         isAvailableIAPPackageListLoaded = false;
-        GameService.GetAvailableIAPPackageList(OnGetAvailableIAPPackageListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
+        GameService.GetAvailableIapPackageList(OnGetAvailableIAPPackageListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
     }
 
-    private void OnGetAvailableIAPPackageListSuccess(AvailableIAPPackageListResult result)
+    private void OnGetAvailableIAPPackageListSuccess(AvailableIapPackageListResult result)
     {
         OnGameServiceAvailableIAPPackageListResult(result);
         isAvailableIAPPackageListLoaded = true;
