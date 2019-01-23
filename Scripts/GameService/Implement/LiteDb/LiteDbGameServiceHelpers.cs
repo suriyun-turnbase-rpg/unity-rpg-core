@@ -121,9 +121,15 @@ public partial class LiteDbGameService
 
     private bool DecreasePlayerStamina(DbPlayer player, Stamina staminaTable, int decreaseAmount)
     {
+        var gameDb = GameInstance.GameDatabase;
         var stamina = GetStamina(player.Id, staminaTable.id);
+        var gamePlayer = new Player();
+        Player.CloneTo(player, gamePlayer);
+        var maxStamina = staminaTable.maxAmountTable.Calculate(gamePlayer.Level, gameDb.playerMaxLevel);
         if (stamina.Amount >= decreaseAmount)
         {
+            if (stamina.Amount == maxStamina)
+                stamina.RecoveredTime = System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond;
             stamina.Amount -= decreaseAmount;
             colPlayerStamina.Update(stamina);
             UpdatePlayerStamina(player, staminaTable);
@@ -160,12 +166,16 @@ public partial class LiteDbGameService
                     devideAmount = 1000;
                     break;
             }
+            var countDownInMillisecond = (staminaTable.recoverDuration * devideAmount) - diffTimeInMillisecond;
             var recoveryAmount = (int)(diffTimeInMillisecond / devideAmount) / staminaTable.recoverDuration;
-            stamina.Amount += recoveryAmount;
-            if (stamina.Amount > maxStamina)
-                stamina.Amount = maxStamina;
-            stamina.RecoveredTime = currentTimeInMillisecond;
-            colPlayerStamina.Update(stamina);
+            if (recoveryAmount > 0)
+            {
+                stamina.Amount += recoveryAmount;
+                if (stamina.Amount > maxStamina)
+                    stamina.Amount = maxStamina;
+                stamina.RecoveredTime = currentTimeInMillisecond;
+                colPlayerStamina.Update(stamina);
+            }
         }
     }
 

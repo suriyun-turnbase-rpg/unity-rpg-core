@@ -197,12 +197,17 @@ public partial class SQLiteGameService
 
     private bool DecreasePlayerStamina(Player player, Stamina staminaTable, int decreaseAmount)
     {
+        var gameDb = GameInstance.GameDatabase;
         var stamina = GetStamina(player.Id, staminaTable.id);
+        var maxStamina = staminaTable.maxAmountTable.Calculate(player.Level, gameDb.playerMaxLevel);
         if (stamina.Amount >= decreaseAmount)
         {
+            if (stamina.Amount == maxStamina)
+                stamina.RecoveredTime = System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond;
             stamina.Amount -= decreaseAmount;
-            ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount WHERE id=@id",
+            ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime WHERE id=@id",
                 new SqliteParameter("@amount", stamina.Amount),
+                new SqliteParameter("@recoveredTime", stamina.RecoveredTime),
                 new SqliteParameter("@id", stamina.Id));
             UpdatePlayerStamina(player, staminaTable);
             return true;
@@ -213,7 +218,6 @@ public partial class SQLiteGameService
     private void UpdatePlayerStamina(Player player, Stamina staminaTable)
     {
         var gameDb = GameInstance.GameDatabase;
-
         var stamina = GetStamina(player.Id, staminaTable.id);
         var maxStamina = staminaTable.maxAmountTable.Calculate(player.Level, gameDb.playerMaxLevel);
         if (stamina.Amount < maxStamina)
@@ -236,15 +240,19 @@ public partial class SQLiteGameService
                     devideAmount = 1000;
                     break;
             }
+            var countDownInMillisecond = (staminaTable.recoverDuration * devideAmount) - diffTimeInMillisecond;
             var recoveryAmount = (int)(diffTimeInMillisecond / devideAmount) / staminaTable.recoverDuration;
-            stamina.Amount += recoveryAmount;
-            if (stamina.Amount > maxStamina)
-                stamina.Amount = maxStamina;
-            stamina.RecoveredTime = currentTimeInMillisecond;
-            ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime WHERE id=@id",
-                new SqliteParameter("@amount", stamina.Amount),
-                new SqliteParameter("@recoveredTime", stamina.RecoveredTime),
-                new SqliteParameter("@id", stamina.Id));
+            if (recoveryAmount > 0)
+            {
+                stamina.Amount += recoveryAmount;
+                if (stamina.Amount > maxStamina)
+                    stamina.Amount = maxStamina;
+                stamina.RecoveredTime = currentTimeInMillisecond;
+                ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime WHERE id=@id",
+                    new SqliteParameter("@amount", stamina.Amount),
+                    new SqliteParameter("@recoveredTime", stamina.RecoveredTime),
+                    new SqliteParameter("@id", stamina.Id));
+            }
         }
     }
 
