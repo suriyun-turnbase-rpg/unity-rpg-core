@@ -134,10 +134,10 @@ public partial class GameInstance
             if (Application.platform == RuntimePlatform.Android)
             {
                 var payloadObject = MiniJson.JsonDecode(payload.ToString()) as Dictionary<string, object>;
-                GameService.OpenIapPackage_Android(id, payloadObject["json"].ToString(), payloadObject["signature"].ToString(), (result) => OnOpenIAPPackageSuccess(args.purchasedProduct, result), OnOpenIAPPackageFail);
+                GameService.OpenIapPackage_Android(id, payloadObject["json"].ToString(), payloadObject["signature"].ToString(), (result) => OnOpenIapPackageSuccess(args.purchasedProduct, result), OnOpenIapPackageFail);
             }
             else if (Application.platform == RuntimePlatform.IPhonePlayer)
-                GameService.OpenIapPackage_iOS(id, payload.ToString(), (result) => OnOpenIAPPackageSuccess(args.purchasedProduct, result), OnOpenIAPPackageFail);
+                GameService.OpenIapPackage_iOS(id, payload.ToString(), (result) => OnOpenIapPackageSuccess(args.purchasedProduct, result), OnOpenIapPackageFail);
         }
         else
             PurchaseResult(false, "Package not found");
@@ -201,7 +201,7 @@ public partial class GameInstance
     }
     #endregion
     
-    private void OnOpenIAPPackageSuccess(Product product, ItemResult result)
+    private void OnOpenIapPackageSuccess(Product product, ItemResult result)
     {
         OnGameServiceItemResult(result);
         var updateCurrencies = result.updateCurrencies;
@@ -218,7 +218,7 @@ public partial class GameInstance
         StoreController.ConfirmPendingPurchase(product);
     }
 
-    private void OnOpenIAPPackageFail(string error)
+    private void OnOpenIapPackageFail(string error)
     {
         OnGameServiceError(error);
     }
