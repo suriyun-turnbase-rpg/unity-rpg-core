@@ -93,7 +93,7 @@ public class IapPackage : BaseGameData
 #if ENABLE_PURCHASING && UNITY_PURCHASING && (UNITY_IOS || UNITY_ANDROID)
         if (ProductCatalogItem == null || Metadata == null)
             return "N/A";
-        return Metadata.localizedPriceString;
+        return Metadata.localizedPrice + " " + Metadata.isoCurrencyCode;
 #else
         Debug.LogWarning("Cannot get IAP product price, Unity Purchasing is not enabled.");
         return "N/A";

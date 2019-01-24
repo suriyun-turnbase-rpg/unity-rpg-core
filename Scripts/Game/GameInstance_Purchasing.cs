@@ -117,6 +117,7 @@ public partial class GameInstance
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
+        Debug.Log("[" + TAG_PURCHASE + "] ProcessPurchase " + args.purchasedProduct.definition.id);
         var id = args.purchasedProduct.definition.id;
 
         if (!args.purchasedProduct.hasReceipt)
@@ -133,10 +134,10 @@ public partial class GameInstance
             if (Application.platform == RuntimePlatform.Android)
             {
                 var payloadObject = MiniJson.JsonDecode(payload.ToString()) as Dictionary<string, object>;
-                GameService.OpenIapPackage_Android(id, payloadObject["json"].ToString(), payloadObject["signature"].ToString(), OnOpenIAPPackageSuccess, OnOpenIAPPackageFail);
+                GameService.OpenIapPackage_Android(id, payloadObject["json"].ToString(), payloadObject["signature"].ToString(), (result) => OnOpenIAPPackageSuccess(args.purchasedProduct, result), OnOpenIAPPackageFail);
             }
             else if (Application.platform == RuntimePlatform.IPhonePlayer)
-                GameService.OpenIapPackage_iOS(id, payload.ToString(), OnOpenIAPPackageSuccess, OnOpenIAPPackageFail);
+                GameService.OpenIapPackage_iOS(id, payload.ToString(), (result) => OnOpenIAPPackageSuccess(args.purchasedProduct, result), OnOpenIAPPackageFail);
         }
         else
             PurchaseResult(false, "Package not found");
@@ -200,7 +201,7 @@ public partial class GameInstance
     }
     #endregion
     
-    private void OnOpenIAPPackageSuccess(ItemResult result)
+    private void OnOpenIAPPackageSuccess(Product product, ItemResult result)
     {
         OnGameServiceItemResult(result);
         var updateCurrencies = result.updateCurrencies;
@@ -213,6 +214,8 @@ public partial class GameInstance
         items.AddRange(result.updateItems);
         if (items.Count > 0)
             ShowRewardItemsDialog(items);
+
+        StoreController.ConfirmPendingPurchase(product);
     }
 
     private void OnOpenIAPPackageFail(string error)

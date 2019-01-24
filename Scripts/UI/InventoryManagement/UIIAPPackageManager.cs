@@ -5,18 +5,18 @@ using UnityEngine;
 
 public class UIIapPackageManager : UIBase
 {
-    public UIIapPackageList uiIAPPackageList;
+    public UIIapPackageList uiIapPackageList;
 
     public override void Show()
     {
         base.Show();
 
-        if (uiIAPPackageList != null)
+        if (uiIapPackageList != null)
         {
-            var availableIAPPackagees = GameInstance.AvailableIAPPackages;
+            var availableIAPPackagees = GameInstance.AvailableIapPackages;
             var allIAPPackagees = GameInstance.GameDatabase.IapPackages;
             var list = allIAPPackagees.Values.Where(a => availableIAPPackagees.Contains(a.Id)).ToList();
-            uiIAPPackageList.SetListItems(list);
+            uiIapPackageList.SetListItems(list);
         }
     }
 }

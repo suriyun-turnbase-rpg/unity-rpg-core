@@ -30,7 +30,9 @@ public class UIIapPackage : UIDataItem<IapPackage>
 
         if (imageIcon != null)
             imageIcon.sprite = data == null ? null : data.icon;
-        
+
+        if (textPrice != null)
+            textPrice.text = data == null ? "N/A" : data.GetSellPrice();
     }
 
     public override bool IsEmpty()

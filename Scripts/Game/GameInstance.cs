@@ -31,7 +31,7 @@ public partial class GameInstance : MonoBehaviour
     public static GameDatabase GameDatabase { get; private set; }
     public static BaseGameService GameService { get; private set; }
     public static readonly List<string> AvailableLootBoxes = new List<string>();
-    public static readonly List<string> AvailableIAPPackages = new List<string>();
+    public static readonly List<string> AvailableIapPackages = new List<string>();
 
     private readonly Queue<UIMessageDialog.Data> messageDialogData = new Queue<UIMessageDialog.Data>();
     private LoadAllPlayerDataState loadAllPlayerDataState;
@@ -43,7 +43,7 @@ public partial class GameInstance : MonoBehaviour
     private static bool isPlayerUnlockItemListLoaded;
     private static bool isPlayerClearStageListLoaded;
     private static bool isAvailableLootBoxListLoaded;
-    private static bool isAvailableIAPPackageListLoaded;
+    private static bool isAvailableIapPackageListLoaded;
     private static int countLoading = 0;
 
     private void Awake()
@@ -61,8 +61,6 @@ public partial class GameInstance : MonoBehaviour
             Debug.LogError("`Game Database` has not been set");
         else
             GameDatabase.Setup();
-
-        SetupPurchasing();
 
         GameService = GetComponent<BaseGameService>();
         if (GameService == null)
@@ -127,7 +125,7 @@ public partial class GameInstance : MonoBehaviour
         isPlayerUnlockItemListLoaded = false;
         isPlayerClearStageListLoaded = false;
         isAvailableLootBoxListLoaded = false;
-        isAvailableIAPPackageListLoaded = false;
+        isAvailableIapPackageListLoaded = false;
         LoadLoginScene();
     }
 
@@ -237,13 +235,13 @@ public partial class GameInstance : MonoBehaviour
         AvailableLootBoxes.AddRange(result.list);
     }
 
-    public void OnGameServiceAvailableIAPPackageListResult(AvailableIapPackageListResult result)
+    public void OnGameServiceAvailableIapPackageListResult(AvailableIapPackageListResult result)
     {
         if (!result.Success)
             return;
 
-        AvailableIAPPackages.Clear();
-        AvailableIAPPackages.AddRange(result.list);
+        AvailableIapPackages.Clear();
+        AvailableIapPackages.AddRange(result.list);
     }
 
     #region Current Player Data Validation
@@ -411,14 +409,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetAvailableIAPPackageList()
     {
-        isAvailableIAPPackageListLoaded = false;
+        isAvailableIapPackageListLoaded = false;
         GameService.GetAvailableIapPackageList(OnGetAvailableIAPPackageListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
     }
 
     private void OnGetAvailableIAPPackageListSuccess(AvailableIapPackageListResult result)
     {
-        OnGameServiceAvailableIAPPackageListResult(result);
-        isAvailableIAPPackageListLoaded = true;
+        OnGameServiceAvailableIapPackageListResult(result);
+        isAvailableIapPackageListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -435,8 +433,10 @@ public partial class GameInstance : MonoBehaviour
             isPlayerUnlockItemListLoaded &&
             isPlayerClearStageListLoaded &&
             isAvailableLootBoxListLoaded &&
-            isAvailableIAPPackageListLoaded)
+            isAvailableIapPackageListLoaded)
         {
+            // Setup purchasing when all data loaded
+            SetupPurchasing();
             switch (loadAllPlayerDataState)
             {
                 case LoadAllPlayerDataState.GoToManageScene:
