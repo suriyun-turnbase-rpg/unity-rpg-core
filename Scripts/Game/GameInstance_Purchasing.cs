@@ -189,6 +189,7 @@ public partial class GameInstance
     #endregion
 
     #region Callback Events
+#if ENABLE_PURCHASING && UNITY_PURCHASING && (UNITY_IOS || UNITY_ANDROID)
     private static void PurchaseResult(bool success, string errorMessage = "")
     {
         if (!success)
@@ -199,8 +200,7 @@ public partial class GameInstance
             PurchaseCallback = null;
         }
     }
-    #endregion
-    
+
     private void OnOpenIapPackageSuccess(Product product, ItemResult result)
     {
         OnGameServiceItemResult(result);
@@ -222,4 +222,6 @@ public partial class GameInstance
     {
         OnGameServiceError(error);
     }
+#endif
+    #endregion
 }
