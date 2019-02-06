@@ -40,6 +40,9 @@ public class UIStamina : UIDataItem<PlayerStamina>
     {
         base.Update();
 
+        if (Player.CurrentPlayer == null)
+            return;
+
         if (isCurrentPlayerStamina)
         {
             tempMaxStamina = 0;
