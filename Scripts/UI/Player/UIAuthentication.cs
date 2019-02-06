@@ -24,6 +24,12 @@ public class UIAuthentication : UIBase
         set { if (inputPassword != null) inputPassword.text = value; }
     }
 
+    public bool IsRememberLogin
+    {
+        get { return GameInstance.Singleton.isRememberLogin; }
+        set { GameInstance.Singleton.isRememberLogin = value; }
+    }
+
     public void OnClickLogin()
     {
         var gameService = GameInstance.GameService;

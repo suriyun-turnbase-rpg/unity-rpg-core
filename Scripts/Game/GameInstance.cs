@@ -26,6 +26,7 @@ public partial class GameInstance : MonoBehaviour
     public string loginScene;
     public string manageScene;
     public string battleScene;
+    public bool isRememberLogin = true;
 
     public static GameInstance Singleton { get; private set; }
     public static GameDatabase GameDatabase { get; private set; }
@@ -107,7 +108,8 @@ public partial class GameInstance : MonoBehaviour
 
         var player = result.player;
         Player.CurrentPlayer = player;
-        GameService.SetPrefsLogin(player.Id, player.LoginToken);
+        if (isRememberLogin)
+            GameService.SetPrefsLogin(player.Id, player.LoginToken);
 
         if (string.IsNullOrEmpty(player.ProfileName) || string.IsNullOrEmpty(player.ProfileName.Trim()))
             SetProfileName();
