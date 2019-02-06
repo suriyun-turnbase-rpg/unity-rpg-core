@@ -105,7 +105,6 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             TempTransform.SetParent(container);
             TempTransform.localPosition = Vector3.zero;
             TempTransform.localEulerAngles = Vector3.zero;
-            TempTransform.localScale = Vector3.one;
             gameObject.SetActive(true);
         }
     }
