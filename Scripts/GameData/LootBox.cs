@@ -45,7 +45,7 @@ public class LootBoxPack
     }
 }
 
-public enum LootBoxRequirementType : short
+public enum LootBoxRequirementType : byte
 {
     RequireSoftCurrency = 0,
     RequireHardCurrency = 1,
@@ -91,7 +91,7 @@ public class LootBox : BaseGameData
         jsonLootBoxRewards = "[" + jsonLootBoxRewards + "]";
         // Combine
         return "{\"id\":\"" + Id + "\"," +
-            "\"requirementType\":"+(short)requirementType + "," +
+            "\"requirementType\":"+(byte)requirementType + "," +
             "\"lootboxPacks\":"+ jsonLootBoxPacks + "," +
             "\"lootboxRewards\":" + jsonLootBoxRewards + "}";
     }
