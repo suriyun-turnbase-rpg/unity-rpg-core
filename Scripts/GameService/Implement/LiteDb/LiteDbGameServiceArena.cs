@@ -13,11 +13,148 @@ public partial class LiteDbGameService
 
     protected override void DoStartDuel(string playerId, string loginToken, string targetPlayerId, UnityAction<StartDuelResult> onFinish)
     {
+        var result = new StartDuelResult();
+        var gameDb = GameInstance.GameDatabase;
+        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!gameDb.FakePlayers.ContainsKey(targetPlayerId))
+            result.error = GameServiceErrorCode.INVALID_PLAYER_DATA;
+        else
+        {
+            var fakePlayer = gameDb.FakePlayers[targetPlayerId];
+            colPlayerBattle.Delete(a => a.PlayerId == playerId && a.BattleResult == BATTLE_RESULT_NONE && a.BattleType == BATTLE_TYPE_ARENA);
+            var stage = gameDb.FakePlayers[targetPlayerId];
+            var arenaStaminaTable = gameDb.arenaStamina;
+            if (!DecreasePlayerStamina(player, arenaStaminaTable, 1))
+                result.error = GameServiceErrorCode.NOT_ENOUGH_STAGE_STAMINA;
+            else
+            {
+                var playerBattle = new DbPlayerBattle();
+                playerBattle.Id = System.Guid.NewGuid().ToString();
+                playerBattle.PlayerId = playerId;
+                playerBattle.DataId = targetPlayerId;
+                playerBattle.Session = System.Guid.NewGuid().ToString();
+                playerBattle.BattleResult = BATTLE_RESULT_NONE;
+                playerBattle.BattleType = BATTLE_TYPE_ARENA;
+                colPlayerBattle.Insert(playerBattle);
 
+                var stamina = GetStamina(player.Id, arenaStaminaTable.id);
+                var resultStamina = new PlayerStamina();
+                PlayerStamina.CloneTo(stamina, resultStamina);
+                result.stamina = resultStamina;
+                result.session = playerBattle.Session;
+                
+                // Opponent characters
+                foreach (var arenaCharacter in fakePlayer.arenaCharacters)
+                {
+                    result.opponentCharacters.Add(arenaCharacter.MakeAsItem());
+                }
+            }
+        }
+        onFinish(result);
     }
 
     protected override void DoFinishDuel(string playerId, string loginToken, string session, ushort battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish)
     {
-        
+        var result = new FinishDuelResult();
+        var gameDb = GameInstance.GameDatabase;
+        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        var battle = colPlayerBattle.FindOne(a => a.PlayerId == playerId && a.Session == session);
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (battle == null)
+            result.error = GameServiceErrorCode.INVALID_BATTLE_SESSION;
+        else
+        {
+            var rating = 0;
+            battle.BattleResult = battleResult;
+            if (battleResult == BATTLE_RESULT_WIN)
+            {
+                rating = 3 - deadCharacters;
+                if (rating <= 0)
+                    rating = 1;
+            }
+            battle.Rating = rating;
+            result.rating = rating;
+            colPlayerBattle.Update(battle);
+            if (battleResult == BATTLE_RESULT_WIN)
+            {
+                // Increase arena score
+                var resultPlayer = new Player();
+                Player.CloneTo(player, resultPlayer);
+                var oldArenaScore = resultPlayer.ArenaScore;
+                var oldArenaLevel = resultPlayer.ArenaLevel;
+                player.ArenaScore += gameDb.arenaWinScoreIncrease;
+                colPlayer.Update(player);
+                Player.CloneTo(player, resultPlayer);
+                result.player = resultPlayer;
+
+                // Arena rank up, rewarding items
+                if (resultPlayer.ArenaLevel > oldArenaLevel)
+                {
+                    var arenaRank = gameDb.arenaRanks[oldArenaLevel];
+                    // Soft currency
+                    var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+                    var rewardSoftCurrency = arenaRank.rewardSoftCurrency;
+                    result.rewardSoftCurrency = rewardSoftCurrency;
+                    softCurrency.Amount += rewardSoftCurrency;
+                    colPlayerCurrency.Update(softCurrency);
+                    var resultSoftCurrency = new PlayerCurrency();
+                    PlayerCurrency.CloneTo(softCurrency, resultSoftCurrency);
+                    result.updateCurrencies.Add(resultSoftCurrency);
+                    // Hard currency
+                    var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+                    var rewardHardCurrency = arenaRank.rewardHardCurrency;
+                    result.rewardHardCurrency = rewardHardCurrency;
+                    hardCurrency.Amount += rewardHardCurrency;
+                    colPlayerCurrency.Update(hardCurrency);
+                    var resultHardCurrency = new PlayerCurrency();
+                    PlayerCurrency.CloneTo(hardCurrency, resultHardCurrency);
+                    result.updateCurrencies.Add(resultHardCurrency);
+                    // Items
+                    for (var i = 0; i < arenaRank.rewardItems.Length; ++i)
+                    {
+                        var rewardItem = arenaRank.rewardItems[i];
+                        if (rewardItem == null || rewardItem.item == null)
+                            continue;
+                        var createItems = new List<DbPlayerItem>();
+                        var updateItems = new List<DbPlayerItem>();
+                        if (AddItems(player.Id, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
+                        {
+                            foreach (var createEntry in createItems)
+                            {
+                                createEntry.Id = System.Guid.NewGuid().ToString();
+                                colPlayerItem.Insert(createEntry);
+                                var resultItem = new PlayerItem();
+                                PlayerItem.CloneTo(createEntry, resultItem);
+                                result.rewardItems.Add(resultItem);
+                                result.createItems.Add(resultItem);
+                                HelperUnlockItem(player.Id, rewardItem.Id);
+                            }
+                            foreach (var updateEntry in updateItems)
+                            {
+                                colPlayerItem.Update(updateEntry);
+                                var resultItem = new PlayerItem();
+                                PlayerItem.CloneTo(updateEntry, resultItem);
+                                result.rewardItems.Add(resultItem);
+                                result.updateItems.Add(resultItem);
+                            }
+                        }
+                        // End add item condition
+                    }
+                    // End reward items loop
+                }
+            }
+            else
+            {
+                var resultPlayer = new Player();
+                player.ArenaScore -= gameDb.arenaLoseScoreDecrease;
+                colPlayer.Update(player);
+                Player.CloneTo(player, resultPlayer);
+                result.player = resultPlayer;
+            }
+        }
+        onFinish(result);
     }
 }

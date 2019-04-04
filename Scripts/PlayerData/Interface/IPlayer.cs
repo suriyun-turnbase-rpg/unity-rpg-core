@@ -5,6 +5,7 @@
     string LoginToken { get; set; }
     int Exp { get; set; }
     string SelectedFormation { get; set; }
+    string SelectedArenaFormation { get; set; }
     string MainCharacter { get; set; }
     int MainCharacterExp { get; set; }
     int ArenaScore { get; set; }

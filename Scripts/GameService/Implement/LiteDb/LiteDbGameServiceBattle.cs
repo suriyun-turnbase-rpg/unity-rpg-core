@@ -16,7 +16,7 @@ public partial class LiteDbGameService
             result.error = GameServiceErrorCode.INVALID_STAGE_DATA;
         else
         {
-            colPlayerBattle.Delete(a => a.PlayerId == playerId && a.BattleResult == BATTLE_RESULT_NONE);
+            colPlayerBattle.Delete(a => a.PlayerId == playerId && a.BattleResult == BATTLE_RESULT_NONE && a.BattleType == BATTLE_TYPE_STAGE);
             var stage = gameDb.Stages[stageDataId];
             var stageStaminaTable = gameDb.stageStamina;
             if (!DecreasePlayerStamina(player, stageStaminaTable, stage.requireStamina))
@@ -29,6 +29,7 @@ public partial class LiteDbGameService
                 playerBattle.DataId = stageDataId;
                 playerBattle.Session = System.Guid.NewGuid().ToString();
                 playerBattle.BattleResult = BATTLE_RESULT_NONE;
+                playerBattle.BattleType = BATTLE_TYPE_STAGE;
                 colPlayerBattle.Insert(playerBattle);
 
                 var stamina = GetStamina(player.Id, stageStaminaTable.id);

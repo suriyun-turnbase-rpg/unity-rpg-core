@@ -131,14 +131,14 @@ public class StartDuelResult : GameServiceResult
 {
     public PlayerStamina stamina;
     public string session;
+    public List<PlayerItem> opponentCharacters = new List<PlayerItem>();
 }
 
 public class FinishDuelResult : PlayerResult
 {
     public int rating;
-    public int rewardPlayerExp;
-    public int rewardCharacterExp;
     public int rewardSoftCurrency;
+    public int rewardHardCurrency;
     public List<PlayerItem> rewardItems = new List<PlayerItem>();
     public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
     public List<PlayerItem> createItems = new List<PlayerItem>();

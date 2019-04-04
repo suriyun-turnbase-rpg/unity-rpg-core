@@ -64,6 +64,11 @@ public class GameDatabase : ScriptableObject
     [Tooltip("If this is true, system will reset item level to 1 when evolved")]
     public bool resetItemLevelAfterEvolve;
 
+    [Header("Arena")]
+    public List<ArenaRank> arenaRanks;
+    public int arenaWinScoreIncrease;
+    public int arenaLoseScoreDecrease;
+
     public readonly Dictionary<string, BaseItem> Items = new Dictionary<string, BaseItem>();
     public readonly Dictionary<string, Currency> Currencies = new Dictionary<string, Currency>();
     public readonly Dictionary<string, Stamina> Staminas = new Dictionary<string, Stamina>();
@@ -71,6 +76,7 @@ public class GameDatabase : ScriptableObject
     public readonly Dictionary<string, BaseStage> Stages = new Dictionary<string, BaseStage>();
     public readonly Dictionary<string, LootBox> LootBoxes = new Dictionary<string, LootBox>();
     public readonly Dictionary<string, IapPackage> IapPackages = new Dictionary<string, IapPackage>();
+    public readonly Dictionary<string, FakePlayer> FakePlayers = new Dictionary<string, FakePlayer>();
 
     public void Setup()
     {
@@ -81,6 +87,7 @@ public class GameDatabase : ScriptableObject
         Stages.Clear();
         LootBoxes.Clear();
         IapPackages.Clear();
+        FakePlayers.Clear();
 
         AddItemsToDatabase(items);
 
@@ -106,6 +113,7 @@ public class GameDatabase : ScriptableObject
         AddStagesToDatabase(unlockStages);
         AddLootBoxesToDatabase(lootBoxes);
         AddIapPackagesToDatabase(iapPackages);
+        AddFakePlayersToDatabase(fakePlayers);
     }
 
     private void AddItemsToDatabase(IEnumerable<BaseItem> items)
@@ -174,6 +182,20 @@ public class GameDatabase : ScriptableObject
             if (!string.IsNullOrEmpty(dataId) && !IapPackages.ContainsKey(dataId))
             {
                 IapPackages[dataId] = iapPackage;
+            }
+        }
+    }
+
+    private void AddFakePlayersToDatabase(IEnumerable<FakePlayer> fakePlayers)
+    {
+        foreach (var fakePlayer in fakePlayers)
+        {
+            if (fakePlayer == null)
+                continue;
+            var dataId = fakePlayer.Id;
+            if (!string.IsNullOrEmpty(dataId) && !FakePlayers.ContainsKey(dataId))
+            {
+                FakePlayers[dataId] = fakePlayer;
             }
         }
     }

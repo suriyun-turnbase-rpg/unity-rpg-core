@@ -10,6 +10,8 @@ public abstract class BaseGameService : MonoBehaviour
     public const ushort BATTLE_RESULT_NONE = 0;
     public const ushort BATTLE_RESULT_LOSE = 1;
     public const ushort BATTLE_RESULT_WIN = 2;
+    public const byte BATTLE_TYPE_STAGE = 0;
+    public const byte BATTLE_TYPE_ARENA = 1;
     public UnityEvent onServiceStart;
     public UnityEvent onServiceFinish;
     public long ServiceTimeOffset { get; private set; }

@@ -35,6 +35,8 @@ public class Player : BasePlayerData, ILevel, IPlayer
     public int Exp { get { return exp; } set { exp = value; } }
     public string selectedFormation;
     public string SelectedFormation { get { return selectedFormation; } set { selectedFormation = value; } }
+    public string selectedArenaFormation;
+    public string SelectedArenaFormation { get { return selectedArenaFormation; } set { selectedArenaFormation = value; } }
     public string mainCharacter;
     public string MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
     public int mainCharacterExp;
@@ -69,6 +71,7 @@ public class Player : BasePlayerData, ILevel, IPlayer
         to.LoginToken = from.LoginToken;
         to.Exp = from.Exp;
         to.SelectedFormation = from.SelectedFormation;
+        to.SelectedArenaFormation = from.SelectedArenaFormation;
         to.MainCharacter = from.MainCharacter;
         to.MainCharacterExp = from.MainCharacterExp;
         to.ArenaScore = from.ArenaScore;
@@ -101,6 +104,21 @@ public class Player : BasePlayerData, ILevel, IPlayer
     public int NextExp
     {
         get { return GameDatabase == null ? 0 : GameDatabase.playerExpTable.Calculate(Level, GameDatabase.playerMaxLevel); }
+    }
+
+    public int ArenaLevel
+    {
+        get
+        {
+            int level = 0;
+            foreach (var arenaRank in GameDatabase.arenaRanks)
+            {
+                if (ArenaScore < arenaRank.scoreToRankUp)
+                    break;
+                level++;
+            }
+            return level;
+        }
     }
     #endregion
 

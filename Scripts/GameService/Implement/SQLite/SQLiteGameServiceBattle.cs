@@ -17,9 +17,10 @@ public partial class SQLiteGameService
             result.error = GameServiceErrorCode.INVALID_STAGE_DATA;
         else
         {
-            ExecuteNonQuery(@"DELETE FROM playerBattle WHERE playerId=@playerId AND battleResult=@battleResult",
+            ExecuteNonQuery(@"DELETE FROM playerBattle WHERE playerId=@playerId AND battleResult=@battleResult AND battleType=@battleType",
                 new SqliteParameter("@playerId", playerId),
-                new SqliteParameter("@battleResult", BATTLE_RESULT_NONE));
+                new SqliteParameter("@battleResult", BATTLE_RESULT_NONE),
+                new SqliteParameter("@battleType", BATTLE_TYPE_STAGE));
             var stage = gameDb.Stages[stageDataId];
             var stageStaminaTable = gameDb.stageStamina;
             if (!DecreasePlayerStamina(player, stageStaminaTable, stage.requireStamina))
@@ -32,13 +33,15 @@ public partial class SQLiteGameService
                 playerBattle.DataId = stageDataId;
                 playerBattle.Session = System.Guid.NewGuid().ToString();
                 playerBattle.BattleResult = BATTLE_RESULT_NONE;
-                ExecuteNonQuery(@"INSERT INTO playerBattle (id, playerId, dataId, session, battleResult, rating) VALUES (@id, @playerId, @dataId, @session, @battleResult, @rating)",
+                playerBattle.BattleType = BATTLE_TYPE_STAGE;
+                ExecuteNonQuery(@"INSERT INTO playerBattle (id, playerId, dataId, session, battleResult, rating, battleType) VALUES (@id, @playerId, @dataId, @session, @battleResult, @rating, @battleType)",
                     new SqliteParameter("@id", playerBattle.Id),
                     new SqliteParameter("@playerId", playerBattle.PlayerId),
                     new SqliteParameter("@dataId", playerBattle.DataId),
                     new SqliteParameter("@session", playerBattle.Session),
                     new SqliteParameter("@battleResult", playerBattle.BattleResult),
-                    new SqliteParameter("@rating", playerBattle.Rating));
+                    new SqliteParameter("@rating", playerBattle.Rating),
+                    new SqliteParameter("@battleType", playerBattle.BattleType));
 
                 var stamina = GetStamina(player.Id, stageStaminaTable.id);
                 result.stamina = stamina;

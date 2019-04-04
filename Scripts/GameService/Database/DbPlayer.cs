@@ -14,6 +14,8 @@ public class DbPlayer : IPlayer
     public int Exp { get { return exp; } set { exp = value; } }
     public string selectedFormation;
     public string SelectedFormation { get { return selectedFormation; } set { selectedFormation = value; } }
+    public string selectedArenaFormation;
+    public string SelectedArenaFormation { get { return selectedArenaFormation; } set { selectedArenaFormation = value; } }
     public string mainCharacter;
     public string MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
     public int mainCharacterExp;
