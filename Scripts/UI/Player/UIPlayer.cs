@@ -92,6 +92,12 @@ public class UIPlayer : UIDataItem<Player>
                 };
             }
         }
+
+        if (textArenaScore != null)
+            textArenaScore.text = data.ArenaScore.ToString("N0");
+
+        if (uiArenaRank != null)
+            uiArenaRank.SetData(data.ArenaRank);
     }
 
     public override bool IsEmpty()

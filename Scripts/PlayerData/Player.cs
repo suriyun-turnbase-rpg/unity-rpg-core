@@ -120,6 +120,17 @@ public class Player : BasePlayerData, ILevel, IPlayer
             return level;
         }
     }
+
+    public ArenaRank ArenaRank
+    {
+        get
+        {
+            int level = ArenaLevel;
+            if (level >= GameDatabase.arenaRanks.Count)
+                level = GameDatabase.arenaRanks.Count - 1;
+            return level >= 0 ? GameDatabase.arenaRanks[level] : null;
+        }
+    }
     #endregion
 
     private void CalculateLevelAndRemainExp()
