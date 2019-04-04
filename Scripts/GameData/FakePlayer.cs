@@ -40,6 +40,18 @@ public class FakePlayer
         return exp;
     }
 
+    public Player MakePlayer()
+    {
+        var entry = new Player();
+        entry.Id = Id;
+        entry.ProfileName = profileName;
+        entry.Exp = GetExp();
+        entry.MainCharacter = mainCharacter.Id;
+        entry.MainCharacterExp = GetMainCharacterExp();
+        entry.ArenaScore = arenaScore;
+        return entry;
+    }
+
     public struct FakePlayerCharacter
     {
         public CharacterItem character;

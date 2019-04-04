@@ -6,9 +6,16 @@ using Mono.Data.Sqlite;
 
 public partial class SQLiteGameService
 {
-    protected override void DoGetOpponentList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
     {
         var result = new FriendListResult();
+        var gameDb = GameInstance.GameDatabase;
+        foreach (var fakePlayer in gameDb.fakePlayers)
+        {
+            if (fakePlayer.level <= 0 || fakePlayer.mainCharacter == null || fakePlayer.mainCharacterLevel <= 0)
+                continue;
+            result.list.Add(fakePlayer.MakePlayer());
+        }
         onFinish(result);
     }
 
