@@ -23,6 +23,11 @@ public class GameDatabase : ScriptableObject
         new Formation() { id = "STAGE_FORMATION_B" },
         new Formation() { id = "STAGE_FORMATION_C" },
     };
+    public List<Formation> arenaFormations = new List<Formation>() {
+        new Formation() { id = "ARENA_FORMATION_A" },
+        new Formation() { id = "ARENA_FORMATION_B" },
+        new Formation() { id = "ARENA_FORMATION_C" },
+    };
 
     [Header("Item database")]
     [Tooltip("List of game items, place all items here (includes character, equipment)")]
@@ -109,7 +114,9 @@ public class GameDatabase : ScriptableObject
         Currencies[softCurrency.id] = softCurrency;
         Currencies[hardCurrency.id] = hardCurrency;
         Staminas[stageStamina.id] = stageStamina;
-        AddStageFormationsToDatabase(stageFormations);
+        Staminas[arenaStamina.id] = arenaStamina;
+        AddFormationsToDatabase(stageFormations);
+        AddFormationsToDatabase(arenaFormations);
         AddStagesToDatabase(stages);
         AddStagesToDatabase(unlockStages);
         AddLootBoxesToDatabase(lootBoxes);
@@ -131,7 +138,7 @@ public class GameDatabase : ScriptableObject
         }
     }
 
-    private void AddStageFormationsToDatabase(IEnumerable<Formation> formations)
+    private void AddFormationsToDatabase(IEnumerable<Formation> formations)
     {
         foreach (var formation in formations)
         {
