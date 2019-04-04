@@ -18,6 +18,8 @@ public class PlayerBattle : BasePlayerData, IPlayerBattle
     public uint BattleResult { get { return battleResult; } set { battleResult = value; } }
     public int rating;
     public int Rating { get { return rating; } set { rating = value; } }
+    public byte battleType;
+    public byte BattleType { get { return battleType; } set { battleType = value; } }
 
     public PlayerBattle Clone()
     {
@@ -34,6 +36,7 @@ public class PlayerBattle : BasePlayerData, IPlayerBattle
         to.Session = from.Session;
         to.BattleResult = from.BattleResult;
         to.Rating = from.Rating;
+        to.BattleType = from.BattleType;
     }
 
     public static void SetData(PlayerBattle data)

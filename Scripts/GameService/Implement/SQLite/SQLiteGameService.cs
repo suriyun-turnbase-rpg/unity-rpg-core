@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using Mono.Data.Sqlite;
+using System.Data;
 
 public class DbRowsReader
 {
@@ -119,7 +120,8 @@ public partial class SQLiteGameService : BaseGameService
             profileName TEXT NOT NULL,
             loginToken TEXT NOT NULL,
             exp INTEGER NOT NULL,
-            selectedFormation TEXT NOT NULL)");
+            selectedFormation TEXT NOT NULL,
+            arenaScore INTEGER NOT NULL DEFAULT 0)");
 
         ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerItem (
             id TEXT NOT NULL PRIMARY KEY,
@@ -176,7 +178,36 @@ public partial class SQLiteGameService : BaseGameService
             dataId TEXT NOT NULL,
             session TEXT NOT NULL,
             battleResult INTEGER NOT NULL,
-            rating INTEGER NOT NULL)");
+            rating INTEGER NOT NULL,
+            battleType INTEGER NOT NULL DEFAULT 0)");
+
+        if (!IsColumnExist("player", "arenaScore"))
+            ExecuteNonQuery("ALTER TABLE player ADD arenaScore INTEGER NOT NULL DEFAULT 0;");
+
+        if (!IsColumnExist("playerBattle", "battleType"))
+            ExecuteNonQuery("ALTER TABLE playerBattle ADD battleType INTEGER NOT NULL DEFAULT 0;");
+    }
+
+    private bool IsColumnExist(string tableName, string findingColumn)
+    {
+        using (SqliteCommand cmd = new SqliteCommand("PRAGMA table_info(" + tableName + ");", connection))
+        {
+            DataTable table = new DataTable();
+
+            SqliteDataAdapter adp = null;
+            try
+            {
+                adp = new SqliteDataAdapter(cmd);
+                adp.Fill(table);
+                for (int i = 0; i < table.Rows.Count; ++i)
+                {
+                    if (table.Rows[i]["name"].ToString().Equals(findingColumn))
+                        return true;
+                }
+            }
+            catch { }
+        }
+        return false;
     }
 
     public void ExecuteNonQuery(string sql, params SqliteParameter[] args)

@@ -7,4 +7,5 @@
     string SelectedFormation { get; set; }
     string MainCharacter { get; set; }
     int MainCharacterExp { get; set; }
+    int ArenaScore { get; set; }
 }

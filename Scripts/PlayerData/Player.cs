@@ -39,6 +39,8 @@ public class Player : BasePlayerData, ILevel, IPlayer
     public string MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
     public int mainCharacterExp;
     public int MainCharacterExp { get { return mainCharacterExp; } set { mainCharacterExp = value; } }
+    public int arenaScore;
+    public int ArenaScore { get { return arenaScore; } set { arenaScore = value; } }
     public bool isFriend;
 
     private int level = -1;
@@ -69,6 +71,7 @@ public class Player : BasePlayerData, ILevel, IPlayer
         to.SelectedFormation = from.SelectedFormation;
         to.MainCharacter = from.MainCharacter;
         to.MainCharacterExp = from.MainCharacterExp;
+        to.ArenaScore = from.ArenaScore;
     }
 
     #region Non Serialize Fields

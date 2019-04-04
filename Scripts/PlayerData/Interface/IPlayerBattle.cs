@@ -6,4 +6,5 @@
     string Session { get; set; }
     uint BattleResult { get; set; }
     int Rating { get; set; }
+    byte BattleType { get; set; }
 }

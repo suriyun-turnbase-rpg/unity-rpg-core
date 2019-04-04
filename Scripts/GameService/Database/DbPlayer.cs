@@ -18,6 +18,8 @@ public class DbPlayer : IPlayer
     public string MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
     public int mainCharacterExp;
     public int MainCharacterExp { get { return mainCharacterExp; } set { mainCharacterExp = value; } }
+    public int arenaScore;
+    public int ArenaScore { get { return arenaScore; } set { arenaScore = value; } }
 
     public static List<Player> CloneList(IEnumerable<DbPlayer> list)
     {

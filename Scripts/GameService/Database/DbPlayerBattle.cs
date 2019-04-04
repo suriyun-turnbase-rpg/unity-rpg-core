@@ -16,6 +16,8 @@ public class DbPlayerBattle : IPlayerBattle
     public uint BattleResult { get { return battleResult; } set { battleResult = value; } }
     public int rating;
     public int Rating { get { return rating; } set { rating = value; } }
+    public byte battleType;
+    public byte BattleType { get { return battleType; } set { battleType = value; } }
 
     public static List<PlayerBattle> CloneList(IEnumerable<DbPlayerBattle> list)
     {
