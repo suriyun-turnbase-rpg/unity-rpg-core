@@ -14,6 +14,8 @@ public class UIPlayer : UIDataItem<Player>
     public Button buttonFriendAccept;
     public Button buttonFriendDecline;
     public Button buttonFriendDelete;
+    public Text textArenaScore;
+    public UIArenaRank uiArenaRank;
     // Events
     public UnityEvent eventFriendRequestSuccess;
     public UnityEvent eventFriendRequestFail;

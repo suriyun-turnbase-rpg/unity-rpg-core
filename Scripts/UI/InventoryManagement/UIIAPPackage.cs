@@ -8,6 +8,7 @@ public class UIIapPackage : UIDataItem<IapPackage>
     public Text textTitle;
     public Text textDescription;
     public Image imageIcon;
+	public Image imageHighlight;
     public Text textPrice;
 
     public override void Clear()
@@ -30,6 +31,9 @@ public class UIIapPackage : UIDataItem<IapPackage>
 
         if (imageIcon != null)
             imageIcon.sprite = data == null ? null : data.icon;
+
+		if (imageHighlight != null)
+			imageHighlight.sprite = data.highlight;
 
         if (textPrice != null)
             textPrice.text = data == null ? "N/A" : data.GetSellPrice();

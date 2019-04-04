@@ -54,6 +54,7 @@ public enum LootBoxRequirementType : short
 public class LootBox : BaseGameData
 {
     public Sprite icon;
+    public Sprite highlight;
     public LootBoxRequirementType requirementType;
     public LootBoxPack[] lootboxPacks;
     public LootBoxReward[] lootboxRewards;

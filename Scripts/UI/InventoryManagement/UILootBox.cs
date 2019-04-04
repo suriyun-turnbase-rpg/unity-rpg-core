@@ -8,6 +8,7 @@ public class UILootBox : UIDataItem<LootBox>
     public Text textTitle;
     public Text textDescription;
     public Image imageIcon;
+	public Image imageHighlight;
     public UICurrency[] uiCurrencies;
 
     public override void Clear()
@@ -30,6 +31,9 @@ public class UILootBox : UIDataItem<LootBox>
 
         if (imageIcon != null)
             imageIcon.sprite = data == null ? null : data.icon;
+
+		if (imageHighlight != null)
+			imageHighlight.sprite = data.highlight;
 
         if (uiCurrencies != null && uiCurrencies.Length > 0)
         {

@@ -3,6 +3,7 @@ using UnityEngine;
 public class ArenaRank : BaseGameData
 {
     public Sprite icon;
+    public Sprite highlight;
     public int scoreToRankUp;
     [Tooltip("Reward when rank up")]
     public int rewardSoftCurrency;
