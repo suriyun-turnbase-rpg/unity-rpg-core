@@ -4,7 +4,7 @@
     string PlayerId { get; set; }
     string DataId { get; set; }
     string Session { get; set; }
-    uint BattleResult { get; set; }
+    byte BattleResult { get; set; }
     int Rating { get; set; }
     byte BattleType { get; set; }
 }

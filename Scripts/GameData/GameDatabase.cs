@@ -18,15 +18,13 @@ public class GameDatabase : ScriptableObject
     public Currency hardCurrency = new Currency() { id = "GEM", startAmount = 0 };
     public Stamina stageStamina = new Stamina() { id = "STAGE_STAMINA", maxAmountTable = new Int32Attribute() };
     public Stamina arenaStamina = new Stamina() { id = "ARENA_STAMINA", maxAmountTable = new Int32Attribute() };
-    public List<Formation> stageFormations = new List<Formation>() {
-        new Formation() { id = "STAGE_FORMATION_A" },
-        new Formation() { id = "STAGE_FORMATION_B" },
-        new Formation() { id = "STAGE_FORMATION_C" },
-    };
-    public List<Formation> arenaFormations = new List<Formation>() {
-        new Formation() { id = "ARENA_FORMATION_A" },
-        new Formation() { id = "ARENA_FORMATION_B" },
-        new Formation() { id = "ARENA_FORMATION_C" },
+    public List<Formation> formations = new List<Formation>() {
+        new Formation() { id = "STAGE_FORMATION_A", formationType = EFormationType.Stage },
+        new Formation() { id = "STAGE_FORMATION_B", formationType = EFormationType.Stage },
+        new Formation() { id = "STAGE_FORMATION_C", formationType = EFormationType.Stage },
+        new Formation() { id = "ARENA_FORMATION_A", formationType = EFormationType.Arena },
+        new Formation() { id = "ARENA_FORMATION_B", formationType = EFormationType.Arena },
+        new Formation() { id = "ARENA_FORMATION_C", formationType = EFormationType.Arena },
     };
 
     [Header("Item database")]
@@ -115,8 +113,7 @@ public class GameDatabase : ScriptableObject
         Currencies[hardCurrency.id] = hardCurrency;
         Staminas[stageStamina.id] = stageStamina;
         Staminas[arenaStamina.id] = arenaStamina;
-        AddFormationsToDatabase(stageFormations);
-        AddFormationsToDatabase(arenaFormations);
+        AddFormationsToDatabase(formations);
         AddStagesToDatabase(stages);
         AddStagesToDatabase(unlockStages);
         AddLootBoxesToDatabase(lootBoxes);

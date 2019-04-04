@@ -8,6 +8,7 @@ public class Formation
     public string id;
     public string title;
     public Sprite icon;
+    public EFormationType formationType;
 
     public virtual string ToJson()
     {

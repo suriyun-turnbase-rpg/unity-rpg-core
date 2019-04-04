@@ -7,11 +7,6 @@ public abstract class BaseGameService : MonoBehaviour
 {
     public const string AUTH_NORMAL = "NORMAL";
     public const string AUTH_GUEST = "GUEST";
-    public const ushort BATTLE_RESULT_NONE = 0;
-    public const ushort BATTLE_RESULT_LOSE = 1;
-    public const ushort BATTLE_RESULT_WIN = 2;
-    public const byte BATTLE_TYPE_STAGE = 0;
-    public const byte BATTLE_TYPE_ARENA = 1;
     public UnityEvent onServiceStart;
     public UnityEvent onServiceFinish;
     public long ServiceTimeOffset { get; private set; }
@@ -246,7 +241,7 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="battleResult"></param>
     /// <param name="onSuccess"></param>
     /// <param name="onError"></param>
-    public void FinishStage(string session, ushort battleResult, int deadCharacters, UnityAction<FinishStageResult> onSuccess = null, UnityAction<string> onError = null)
+    public void FinishStage(string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishStageResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: FinishStage");
         var player = Player.CurrentPlayer;
@@ -277,14 +272,14 @@ public abstract class BaseGameService : MonoBehaviour
     /// <param name="formationName"></param>
     /// <param name="onSuccess"></param>
     /// <param name="onError"></param>
-    public void SelectFormation(string formationName, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
+    public void SelectFormation(string formationName, EFormationType formationType, UnityAction<PlayerResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: SelectFormation");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
         HandleServiceCall();
-        DoSelectFormation(playerId, loginToken, formationName, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+        DoSelectFormation(playerId, loginToken, formationName, formationType, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     /// <summary>
@@ -625,7 +620,7 @@ public abstract class BaseGameService : MonoBehaviour
         DoStartDuel(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void FinishDuel(string session, ushort battleResult, int deadCharacters, UnityAction<FinishDuelResult> onSuccess = null, UnityAction<string> onError = null)
+    public void FinishDuel(string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: FinishDuel");
         var player = Player.CurrentPlayer;
@@ -645,9 +640,9 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoEvolveItem(string playerId, string loginToken, string itemId, Dictionary<string, int> materials, UnityAction<ItemResult> onFinish);
     protected abstract void DoSellItems(string playerId, string loginToken, Dictionary<string, int> items, UnityAction<ItemResult> onFinish);
     protected abstract void DoStartStage(string playerId, string loginToken, string stageDataId, UnityAction<StartStageResult> onFinish);
-    protected abstract void DoFinishStage(string playerId, string loginToken, string session, ushort battleResult, int deadCharacters, UnityAction<FinishStageResult> onFinish);
+    protected abstract void DoFinishStage(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishStageResult> onFinish);
     protected abstract void DoReviveCharacters(string playerId, string loginToken, UnityAction<CurrencyResult> onFinish);
-    protected abstract void DoSelectFormation(string playerId, string loginToken, string formationName, UnityAction<PlayerResult> onFinish);
+    protected abstract void DoSelectFormation(string playerId, string loginToken, string formationName, EFormationType formationType, UnityAction<PlayerResult> onFinish);
     protected abstract void DoEquipItem(string playerId, string loginToken, string characterId, string equipmentId, string equipPosition, UnityAction<ItemResult> onFinish);
     protected abstract void DoUnEquipItem(string playerId, string loginToken, string equipmentId, UnityAction<ItemResult> onFinish);
     protected abstract void DoGetAuthList(string playerId, string loginToken, UnityAction<AuthListResult> onFinish);
@@ -674,5 +669,5 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoGetServiceTime(UnityAction<ServiceTimeResult> onFinish);
     protected abstract void DoGetOpponentList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoStartDuel(string playerId, string loginToken, string targetPlayerId, UnityAction<StartDuelResult> onFinish);
-    protected abstract void DoFinishDuel(string playerId, string loginToken, string session, ushort battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish);
+    protected abstract void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish);
 }

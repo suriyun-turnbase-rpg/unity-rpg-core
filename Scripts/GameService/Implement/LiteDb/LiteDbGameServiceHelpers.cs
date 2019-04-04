@@ -19,8 +19,23 @@ public partial class LiteDbGameService
         var softCurrencyTable = gameDb.softCurrency;
         var hardCurrencyTable = gameDb.hardCurrency;
 
-        var formationName = gameDb.stageFormations[0].id;
-        player.SelectedFormation = formationName;
+        string stageFormationName = string.Empty;
+        string arenaFormationName = string.Empty;
+        foreach (var formation in gameDb.formations)
+        {
+            if (formation.formationType == EFormationType.Stage &&
+                string.IsNullOrEmpty(stageFormationName))
+            {
+                stageFormationName = formation.id;
+                player.SelectedFormation = stageFormationName;
+            }
+            if (formation.formationType == EFormationType.Arena &&
+                string.IsNullOrEmpty(arenaFormationName))
+            {
+                arenaFormationName = formation.id;
+                player.SelectedArenaFormation = arenaFormationName;
+            }
+        }
 
         var softCurrency = GetCurrency(player.Id, softCurrencyTable.id);
         var hardCurrency = GetCurrency(player.Id, hardCurrencyTable.id);
@@ -70,7 +85,8 @@ public partial class LiteDbGameService
                     createEntry.Id = System.Guid.NewGuid().ToString();
                     colPlayerItem.Insert(createEntry);
                     HelperUnlockItem(player.Id, startCharacter.Id);
-                    HelperSetFormation(player.Id, createEntry.Id, formationName, i);
+                    HelperSetFormation(player.Id, createEntry.Id, stageFormationName, i);
+                    HelperSetFormation(player.Id, createEntry.Id, arenaFormationName, i);
                 }
                 foreach (var updateEntry in updateItems)
                 {

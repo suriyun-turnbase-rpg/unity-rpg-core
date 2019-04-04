@@ -8,7 +8,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public static string BattleSession { get; private set; }
     public static BaseStage PlayingStage { get; protected set; }
     public static Player Helper { get; protected set; }
-    public static byte BattleType { get; protected set; }
+    public static EBattleType BattleType { get; protected set; }
     public static List<PlayerItem> ArenaOpponentCharacters { get; protected set; }
     [Header("Combat Texts")]
     public Transform combatTextContainer;
@@ -113,9 +113,9 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     protected virtual void WinGame()
     {
         var deadCharacters = CountDeadCharacters();
-        if (BattleType == BaseGameService.BATTLE_TYPE_STAGE)
+        if (BattleType == EBattleType.Stage)
         {
-            GameInstance.GameService.FinishStage(BattleSession, BaseGameService.BATTLE_RESULT_WIN, deadCharacters, (result) =>
+            GameInstance.GameService.FinishStage(BattleSession, EBattleResult.Win, deadCharacters, (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
@@ -143,9 +143,9 @@ public abstract class BaseGamePlayManager : MonoBehaviour
                 GameInstance.Singleton.OnGameServiceError(error, WinGame);
             });
         }
-        else if (BattleType == BaseGameService.BATTLE_TYPE_ARENA)
+        else if (BattleType == EBattleType.Arena)
         {
-            GameInstance.GameService.FinishDuel(BattleSession, BaseGameService.BATTLE_RESULT_WIN, deadCharacters, (result) =>
+            GameInstance.GameService.FinishDuel(BattleSession, EBattleResult.Win, deadCharacters, (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
@@ -164,11 +164,11 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     {
         isEnding = true;
         yield return new WaitForSeconds(loseGameDelay);
-        if (BattleType == BaseGameService.BATTLE_TYPE_STAGE)
+        if (BattleType == EBattleType.Stage)
         {
             uiLose.Show();
         }
-        else
+        else if (BattleType == EBattleType.Arena)
         {
             // TODO: Arena UI
             //uiLose.Show();
@@ -177,7 +177,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
 
     public virtual void Revive(UnityAction onError)
     {
-        if (BattleType == BaseGameService.BATTLE_TYPE_STAGE)
+        if (BattleType == EBattleType.Stage)
         {
             GameInstance.GameService.ReviveCharacters((result) =>
             {
@@ -192,9 +192,9 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public void Giveup(UnityAction onError)
     {
         var deadCharacters = CountDeadCharacters();
-        if (BattleType == BaseGameService.BATTLE_TYPE_STAGE)
+        if (BattleType == EBattleType.Stage)
         {
-            GameInstance.GameService.FinishStage(BattleSession, BaseGameService.BATTLE_RESULT_LOSE, deadCharacters, (result) =>
+            GameInstance.GameService.FinishStage(BattleSession, EBattleResult.Lose, deadCharacters, (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
@@ -204,9 +204,9 @@ public abstract class BaseGamePlayManager : MonoBehaviour
                 GameInstance.Singleton.OnGameServiceError(error, onError);
             });
         }
-        else if (BattleType == BaseGameService.BATTLE_TYPE_ARENA)
+        else if (BattleType == EBattleType.Arena)
         {
-            GameInstance.GameService.FinishDuel(BattleSession, BaseGameService.BATTLE_RESULT_LOSE, deadCharacters, (result) =>
+            GameInstance.GameService.FinishDuel(BattleSession, EBattleResult.Lose, deadCharacters, (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
@@ -220,7 +220,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
 
     public void Restart()
     {
-        if (BattleType == BaseGameService.BATTLE_TYPE_STAGE)
+        if (BattleType == EBattleType.Stage)
             StartStage(PlayingStage, Helper);
     }
 
@@ -228,7 +228,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     {
         PlayingStage = data;
         Helper = helper;
-        BattleType = BaseGameService.BATTLE_TYPE_STAGE;
+        BattleType = EBattleType.Stage;
         GameInstance.GameService.StartStage(data.Id, (result) =>
         {
             GameInstance.Singleton.OnGameServiceStartStageResult(result);
@@ -242,7 +242,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
 
     public static void StartDuel(string opponentId)
     {
-        BattleType = BaseGameService.BATTLE_TYPE_ARENA;
+        BattleType = EBattleType.Arena;
         GameInstance.GameService.StartDuel(opponentId, (result) =>
         {
             GameInstance.Singleton.OnGameServiceStartDuelResult(result);

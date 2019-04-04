@@ -19,8 +19,8 @@ public partial class SQLiteGameService
         {
             ExecuteNonQuery(@"DELETE FROM playerBattle WHERE playerId=@playerId AND battleResult=@battleResult AND battleType=@battleType",
                 new SqliteParameter("@playerId", playerId),
-                new SqliteParameter("@battleResult", BATTLE_RESULT_NONE),
-                new SqliteParameter("@battleType", BATTLE_TYPE_STAGE));
+                new SqliteParameter("@battleResult", (byte)EBattleResult.None),
+                new SqliteParameter("@battleType", (byte)EBattleType.Stage));
             var stage = gameDb.Stages[stageDataId];
             var stageStaminaTable = gameDb.stageStamina;
             if (!DecreasePlayerStamina(player, stageStaminaTable, stage.requireStamina))
@@ -32,8 +32,8 @@ public partial class SQLiteGameService
                 playerBattle.PlayerId = playerId;
                 playerBattle.DataId = stageDataId;
                 playerBattle.Session = System.Guid.NewGuid().ToString();
-                playerBattle.BattleResult = BATTLE_RESULT_NONE;
-                playerBattle.BattleType = BATTLE_TYPE_STAGE;
+                playerBattle.BattleResult = (byte)EBattleResult.None;
+                playerBattle.BattleType = (byte)EBattleType.Stage;
                 ExecuteNonQuery(@"INSERT INTO playerBattle (id, playerId, dataId, session, battleResult, rating, battleType) VALUES (@id, @playerId, @dataId, @session, @battleResult, @rating, @battleType)",
                     new SqliteParameter("@id", playerBattle.Id),
                     new SqliteParameter("@playerId", playerBattle.PlayerId),
@@ -51,7 +51,7 @@ public partial class SQLiteGameService
         onFinish(result);
     }
 
-    protected override void DoFinishStage(string playerId, string loginToken, string session, ushort battleResult, int deadCharacters, UnityAction<FinishStageResult> onFinish)
+    protected override void DoFinishStage(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishStageResult> onFinish)
     {
         var result = new FinishStageResult();
         var gameDb = GameInstance.GameDatabase;
@@ -64,8 +64,8 @@ public partial class SQLiteGameService
         else
         {
             var rating = 0;
-            battle.BattleResult = battleResult;
-            if (battleResult == BATTLE_RESULT_WIN)
+            battle.BattleResult = (byte)battleResult;
+            if (battleResult == EBattleResult.Win)
             {
                 rating = 3 - deadCharacters;
                 if (rating <= 0)
@@ -77,7 +77,7 @@ public partial class SQLiteGameService
                 new SqliteParameter("@battleResult", battle.BattleResult),
                 new SqliteParameter("@rating", battle.Rating),
                 new SqliteParameter("@id", battle.Id));
-            if (battleResult == BATTLE_RESULT_WIN)
+            if (battleResult == EBattleResult.Win)
             {
                 var stage = gameDb.Stages[battle.DataId];
                 var rewardPlayerExp = stage.rewardPlayerExp;
@@ -197,7 +197,7 @@ public partial class SQLiteGameService
         onFinish(result);
     }
 
-    protected override void DoSelectFormation(string playerId, string loginToken, string formationName, UnityAction<PlayerResult> onFinish)
+    protected override void DoSelectFormation(string playerId, string loginToken, string formationName, EFormationType formationType, UnityAction<PlayerResult> onFinish)
     {
         var result = new PlayerResult();
         var gameDb = GameInstance.GameDatabase;
@@ -208,7 +208,11 @@ public partial class SQLiteGameService
             result.error = GameServiceErrorCode.INVALID_FORMATION_DATA;
         else
         {
-            player.SelectedFormation = formationName;
+            if (formationType == EFormationType.Stage)
+                player.SelectedFormation = formationName;
+            else if (formationType == EFormationType.Arena)
+                player.SelectedArenaFormation = formationName;
+                
             ExecuteNonQuery(@"UPDATE player SET selectedFormation=@selectedFormation WHERE id=@id",
                 new SqliteParameter("@selectedFormation", player.SelectedFormation),
                 new SqliteParameter("@id", player.Id));

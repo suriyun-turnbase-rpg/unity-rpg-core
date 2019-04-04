@@ -16,6 +16,7 @@ public class UIFormationManager : UIBase
             toggler.IsOn = true;
         }
     }
+    public EFormationType formationType;
     public UIFormation uiFormationPrefab;
     public UIFormationToggle uiFormationTogglerPrefab;
     public UIItem uiFormationSlotPrefab;
@@ -60,6 +61,8 @@ public class UIFormationManager : UIBase
             {
                 var key = formation.Key;
                 var value = formation.Value;
+                if (value.formationType != formationType)
+                    continue;
                 if (!string.IsNullOrEmpty(key) && !UIFormationToggles.ContainsKey(key))
                 {
                     var newFormationObject = Instantiate(uiFormationPrefab.gameObject);
@@ -86,7 +89,8 @@ public class UIFormationManager : UIBase
                         if (isSelected)
                         {
                             var formationName = key;
-                            SelectFormation(formationName);
+                            SelectFormation(formationName, EFormationType.Stage);
+                            SelectFormation(formationName, EFormationType.Arena);
                         }
                     });
 
@@ -158,7 +162,7 @@ public class UIFormationManager : UIBase
         SelectedItem = null;
     }
 
-    public void SelectFormation(string formationName)
+    public void SelectFormation(string formationName, EFormationType formationType)
     {
         if (!UIFormationToggles.ContainsKey(formationName))
             return;
@@ -176,7 +180,7 @@ public class UIFormationManager : UIBase
             uiFormation.Hide();
         }
         SelectedFormation = UIFormationToggles[formationName];
-        GameInstance.GameService.SelectFormation(formationName, OnSelectFormationSuccess, OnSelectFormationFail);
+        GameInstance.GameService.SelectFormation(formationName, formationType, OnSelectFormationSuccess, OnSelectFormationFail);
     }
 
     private void OnSelectFormationSuccess(PlayerResult result)

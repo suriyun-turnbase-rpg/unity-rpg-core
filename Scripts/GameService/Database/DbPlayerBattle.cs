@@ -12,8 +12,8 @@ public class DbPlayerBattle : IPlayerBattle
     public string DataId { get { return dataId; } set { dataId = value; } }
     public string session;
     public string Session { get { return session; } set { session = value; } }
-    public uint battleResult;
-    public uint BattleResult { get { return battleResult; } set { battleResult = value; } }
+    public byte battleResult;
+    public byte BattleResult { get { return battleResult; } set { battleResult = value; } }
     public int rating;
     public int Rating { get { return rating; } set { rating = value; } }
     public byte battleType;

@@ -16,7 +16,7 @@ public partial class LiteDbGameService
             result.error = GameServiceErrorCode.INVALID_STAGE_DATA;
         else
         {
-            colPlayerBattle.Delete(a => a.PlayerId == playerId && a.BattleResult == BATTLE_RESULT_NONE && a.BattleType == BATTLE_TYPE_STAGE);
+            colPlayerBattle.Delete(a => a.PlayerId == playerId && a.BattleResult == (byte)EBattleResult.None && a.BattleType == (byte)EBattleType.Stage);
             var stage = gameDb.Stages[stageDataId];
             var stageStaminaTable = gameDb.stageStamina;
             if (!DecreasePlayerStamina(player, stageStaminaTable, stage.requireStamina))
@@ -28,8 +28,8 @@ public partial class LiteDbGameService
                 playerBattle.PlayerId = playerId;
                 playerBattle.DataId = stageDataId;
                 playerBattle.Session = System.Guid.NewGuid().ToString();
-                playerBattle.BattleResult = BATTLE_RESULT_NONE;
-                playerBattle.BattleType = BATTLE_TYPE_STAGE;
+                playerBattle.BattleResult = (byte)EBattleResult.None;
+                playerBattle.BattleType = (byte)EBattleType.Stage;
                 colPlayerBattle.Insert(playerBattle);
 
                 var stamina = GetStamina(player.Id, stageStaminaTable.id);
@@ -42,7 +42,7 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoFinishStage(string playerId, string loginToken, string session, ushort battleResult, int deadCharacters, UnityAction<FinishStageResult> onFinish)
+    protected override void DoFinishStage(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishStageResult> onFinish)
     {
         var result = new FinishStageResult();
         var gameDb = GameInstance.GameDatabase;
@@ -55,8 +55,8 @@ public partial class LiteDbGameService
         else
         {
             var rating = 0;
-            battle.BattleResult = battleResult;
-            if (battleResult == BATTLE_RESULT_WIN)
+            battle.BattleResult = (byte)battleResult;
+            if (battleResult == EBattleResult.Win)
             {
                 rating = 3 - deadCharacters;
                 if (rating <= 0)
@@ -65,7 +65,7 @@ public partial class LiteDbGameService
             battle.Rating = rating;
             result.rating = rating;
             colPlayerBattle.Update(battle);
-            if (battleResult == BATTLE_RESULT_WIN)
+            if (battleResult == EBattleResult.Win)
             {
                 var stage = gameDb.Stages[battle.DataId];
                 var rewardPlayerExp = stage.rewardPlayerExp;
@@ -176,7 +176,7 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoSelectFormation(string playerId, string loginToken, string formationName, UnityAction<PlayerResult> onFinish)
+    protected override void DoSelectFormation(string playerId, string loginToken, string formationName, EFormationType formationType, UnityAction<PlayerResult> onFinish)
     {
         var result = new PlayerResult();
         var gameDb = GameInstance.GameDatabase;
@@ -187,7 +187,11 @@ public partial class LiteDbGameService
             result.error = GameServiceErrorCode.INVALID_FORMATION_DATA;
         else
         {
-            player.SelectedFormation = formationName;
+            if (formationType == EFormationType.Stage)
+                player.SelectedFormation = formationName;
+            else if (formationType == EFormationType.Arena)
+                player.SelectedArenaFormation = formationName;
+                
             colPlayer.Update(player);
             var resultPlayer = new Player();
             Player.CloneTo(player, resultPlayer);

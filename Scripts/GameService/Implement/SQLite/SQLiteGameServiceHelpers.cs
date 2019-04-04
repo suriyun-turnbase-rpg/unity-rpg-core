@@ -21,8 +21,23 @@ public partial class SQLiteGameService
         var softCurrencyTable = gameDb.softCurrency;
         var hardCurrencyTable = gameDb.hardCurrency;
 
-        var formationName = gameDb.stageFormations[0].id;
-        player.SelectedFormation = formationName;
+        string stageFormationName = string.Empty;
+        string arenaFormationName = string.Empty;
+        foreach (var formation in gameDb.formations)
+        {
+            if (formation.formationType == EFormationType.Stage &&
+                string.IsNullOrEmpty(stageFormationName))
+            {
+                stageFormationName = formation.id;
+                player.SelectedFormation = stageFormationName;
+            }
+            if (formation.formationType == EFormationType.Arena &&
+                string.IsNullOrEmpty(arenaFormationName))
+            {
+                arenaFormationName = formation.id;
+                player.SelectedArenaFormation = arenaFormationName;
+            }
+        }
 
         var softCurrency = GetCurrency(player.Id, softCurrencyTable.id);
         var hardCurrency = GetCurrency(player.Id, hardCurrencyTable.id);
@@ -103,7 +118,8 @@ public partial class SQLiteGameService
                         new SqliteParameter("@equipItemId", createEntry.EquipItemId),
                         new SqliteParameter("@equipPosition", createEntry.EquipPosition));
                     HelperUnlockItem(player.Id, startCharacter.Id);
-                    HelperSetFormation(player.Id, createEntry.Id, formationName, i);
+                    HelperSetFormation(player.Id, createEntry.Id, stageFormationName, i);
+                    HelperSetFormation(player.Id, createEntry.Id, arenaFormationName, i);
                 }
                 foreach (var updateEntry in updateItems)
                 {
@@ -608,7 +624,7 @@ public partial class SQLiteGameService
             playerBattle.PlayerId = playerBattles.GetString(1);
             playerBattle.DataId = playerBattles.GetString(2);
             playerBattle.Session = playerBattles.GetString(3);
-            playerBattle.BattleResult = (uint)playerBattles.GetInt32(4);
+            playerBattle.BattleResult = (byte)playerBattles.GetInt32(4);
             playerBattle.Rating = playerBattles.GetInt32(5);
         }
         return playerBattle;

@@ -26,8 +26,8 @@ public partial class SQLiteGameService
             var fakePlayer = gameDb.FakePlayers[targetPlayerId];
             ExecuteNonQuery(@"DELETE FROM playerBattle WHERE playerId=@playerId AND battleResult=@battleResult AND battleType=@battleType",
                 new SqliteParameter("@playerId", playerId),
-                new SqliteParameter("@battleResult", BATTLE_RESULT_NONE),
-                new SqliteParameter("@battleType", BATTLE_TYPE_ARENA));
+                new SqliteParameter("@battleResult", (byte)EBattleResult.None),
+                new SqliteParameter("@battleType", (byte)EBattleType.Arena));
             var arenaStaminaTable = gameDb.arenaStamina;
             // Require stamina for arena always = 1
             if (!DecreasePlayerStamina(player, arenaStaminaTable, 1))
@@ -39,8 +39,8 @@ public partial class SQLiteGameService
                 playerBattle.PlayerId = playerId;
                 playerBattle.DataId = targetPlayerId;
                 playerBattle.Session = System.Guid.NewGuid().ToString();
-                playerBattle.BattleResult = BATTLE_RESULT_NONE;
-                playerBattle.BattleType = BATTLE_TYPE_ARENA;
+                playerBattle.BattleResult = (byte)EBattleResult.None;
+                playerBattle.BattleType = (byte)EBattleType.Arena;
                 ExecuteNonQuery(@"INSERT INTO playerBattle (id, playerId, dataId, session, battleResult, rating, battleType) VALUES (@id, @playerId, @dataId, @session, @battleResult, @rating, @battleType)",
                     new SqliteParameter("@id", playerBattle.Id),
                     new SqliteParameter("@playerId", playerBattle.PlayerId),
@@ -64,7 +64,7 @@ public partial class SQLiteGameService
         onFinish(result);
     }
 
-    protected override void DoFinishDuel(string playerId, string loginToken, string session, ushort battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish)
+    protected override void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish)
     {
         var result = new FinishDuelResult();
         var gameDb = GameInstance.GameDatabase;
@@ -77,8 +77,8 @@ public partial class SQLiteGameService
         else
         {
             var rating = 0;
-            battle.BattleResult = battleResult;
-            if (battleResult == BATTLE_RESULT_WIN)
+            battle.BattleResult = (byte)battleResult;
+            if (battleResult == EBattleResult.Win)
             {
                 rating = 3 - deadCharacters;
                 if (rating <= 0)
@@ -90,7 +90,7 @@ public partial class SQLiteGameService
                 new SqliteParameter("@battleResult", battle.BattleResult),
                 new SqliteParameter("@rating", battle.Rating),
                 new SqliteParameter("@id", battle.Id));
-            if (battleResult == BATTLE_RESULT_WIN)
+            if (battleResult == EBattleResult.Win)
             {
                 // Increase arena score
                 var oldArenaScore = player.ArenaScore;

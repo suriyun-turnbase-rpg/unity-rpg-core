@@ -23,7 +23,7 @@ public partial class LiteDbGameService
         else
         {
             var fakePlayer = gameDb.FakePlayers[targetPlayerId];
-            colPlayerBattle.Delete(a => a.PlayerId == playerId && a.BattleResult == BATTLE_RESULT_NONE && a.BattleType == BATTLE_TYPE_ARENA);
+            colPlayerBattle.Delete(a => a.PlayerId == playerId && a.BattleResult == (byte)EBattleResult.None && a.BattleType == (byte)EBattleType.Arena);
             var stage = gameDb.FakePlayers[targetPlayerId];
             var arenaStaminaTable = gameDb.arenaStamina;
             if (!DecreasePlayerStamina(player, arenaStaminaTable, 1))
@@ -35,8 +35,8 @@ public partial class LiteDbGameService
                 playerBattle.PlayerId = playerId;
                 playerBattle.DataId = targetPlayerId;
                 playerBattle.Session = System.Guid.NewGuid().ToString();
-                playerBattle.BattleResult = BATTLE_RESULT_NONE;
-                playerBattle.BattleType = BATTLE_TYPE_ARENA;
+                playerBattle.BattleResult = (byte)EBattleResult.None;
+                playerBattle.BattleType = (byte)EBattleType.Arena;
                 colPlayerBattle.Insert(playerBattle);
 
                 var stamina = GetStamina(player.Id, arenaStaminaTable.id);
@@ -55,7 +55,7 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoFinishDuel(string playerId, string loginToken, string session, ushort battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish)
+    protected override void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish)
     {
         var result = new FinishDuelResult();
         var gameDb = GameInstance.GameDatabase;
@@ -68,8 +68,8 @@ public partial class LiteDbGameService
         else
         {
             var rating = 0;
-            battle.BattleResult = battleResult;
-            if (battleResult == BATTLE_RESULT_WIN)
+            battle.BattleResult = (byte)battleResult;
+            if (battleResult == EBattleResult.Win)
             {
                 rating = 3 - deadCharacters;
                 if (rating <= 0)
@@ -78,7 +78,7 @@ public partial class LiteDbGameService
             battle.Rating = rating;
             result.rating = rating;
             colPlayerBattle.Update(battle);
-            if (battleResult == BATTLE_RESULT_WIN)
+            if (battleResult == EBattleResult.Win)
             {
                 // Increase arena score
                 var resultPlayer = new Player();
