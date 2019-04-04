@@ -37,6 +37,12 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
+    protected override void DoFindUser(string playerId, string loginToken, string displayName, UnityAction<FriendListResult> onFinish)
+    {
+        var result = new FriendListResult();
+        onFinish(result);
+    }
+
     protected override void DoFriendRequest(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
     {
         var result = new GameServiceResult();

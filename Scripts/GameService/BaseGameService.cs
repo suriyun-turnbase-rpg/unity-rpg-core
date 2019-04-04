@@ -545,6 +545,16 @@ public abstract class BaseGameService : MonoBehaviour
         DoGetFriendRequestList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void FindUser(string displayName, UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: FindUser");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoFindUser(playerId, loginToken, displayName, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     public void FriendRequest(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: SendFriendRequest");
@@ -592,7 +602,37 @@ public abstract class BaseGameService : MonoBehaviour
             ServiceTimeOffset = finishResult.serviceTime - (System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond);
         });
     }
-    
+
+    public void GetOpponentList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: FindUser");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetOpponentList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void StartDuel(string targetPlayerId, UnityAction<StartDuelResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: StartDuel");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoStartDuel(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void FinishDuel(string session, ushort battleResult, int deadCharacters, UnityAction<FinishDuelResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: FinishDuel");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoFinishDuel(playerId, loginToken, session, battleResult, deadCharacters, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -624,9 +664,13 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoGetHelperList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoGetFriendList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
+    protected abstract void DoFindUser(string playerId, string loginToken, string displayName, UnityAction<FriendListResult> onFinish);
     protected abstract void DoFriendRequest(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoGetServiceTime(UnityAction<ServiceTimeResult> onFinish);
+    protected abstract void DoGetOpponentList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
+    protected abstract void DoStartDuel(string playerId, string loginToken, string targetPlayerId, UnityAction<StartDuelResult> onFinish);
+    protected abstract void DoFinishDuel(string playerId, string loginToken, string session, ushort battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish);
 }

@@ -17,6 +17,7 @@ public class GameDatabase : ScriptableObject
     [Tooltip("`Hard Currency`, `Start Amount` is start amount when create new player")]
     public Currency hardCurrency = new Currency() { id = "GEM", startAmount = 0 };
     public Stamina stageStamina = new Stamina() { id = "STAGE_STAMINA", maxAmountTable = new Int32Attribute() };
+    public Stamina arenaStamina = new Stamina() { id = "ARENA_STAMINA", maxAmountTable = new Int32Attribute() };
     public List<Formation> stageFormations = new List<Formation>() {
         new Formation() { id = "STAGE_FORMATION_A" },
         new Formation() { id = "STAGE_FORMATION_B" },

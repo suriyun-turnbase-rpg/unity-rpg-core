@@ -126,3 +126,14 @@ public class FriendListResult : GameServiceResult
 {
     public List<Player> list = new List<Player>();
 }
+
+public class StartDuelResult : GameServiceResult
+{
+    public PlayerStamina stamina;
+    public string session;
+}
+
+public class FinishDuelResult : PlayerResult
+{
+    public int scoreChange;
+}
