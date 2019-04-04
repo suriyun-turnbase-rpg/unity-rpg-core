@@ -162,6 +162,26 @@ public partial class GameInstance : MonoBehaviour
         PlayerClearStage.SetData(result.clearStage);
     }
 
+    public void OnGameServiceStartDuelResult(StartDuelResult result)
+    {
+        if (!result.Success)
+            return;
+
+        PlayerStamina.SetData(result.stamina);
+    }
+
+    public void OnGameServiceFinishDuelResult(FinishDuelResult result)
+    {
+        if (!result.Success)
+            return;
+
+        Player.SetData(result.player);
+        PlayerCurrency.SetDataRange(result.updateCurrencies);
+        PlayerItem.SetDataRange(result.createItems);
+        PlayerItem.SetDataRange(result.updateItems);
+        PlayerItem.RemoveDataRange(result.deleteItemIds);
+    }
+
     public void OnGameServiceSetProfileNameResult(PlayerResult result)
     {
         if (!result.Success)

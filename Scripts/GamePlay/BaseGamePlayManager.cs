@@ -8,6 +8,8 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public static string BattleSession { get; private set; }
     public static BaseStage PlayingStage { get; protected set; }
     public static Player Helper { get; protected set; }
+    public static byte BattleType { get; protected set; }
+    public static List<PlayerItem> ArenaOpponentCharacters { get; protected set; }
     [Header("Combat Texts")]
     public Transform combatTextContainer;
     public UICombatText combatDamagePrefab;
@@ -111,80 +113,141 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     protected virtual void WinGame()
     {
         var deadCharacters = CountDeadCharacters();
-        GameInstance.GameService.FinishStage(BattleSession, BaseGameService.BATTLE_RESULT_WIN, deadCharacters, (result) =>
+        if (BattleType == BaseGameService.BATTLE_TYPE_STAGE)
         {
-            isEnding = true;
-            Time.timeScale = 1;
-            GameInstance.Singleton.OnGameServiceFinishStageResult(result);
-            uiWin.SetData(result);
-            if (uiFriendRequest != null && Helper != null && !Helper.isFriend)
+            GameInstance.GameService.FinishStage(BattleSession, BaseGameService.BATTLE_RESULT_WIN, deadCharacters, (result) =>
             {
-                uiFriendRequest.SetData(Helper);
-                uiFriendRequest.eventFriendRequestSuccess.AddListener(() =>
+                isEnding = true;
+                Time.timeScale = 1;
+                GameInstance.Singleton.OnGameServiceFinishStageResult(result);
+                uiWin.SetData(result);
+                if (uiFriendRequest != null && Helper != null && !Helper.isFriend)
                 {
-                    uiFriendRequest.Hide();
-                });
-                uiFriendRequest.eventHide.AddListener(() =>
+                    uiFriendRequest.SetData(Helper);
+                    uiFriendRequest.eventFriendRequestSuccess.AddListener(() =>
+                    {
+                        uiFriendRequest.Hide();
+                    });
+                    uiFriendRequest.eventHide.AddListener(() =>
+                    {
+                        uiWin.Show();
+                    });
+                    uiFriendRequest.Show();
+                }
+                else
                 {
                     uiWin.Show();
-                });
-                uiFriendRequest.Show();
-            }
-            else
+                }
+            }, (error) =>
             {
-                uiWin.Show();
-            }
-        }, (error) =>
+                GameInstance.Singleton.OnGameServiceError(error, WinGame);
+            });
+        }
+        else if (BattleType == BaseGameService.BATTLE_TYPE_ARENA)
         {
-            GameInstance.Singleton.OnGameServiceError(error, WinGame);
-        });
+            GameInstance.GameService.FinishDuel(BattleSession, BaseGameService.BATTLE_RESULT_WIN, deadCharacters, (result) =>
+            {
+                isEnding = true;
+                Time.timeScale = 1;
+                GameInstance.Singleton.OnGameServiceFinishDuelResult(result);
+                // TODO: Arena UI
+                //uiWin.SetData(result);
+                //uiWin.Show();
+            }, (error) =>
+            {
+                GameInstance.Singleton.OnGameServiceError(error, WinGame);
+            });
+        }
     }
 
     protected IEnumerator LoseGameRoutine()
     {
         isEnding = true;
         yield return new WaitForSeconds(loseGameDelay);
-        uiLose.Show();
+        if (BattleType == BaseGameService.BATTLE_TYPE_STAGE)
+        {
+            uiLose.Show();
+        }
+        else
+        {
+            // TODO: Arena UI
+            //uiLose.Show();
+        }
     }
 
     public virtual void Revive(UnityAction onError)
     {
-        GameInstance.GameService.ReviveCharacters((result) =>
+        if (BattleType == BaseGameService.BATTLE_TYPE_STAGE)
         {
-            OnRevive();
-        }, (error) =>
-        {
-            GameInstance.Singleton.OnGameServiceError(error, onError);
-        });
+            GameInstance.GameService.ReviveCharacters((result) =>
+            {
+                OnRevive();
+            }, (error) =>
+            {
+                GameInstance.Singleton.OnGameServiceError(error, onError);
+            });
+        }
     }
 
     public void Giveup(UnityAction onError)
     {
         var deadCharacters = CountDeadCharacters();
-        GameInstance.GameService.FinishStage(BattleSession, BaseGameService.BATTLE_RESULT_LOSE, deadCharacters, (result) =>
+        if (BattleType == BaseGameService.BATTLE_TYPE_STAGE)
         {
-            isEnding = true;
-            Time.timeScale = 1;
-            GameInstance.Singleton.GetAllPlayerData(GameInstance.LoadAllPlayerDataState.GoToManageScene);
-        }, (error) =>
+            GameInstance.GameService.FinishStage(BattleSession, BaseGameService.BATTLE_RESULT_LOSE, deadCharacters, (result) =>
+            {
+                isEnding = true;
+                Time.timeScale = 1;
+                GameInstance.Singleton.GetAllPlayerData(GameInstance.LoadAllPlayerDataState.GoToManageScene);
+            }, (error) =>
+            {
+                GameInstance.Singleton.OnGameServiceError(error, onError);
+            });
+        }
+        else if (BattleType == BaseGameService.BATTLE_TYPE_ARENA)
         {
-            GameInstance.Singleton.OnGameServiceError(error, onError);
-        });
+            GameInstance.GameService.FinishDuel(BattleSession, BaseGameService.BATTLE_RESULT_LOSE, deadCharacters, (result) =>
+            {
+                isEnding = true;
+                Time.timeScale = 1;
+                GameInstance.Singleton.GetAllPlayerData(GameInstance.LoadAllPlayerDataState.GoToManageScene);
+            }, (error) =>
+            {
+                GameInstance.Singleton.OnGameServiceError(error, onError);
+            });
+        }
     }
 
     public void Restart()
     {
-        StartStage(PlayingStage, Helper);
+        if (BattleType == BaseGameService.BATTLE_TYPE_STAGE)
+            StartStage(PlayingStage, Helper);
     }
 
     public static void StartStage(BaseStage data, Player helper)
     {
         PlayingStage = data;
         Helper = helper;
+        BattleType = BaseGameService.BATTLE_TYPE_STAGE;
         GameInstance.GameService.StartStage(data.Id, (result) =>
         {
             GameInstance.Singleton.OnGameServiceStartStageResult(result);
             BattleSession = result.session;
+            GameInstance.Singleton.LoadBattleScene();
+        }, (error) =>
+        {
+            GameInstance.Singleton.OnGameServiceError(error);
+        });
+    }
+
+    public static void StartDuel(string opponentId)
+    {
+        BattleType = BaseGameService.BATTLE_TYPE_ARENA;
+        GameInstance.GameService.StartDuel(opponentId, (result) =>
+        {
+            GameInstance.Singleton.OnGameServiceStartDuelResult(result);
+            BattleSession = result.session;
+            ArenaOpponentCharacters = result.opponentCharacters;
             GameInstance.Singleton.LoadBattleScene();
         }, (error) =>
         {
