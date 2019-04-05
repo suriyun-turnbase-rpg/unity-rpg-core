@@ -118,7 +118,8 @@ public partial class SQLiteGameService
                         player.HighestArenaRank = player.ArenaLevel;
                     ExecuteNonQuery(@"UPDATE player SET highestArenaRank=@highestArenaRank, highestArenaRankCurrentSeason=@highestArenaRankCurrentSeason WHERE id=@playerId",
                         new SqliteParameter("@highestArenaRank", player.HighestArenaRank),
-                        new SqliteParameter("@highestArenaRankCurrentSeason", player.HighestArenaRankCurrentSeason));
+                        new SqliteParameter("@highestArenaRankCurrentSeason", player.HighestArenaRankCurrentSeason),
+                        new SqliteParameter("@playerId", playerId));
 
                     var arenaRank = gameDb.arenaRanks[oldArenaLevel];
                     // Soft currency

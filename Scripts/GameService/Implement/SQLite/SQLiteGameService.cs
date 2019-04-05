@@ -242,7 +242,9 @@ public partial class SQLiteGameService : BaseGameService
             exp INTEGER NOT NULL,
             selectedFormation TEXT NOT NULL DEFAULT '',
             selectedArenaFormation TEXT NOT NULL DEFAULT '',
-            arenaScore INTEGER NOT NULL DEFAULT 0)");
+            arenaScore INTEGER NOT NULL DEFAULT 0,
+            highestArenaRank INTEGER NOT NULL DEFAULT 0,
+            highestArenaRankCurrentSeason INTEGER NOT NULL DEFAULT 0)");
 
         ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerItem (
             id TEXT NOT NULL PRIMARY KEY,
@@ -304,6 +306,12 @@ public partial class SQLiteGameService : BaseGameService
 
         if (!IsColumnExist("player", "arenaScore"))
             ExecuteNonQuery("ALTER TABLE player ADD arenaScore INTEGER NOT NULL DEFAULT 0;");
+            
+        if (!IsColumnExist("player", "highestArenaRank"))
+            ExecuteNonQuery("ALTER TABLE player ADD highestArenaRank INTEGER NOT NULL DEFAULT 0;");
+            
+        if (!IsColumnExist("player", "highestArenaRankCurrentSeason"))
+            ExecuteNonQuery("ALTER TABLE player ADD highestArenaRankCurrentSeason INTEGER NOT NULL DEFAULT 0;");
 
         if (!IsColumnExist("player", "selectedArenaFormation"))
             ExecuteNonQuery("ALTER TABLE player ADD selectedArenaFormation TEXT NOT NULL DEFAULT '';");
