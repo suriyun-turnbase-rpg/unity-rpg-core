@@ -52,6 +52,7 @@ public class FakePlayer
         return entry;
     }
 
+    [System.Serializable]
     public struct FakePlayerCharacter
     {
         public CharacterItem character;

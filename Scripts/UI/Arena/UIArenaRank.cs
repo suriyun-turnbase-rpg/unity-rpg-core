@@ -18,7 +18,7 @@ public class UIArenaRank : UIDataItem<ArenaRank>
     private void SetupInfo(ArenaRank data)
     {
         if (data == null)
-            data = new ArenaRank();
+            return;
 
         if (textTitle != null)
             textTitle.text = data.title;

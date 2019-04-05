@@ -16,6 +16,16 @@ public class PlayerStamina : BasePlayerData, IPlayerStamina
             return result;
         }
     }
+    public static PlayerStamina ArenaStamina
+    {
+        get
+        {
+            PlayerStamina result = null;
+            if (GameDatabase != null)
+                TryGetData(GameDatabase.arenaStamina.id, out result);
+            return result;
+        }
+    }
     public string Id { get { return GetId(PlayerId, DataId); } set { } }
     public string playerId;
     public string PlayerId { get { return playerId; } set { playerId = value; } }
@@ -70,6 +80,14 @@ public class PlayerStamina : BasePlayerData, IPlayerStamina
     public static bool HaveEnoughStageStamina(int amount)
     {
         var data = StageStamina;
+        if (data != null)
+            return data.Amount >= amount;
+        return false;
+    }
+
+    public static bool HaveEnoughArenaStamina(int amount)
+    {
+        var data = ArenaStamina;
         if (data != null)
             return data.Amount >= amount;
         return false;

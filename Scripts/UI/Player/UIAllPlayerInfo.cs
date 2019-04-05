@@ -8,6 +8,7 @@ public class UIAllPlayerInfo : UIBase
     public UICurrency uiSoftCurrency;
     public UICurrency uiHardCurrency;
     public UIStamina uiStageStamina;
+    public UIStamina uiArenaStamina;
     
 	void Update ()
     {
@@ -21,6 +22,11 @@ public class UIAllPlayerInfo : UIBase
         {
             uiStageStamina.SetData(PlayerStamina.StageStamina);
             uiStageStamina.isCurrentPlayerStamina = true;
+        }
+        if (uiArenaStamina != null)
+        {
+            uiArenaStamina.SetData(PlayerStamina.ArenaStamina);
+            uiArenaStamina.isCurrentPlayerStamina = true;
         }
     }
 }

@@ -1,26 +1,45 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class BaseUIArenaPreparation : UIPlayerList
+public abstract class BaseUIArenaPreparation : UIBase
 {
-    private void OnEnable()
+    public UIFormation uiCurrentFormation;
+    public UIItem uiFormationSlotPrefab;
+    public UIStamina uiRequireStamina;
+    public UIArenaOpponentList uiArenaOpponentList;
+
+    public override void Show()
     {
-        RefreshList();
+        base.Show();
+
+        if (uiCurrentFormation != null)
+        {
+            uiCurrentFormation.formationName = Player.CurrentPlayer.SelectedArenaFormation;
+            uiCurrentFormation.SetFormationData(uiFormationSlotPrefab);
+        }
+
+        if (uiRequireStamina != null)
+        {
+            var staminaData = PlayerStamina.ArenaStamina.Clone().SetAmount(1, 0);
+            uiRequireStamina.SetData(staminaData);
+        }
     }
 
-    public void RefreshList()
+    public void OnClickStartDuel()
     {
-        GameInstance.GameService.GetArenaOpponentList(OnRefreshListSuccess, OnRefreshListFail);
+        BaseGamePlayManager.StartDuel(GetOpponent().Id);
     }
 
-    private void OnRefreshListSuccess(FriendListResult result)
+    public Player GetOpponent()
     {
-        SetListItems(result.list);
-    }
-
-    private void OnRefreshListFail(string error)
-    {
-        GameInstance.Singleton.OnGameServiceError(error);
+        if (uiArenaOpponentList != null)
+        {
+            var list = uiArenaOpponentList.GetSelectedDataList();
+            if (list.Count > 0)
+                return list[0];
+        }
+        return null;
     }
 }

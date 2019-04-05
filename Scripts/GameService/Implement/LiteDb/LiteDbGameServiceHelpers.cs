@@ -199,6 +199,8 @@ public partial class LiteDbGameService
         var gameDb = GameInstance.GameDatabase;
         var stageStaminaTable = gameDb.stageStamina;
         UpdatePlayerStamina(player, stageStaminaTable);
+        var arenaStaminaTable = gameDb.arenaStamina;
+        UpdatePlayerStamina(player, arenaStaminaTable);
     }
 
     private DbPlayerCurrency GetCurrency(string playerId, string dataId)

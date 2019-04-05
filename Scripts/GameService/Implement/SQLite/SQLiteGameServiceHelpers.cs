@@ -276,6 +276,8 @@ public partial class SQLiteGameService
         var gameDb = GameInstance.GameDatabase;
         var stageStaminaTable = gameDb.stageStamina;
         UpdatePlayerStamina(player, stageStaminaTable);
+        var arenaStaminaTable = gameDb.arenaStamina;
+        UpdatePlayerStamina(player, arenaStaminaTable);
     }
 
     private PlayerCurrency GetCurrency(string playerId, string dataId)

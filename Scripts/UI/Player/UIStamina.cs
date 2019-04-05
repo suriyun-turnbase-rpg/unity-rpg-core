@@ -88,23 +88,24 @@ public class UIStamina : UIDataItem<PlayerStamina>
                     {
                         System.TimeSpan time = System.TimeSpan.FromSeconds(countDownInMillisecond * System.TimeSpan.TicksPerMillisecond / System.TimeSpan.TicksPerSecond);
                         recoveryingTime.text = string.Format("{0:D2}:{1:D2}", time.Minutes, time.Seconds);
+                        recoveryingTime.gameObject.SetActive(true);
                     }
                     else
                     {
                         if (recoveryingTime != null)
-                            recoveryingTime.text = "";
+                            recoveryingTime.gameObject.SetActive(false);
                     }
                 }
                 else
                 {
                     if (recoveryingTime != null)
-                        recoveryingTime.text = "";
+                        recoveryingTime.gameObject.SetActive(false);
                 }
             }
             else
             {
                 if (recoveryingTime != null)
-                    recoveryingTime.text = "";
+                    recoveryingTime.gameObject.SetActive(false);
             }
         }
     }

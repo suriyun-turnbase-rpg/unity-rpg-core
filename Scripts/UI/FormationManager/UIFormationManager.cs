@@ -89,8 +89,7 @@ public class UIFormationManager : UIBase
                         if (isSelected)
                         {
                             var formationName = key;
-                            SelectFormation(formationName, EFormationType.Stage);
-                            SelectFormation(formationName, EFormationType.Arena);
+                            SelectFormation(key);
                         }
                     });
 
@@ -162,7 +161,7 @@ public class UIFormationManager : UIBase
         SelectedItem = null;
     }
 
-    public void SelectFormation(string formationName, EFormationType formationType)
+    public void SelectFormation(string formationName)
     {
         if (!UIFormationToggles.ContainsKey(formationName))
             return;
