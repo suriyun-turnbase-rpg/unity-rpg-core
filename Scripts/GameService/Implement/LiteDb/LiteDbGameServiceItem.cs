@@ -57,6 +57,7 @@ public partial class LiteDbGameService
                 colPlayer.Update(foundPlayer);
                 colPlayerCurrency.Update(softCurrency);
                 item = item.CreateLevelUpItem(increasingExp);
+                updateItems.Add(item);
                 foreach (var updateItem in updateItems)
                 {
                     var dbUpdateItem = new DbPlayerItem();
