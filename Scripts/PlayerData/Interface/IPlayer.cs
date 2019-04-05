@@ -9,4 +9,6 @@
     string MainCharacter { get; set; }
     int MainCharacterExp { get; set; }
     int ArenaScore { get; set; }
+    int HighestArenaRank { get; set; }
+    int HighestArenaRankCurrentSeason { get; set; }
 }

@@ -139,7 +139,7 @@ public class UIFormationManager : UIBase
             uiCharacterList.ClearListItems();
 
         if (characterFormation != null)
-            characterFormation.SetFormationCharacters();
+            characterFormation.SetFormationCharacters(EBattleType.Stage);
     }
 
     private void SelectItem(UIDataItem ui)

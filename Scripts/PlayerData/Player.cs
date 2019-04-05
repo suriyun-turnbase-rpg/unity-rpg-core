@@ -43,6 +43,10 @@ public class Player : BasePlayerData, ILevel, IPlayer
     public int MainCharacterExp { get { return mainCharacterExp; } set { mainCharacterExp = value; } }
     public int arenaScore;
     public int ArenaScore { get { return arenaScore; } set { arenaScore = value; } }
+    public int highestArenaRank;
+    public int HighestArenaRank { get { return highestArenaRank; } set { highestArenaRank = value; } }
+    public int highestArenaRankCurrentSeason;
+    public int HighestArenaRankCurrentSeason { get { return highestArenaRankCurrentSeason; } set { highestArenaRankCurrentSeason = value; } }
     public bool isFriend;
 
     private int level = -1;
@@ -75,6 +79,8 @@ public class Player : BasePlayerData, ILevel, IPlayer
         to.MainCharacter = from.MainCharacter;
         to.MainCharacterExp = from.MainCharacterExp;
         to.ArenaScore = from.ArenaScore;
+        to.HighestArenaRank = from.HighestArenaRank;
+        to.HighestArenaRankCurrentSeason = from.HighestArenaRankCurrentSeason;
     }
 
     #region Non Serialize Fields

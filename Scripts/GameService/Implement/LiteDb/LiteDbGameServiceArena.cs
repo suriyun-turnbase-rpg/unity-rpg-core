@@ -100,8 +100,14 @@ public partial class LiteDbGameService
                 result.player = resultPlayer;
 
                 // Arena rank up, rewarding items
-                if (resultPlayer.ArenaLevel > oldArenaLevel)
+                if (resultPlayer.ArenaLevel > oldArenaLevel && player.HighestArenaRankCurrentSeason < resultPlayer.ArenaLevel)
                 {
+                    // Update highest rank
+                    player.HighestArenaRankCurrentSeason = resultPlayer.ArenaLevel;
+                    if (player.HighestArenaRank < resultPlayer.ArenaLevel)
+                        player.HighestArenaRank = resultPlayer.ArenaLevel;
+                    colPlayer.Update(player);
+
                     var arenaRank = gameDb.arenaRanks[oldArenaLevel];
                     // Soft currency
                     var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);

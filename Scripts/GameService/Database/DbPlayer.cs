@@ -22,6 +22,10 @@ public class DbPlayer : IPlayer
     public int MainCharacterExp { get { return mainCharacterExp; } set { mainCharacterExp = value; } }
     public int arenaScore;
     public int ArenaScore { get { return arenaScore; } set { arenaScore = value; } }
+    public int highestArenaRank;
+    public int HighestArenaRank { get { return highestArenaRank; } set { highestArenaRank = value; } }
+    public int highestArenaRankCurrentSeason;
+    public int HighestArenaRankCurrentSeason { get { return highestArenaRankCurrentSeason; } set { highestArenaRankCurrentSeason = value; } }
 
     public static List<Player> CloneList(IEnumerable<DbPlayer> list)
     {

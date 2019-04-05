@@ -110,8 +110,16 @@ public partial class SQLiteGameService
                 result.player = player;
 
                 // Arena rank up, rewarding items
-                if (player.ArenaLevel > oldArenaLevel)
+                if (player.ArenaLevel > oldArenaLevel && player.HighestArenaRankCurrentSeason < player.ArenaLevel)
                 {
+                    // Update highest rank
+                    player.HighestArenaRankCurrentSeason = player.ArenaLevel;
+                    if (player.HighestArenaRank < player.ArenaLevel)
+                        player.HighestArenaRank = player.ArenaLevel;
+                    ExecuteNonQuery(@"UPDATE player SET highestArenaRank=@highestArenaRank, highestArenaRankCurrentSeason=@highestArenaRankCurrentSeason WHERE id=@playerId",
+                        new SqliteParameter("@highestArenaRank", player.HighestArenaRank),
+                        new SqliteParameter("@highestArenaRankCurrentSeason", player.HighestArenaRankCurrentSeason));
+
                     var arenaRank = gameDb.arenaRanks[oldArenaLevel];
                     // Soft currency
                     var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);

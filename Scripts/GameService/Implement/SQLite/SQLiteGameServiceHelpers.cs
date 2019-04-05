@@ -183,21 +183,25 @@ public partial class SQLiteGameService
         if (!playerAuths.Read())
             return false;
         var playerAuth = new PlayerAuth();
-        playerAuth.Id = playerAuths.GetString(0);
-        playerAuth.PlayerId = playerAuths.GetString(1);
-        playerAuth.Type = playerAuths.GetString(2);
-        playerAuth.Username = playerAuths.GetString(3);
-        playerAuth.Password = playerAuths.GetString(4);
+        playerAuth.Id = playerAuths.GetString("id");
+        playerAuth.PlayerId = playerAuths.GetString("playerId");
+        playerAuth.Type = playerAuths.GetString("type");
+        playerAuth.Username = playerAuths.GetString("username");
+        playerAuth.Password = playerAuths.GetString("password");
         var players = ExecuteReader(@"SELECT * FROM player WHERE id=@id",
             new SqliteParameter("@id", playerAuth.PlayerId));
         if (players.Read())
         {
             player = new Player();
-            player.Id = players.GetString(0);
-            player.ProfileName = players.GetString(1);
-            player.LoginToken = players.GetString(2);
-            player.Exp = players.GetInt32(3);
-            player.SelectedFormation = players.GetString(4);
+            player.Id = players.GetString("id");
+            player.ProfileName = players.GetString("profileName");
+            player.LoginToken = players.GetString("loginToken");
+            player.Exp = players.GetInt32("exp");
+            player.SelectedFormation = players.GetString("selectedFormation");
+            player.SelectedArenaFormation = players.GetString("selectedArenaFormation");
+            player.ArenaScore = players.GetInt32("arenaScore");
+            player.HighestArenaRank = players.GetInt32("highestArenaRank");
+            player.HighestArenaRankCurrentSeason = players.GetInt32("highestArenaRankCurrentSeason");
         }
         if (player == null)
             return false;
@@ -304,11 +308,11 @@ public partial class SQLiteGameService
         else
         {
             currency = new PlayerCurrency();
-            currency.Id = currencies.GetString(0);
-            currency.PlayerId = currencies.GetString(1);
-            currency.DataId = currencies.GetString(2);
-            currency.Amount = currencies.GetInt32(3);
-            currency.PurchasedAmount = currencies.GetInt32(4);
+            currency.Id = currencies.GetString("id");
+            currency.PlayerId = currencies.GetString("playerId");
+            currency.DataId = currencies.GetString("dataId");
+            currency.Amount = currencies.GetInt32("amount");
+            currency.PurchasedAmount = currencies.GetInt32("purchasedAmount");
         }
         return currency;
     }
@@ -335,11 +339,11 @@ public partial class SQLiteGameService
         else
         {
             stamina = new PlayerStamina();
-            stamina.Id = staminas.GetString(0);
-            stamina.PlayerId = staminas.GetString(1);
-            stamina.DataId = staminas.GetString(2);
-            stamina.Amount = staminas.GetInt32(3);
-            stamina.RecoveredTime = staminas.GetInt64(4);
+            stamina.Id = staminas.GetString("id");
+            stamina.PlayerId = staminas.GetString("playerId");
+            stamina.DataId = staminas.GetString("dataId");
+            stamina.Amount = staminas.GetInt32("amount");
+            stamina.RecoveredTime = staminas.GetInt64("recoveredTime");
         }
         return stamina;
     }
@@ -363,13 +367,13 @@ public partial class SQLiteGameService
         while (oldEntries.Read())
         {
             var entry = new PlayerItem();
-            entry.Id = oldEntries.GetString(0);
-            entry.PlayerId = oldEntries.GetString(1);
-            entry.DataId = oldEntries.GetString(2);
-            entry.Amount = oldEntries.GetInt32(3);
-            entry.Exp = oldEntries.GetInt32(4);
-            entry.EquipItemId = oldEntries.GetString(5);
-            entry.EquipPosition = oldEntries.GetString(6);
+            entry.Id = oldEntries.GetString("id");
+            entry.PlayerId = oldEntries.GetString("playerId");
+            entry.DataId = oldEntries.GetString("dataId");
+            entry.Amount = oldEntries.GetInt32("amount");
+            entry.Exp = oldEntries.GetInt32("exp");
+            entry.EquipItemId = oldEntries.GetString("equipItemId");
+            entry.EquipPosition = oldEntries.GetString("equipPosition");
             var sumAmount = entry.Amount + amount;
             if (sumAmount > maxStack)
             {
@@ -427,13 +431,13 @@ public partial class SQLiteGameService
         while (materials.Read())
         {
             var material = new PlayerItem();
-            material.Id = materials.GetString(0);
-            material.PlayerId = materials.GetString(1);
-            material.DataId = materials.GetString(2);
-            material.Amount = materials.GetInt32(3);
-            material.Exp = materials.GetInt32(4);
-            material.EquipItemId = materials.GetString(5);
-            material.EquipPosition = materials.GetString(6);
+            material.Id = materials.GetString("id");
+            material.PlayerId = materials.GetString("playerId");
+            material.DataId = materials.GetString("dataId");
+            material.Amount = materials.GetInt32("amount");
+            material.Exp = materials.GetInt32("exp");
+            material.EquipItemId = materials.GetString("equipItemId");
+            material.EquipPosition = materials.GetString("equipPosition");
 
             if ((!conditionCanLevelUp || material.CanLevelUp) &&
                 (!conditionCanEvolve || material.CanEvolve) &&
@@ -478,11 +482,11 @@ public partial class SQLiteGameService
             while (oldFormations.Read())
             {
                 oldFormation = new PlayerFormation();
-                oldFormation.Id = oldFormations.GetString(0);
-                oldFormation.PlayerId = oldFormations.GetString(1);
-                oldFormation.DataId = oldFormations.GetString(2);
-                oldFormation.Position = oldFormations.GetInt32(3);
-                oldFormation.ItemId = oldFormations.GetString(4);
+                oldFormation.Id = oldFormations.GetString("id");
+                oldFormation.PlayerId = oldFormations.GetString("playerId");
+                oldFormation.DataId = oldFormations.GetString("dataId");
+                oldFormation.Position = oldFormations.GetInt32("position");
+                oldFormation.ItemId = oldFormations.GetString("itemId");
             }
             if (oldFormation != null)
             {
@@ -499,11 +503,11 @@ public partial class SQLiteGameService
         if (targetFormations.Read())
         {
             formation = new PlayerFormation();
-            formation.Id = targetFormations.GetString(0);
-            formation.PlayerId = targetFormations.GetString(1);
-            formation.DataId = targetFormations.GetString(2);
-            formation.Position = targetFormations.GetInt32(3);
-            formation.ItemId = targetFormations.GetString(4);
+            formation.Id = targetFormations.GetString("id");
+            formation.PlayerId = targetFormations.GetString("playerId");
+            formation.DataId = targetFormations.GetString("dataId");
+            formation.Position = targetFormations.GetInt32("position");
+            formation.ItemId = targetFormations.GetString("itemId");
         }
         if (formation == null)
         {
@@ -582,10 +586,10 @@ public partial class SQLiteGameService
         else
         {
             clearStage = new PlayerClearStage();
-            clearStage.Id = clearStages.GetString(0);
-            clearStage.PlayerId = clearStages.GetString(1);
-            clearStage.DataId = clearStages.GetString(2);
-            clearStage.BestRating = clearStages.GetInt32(3);
+            clearStage.Id = clearStages.GetString("id");
+            clearStage.PlayerId = clearStages.GetString("playerId");
+            clearStage.DataId = clearStages.GetString("dataId");
+            clearStage.BestRating = clearStages.GetInt32("bestRating");
             if (clearStage.BestRating < grade)
             {
                 clearStage.BestRating = grade;
@@ -606,11 +610,15 @@ public partial class SQLiteGameService
         if (players.Read())
         {
             player = new Player();
-            player.Id = players.GetString(0);
-            player.ProfileName = players.GetString(1);
-            player.LoginToken = players.GetString(2);
-            player.Exp = players.GetInt32(3);
-            player.SelectedFormation = players.GetString(4);
+            player.Id = players.GetString("id");
+            player.ProfileName = players.GetString("profileName");
+            player.LoginToken = players.GetString("loginToken");
+            player.Exp = players.GetInt32("exp");
+            player.SelectedFormation = players.GetString("selectedFormation");
+            player.SelectedArenaFormation = players.GetString("selectedArenaFormation");
+            player.ArenaScore = players.GetInt32("arenaScore");
+            player.HighestArenaRank = players.GetInt32("highestArenaRank");
+            player.HighestArenaRankCurrentSeason = players.GetInt32("highestArenaRankCurrentSeason");
         }
         return player;
     }
@@ -624,12 +632,12 @@ public partial class SQLiteGameService
         if (playerBattles.Read())
         {
             playerBattle = new PlayerBattle();
-            playerBattle.Id = playerBattles.GetString(0);
-            playerBattle.PlayerId = playerBattles.GetString(1);
-            playerBattle.DataId = playerBattles.GetString(2);
-            playerBattle.Session = playerBattles.GetString(3);
-            playerBattle.BattleResult = (byte)playerBattles.GetInt32(4);
-            playerBattle.Rating = playerBattles.GetInt32(5);
+            playerBattle.Id = playerBattles.GetString("id");
+            playerBattle.PlayerId = playerBattles.GetString("playerId");
+            playerBattle.DataId = playerBattles.GetString("dataId");
+            playerBattle.Session = playerBattles.GetString("session");
+            playerBattle.BattleResult = (byte)playerBattles.GetInt32("battleResult");
+            playerBattle.Rating = playerBattles.GetInt32("rating");
         }
         return playerBattle;
     }
@@ -642,13 +650,13 @@ public partial class SQLiteGameService
         if (playerItems.Read())
         {
             playerItem = new PlayerItem();
-            playerItem.Id = playerItems.GetString(0);
-            playerItem.PlayerId = playerItems.GetString(1);
-            playerItem.DataId = playerItems.GetString(2);
-            playerItem.Amount = playerItems.GetInt32(3);
-            playerItem.Exp = playerItems.GetInt32(4);
-            playerItem.EquipItemId = playerItems.GetString(5);
-            playerItem.EquipPosition = playerItems.GetString(6);
+            playerItem.Id = playerItems.GetString("id");
+            playerItem.PlayerId = playerItems.GetString("playerId");
+            playerItem.DataId = playerItems.GetString("dataId");
+            playerItem.Amount = playerItems.GetInt32("amount");
+            playerItem.Exp = playerItems.GetInt32("exp");
+            playerItem.EquipItemId = playerItems.GetString("equipItemId");
+            playerItem.EquipPosition = playerItems.GetString("equipPosition");
         }
         return playerItem;
     }
@@ -663,13 +671,13 @@ public partial class SQLiteGameService
         if (playerItems.Read())
         {
             playerItem = new PlayerItem();
-            playerItem.Id = playerItems.GetString(0);
-            playerItem.PlayerId = playerItems.GetString(1);
-            playerItem.DataId = playerItems.GetString(2);
-            playerItem.Amount = playerItems.GetInt32(3);
-            playerItem.Exp = playerItems.GetInt32(4);
-            playerItem.EquipItemId = playerItems.GetString(5);
-            playerItem.EquipPosition = playerItems.GetString(6);
+            playerItem.Id = playerItems.GetString("id");
+            playerItem.PlayerId = playerItems.GetString("playerId");
+            playerItem.DataId = playerItems.GetString("dataId");
+            playerItem.Amount = playerItems.GetInt32("amount");
+            playerItem.Exp = playerItems.GetInt32("exp");
+            playerItem.EquipItemId = playerItems.GetString("equipItemId");
+            playerItem.EquipPosition = playerItems.GetString("equipPosition");
         }
         return playerItem;
     }

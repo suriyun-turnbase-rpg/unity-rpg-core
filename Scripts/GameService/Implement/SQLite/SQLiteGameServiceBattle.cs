@@ -241,11 +241,11 @@ public partial class SQLiteGameService
             while (reader.Read())
             {
                 var entry = new PlayerFormation();
-                entry.Id = reader.GetString(0);
-                entry.PlayerId = reader.GetString(1);
-                entry.DataId = reader.GetString(2);
-                entry.Position = reader.GetInt32(3);
-                entry.ItemId = reader.GetString(4);
+                entry.Id = reader.GetString("id");
+                entry.PlayerId = reader.GetString("playerId");
+                entry.DataId = reader.GetString("dataId");
+                entry.Position = reader.GetInt32("position");
+                entry.ItemId = reader.GetString("itemId");
                 list.Add(entry);
             }
             result.list = list;
