@@ -102,6 +102,7 @@ public partial class SQLiteGameService
                 // Increase arena score
                 var oldArenaScore = player.ArenaScore;
                 var oldArenaLevel = player.ArenaLevel;
+                var arenaRank = player.ArenaRank;
                 result.updateScore = gameDb.arenaWinScoreIncrease;
                 player.ArenaScore += gameDb.arenaWinScoreIncrease;
                 ExecuteNonQuery(@"UPDATE player SET arenaScore=@arenaScore WHERE id=@playerId",
@@ -121,7 +122,6 @@ public partial class SQLiteGameService
                         new SqliteParameter("@highestArenaRankCurrentSeason", player.HighestArenaRankCurrentSeason),
                         new SqliteParameter("@playerId", playerId));
 
-                    var arenaRank = gameDb.arenaRanks[oldArenaLevel];
                     // Soft currency
                     var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
                     var rewardSoftCurrency = arenaRank.rewardSoftCurrency;

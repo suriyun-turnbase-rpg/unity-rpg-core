@@ -93,6 +93,7 @@ public partial class LiteDbGameService
                 Player.CloneTo(player, resultPlayer);
                 var oldArenaScore = resultPlayer.ArenaScore;
                 var oldArenaLevel = resultPlayer.ArenaLevel;
+                var arenaRank = resultPlayer.ArenaRank;
                 result.updateScore = gameDb.arenaWinScoreIncrease;
                 player.ArenaScore += gameDb.arenaWinScoreIncrease;
                 colPlayer.Update(player);
@@ -108,7 +109,6 @@ public partial class LiteDbGameService
                         player.HighestArenaRank = resultPlayer.ArenaLevel;
                     colPlayer.Update(player);
 
-                    var arenaRank = gameDb.arenaRanks[oldArenaLevel];
                     // Soft currency
                     var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
                     var rewardSoftCurrency = arenaRank.rewardSoftCurrency;
