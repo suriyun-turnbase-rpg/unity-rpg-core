@@ -111,7 +111,7 @@ public partial class SQLiteGameService
                 result.player = player;
 
                 // Arena rank up, rewarding items
-                if (player.ArenaLevel > oldArenaLevel && player.HighestArenaRankCurrentSeason < player.ArenaLevel)
+                if (arenaRank != null && player.ArenaLevel > oldArenaLevel && player.HighestArenaRankCurrentSeason < player.ArenaLevel)
                 {
                     // Update highest rank
                     player.HighestArenaRankCurrentSeason = player.ArenaLevel;

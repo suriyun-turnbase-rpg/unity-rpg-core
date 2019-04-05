@@ -101,7 +101,7 @@ public partial class LiteDbGameService
                 result.player = resultPlayer;
 
                 // Arena rank up, rewarding items
-                if (resultPlayer.ArenaLevel > oldArenaLevel && player.HighestArenaRankCurrentSeason < resultPlayer.ArenaLevel)
+                if (arenaRank != null && resultPlayer.ArenaLevel > oldArenaLevel && player.HighestArenaRankCurrentSeason < resultPlayer.ArenaLevel)
                 {
                     // Update highest rank
                     player.HighestArenaRankCurrentSeason = resultPlayer.ArenaLevel;
