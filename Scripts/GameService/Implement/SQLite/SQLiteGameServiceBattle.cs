@@ -213,8 +213,9 @@ public partial class SQLiteGameService
             else if (formationType == EFormationType.Arena)
                 player.SelectedArenaFormation = formationName;
                 
-            ExecuteNonQuery(@"UPDATE player SET selectedFormation=@selectedFormation WHERE id=@id",
+            ExecuteNonQuery(@"UPDATE player SET selectedFormation=@selectedFormation, selectedArenaFormation=@selectedArenaFormation WHERE id=@id",
                 new SqliteParameter("@selectedFormation", player.SelectedFormation),
+                new SqliteParameter("@selectedArenaFormation", player.SelectedArenaFormation),
                 new SqliteParameter("@id", player.Id));
             result.player = player;
         }

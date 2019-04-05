@@ -102,6 +102,7 @@ public partial class SQLiteGameService
                 // Increase arena score
                 var oldArenaScore = player.ArenaScore;
                 var oldArenaLevel = player.ArenaLevel;
+                result.updateScore = gameDb.arenaWinScoreIncrease;
                 player.ArenaScore += gameDb.arenaWinScoreIncrease;
                 ExecuteNonQuery(@"UPDATE player SET arenaScore=@arenaScore WHERE id=@playerId",
                     new SqliteParameter("@arenaScore", player.ArenaScore),
@@ -176,6 +177,7 @@ public partial class SQLiteGameService
             }
             else
             {
+                result.updateScore = -gameDb.arenaLoseScoreDecrease;
                 player.ArenaScore -= gameDb.arenaLoseScoreDecrease;
                 ExecuteNonQuery(@"UPDATE player SET arenaScore=@arenaScore WHERE id=@playerId",
                     new SqliteParameter("@arenaScore", player.ArenaScore),

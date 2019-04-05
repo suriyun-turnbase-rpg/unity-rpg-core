@@ -21,6 +21,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     [Header("Gameplay UI")]
     public UIWin uiWin;
     public UILose uiLose;
+    public UIArenaResult uiArenaResult;
     public UIPlayer uiFriendRequest;
     public UIPauseGame uiPauseGame;
     public float winGameDelay = 2f;
@@ -112,10 +113,9 @@ public abstract class BaseGamePlayManager : MonoBehaviour
 
     protected virtual void WinGame()
     {
-        var deadCharacters = CountDeadCharacters();
         if (BattleType == EBattleType.Stage)
         {
-            GameInstance.GameService.FinishStage(BattleSession, EBattleResult.Win, deadCharacters, (result) =>
+            GameInstance.GameService.FinishStage(BattleSession, EBattleResult.Win, CountDeadCharacters(), (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
@@ -145,14 +145,13 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         }
         else if (BattleType == EBattleType.Arena)
         {
-            GameInstance.GameService.FinishDuel(BattleSession, EBattleResult.Win, deadCharacters, (result) =>
+            GameInstance.GameService.FinishDuel(BattleSession, EBattleResult.Win, CountDeadCharacters(), (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
                 GameInstance.Singleton.OnGameServiceFinishDuelResult(result);
-                // TODO: Arena UI
-                //uiWin.SetData(result);
-                //uiWin.Show();
+                uiArenaResult.SetData(result);
+                uiArenaResult.Show();
             }, (error) =>
             {
                 GameInstance.Singleton.OnGameServiceError(error, WinGame);
@@ -170,8 +169,17 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         }
         else if (BattleType == EBattleType.Arena)
         {
-            // TODO: Arena UI
-            //uiLose.Show();
+            GameInstance.GameService.FinishDuel(BattleSession, EBattleResult.Lose, CountDeadCharacters(), (result) =>
+            {
+                isEnding = true;
+                Time.timeScale = 1;
+                GameInstance.Singleton.OnGameServiceFinishDuelResult(result);
+                uiArenaResult.SetData(result);
+                uiArenaResult.Show();
+            }, (error) =>
+            {
+                GameInstance.Singleton.OnGameServiceError(error, WinGame);
+            });
         }
     }
 

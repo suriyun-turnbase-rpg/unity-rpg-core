@@ -93,6 +93,7 @@ public partial class LiteDbGameService
                 Player.CloneTo(player, resultPlayer);
                 var oldArenaScore = resultPlayer.ArenaScore;
                 var oldArenaLevel = resultPlayer.ArenaLevel;
+                result.updateScore = gameDb.arenaWinScoreIncrease;
                 player.ArenaScore += gameDb.arenaWinScoreIncrease;
                 colPlayer.Update(player);
                 Player.CloneTo(player, resultPlayer);
@@ -157,6 +158,7 @@ public partial class LiteDbGameService
             else
             {
                 var resultPlayer = new Player();
+                result.updateScore = -gameDb.arenaLoseScoreDecrease;
                 player.ArenaScore -= gameDb.arenaLoseScoreDecrease;
                 colPlayer.Update(player);
                 Player.CloneTo(player, resultPlayer);

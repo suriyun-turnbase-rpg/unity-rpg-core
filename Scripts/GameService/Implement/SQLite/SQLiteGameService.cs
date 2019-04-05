@@ -120,7 +120,8 @@ public partial class SQLiteGameService : BaseGameService
             profileName TEXT NOT NULL,
             loginToken TEXT NOT NULL,
             exp INTEGER NOT NULL,
-            selectedFormation TEXT NOT NULL,
+            selectedFormation TEXT NOT NULL DEFAULT '',
+            selectedArenaFormation TEXT NOT NULL DEFAULT '',
             arenaScore INTEGER NOT NULL DEFAULT 0)");
 
         ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerItem (
@@ -183,6 +184,9 @@ public partial class SQLiteGameService : BaseGameService
 
         if (!IsColumnExist("player", "arenaScore"))
             ExecuteNonQuery("ALTER TABLE player ADD arenaScore INTEGER NOT NULL DEFAULT 0;");
+
+        if (!IsColumnExist("player", "selectedArenaFormation"))
+            ExecuteNonQuery("ALTER TABLE player ADD selectedArenaFormation TEXT NOT NULL DEFAULT '';");
 
         if (!IsColumnExist("playerBattle", "battleType"))
             ExecuteNonQuery("ALTER TABLE playerBattle ADD battleType INTEGER NOT NULL DEFAULT 0;");

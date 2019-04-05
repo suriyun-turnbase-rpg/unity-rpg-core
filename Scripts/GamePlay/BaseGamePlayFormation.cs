@@ -8,9 +8,11 @@ public class BaseGamePlayFormation : MonoBehaviour
     public Transform helperContainer;
     public readonly Dictionary<int, BaseCharacterEntity> Characters = new Dictionary<int, BaseCharacterEntity>();
 
-    public virtual void SetFormationCharacters()
+    public virtual void SetFormationCharacters(EBattleType battleType)
     {
         var formationName = Player.CurrentPlayer.SelectedFormation;
+        if (battleType == EBattleType.Arena)
+            formationName = Player.CurrentPlayer.SelectedArenaFormation;
         ClearCharacters();
         for (var i = 0; i < containers.Length; ++i)
         {

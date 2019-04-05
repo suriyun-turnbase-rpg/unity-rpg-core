@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public abstract class BaseUIArenaPreparation : UIBase
@@ -9,6 +10,7 @@ public abstract class BaseUIArenaPreparation : UIBase
     public UIItem uiFormationSlotPrefab;
     public UIStamina uiRequireStamina;
     public UIArenaOpponentList uiArenaOpponentList;
+    public UnityEvent onNoOpponentSelected;
 
     public override void Show()
     {
@@ -29,7 +31,13 @@ public abstract class BaseUIArenaPreparation : UIBase
 
     public void OnClickStartDuel()
     {
-        BaseGamePlayManager.StartDuel(GetOpponent().Id);
+        var opponent = GetOpponent();
+        if (opponent == null)
+        {
+            onNoOpponentSelected.Invoke();
+            return;
+        }
+        BaseGamePlayManager.StartDuel(opponent.Id);
     }
 
     public Player GetOpponent()

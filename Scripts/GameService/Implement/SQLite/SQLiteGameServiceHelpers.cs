@@ -134,11 +134,12 @@ public partial class SQLiteGameService
                 }
             }
         }
-        ExecuteNonQuery(@"UPDATE player SET profileName=@profileName, loginToken=@loginToken, exp=@exp, selectedFormation=@selectedFormation WHERE id=@id",
+        ExecuteNonQuery(@"UPDATE player SET profileName=@profileName, loginToken=@loginToken, exp=@exp, selectedFormation=@selectedFormation, selectedArenaFormation=@selectedArenaFormation WHERE id=@id",
             new SqliteParameter("@profileName", player.ProfileName),
             new SqliteParameter("@loginToken", player.LoginToken),
             new SqliteParameter("@exp", player.Exp),
             new SqliteParameter("@selectedFormation", player.SelectedFormation),
+            new SqliteParameter("@selectedArenaFormation", player.SelectedArenaFormation),
             new SqliteParameter("@id", player.Id));
         return player;
     }
@@ -162,12 +163,13 @@ public partial class SQLiteGameService
         player.Id = playerId;
         player = SetNewPlayerData(player);
         UpdatePlayerStamina(player);
-        ExecuteNonQuery(@"INSERT INTO player (id, profileName, loginToken, exp, selectedFormation) VALUES (@id, @profileName, @loginToken, @exp, @selectedFormation)",
+        ExecuteNonQuery(@"INSERT INTO player (id, profileName, loginToken, exp, selectedFormation, selectedArenaFormation) VALUES (@id, @profileName, @loginToken, @exp, @selectedFormation, @selectedArenaFormation)",
             new SqliteParameter("@id", player.Id),
             new SqliteParameter("@profileName", player.ProfileName),
             new SqliteParameter("@loginToken", player.LoginToken),
             new SqliteParameter("@exp", player.Exp),
-            new SqliteParameter("@selectedFormation", player.SelectedFormation));
+            new SqliteParameter("@selectedFormation", player.SelectedFormation),
+            new SqliteParameter("@selectedArenaFormation", player.SelectedArenaFormation));
         return player;
     }
 

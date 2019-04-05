@@ -137,6 +137,7 @@ public class StartDuelResult : GameServiceResult
 public class FinishDuelResult : PlayerResult
 {
     public int rating;
+    public int updateScore;
     public int rewardSoftCurrency;
     public int rewardHardCurrency;
     public List<PlayerItem> rewardItems = new List<PlayerItem>();
