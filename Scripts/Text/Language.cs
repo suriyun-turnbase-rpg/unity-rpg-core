@@ -68,6 +68,7 @@ public static class DefaultLocale
         Texts.Add(GameText.TITLE_SOFT_CURRENCY, "Gold(s)");
         Texts.Add(GameText.TITLE_HARD_CURRENCY, "Gem(s)");
         Texts.Add(GameText.TITLE_STAGE_STAMINA, "Stamina");
+        Texts.Add(GameText.TITLE_ARENA_STAMINA, "Stamina");
         // Combat
         Texts.Add(GameText.COMBAT_MISS, "Miss");
         // Item
