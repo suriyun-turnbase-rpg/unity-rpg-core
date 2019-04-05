@@ -605,6 +605,11 @@ public partial class GameInstance : MonoBehaviour
         OnGameServiceError(GameServiceErrorCode.NOT_ENOUGH_STAGE_STAMINA);
     }
 
+    public void WarnNotEnoughArenaStamina()
+    {
+        OnGameServiceError(GameServiceErrorCode.NOT_ENOUGH_ARENA_STAMINA);
+    }
+
     public void ShowLoading()
     {
         if (loadingObject == null)

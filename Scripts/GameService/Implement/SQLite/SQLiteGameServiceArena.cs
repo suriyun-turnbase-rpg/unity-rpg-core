@@ -38,7 +38,7 @@ public partial class SQLiteGameService
             var arenaStaminaTable = gameDb.arenaStamina;
             // Require stamina for arena always = 1
             if (!DecreasePlayerStamina(player, arenaStaminaTable, 1))
-                result.error = GameServiceErrorCode.NOT_ENOUGH_STAGE_STAMINA;
+                result.error = GameServiceErrorCode.NOT_ENOUGH_ARENA_STAMINA;
             else
             {
                 var playerBattle = new PlayerBattle();

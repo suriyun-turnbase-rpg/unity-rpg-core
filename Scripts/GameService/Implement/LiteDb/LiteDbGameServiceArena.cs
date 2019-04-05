@@ -35,7 +35,7 @@ public partial class LiteDbGameService
             var stage = gameDb.FakePlayers[targetPlayerId];
             var arenaStaminaTable = gameDb.arenaStamina;
             if (!DecreasePlayerStamina(player, arenaStaminaTable, 1))
-                result.error = GameServiceErrorCode.NOT_ENOUGH_STAGE_STAMINA;
+                result.error = GameServiceErrorCode.NOT_ENOUGH_ARENA_STAMINA;
             else
             {
                 var playerBattle = new DbPlayerBattle();

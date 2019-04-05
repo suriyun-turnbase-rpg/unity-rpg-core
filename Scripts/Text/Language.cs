@@ -15,6 +15,7 @@ public class GameText
     public const string TITLE_SOFT_CURRENCY = TEXT_PREFIX + "TITLE_SOFT_CURRENCY";
     public const string TITLE_HARD_CURRENCY = TEXT_PREFIX + "TITLE_HARD_CURRENCY";
     public const string TITLE_STAGE_STAMINA = TEXT_PREFIX + "TITLE_STAGE_STAMINA";
+    public const string TITLE_ARENA_STAMINA = TEXT_PREFIX + "TITLE_ARENA_STAMINA";
     // Combat
     public const string COMBAT_MISS = TEXT_PREFIX + "COMBAT_MISS";
     // Item
@@ -123,6 +124,7 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_SOFT_CURRENCY, "Not enough " + Texts[GameText.TITLE_SOFT_CURRENCY]);
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY, "Not enough " + Texts[GameText.TITLE_HARD_CURRENCY]);
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_STAGE_STAMINA, "Not enough " + Texts[GameText.TITLE_STAGE_STAMINA]);
+        Texts.Add(GameServiceErrorCode.NOT_ENOUGH_ARENA_STAMINA, "Not enough " + Texts[GameText.TITLE_ARENA_STAMINA]);
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_ITEMS, "Not enough items");
         Texts.Add(GameServiceErrorCode.CANNOT_EVOLVE, "Cannot evolve");
         Texts.Add(GameServiceErrorCode.NOT_AVAILABLE, "Services not available");
