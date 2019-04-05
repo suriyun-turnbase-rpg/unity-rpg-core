@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -234,6 +235,10 @@ public abstract class BaseGamePlayManager : MonoBehaviour
 
     public static void StartStage(BaseStage data, Player helper)
     {
+        var formationName = Player.CurrentPlayer.SelectedFormation;
+        if (PlayerFormation.DataMap.Values.Where(a => a.DataId == formationName && !string.IsNullOrEmpty(a.ItemId)).Count() == 0)
+            return;
+
         PlayingStage = data;
         Helper = helper;
         BattleType = EBattleType.Stage;
@@ -250,6 +255,10 @@ public abstract class BaseGamePlayManager : MonoBehaviour
 
     public static void StartDuel(string opponentId)
     {
+        var formationName = Player.CurrentPlayer.SelectedArenaFormation;
+        if (PlayerFormation.DataMap.Values.Where(a => a.DataId == formationName && !string.IsNullOrEmpty(a.ItemId)).Count() == 0)
+            return;
+
         BattleType = EBattleType.Arena;
         GameInstance.GameService.StartDuel(opponentId, (result) =>
         {
