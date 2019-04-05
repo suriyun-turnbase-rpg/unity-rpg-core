@@ -89,7 +89,7 @@ public class UIFormationManager : UIBase
                         if (isSelected)
                         {
                             var formationName = key;
-                            SelectFormation(key);
+                            SelectFormation(formationName);
                         }
                     });
 
