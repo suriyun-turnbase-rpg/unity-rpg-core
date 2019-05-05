@@ -181,19 +181,27 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         result.hp += Mathf.CeilToInt(result.hpRate * result.hp);
         result.pAtk += Mathf.CeilToInt(result.pAtkRate * result.pAtk);
         result.pDef += Mathf.CeilToInt(result.pDefRate * result.pDef);
+#if !NO_MAGIC_STATS
         result.mAtk += Mathf.CeilToInt(result.mAtkRate * result.mAtk);
         result.mDef += Mathf.CeilToInt(result.mDefRate * result.mDef);
+#endif
         result.spd += Mathf.CeilToInt(result.spdRate * result.spd);
+#if !NO_EVADE_STATS
         result.eva += Mathf.CeilToInt(result.evaRate * result.eva);
         result.acc += Mathf.CeilToInt(result.accRate * result.acc);
+#endif
         result.hpRate = 0;
         result.pAtkRate = 0;
         result.pDefRate = 0;
+#if !NO_MAGIC_STATS
         result.mAtkRate = 0;
         result.mDefRate = 0;
+#endif
         result.spdRate = 0;
+#if !NO_EVADE_STATS
         result.evaRate = 0;
         result.accRate = 0;
+#endif
 
         return result;
     }

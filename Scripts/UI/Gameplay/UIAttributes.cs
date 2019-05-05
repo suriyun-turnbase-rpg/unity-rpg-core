@@ -88,6 +88,7 @@ public class UIAttributes : UIDataItem<CalculationAttributes>
                 containerPDef.SetActive(Mathf.Abs(data.pDef) > 0);
         }
 
+#if !NO_MAGIC_STATS
         if (textMAtk != null)
         {
             textMAtk.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MATK, data.mAtk) : LanguageManager.FormatNumber(data.mAtk);
@@ -101,6 +102,7 @@ public class UIAttributes : UIDataItem<CalculationAttributes>
             if (hideInfoIfEmpty && containerMDef != null)
                 containerMDef.SetActive(Mathf.Abs(data.mDef) > 0);
         }
+#endif
 
         if (textSpd != null)
         {
@@ -109,6 +111,7 @@ public class UIAttributes : UIDataItem<CalculationAttributes>
                 containerSpd.SetActive(Mathf.Abs(data.spd) > 0);
         }
 
+#if !NO_EVADE_STATS
         if (textEva != null)
         {
             textEva.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_EVA, data.eva) : LanguageManager.FormatNumber(data.eva);
@@ -122,6 +125,7 @@ public class UIAttributes : UIDataItem<CalculationAttributes>
             if (hideInfoIfEmpty && containerAcc != null)
                 containerAcc.SetActive(Mathf.Abs(data.acc) > 0);
         }
+#endif
 
         if (textHpRate != null)
         {
@@ -144,6 +148,7 @@ public class UIAttributes : UIDataItem<CalculationAttributes>
                 containerPDefRate.SetActive(Mathf.Abs(data.pDefRate) > 0);
         }
 
+#if !NO_MAGIC_STATS
         if (textMAtkRate != null)
         {
             textMAtkRate.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MATK_RATE, data.mAtkRate, true) : LanguageManager.FormatNumber(data.mAtkRate, true);
@@ -157,6 +162,7 @@ public class UIAttributes : UIDataItem<CalculationAttributes>
             if (hideInfoIfEmpty && containerMDefRate != null)
                 containerMDefRate.SetActive(Mathf.Abs(data.mDefRate) > 0);
         }
+#endif
 
         if (textSpdRate != null)
         {
@@ -165,6 +171,7 @@ public class UIAttributes : UIDataItem<CalculationAttributes>
                 containerSpdRate.SetActive(Mathf.Abs(data.spdRate) > 0);
         }
 
+#if !NO_EVADE_STATS
         if (textEvaRate != null)
         {
             textEvaRate.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_EVA_RATE, data.evaRate, true) : LanguageManager.FormatNumber(data.evaRate, true);
@@ -178,6 +185,7 @@ public class UIAttributes : UIDataItem<CalculationAttributes>
             if (hideInfoIfEmpty && containerAccRate != null)
                 containerAccRate.SetActive(Mathf.Abs(data.accRate) > 0);
         }
+#endif
 
         if (textCritChance != null)
         {

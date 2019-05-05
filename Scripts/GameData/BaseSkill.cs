@@ -25,9 +25,11 @@ public abstract class BaseSkillBuff
     [Tooltip("This will multiply with pAtk to calculate heal amount, You can set this value to be negative to make it as poison")]
     public float pAtkHealRate = 0;
     public float pAtkHealRateIncreaseEachLevel = 0;
+#if !NO_MAGIC_STATS
     [Tooltip("This will multiply with mAtk to calculate heal amount, You can set this value to be negative to make it as poison")]
     public float mAtkHealRate = 0;
     public float mAtkHealRateIncreaseEachLevel = 0;
+#endif
     [Header("Extra")]
     [Tooltip("Amount of buffs that will be cleared randomly on target")]
     [Range(0, 100)]
@@ -58,10 +60,12 @@ public abstract class BaseSkillBuff
         return pAtkHealRate + (pAtkHealRateIncreaseEachLevel * level);
     }
 
+#if !NO_MAGIC_STATS
     public float GetMAtkHealRate(int level = 1)
     {
         return mAtkHealRate + (mAtkHealRateIncreaseEachLevel * level);
     }
+#endif
 }
 
 public abstract class BaseSkill : BaseGameData

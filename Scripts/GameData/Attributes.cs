@@ -94,16 +94,20 @@ public class Attributes
     public Int32Attribute pAtk = new Int32Attribute();
     [Tooltip("P.Defend (P stands for physical), pAtk will minus to this to calculate damage")]
     public Int32Attribute pDef = new Int32Attribute();
+#if !NO_MAGIC_STATS
     [Tooltip("M.Attack (M stands for magical), This will minus to mDef to calculate damage")]
     public Int32Attribute mAtk = new Int32Attribute();
     [Tooltip("M.Defend (M stands for magical), mAtk will minus to this to calculate damage")]
     public Int32Attribute mDef = new Int32Attribute();
+#endif
     [Tooltip("Speed, Character with higher speed will have more chance to attack")]
     public Int32Attribute spd = new Int32Attribute();
+#if !NO_EVADE_STATS
     [Tooltip("Evasion, Character with higher evasion will have more chance to avoid damage from character with lower accuracy")]
     public Int32Attribute eva = new Int32Attribute();
     [Tooltip("Accuracy, Character with higher accuracy will have more chance to take damage to character with lower evasion")]
     public Int32Attribute acc = new Int32Attribute();
+#endif
 
     public Attributes Clone()
     {
@@ -111,11 +115,15 @@ public class Attributes
         result.hp = hp.Clone();
         result.pAtk = pAtk.Clone();
         result.pDef = pDef.Clone();
+#if !NO_MAGIC_STATS
         result.mAtk = mAtk.Clone();
         result.mDef = mDef.Clone();
+#endif
         result.spd = spd.Clone();
+#if !NO_EVADE_STATS
         result.eva = eva.Clone();
         result.acc = acc.Clone();
+#endif
         return result;
     }
 
@@ -125,11 +133,15 @@ public class Attributes
         result.hp = hp.Calculate(currentLevel, maxLevel);
         result.pAtk = pAtk.Calculate(currentLevel, maxLevel);
         result.pDef = pDef.Calculate(currentLevel, maxLevel);
+#if !NO_MAGIC_STATS
         result.mAtk = mAtk.Calculate(currentLevel, maxLevel);
         result.mDef = mDef.Calculate(currentLevel, maxLevel);
+#endif
         result.spd = spd.Calculate(currentLevel, maxLevel);
+#if !NO_EVADE_STATS
         result.eva = eva.Calculate(currentLevel, maxLevel);
         result.acc = acc.Calculate(currentLevel, maxLevel);
+#endif
         return result;
     }
 
@@ -148,6 +160,7 @@ public class Attributes
         pDef.maxValue = this.pDef.Calculate(newMaxLevel, defaultMaxLevel);
         attributes.pDef = pDef;
 
+#if !NO_MAGIC_STATS
         var mAtk = this.mAtk.Clone();
         mAtk.maxValue = this.mAtk.Calculate(newMaxLevel, defaultMaxLevel);
         attributes.mAtk = mAtk;
@@ -155,11 +168,13 @@ public class Attributes
         var mDef = this.mDef.Clone();
         mDef.maxValue = this.mDef.Calculate(newMaxLevel, defaultMaxLevel);
         attributes.mDef = mDef;
+#endif
 
         var spd = this.spd.Clone();
         spd.maxValue = this.spd.Calculate(newMaxLevel, defaultMaxLevel);
         attributes.spd = spd;
 
+#if !NO_EVADE_STATS
         var eva = this.eva.Clone();
         eva.maxValue = this.eva.Calculate(newMaxLevel, defaultMaxLevel);
         attributes.eva = eva;
@@ -167,6 +182,7 @@ public class Attributes
         var acc = this.acc.Clone();
         acc.maxValue = this.acc.Calculate(newMaxLevel, defaultMaxLevel);
         attributes.acc = acc;
+#endif
 
         return attributes;
     }
@@ -177,11 +193,15 @@ public class Attributes
         result.hp = a.hp * b;
         result.pAtk = a.pAtk * b;
         result.pDef = a.pDef * b;
+#if !NO_MAGIC_STATS
         result.mAtk = a.mAtk * b;
         result.mDef = a.mDef * b;
+#endif
         result.spd = a.spd * b;
+#if !NO_EVADE_STATS
         result.eva = a.eva * b;
         result.acc = a.acc * b;
+#endif
         return result;
     }
 }
@@ -196,16 +216,20 @@ public class CalculationAttributes
     public float pAtk;
     [Tooltip("C.pDef (C stands for Character) = C.pDef + this")]
     public float pDef;
+#if !NO_MAGIC_STATS
     [Tooltip("C.mAtk (C stands for Character) = C.mAtk + this")]
     public float mAtk;
     [Tooltip("C.mDef (C stands for Character) = C.mDef + this")]
     public float mDef;
+#endif
     [Tooltip("C.Spd (C stands for Character) = C.Spd + this")]
     public float spd;
+#if !NO_EVADE_STATS
     [Tooltip("C.Eva (C stands for Character) = C.Eva + this")]
     public float eva;
     [Tooltip("C.Acc (C stands for Character) = C.Acc + this")]
     public float acc;
+#endif
     [Header("Rate attributes")]
     [Tooltip("C.hp (C stands for Character) = C.hp + (this * C.hp)")]
     public float hpRate;
@@ -213,16 +237,20 @@ public class CalculationAttributes
     public float pAtkRate;
     [Tooltip("C.pDef (C stands for Character) = C.pDef + (this * C.pDef)")]
     public float pDefRate;
+#if !NO_MAGIC_STATS
     [Tooltip("C.mAtk (C stands for Character) = C.mAtk + (this * C.mAtk)")]
     public float mAtkRate;
     [Tooltip("C.mDef (C stands for Character) = C.mDef + (this * C.mDef)")]
     public float mDefRate;
+#endif
     [Tooltip("C.Spd (C stands for Character) = C.Spd + (this * C.Spd)")]
     public float spdRate;
+#if !NO_EVADE_STATS
     [Tooltip("C.Eva (C stands for Character) = C.Eva + (this * C.Eva)")]
     public float evaRate;
     [Tooltip("C.Acc (C stands for Character) = C.Acc + (this * C.Acc)")]
     public float accRate;
+#endif
     [Header("Critical attributes")]
     [Range(0f, 1f)]
     [Tooltip("Chance to critical attack")]
@@ -244,20 +272,28 @@ public class CalculationAttributes
         result.hp = hp;
         result.pAtk = pAtk;
         result.pDef = pDef;
+#if !NO_MAGIC_STATS
         result.mAtk = mAtk;
         result.mDef = mDef;
+#endif
         result.spd = spd;
+#if !NO_EVADE_STATS
         result.eva = eva;
         result.acc = acc;
+#endif
 
         result.hpRate = hpRate;
         result.pAtkRate = pAtkRate;
         result.pDefRate = pDefRate;
+#if !NO_MAGIC_STATS
         result.mAtkRate = mAtkRate;
         result.mDefRate = mDefRate;
+#endif
         result.spdRate = spdRate;
+#if !NO_EVADE_STATS
         result.evaRate = evaRate;
         result.accRate = accRate;
+#endif
 
         result.critChance = critChance;
         result.critDamageRate = critDamageRate;
@@ -267,27 +303,35 @@ public class CalculationAttributes
         return result;
     }
 
-    #region Calculating between CalculationAttributes and CalculationAttributes
+#region Calculating between CalculationAttributes and CalculationAttributes
     public static CalculationAttributes operator +(CalculationAttributes a, CalculationAttributes b)
     {
         CalculationAttributes result = a.Clone();
         result.hp += b.hp;
         result.pAtk += b.pAtk;
         result.pDef += b.pDef;
+#if !NO_MAGIC_STATS
         result.mAtk += b.mAtk;
         result.mDef += b.mDef;
+#endif
         result.spd += b.spd;
+#if !NO_EVADE_STATS
         result.eva += b.eva;
         result.acc += b.acc;
+#endif
 
         result.hpRate += b.hpRate;
         result.pAtkRate += b.pAtkRate;
         result.pDefRate += b.pDefRate;
+#if !NO_MAGIC_STATS
         result.mAtkRate += b.mAtkRate;
         result.mDefRate += b.mDefRate;
+#endif
         result.spdRate += b.spdRate;
+#if !NO_EVADE_STATS
         result.evaRate += b.evaRate;
         result.accRate += b.accRate;
+#endif
 
         result.critChance += b.critChance;
         result.critDamageRate += b.critDamageRate;
@@ -303,20 +347,28 @@ public class CalculationAttributes
         result.hp -= b.hp;
         result.pAtk -= b.pAtk;
         result.pDef -= b.pDef;
+#if !NO_MAGIC_STATS
         result.mAtk -= b.mAtk;
         result.mDef -= b.mDef;
+#endif
         result.spd -= b.spd;
+#if !NO_EVADE_STATS
         result.eva -= b.eva;
         result.acc -= b.acc;
+#endif
 
         result.hpRate -= b.hpRate;
         result.pAtkRate -= b.pAtkRate;
         result.pDefRate -= b.pDefRate;
+#if !NO_MAGIC_STATS
         result.mAtkRate -= b.mAtkRate;
         result.mDefRate -= b.mDefRate;
+#endif
         result.spdRate -= b.spdRate;
+#if !NO_EVADE_STATS
         result.evaRate -= b.evaRate;
         result.accRate -= b.accRate;
+#endif
 
         result.critChance -= b.critChance;
         result.critDamageRate -= b.critDamageRate;
@@ -332,20 +384,28 @@ public class CalculationAttributes
         result.hp = Mathf.CeilToInt(a.hp * b);
         result.pAtk = Mathf.CeilToInt(a.pAtk * b);
         result.pDef = Mathf.CeilToInt(a.pDef * b);
+#if !NO_MAGIC_STATS
         result.mAtk = Mathf.CeilToInt(a.mAtk * b);
         result.mDef = Mathf.CeilToInt(a.mDef * b);
+#endif
         result.spd = Mathf.CeilToInt(a.spd * b);
+#if !NO_EVADE_STATS
         result.eva = Mathf.CeilToInt(a.eva * b);
         result.acc = Mathf.CeilToInt(a.acc * b);
+#endif
 
         result.hpRate = a.hpRate * b;
         result.pAtkRate = a.pAtkRate * b;
         result.pDefRate = a.pDefRate * b;
+#if !NO_MAGIC_STATS
         result.mAtkRate = a.mAtkRate * b;
         result.mDefRate = a.mDefRate * b;
+#endif
         result.spdRate = a.spdRate * b;
+#if !NO_EVADE_STATS
         result.evaRate = a.evaRate * b;
         result.accRate = a.accRate * b;
+#endif
 
         result.critChance = a.critChance * b;
         result.critDamageRate = a.critDamageRate * b;
@@ -354,7 +414,7 @@ public class CalculationAttributes
         result.blockDamageRate = a.blockDamageRate * b;
         return result;
     }
-    #endregion
+#endregion
 
     public string GetDescription(CalculationAttributes bonusAttributes)
     {
@@ -375,6 +435,7 @@ public class CalculationAttributes
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_PDEF, pDef, bonusAttributes.pDef);
             result += "\n";
         }
+#if !NO_MAGIC_STATS
         if (mAtk != 0 || bonusAttributes.mAtk != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_MATK, mAtk, bonusAttributes.mAtk);
@@ -385,11 +446,13 @@ public class CalculationAttributes
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_MDEF, mDef, bonusAttributes.mDef);
             result += "\n";
         }
+#endif
         if (spd != 0 || bonusAttributes.spd != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_SPD, spd, bonusAttributes.spd);
             result += "\n";
         }
+#if !NO_EVADE_STATS
         if (eva != 0 || bonusAttributes.eva != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_EVA, eva, bonusAttributes.eva);
@@ -400,6 +463,7 @@ public class CalculationAttributes
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_ACC, acc, bonusAttributes.acc);
             result += "\n";
         }
+#endif
         if (hpRate != 0 || bonusAttributes.hpRate != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_HP_RATE, hpRate, bonusAttributes.hpRate, true);
@@ -415,6 +479,7 @@ public class CalculationAttributes
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_PDEF_RATE, pDefRate, bonusAttributes.pDefRate, true);
             result += "\n";
         }
+#if !NO_MAGIC_STATS
         if (mAtkRate != 0 || bonusAttributes.mAtkRate != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_MATK_RATE, mAtkRate, bonusAttributes.mAtkRate, true);
@@ -425,11 +490,13 @@ public class CalculationAttributes
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_MDEF_RATE, mDefRate, bonusAttributes.mDefRate, true);
             result += "\n";
         }
+#endif
         if (spdRate != 0 || bonusAttributes.spdRate != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_SPD_RATE, spdRate, bonusAttributes.spdRate, true);
             result += "\n";
         }
+#if !NO_EVADE_STATS
         if (evaRate != 0 || bonusAttributes.evaRate != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_EVA_RATE, evaRate, bonusAttributes.evaRate, true);
@@ -440,6 +507,7 @@ public class CalculationAttributes
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_ACC_RATE, accRate, bonusAttributes.accRate, true);
             result += "\n";
         }
+#endif
         if (critChance != 0 || bonusAttributes.critChance != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_CRIT_CHANCE, critChance, bonusAttributes.critChance, true);

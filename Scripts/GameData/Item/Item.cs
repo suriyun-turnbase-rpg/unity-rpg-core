@@ -204,6 +204,7 @@ public abstract class BaseActorItem : BaseItem
     [Range(1f, 100f)]
     public float pDefRateToSetMax = 1f;
 
+#if !NO_MAGIC_STATS
     [Tooltip("This will be multiplied by min level MAtk then set to max level MAtk, when use using context menu `Set Max Attributes By Rates`")]
     [Range(1f, 100f)]
     public float mAtkRateToSetMax = 1f;
@@ -211,11 +212,13 @@ public abstract class BaseActorItem : BaseItem
     [Tooltip("This will be multiplied by min level MDef then set to max level MDef, when use using context menu `Set Max Attributes By Rates`")]
     [Range(1f, 100f)]
     public float mDefRateToSetMax = 1f;
+#endif
 
     [Tooltip("This will be multiplied by min level Spd then set to max level Spd, when use using context menu `Set Max Attributes By Rates`")]
     [Range(1f, 100f)]
     public float spdRateToSetMax = 1f;
 
+#if !NO_EVADE_STATS
     [Tooltip("This will be multiplied by min level Eva then set to max level Eva, when use using context menu `Set Max Attributes By Rates`")]
     [Range(1f, 100f)]
     public float evaRateToSetMax = 1f;
@@ -223,11 +226,12 @@ public abstract class BaseActorItem : BaseItem
     [Tooltip("This will be multiplied by min level Acc then set to max level Acc, when use using context menu `Set Max Attributes By Rates`")]
     [Range(1f, 100f)]
     public float accRateToSetMax = 1f;
+#endif
 
     [Header("Create Evolve Item Tool")]
     [Tooltip("Create new evolve item based on this item with context menu `Create Evolve Item`")]
     public CreateEvolveItemData[] createEvolveItems;
-    #endregion
+#endregion
 #endif
 
     public override int MaxStack
@@ -243,11 +247,15 @@ public abstract class BaseActorItem : BaseItem
         SetMaxHpByRate();
         SetMaxPAtkByRate();
         SetMaxPDefByRate();
+#if !NO_MAGIC_STATS
         SetMaxMAtkByRate();
         SetMaxMDefByRate();
+#endif
         SetMaxSpdByRate();
+#if !NO_EVADE_STATS
         SetMaxEvaByRate();
         SetMaxAccByRate();
+#endif
     }
 
     [ContextMenu("Set Max Attributes By Rates (HP Only)")]
@@ -268,6 +276,7 @@ public abstract class BaseActorItem : BaseItem
         attributes.pDef.maxValue = Mathf.CeilToInt(attributes.pDef.minValue * pDefRateToSetMax);
     }
 
+#if !NO_MAGIC_STATS
     [ContextMenu("Set Max Attributes By Rates (MATK Only)")]
     public void SetMaxMAtkByRate()
     {
@@ -279,6 +288,7 @@ public abstract class BaseActorItem : BaseItem
     {
         attributes.mDef.maxValue = Mathf.CeilToInt(attributes.mDef.minValue * mDefRateToSetMax);
     }
+#endif
 
     [ContextMenu("Set Max Attributes By Rates (SPD Only)")]
     public void SetMaxSpdByRate()
@@ -286,6 +296,7 @@ public abstract class BaseActorItem : BaseItem
         attributes.spd.maxValue = Mathf.CeilToInt(attributes.spd.minValue * spdRateToSetMax);
     }
 
+#if !NO_EVADE_STATS
     [ContextMenu("Set Max Attributes By Rates (EVA Only)")]
     public void SetMaxEvaByRate()
     {
@@ -297,6 +308,7 @@ public abstract class BaseActorItem : BaseItem
     {
         attributes.acc.maxValue = Mathf.CeilToInt(attributes.acc.minValue * accRateToSetMax);
     }
+#endif
 
     [ContextMenu("Create Evolve Item")]
     public void CreateEvolveItem()
@@ -327,7 +339,7 @@ public abstract class BaseActorItem : BaseItem
         newItem.attributes = attributes.CreateOverrideMaxLevelAttributes(itemTier.maxLevel, newItem.itemTier.maxLevel) * createEvolveItemData.attributesRate;
         EditorUtility.SetDirty(newItem);
     }
-    #endregion
+#endregion
 #endif
 
     public abstract SpecificItemEvolve GetSpecificItemEvolve();

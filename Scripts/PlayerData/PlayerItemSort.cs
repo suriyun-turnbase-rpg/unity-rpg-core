@@ -86,6 +86,7 @@ public static class PlayerItemSort
         });
     }
 
+#if !NO_MAGIC_STATS
     public static void SortMAtk(this List<PlayerItem> item)
     {
         item.Sort((a, b) =>
@@ -113,6 +114,7 @@ public static class PlayerItemSort
             return aValue.CompareTo(bValue);
         });
     }
+#endif
 
     public static void SortSpd(this List<PlayerItem> item)
     {
@@ -128,6 +130,7 @@ public static class PlayerItemSort
         });
     }
 
+#if !NO_EVADE_STATS
     public static void SortEva(this List<PlayerItem> item)
     {
         item.Sort((a, b) =>
@@ -155,4 +158,5 @@ public static class PlayerItemSort
             return aValue.CompareTo(bValue);
         });
     }
+#endif
 }

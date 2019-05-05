@@ -23,7 +23,9 @@ public abstract class BaseCharacterBuff
     public BaseSkillBuff Buff { get { return Buffs[BuffIndex]; } }
     public CalculationAttributes Attributes { get { return Buff.GetAttributes(Level); } }
     public float PAtkHealRate { get { return Buff.GetPAtkHealRate(Level); } }
+#if !NO_MAGIC_STATS
     public float MAtkHealRate { get { return Buff.GetMAtkHealRate(Level); } }
+#endif
     protected readonly List<GameEffect> effects = new List<GameEffect>();
 
     public BaseCharacterBuff(int level, BaseSkill skill, int buffIndex, BaseCharacterEntity giver, BaseCharacterEntity receiver)
