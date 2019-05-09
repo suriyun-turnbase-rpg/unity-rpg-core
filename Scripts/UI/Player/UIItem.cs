@@ -41,6 +41,10 @@ public class UIItem : UIDataItem<PlayerItem>
     public Text textTitle;
     public Text textDescription;
     public Image imageIcon;
+    [Header("Elemental (For Character Only)")]
+    public Text textElementalTitle;
+    public Text textElementalDescription;
+    public Image imageElementalIcon;
     [Header("Relates Level Up UIs")]
     public Button buttonLevelUp;
     public UIItemLevelUp uiLevelUp;
@@ -335,6 +339,27 @@ public class UIItem : UIDataItem<PlayerItem>
 
         if (imageIcon != null)
             imageIcon.sprite = data.Icon;
+
+        if (textElementalTitle != null)
+        {
+            if (data.CharacterData != null && data.CharacterData.elemental != null)
+                textElementalTitle.text = data.CharacterData.elemental.title;
+            textElementalTitle.gameObject.SetActive(data.CharacterData != null && data.CharacterData.elemental != null);
+        }
+
+        if (textElementalDescription != null)
+        {
+            if (data.CharacterData != null && data.CharacterData.elemental != null)
+                textElementalDescription.text = data.CharacterData.elemental.description;
+            textElementalTitle.gameObject.SetActive(data.CharacterData != null && data.CharacterData.elemental != null);
+        }
+
+        if (imageElementalIcon != null)
+        {
+            if (data.CharacterData != null && data.CharacterData.elemental != null)
+                imageElementalIcon.sprite = data.CharacterData.elemental.icon;
+            imageElementalIcon.gameObject.SetActive(data.CharacterData != null && data.CharacterData.elemental != null);
+        }
 
         if (textAttributes != null)
             textAttributes.text = attributes == null ? "" : attributes.GetDescription(data.EquipmentBonus);
