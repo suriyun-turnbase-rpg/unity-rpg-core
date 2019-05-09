@@ -8,6 +8,7 @@ using UnityEditor;
 public class CharacterItem : BaseActorItem
 {
     [Header("Character Data")]
+    public Elemental elemental;
     public List<BaseAttackAnimationData> attackAnimations;
     public List<BaseSkill> skills;
     public BaseCharacterEntity model;
