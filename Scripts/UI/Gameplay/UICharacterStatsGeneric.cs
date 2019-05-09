@@ -8,6 +8,7 @@ public class UICharacterStatsGeneric : UIBase
 {
     public Text textTitle;
     public Image imageIcon;
+    public Image imageElementalIcon;
     public Text textHpPerMaxHp;
     public Text textHpPercent;
     public Image imageHpGage;
@@ -62,6 +63,13 @@ public class UICharacterStatsGeneric : UIBase
 
         if (imageIcon != null)
             imageIcon.sprite = itemData.icon;
+
+        if (imageElementalIcon != null)
+        {
+            if (character.Item.CharacterData.elemental != null)
+                imageElementalIcon.sprite = character.Item.CharacterData.elemental.icon;
+            imageElementalIcon.gameObject.SetActive(character.Item.CharacterData.elemental != null);
+        }
 
         if (uiLevel != null)
         {
