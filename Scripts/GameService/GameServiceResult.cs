@@ -5,6 +5,7 @@ public class GameServiceErrorCode
 {
     private const string ERROR_PREFIX = "ERROR_";
     public const string UNKNOW = ERROR_PREFIX + "UNKNOW";
+    public const string NETWORK = ERROR_PREFIX + "NETWORK";
     public const string EMPTY_USERNAME_OR_PASSWORD = ERROR_PREFIX + "EMPTY_USERNAME_OR_PASSWORD";
     public const string EXISTED_USERNAME = ERROR_PREFIX + "EXISTED_USERNAME";
     public const string EMPTY_PROFILE_NAME = ERROR_PREFIX + "EMPTY_PROFILE_NAME";
@@ -29,28 +30,33 @@ public class GameServiceErrorCode
     public const string NOT_AVAILABLE = ERROR_PREFIX + "NOT_AVAILABLE";
 }
 
+[System.Serializable]
 public class GameServiceResult
 {
     public string error;
     public bool Success { get { return string.IsNullOrEmpty(error); } }
 }
 
+[System.Serializable]
 public class ServiceTimeResult : GameServiceResult
 {
     public long serviceTime;
 }
 
+[System.Serializable]
 public class PlayerResult : GameServiceResult
 {
     public Player player;
 }
 
+[System.Serializable]
 public class StartStageResult : GameServiceResult
 {
     public PlayerStamina stamina;
     public string session;
 }
 
+[System.Serializable]
 public class FinishStageResult : PlayerResult
 {
     public int rating;
@@ -65,11 +71,13 @@ public class FinishStageResult : PlayerResult
     public PlayerClearStage clearStage;
 }
 
+[System.Serializable]
 public class CurrencyResult : GameServiceResult
 {
     public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
 }
 
+[System.Serializable]
 public class ItemResult : GameServiceResult
 {
     public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
@@ -78,56 +86,67 @@ public class ItemResult : GameServiceResult
     public List<string> deleteItemIds = new List<string>();
 }
 
+[System.Serializable]
 public class AuthListResult : GameServiceResult
 {
     public List<PlayerAuth> list = new List<PlayerAuth>();
 }
 
+[System.Serializable]
 public class ItemListResult : GameServiceResult
 {
     public List<PlayerItem> list = new List<PlayerItem>();
 }
 
+[System.Serializable]
 public class CurrencyListResult : GameServiceResult
 {
     public List<PlayerCurrency> list = new List<PlayerCurrency>();
 }
 
+[System.Serializable]
 public class StaminaListResult : GameServiceResult
 {
     public List<PlayerStamina> list = new List<PlayerStamina>();
 }
 
+[System.Serializable]
 public class FormationListResult : GameServiceResult
 {
     public List<PlayerFormation> list = new List<PlayerFormation>();
 }
 
+[System.Serializable]
 public class UnlockItemListResult : GameServiceResult
 {
     public List<PlayerUnlockItem> list = new List<PlayerUnlockItem>();
 }
 
+[System.Serializable]
 public class ClearStageListResult : GameServiceResult
 {
     public List<PlayerClearStage> list = new List<PlayerClearStage>();
 }
 
+[System.Serializable]
 public class AvailableLootBoxListResult : GameServiceResult
 {
     public List<string> list = new List<string>();
 }
 
+[System.Serializable]
 public class AvailableIapPackageListResult : GameServiceResult
 {
     public List<string> list = new List<string>();
 }
 
+[System.Serializable]
 public class FriendListResult : GameServiceResult
 {
     public List<Player> list = new List<Player>();
 }
 
+[System.Serializable]
 public class StartDuelResult : GameServiceResult
 {
     public PlayerStamina stamina;
@@ -135,6 +154,7 @@ public class StartDuelResult : GameServiceResult
     public List<PlayerItem> opponentCharacters = new List<PlayerItem>();
 }
 
+[System.Serializable]
 public class FinishDuelResult : PlayerResult
 {
     public int rating;
