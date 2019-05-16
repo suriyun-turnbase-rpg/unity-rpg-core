@@ -113,9 +113,17 @@ public class IapPackage : BaseGameData
         }
         jsonRewardItems = "[" + jsonRewardItems + "]";
         // Combine
+        var googlePlayId = string.Empty;
+        var appleAppstoreId = string.Empty;
+#if ENABLE_PURCHASING && UNITY_PURCHASING && (UNITY_IOS || UNITY_ANDROID)
+        googlePlayId = ProductCatalogItem.GetStoreID(GooglePlay.Name);
+        appleAppstoreId = ProductCatalogItem.GetStoreID(AppleAppStore.Name);
+#endif
         return "{\"id\":\"" + Id + "\"," +
             "\"rewardSoftCurrency\":" + rewardSoftCurrency + "," +
             "\"rewardHardCurrency\":" + rewardHardCurrency + "," +
-            "\"rewardItems\":" + jsonRewardItems + "}";
+            "\"rewardItems\":" + jsonRewardItems + "," +
+            "\"googlePlayId\":\"" + googlePlayId + "\"," +
+            "\"appleAppstoreId\":\"" + appleAppstoreId + "\"}";
     }
 }
