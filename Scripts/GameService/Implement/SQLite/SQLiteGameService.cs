@@ -580,7 +580,7 @@ public partial class SQLiteGameService : BaseGameService
     protected override void DoGetServiceTime(UnityAction<ServiceTimeResult> onFinish)
     {
         var result = new ServiceTimeResult();
-        result.serviceTime = System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond;
+        result.serviceTime = Timestamp;
         onFinish(result);
     }
 }

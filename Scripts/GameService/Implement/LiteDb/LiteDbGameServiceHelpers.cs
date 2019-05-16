@@ -145,7 +145,7 @@ public partial class LiteDbGameService
         if (stamina.Amount >= decreaseAmount)
         {
             if (stamina.Amount == maxStamina && stamina.Amount - decreaseAmount < maxStamina)
-                stamina.RecoveredTime = System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond;
+                stamina.RecoveredTime = Timestamp;
             stamina.Amount -= decreaseAmount;
             colPlayerStamina.Update(stamina);
             UpdatePlayerStamina(player, staminaTable);
@@ -164,31 +164,31 @@ public partial class LiteDbGameService
         var maxStamina = staminaTable.maxAmountTable.Calculate(gamePlayer.Level, gameDb.playerMaxLevel);
         if (stamina.Amount < maxStamina)
         {
-            var currentTimeInMillisecond = System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond;
-            var diffTimeInMillisecond = currentTimeInMillisecond - stamina.RecoveredTime;
+            var currentTimeInSeconds = Timestamp;
+            var diffTimeInSeconds = currentTimeInSeconds - stamina.RecoveredTime;
             var devideAmount = 1;
             switch (staminaTable.recoverUnit)
             {
                 case StaminaUnit.Days:
-                    devideAmount = 1000 * 60 * 60 * 24;
+                    devideAmount = 60 * 60 * 24;
                     break;
                 case StaminaUnit.Hours:
-                    devideAmount = 1000 * 60 * 60;
+                    devideAmount = 60 * 60;
                     break;
                 case StaminaUnit.Minutes:
-                    devideAmount = 1000 * 60;
+                    devideAmount = 60;
                     break;
                 case StaminaUnit.Seconds:
-                    devideAmount = 1000;
+                    devideAmount = 1;
                     break;
             }
-            var recoveryAmount = (int)(diffTimeInMillisecond / devideAmount) / staminaTable.recoverDuration;
+            var recoveryAmount = (int)(diffTimeInSeconds / devideAmount) / staminaTable.recoverDuration;
             if (recoveryAmount > 0)
             {
                 stamina.Amount += recoveryAmount;
                 if (stamina.Amount > maxStamina)
                     stamina.Amount = maxStamina;
-                stamina.RecoveredTime = currentTimeInMillisecond;
+                stamina.RecoveredTime = currentTimeInSeconds;
                 colPlayerStamina.Update(stamina);
             }
         }

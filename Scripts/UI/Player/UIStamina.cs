@@ -52,33 +52,33 @@ public class UIStamina : UIDataItem<PlayerStamina>
                 tempMaxStamina = staminaTable.maxAmountTable.Calculate(Player.CurrentPlayer.Level, gameDatabase.playerMaxLevel);
                 if (data.Amount < tempMaxStamina)
                 {
-                    var currentTimeInMillisecond = (System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond) + GameInstance.GameService.ServiceTimeOffset;
-                    var diffTimeInMillisecond = currentTimeInMillisecond - data.RecoveredTime;
+                    var currentTimeInSeconds = GameInstance.GameService.Timestamp + GameInstance.GameService.ServiceTimeOffset;
+                    var diffTimeInSeconds = currentTimeInSeconds - data.RecoveredTime;
 
                     var devideAmount = 1;
                     switch (staminaTable.recoverUnit)
                     {
                         case StaminaUnit.Days:
-                            devideAmount = 1000 * 60 * 60 * 24;
+                            devideAmount = 60 * 60 * 24;
                             break;
                         case StaminaUnit.Hours:
-                            devideAmount = 1000 * 60 * 60;
+                            devideAmount = 60 * 60;
                             break;
                         case StaminaUnit.Minutes:
-                            devideAmount = 1000 * 60;
+                            devideAmount = 60;
                             break;
                         case StaminaUnit.Seconds:
-                            devideAmount = 1000;
+                            devideAmount = 1;
                             break;
                     }
-                    var countDownInMillisecond = (staminaTable.recoverDuration * devideAmount) - diffTimeInMillisecond;
-                    var recoveryAmount = (int)(diffTimeInMillisecond / devideAmount) / staminaTable.recoverDuration;
+                    var countDownInSeconds = (staminaTable.recoverDuration * devideAmount) - diffTimeInSeconds;
+                    var recoveryAmount = (int)(diffTimeInSeconds / devideAmount) / staminaTable.recoverDuration;
                     if (recoveryAmount > 0)
                     {
                         data.Amount += recoveryAmount;
                         if (data.Amount > tempMaxStamina)
                             data.Amount = tempMaxStamina;
-                        data.RecoveredTime = currentTimeInMillisecond;
+                        data.RecoveredTime = currentTimeInSeconds;
 
                         if (textAmount != null)
                             textAmount.text = data.Amount.ToString("N0");
@@ -86,14 +86,9 @@ public class UIStamina : UIDataItem<PlayerStamina>
 
                     if (recoveryingTime != null)
                     {
-                        System.TimeSpan time = System.TimeSpan.FromSeconds(countDownInMillisecond * System.TimeSpan.TicksPerMillisecond / System.TimeSpan.TicksPerSecond);
+                        System.TimeSpan time = System.TimeSpan.FromSeconds(countDownInSeconds);
                         recoveryingTime.text = string.Format("{0:D2}:{1:D2}", time.Minutes, time.Seconds);
                         recoveryingTime.gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        if (recoveryingTime != null)
-                            recoveryingTime.gameObject.SetActive(false);
                     }
                 }
                 else

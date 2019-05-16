@@ -10,6 +10,7 @@ public abstract class BaseGameService : MonoBehaviour
     public UnityEvent onServiceStart;
     public UnityEvent onServiceFinish;
     public long ServiceTimeOffset { get; private set; }
+    public long Timestamp { get { return (long)System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1)).TotalSeconds; } }
     private float updateTimeCounter;
 
     private void Update()
@@ -596,7 +597,7 @@ public abstract class BaseGameService : MonoBehaviour
     {
         DoGetServiceTime((finishResult) =>
         {
-            ServiceTimeOffset = finishResult.serviceTime - (System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond);
+            ServiceTimeOffset = finishResult.serviceTime - Timestamp;
         });
     }
 
