@@ -92,12 +92,22 @@ public class PlayerUnlockItem : BasePlayerData, IPlayerUnlockItem
         RemoveDataRange(Player.CurrentPlayerId);
     }
 
-    public static bool IsUnlock(string playerId, BaseItem itemData)
+    public static bool IsUnlock(string playerId, string dataId)
     {
-        var Id = GetId(playerId, itemData.Id);
+        var Id = GetId(playerId, dataId);
         if (DataMap.ContainsKey(Id))
             return true;
         return false;
+    }
+
+    public static bool IsUnlock(string playerId, BaseItem itemData)
+    {
+        return IsUnlock(playerId, itemData);
+    }
+
+    public static bool IsUnlock(string dataId)
+    {
+        return IsUnlock(Player.CurrentPlayerId, dataId);
     }
 
     public static bool IsUnlock(BaseItem itemData)
