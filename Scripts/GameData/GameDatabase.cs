@@ -71,7 +71,7 @@ public class GameDatabase : ScriptableObject
     public List<ArenaRank> arenaRanks;
     public int arenaWinScoreIncrease;
     public int arenaLoseScoreDecrease;
-    public EnvironmentData arenaEnvironment;
+    public BaseEnvironmentData arenaEnvironment;
 
     public readonly Dictionary<string, BaseItem> Items = new Dictionary<string, BaseItem>();
     public readonly Dictionary<string, Currency> Currencies = new Dictionary<string, Currency>();
