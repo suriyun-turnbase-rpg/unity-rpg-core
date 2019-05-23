@@ -35,6 +35,7 @@ public class UIItem : UIDataItem<PlayerItem>
         AttributeCritDamageRate,
         AttributeBlockChance,
         AttributeBlockDamageRate,
+        AttributeResistanceChance,
         Hidden,
     }
     [Header("General")]
@@ -278,6 +279,9 @@ public class UIItem : UIDataItem<PlayerItem>
                 return;
             case DisplayStats.AttributeBlockDamageRate:
                 textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_BLOCK_DAMAGE_RATE, attributes.blockDamageRate);
+                return;
+            case DisplayStats.AttributeResistanceChance:
+                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_RESISTANCE_CHANCE, attributes.resistanceChance);
                 return;
             default:
                 textDisplayStats.text = "";

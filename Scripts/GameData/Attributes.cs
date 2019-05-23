@@ -108,6 +108,19 @@ public class Attributes
     [Tooltip("Accuracy, Character with higher accuracy will have more chance to take damage to character with lower evasion")]
     public Int32Attribute acc = new Int32Attribute();
 #endif
+    [Header("Critical attributes")]
+    [Tooltip("Chance to critical attack (Increase damage by `critDamageRate`), this min-max value should not over 1")]
+    public SingleAttribute critChance = new SingleAttribute();
+    [Tooltip("Damage when critical attack = this * Damage")]
+    public SingleAttribute critDamageRate = new SingleAttribute();
+    [Header("Block attributes")]
+    [Tooltip("Chance to block (Reduce damage by `blockDamageRate`), this min-max value should not over 1")]
+    public SingleAttribute blockChance = new SingleAttribute();
+    [Tooltip("Damage when block = this / Damage")]
+    public SingleAttribute blockDamageRate = new SingleAttribute();
+    [Header("Resistance Attributes")]
+    [Tooltip("Chance to prevent application of a harmful effect, this min-max value should not over 1")]
+    public SingleAttribute resistanceChance = new SingleAttribute();
 
     public Attributes Clone()
     {
@@ -124,6 +137,11 @@ public class Attributes
         result.eva = eva.Clone();
         result.acc = acc.Clone();
 #endif
+        result.critChance = critChance.Clone();
+        result.critDamageRate = critDamageRate.Clone();
+        result.blockChance = blockChance.Clone();
+        result.blockDamageRate = blockDamageRate.Clone();
+        result.resistanceChance = resistanceChance.Clone();
         return result;
     }
 
@@ -142,6 +160,11 @@ public class Attributes
         result.eva = eva.Calculate(currentLevel, maxLevel);
         result.acc = acc.Calculate(currentLevel, maxLevel);
 #endif
+        result.critChance = critChance.Calculate(currentLevel, maxLevel);
+        result.critDamageRate = critDamageRate.Calculate(currentLevel, maxLevel);
+        result.blockChance = blockChance.Calculate(currentLevel, maxLevel);
+        result.blockDamageRate = blockDamageRate.Calculate(currentLevel, maxLevel);
+        result.resistanceChance = resistanceChance.Calculate(currentLevel, maxLevel);
         return result;
     }
 
@@ -184,6 +207,26 @@ public class Attributes
         attributes.acc = acc;
 #endif
 
+        var critChance = this.critChance.Clone();
+        critChance.maxValue = this.critChance.Calculate(newMaxLevel, defaultMaxLevel);
+        attributes.critChance = critChance;
+
+        var critDamageRate = this.critDamageRate.Clone();
+        critDamageRate.maxValue = this.critDamageRate.Calculate(newMaxLevel, defaultMaxLevel);
+        attributes.critDamageRate = critDamageRate;
+
+        var blockChance = this.blockChance.Clone();
+        blockChance.maxValue = this.blockChance.Calculate(newMaxLevel, defaultMaxLevel);
+        attributes.blockChance = blockChance;
+
+        var blockDamageRate = this.blockDamageRate.Clone();
+        blockDamageRate.maxValue = this.blockDamageRate.Calculate(newMaxLevel, defaultMaxLevel);
+        attributes.blockDamageRate = blockDamageRate;
+
+        var resistanceChance = this.resistanceChance.Clone();
+        resistanceChance.maxValue = this.resistanceChance.Calculate(newMaxLevel, defaultMaxLevel);
+        attributes.resistanceChance = resistanceChance;
+
         return attributes;
     }
 
@@ -202,6 +245,11 @@ public class Attributes
         result.eva = a.eva * b;
         result.acc = a.acc * b;
 #endif
+        result.critChance = a.critChance * b;
+        result.critDamageRate = a.critDamageRate * b;
+        result.blockChance = a.blockChance * b;
+        result.blockDamageRate = a.blockDamageRate * b;
+        result.resistanceChance = a.resistanceChance * b;
         return result;
     }
 }
@@ -253,18 +301,22 @@ public class CalculationAttributes
 #endif
     [Header("Critical attributes")]
     [Range(0f, 1f)]
-    [Tooltip("Chance to critical attack")]
+    [Tooltip("Chance to critical attack (Increase damage by `critDamageRate`)")]
     public float critChance;
     [Range(1f, 100f)]
     [Tooltip("Damage when critical attack = this * Damage")]
     public float critDamageRate;
     [Header("Block attributes")]
     [Range(0f, 1f)]
-    [Tooltip("Chance to block")]
+    [Tooltip("Chance to block (Reduce damage by `blockDamageRate`)")]
     public float blockChance;
     [Range(1f, 100f)]
     [Tooltip("Damage when block = this / Damage")]
     public float blockDamageRate;
+    [Header("Resistance Attributes")]
+    [Tooltip("Chance to prevent application of a harmful effect")]
+    [Range(0f, 1f)]
+    public float resistanceChance;
 
     public CalculationAttributes Clone()
     {
@@ -300,6 +352,9 @@ public class CalculationAttributes
 
         result.blockChance = blockChance;
         result.blockDamageRate = blockDamageRate;
+
+        result.resistanceChance = resistanceChance;
+
         return result;
     }
 
@@ -338,6 +393,9 @@ public class CalculationAttributes
 
         result.blockChance += b.blockChance;
         result.blockDamageRate += b.blockDamageRate;
+
+        result.resistanceChance += b.resistanceChance;
+
         return result;
     }
 
@@ -375,6 +433,9 @@ public class CalculationAttributes
 
         result.blockChance -= b.blockChance;
         result.blockDamageRate -= b.blockDamageRate;
+
+        result.resistanceChance -= b.resistanceChance;
+
         return result;
     }
 
@@ -412,6 +473,9 @@ public class CalculationAttributes
 
         result.blockChance = a.blockChance * b;
         result.blockDamageRate = a.blockDamageRate * b;
+
+        result.resistanceChance = a.resistanceChance * b;
+
         return result;
     }
 #endregion
@@ -526,6 +590,10 @@ public class CalculationAttributes
         if (blockDamageRate != 0 || bonusAttributes.blockDamageRate != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_BLOCK_DAMAGE_RATE, blockDamageRate, bonusAttributes.blockDamageRate, true);
+        }
+        if (resistanceChance != 0 || bonusAttributes.resistanceChance != 0)
+        {
+            result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_RESISTANCE_CHANCE, resistanceChance, bonusAttributes.resistanceChance, true);
         }
         return result;
     }

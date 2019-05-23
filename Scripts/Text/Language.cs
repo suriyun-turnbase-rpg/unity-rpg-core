@@ -18,6 +18,7 @@ public class GameText
     public const string TITLE_ARENA_STAMINA = TEXT_PREFIX + "TITLE_ARENA_STAMINA";
     // Combat
     public const string COMBAT_MISS = TEXT_PREFIX + "COMBAT_MISS";
+    public const string COMBAT_RESIST = TEXT_PREFIX + "COMBAT_RESIST";
     // Item
     public const string TITLE_LEVEL = TEXT_PREFIX + "TITLE_LEVEL";
     public const string TITLE_COLLECT_EXP = TEXT_PREFIX + "TITLE_COLLECT_EXP";
@@ -49,6 +50,7 @@ public class GameText
     public const string TITLE_ATTRIBUTE_CRIT_DAMAGE_RATE = TEXT_PREFIX + "TITLE_ATTRIBUTE_CRIT_DAMAGE_RATE";
     public const string TITLE_ATTRIBUTE_BLOCK_CHANCE = TEXT_PREFIX + "TITLE_ATTRIBUTE_BLOCK_CHANCE";
     public const string TITLE_ATTRIBUTE_BLOCK_DAMAGE_RATE = TEXT_PREFIX + "TITLE_ATTRIBUTE_BLOCK_DAMAGE_RATE";
+    public const string TITLE_ATTRIBUTE_RESISTANCE_CHANCE = TEXT_PREFIX + "TITLE_ATTRIBUTE_RESISTANCE";
     // Formats
     public const string FORMAT_INFO = FORMAT_PREFIX + "FORMAT_INFO";
     public const string FORMAT_ATTRIBUTE = FORMAT_PREFIX + "FORMAT_ATTRIBUTE";
@@ -102,6 +104,7 @@ public static class DefaultLocale
         Texts.Add(GameText.TITLE_ATTRIBUTE_CRIT_DAMAGE_RATE, "Critical Damage Rate");
         Texts.Add(GameText.TITLE_ATTRIBUTE_BLOCK_CHANCE, "Block Chance");
         Texts.Add(GameText.TITLE_ATTRIBUTE_BLOCK_DAMAGE_RATE, "Block Damage Rate");
+        Texts.Add(GameText.TITLE_ATTRIBUTE_RESISTANCE_CHANCE, "Resistance");
         // Format
         Texts.Add(GameText.FORMAT_INFO, "{0}{1}");
         Texts.Add(GameText.FORMAT_ATTRIBUTE, "{0}: {1}{2}");

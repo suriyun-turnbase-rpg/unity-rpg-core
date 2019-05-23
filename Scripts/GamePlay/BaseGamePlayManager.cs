@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 public abstract class BaseGamePlayManager : MonoBehaviour
 {
+    public static BaseGamePlayManager Singleton { get; private set; }
     public static string BattleSession { get; private set; }
     public static BaseStage PlayingStage { get; protected set; }
     public static Player Helper { get; protected set; }
@@ -19,6 +20,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public UICombatText combatHealPrefab;
     public UICombatText combatPoisonPrefab;
     public UICombatText combatMissPrefab;
+    public UICombatText combatResistPrefab;
     [Header("Gameplay UI")]
     public UIWin uiWin;
     public UILose uiLose;
@@ -94,6 +96,15 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         combatText.TempObjectFollower.targetObject = character.bodyEffectContainer;
         combatText.Amount = 0;
         combatText.TempText.text = LanguageManager.Texts[GameText.COMBAT_MISS];
+    }
+
+    public void SpawnResistText(BaseCharacterEntity character)
+    {
+        var resistText = Instantiate(combatResistPrefab, combatTextContainer);
+        resistText.transform.localScale = Vector3.one;
+        resistText.TempObjectFollower.targetObject = character.bodyEffectContainer;
+        resistText.Amount = 0;
+        resistText.TempText.text = LanguageManager.Texts[GameText.COMBAT_MISS];
     }
 
     public void SpawnCombatText(UICombatText prefab, int amount, BaseCharacterEntity character)

@@ -78,7 +78,7 @@ public class UICharacterStatsGeneric : UIBase
             if (i >= uiBuffs.Length)
                 break;
             var ui = uiBuffs[i];
-            ui.buff = character.Buffs[buffKey] as CharacterBuff;
+            ui.buff = character.Buffs[buffKey] as BaseCharacterBuff;
             ui.Show();
             ++i;
         }

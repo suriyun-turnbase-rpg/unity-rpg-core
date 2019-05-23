@@ -9,6 +9,7 @@ using UnityEditor;
 public abstract class BaseCharacterEntity : MonoBehaviour
 {
     public const string ANIM_ACTION_STATE = "_Action";
+    public BaseGamePlayManager Manager { get { return BaseGamePlayManager.Singleton; } }
     [Header("Animator")]
     [SerializeField]
     private RuntimeAnimatorController animatorController;
@@ -215,12 +216,138 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         Position = position;
         Container = container;
     }
-    
+
+    public virtual void Attack(BaseCharacterEntity target, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0)
+    {
+        if (target == null)
+            return;
+        var attributes = GetTotalAttributes();
+        target.ReceiveDamage(
+            Item.CharacterData.elemental,
+            Mathf.CeilToInt(attributes.pAtk * pAtkRate),
+#if !NO_MAGIC_STATS
+            Mathf.CeilToInt(attributes.mAtk * mAtkRate),
+#endif
+#if !NO_EVADE_STATS
+            (int)attributes.acc,
+#endif
+            attributes.critChance,
+            attributes.critDamageRate,
+            hitCount,
+            fixDamage);
+    }
+
+    public virtual void Attack(BaseCharacterEntity target, BaseDamage damagePrefab, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0)
+    {
+        if (damagePrefab == null)
+        {
+            // Apply damage immediately
+            Attack(target, pAtkRate, mAtkRate, hitCount, fixDamage);
+        }
+        else
+        {
+            var damage = Instantiate(damagePrefab, damageContainer.position, damageContainer.rotation);
+            damage.Setup(this, target, pAtkRate, mAtkRate, hitCount, fixDamage);
+        }
+    }
+
+    public virtual bool ReceiveDamage(
+        Elemental elemental,
+        int pAtk,
+#if !NO_MAGIC_STATS
+        int mAtk,
+#endif
+#if !NO_EVADE_STATS
+        int acc,
+#endif
+        float critChance,
+        float critDamageRate,
+        int hitCount = 1, int
+        fixDamage = 0
+        )
+    {
+        if (hitCount <= 0)
+            hitCount = 1;
+        var gameDb = GameInstance.GameDatabase;
+        var attributes = GetTotalAttributes();
+        var pDmg = pAtk - attributes.pDef;
+#if !NO_MAGIC_STATS
+        var mDmg = mAtk - attributes.mDef;
+#endif
+        if (pDmg < 0)
+            pDmg = 0;
+#if !NO_MAGIC_STATS
+        if (mDmg < 0)
+            mDmg = 0;
+#endif
+        var totalDmg = pDmg;
+#if !NO_MAGIC_STATS
+        totalDmg += mDmg;
+#endif
+        // Increase / Decrease damage by effectiveness
+        var effectiveness = 1f;
+        if (elemental != null && elemental.CacheElementEffectiveness.TryGetValue(Item.CharacterData.elemental, out effectiveness))
+            totalDmg *= effectiveness;
+
+        var isCritical = false;
+        var isBlock = false;
+        totalDmg += Mathf.CeilToInt(totalDmg * Random.Range(gameDb.minAtkVaryRate, gameDb.maxAtkVaryRate)) + fixDamage;
+        // Critical occurs
+        if (Random.value <= critChance)
+        {
+            totalDmg = Mathf.CeilToInt(totalDmg * critDamageRate);
+            isCritical = true;
+        }
+        // Block occurs
+        if (Random.value <= attributes.blockChance)
+        {
+            totalDmg = Mathf.CeilToInt(totalDmg / attributes.blockDamageRate);
+            isBlock = true;
+        }
+
+#if !NO_EVADE_STATS
+        var hitChance = 1f;
+        if (acc > 0 && attributes.eva > 0)
+            hitChance = acc / attributes.eva;
+
+        // Cannot evade, receive damage
+        if (hitChance < 0 || Random.value > hitChance)
+        {
+            Manager.SpawnMissText(this);
+        }
+        else
+#endif
+        {
+            if (isBlock)
+                Manager.SpawnBlockText((int)totalDmg, this);
+            else if (isCritical)
+                Manager.SpawnCriticalText((int)totalDmg, this);
+            else
+                Manager.SpawnDamageText((int)totalDmg, this);
+
+            Hp -= (int)totalDmg;
+        }
+
+        return true;
+    }
+
     public virtual void ApplyBuff(BaseCharacterEntity caster, int level, BaseSkill skill, int buffIndex)
     {
         if (skill == null || buffIndex < 0 || buffIndex >= skill.GetBuffs().Count || skill.GetBuffs()[buffIndex] == null || Hp <= 0)
             return;
         
+        if (skill.GetBuffs()[buffIndex].type == BuffType.Nerf)
+        {
+            // Resistance
+            var attributes = GetTotalAttributes();
+            if (Random.value <= attributes.resistanceChance)
+            {
+                // Reisted, nerf will not applied
+                Manager.SpawnResistText(this);
+                return;
+            }
+        }
+
         var buff = NewBuff(level, skill, buffIndex, caster, this);
         if (buff.GetRemainsDuration() > 0f)
         {

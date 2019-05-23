@@ -49,6 +49,9 @@ public class UIAttributes : UIDataItem<CalculationAttributes>
     public Text textBlockChance;
     public GameObject containerBlockDamageRate;
     public Text textBlockDamageRate;
+    [Header("Resistance attributes")]
+    public GameObject containerResistance;
+    public Text textResistanceChance;
     [Header("Options")]
     public bool useFormatForInfo;
     public bool hideInfoIfEmpty;
@@ -213,6 +216,13 @@ public class UIAttributes : UIDataItem<CalculationAttributes>
             textBlockDamageRate.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_BLOCK_DAMAGE_RATE, data.blockDamageRate, true) : LanguageManager.FormatNumber(data.blockDamageRate, true);
             if (hideInfoIfEmpty && containerBlockDamageRate != null)
                 containerBlockDamageRate.SetActive(Mathf.Abs(data.blockDamageRate) > 0);
+        }
+
+        if (textResistanceChance != null)
+        {
+            textResistanceChance.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_RESISTANCE_CHANCE, data.resistanceChance, true) : LanguageManager.FormatNumber(data.resistanceChance, true);
+            if (hideInfoIfEmpty && containerResistance != null)
+                containerResistance.SetActive(Mathf.Abs(data.resistanceChance) > 0);
         }
     }
 
