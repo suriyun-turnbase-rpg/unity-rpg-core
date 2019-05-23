@@ -1,0 +1,13 @@
+{
+    "name": "BaseRPG",
+    "references": [
+        "UnityEditorUtilsEditor",
+        "UnityEditorUtils",
+        "UIUtilities",
+        "CameraAndInput"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
