@@ -42,7 +42,7 @@ public abstract class BaseSkillBuff
 
     public bool RandomToApply(int level = 1)
     {
-        return Random.value < GetApplyChance(level);
+        return Random.value <= GetApplyChance(level);
     }
 
     public float GetApplyChance(int level = 1)
