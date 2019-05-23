@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class BaseCharacterBuff
 {
+    public BaseGamePlayManager Manager { get { return BaseGamePlayManager.Singleton; } }
     public BaseCharacterEntity Giver { get; protected set; }
     public BaseCharacterEntity Receiver { get; protected set; }
     public int Level { get; protected set; }

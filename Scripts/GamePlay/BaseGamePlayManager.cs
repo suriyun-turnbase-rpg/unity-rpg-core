@@ -64,6 +64,11 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     protected bool isAutoPlayDirty;
     protected bool isEnding;
 
+    protected virtual void Awake()
+    {
+        Singleton = this;
+    }
+
     public void SpawnDamageText(int amount, BaseCharacterEntity character)
     {
         SpawnCombatText(combatDamagePrefab, amount, character);

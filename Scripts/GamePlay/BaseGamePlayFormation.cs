@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BaseGamePlayFormation : MonoBehaviour
 {
+    public BaseGamePlayManager Manager { get { return BaseGamePlayManager.Singleton; } }
     public Transform[] containers;
     public Transform helperContainer;
     public readonly Dictionary<int, BaseCharacterEntity> Characters = new Dictionary<int, BaseCharacterEntity>();
