@@ -12,16 +12,21 @@ public class UILevel : MonoBehaviour, ILevel
     public Text textRequireExp;
     public Text textExpPercent;
     public Image imageExpGage;
+    public Text textIncreasingExp;
+    public Text textIncreasedExpPercent;
+    public Image imageIncreasedExpGage;
     public bool showMaxLevelInTextLevel;
 
     public int level;
     public int maxLevel;
     public int collectExp;
+    public int increasingExp;
     public int nextExp;
 
     public int Level { get { return level; } }
     public int MaxLevel { get { return maxLevel; } }
     public int CollectExp { get { return collectExp; } }
+    public int IncreasingExp { get { return increasingExp; } }
     public int NextExp { get { return nextExp; } }
 
     // Options
@@ -29,12 +34,14 @@ public class UILevel : MonoBehaviour, ILevel
 
     void Update()
     {
-        var rate = (float)CollectExp / (float)NextExp;
+        var rate = (float)(CollectExp - IncreasingExp) / (float)NextExp;
+        var rateWithIncreasingExp = (float)CollectExp / (float)NextExp;
         var isReachMaxLevel = false;
         if (Level == MaxLevel)
         {
             isReachMaxLevel = true;
             rate = 1;
+            rateWithIncreasingExp = 1;
         }
 
         if (textLevel != null)
@@ -46,7 +53,7 @@ public class UILevel : MonoBehaviour, ILevel
 
         if (textCollectExp != null)
         {
-            textCollectExp.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_COLLECT_EXP, CollectExp) : CollectExp.ToString("N0");
+            textCollectExp.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_COLLECT_EXP, (CollectExp - IncreasingExp)) : (CollectExp - IncreasingExp).ToString("N0");
             if (isReachMaxLevel)
                 textCollectExp.text = "0";
         }
@@ -60,7 +67,7 @@ public class UILevel : MonoBehaviour, ILevel
 
         if (textCollectPerNextExp != null)
         {
-            textCollectPerNextExp.text = CollectExp.ToString("N0") + "/" + NextExp.ToString("N0");
+            textCollectPerNextExp.text = (CollectExp - IncreasingExp).ToString("N0") + "/" + NextExp.ToString("N0");
             if (isReachMaxLevel)
                 textCollectPerNextExp.text = LanguageManager.GetText(GameText.TITLE_EXP_MAX);
         }
@@ -77,5 +84,14 @@ public class UILevel : MonoBehaviour, ILevel
 
         if (imageExpGage != null)
             imageExpGage.fillAmount = rate;
+
+        if (textIncreasingExp != null)
+            textIncreasingExp.text = "+" + IncreasingExp.ToString("N0");
+
+        if (textIncreasedExpPercent != null)
+            textIncreasedExpPercent.text = (rateWithIncreasingExp * 100).ToString("N2") + "%";
+
+        if (imageIncreasedExpGage != null)
+            imageIncreasedExpGage.fillAmount = rateWithIncreasingExp;
     }
 }
