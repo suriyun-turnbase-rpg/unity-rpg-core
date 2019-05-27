@@ -10,6 +10,7 @@ public class UIWin : UIDataItem<FinishStageResult>
     public UIPlayer uiPlayer;
     public Text textRewardPlayerExp;
     public Text textRewardCharacterExp;
+    public UIItemList uiIncreasedExpCharacters;
     public UIItemList uiRewardItems;
     public UICurrency uiRewardCurrency;
     public Button buttonRestart;
@@ -63,6 +64,9 @@ public class UIWin : UIDataItem<FinishStageResult>
         if (textRewardCharacterExp != null)
             textRewardCharacterExp.text = "0";
 
+        if (uiIncreasedExpCharacters != null)
+            uiIncreasedExpCharacters.ClearListItems();
+
         if (uiRewardItems != null)
             uiRewardItems.ClearListItems();
 
@@ -88,6 +92,32 @@ public class UIWin : UIDataItem<FinishStageResult>
 
         if (textRewardCharacterExp != null)
             textRewardCharacterExp.text = data.rewardCharacterExp.ToString("N0");
+
+        if (uiIncreasedExpCharacters != null)
+        {
+            var playerItems = new List<PlayerItem>();
+            var formationName = Player.CurrentPlayer.SelectedFormation;
+            if (BaseGamePlayManager.BattleType == EBattleType.Arena)
+                formationName = Player.CurrentPlayer.SelectedArenaFormation;
+
+            var formationList = PlayerFormation.GetList(formationName);
+            foreach (var formation in formationList)
+            {
+                var itemId = formation.ItemId;
+                PlayerItem item = null;
+                if (!string.IsNullOrEmpty(itemId) && PlayerItem.DataMap.TryGetValue(itemId, out item))
+                    playerItems.Add(item);
+            }
+
+            uiIncreasedExpCharacters.selectable = false;
+            uiIncreasedExpCharacters.multipleSelection = false;
+            uiIncreasedExpCharacters.SetListItems(playerItems);
+            foreach (var uiItem in uiIncreasedExpCharacters.UIEntries.Values)
+            {
+                if (uiItem.uiLevel != null)
+                    uiItem.uiLevel.increasingExp = data.rewardCharacterExp;
+            }
+        }
 
         if (uiRewardItems != null)
         {
