@@ -67,6 +67,23 @@ public class PlayerFormation : BasePlayerData, IPlayerFormation
         return TryGetData(Player.CurrentPlayerId, dataId, position, out data);
     }
 
+    public static List<PlayerFormation> GetList(string playerId, string dataId)
+    {
+        List<PlayerFormation> result = new List<PlayerFormation>();
+        foreach (var playerFormation in DataMap.Values)
+        {
+            if (playerFormation.PlayerId.Equals(playerId) &&
+                playerFormation.DataId.Equals(dataId))
+                result.Add(playerFormation);
+        }
+        return result;
+    }
+
+    public static List<PlayerFormation> GetList(string dataId)
+    {
+        return GetList(Player.CurrentPlayerId, dataId);
+    }
+
     public static bool RemoveData(string id)
     {
         return DataMap.Remove(id);
