@@ -31,6 +31,20 @@ public abstract class BaseUIStagePreparation<TUI, TStage> : UIDataItem<TStage>
         base.Show();
         if (uiCurrentFormation != null)
         {
+            if (!GameInstance.GameDatabase.Formations.ContainsKey(Player.CurrentPlayer.SelectedFormation) ||
+                GameInstance.GameDatabase.Formations[Player.CurrentPlayer.SelectedFormation].formationType != EFormationType.Stage)
+            {
+                // Try set selected formation to arena formation
+                foreach (var formation in GameInstance.GameDatabase.Formations.Values)
+                {
+                    if (formation.formationType == EFormationType.Stage)
+                    {
+                        Player.CurrentPlayer.SelectedFormation = formation.id;
+                        GameInstance.GameService.SelectFormation(formation.id, EFormationType.Stage);
+                        break;
+                    }
+                }
+            }
             uiCurrentFormation.formationName = Player.CurrentPlayer.SelectedFormation;
             uiCurrentFormation.SetFormationData(uiFormationSlotPrefab);
         }
