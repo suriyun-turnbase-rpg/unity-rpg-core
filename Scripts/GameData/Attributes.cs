@@ -119,7 +119,7 @@ public class Attributes
     [Tooltip("Damage when block = this / Damage")]
     public SingleAttribute blockDamageRate = new SingleAttribute();
     [Header("Resistance Attributes")]
-    [Tooltip("Chance to prevent application of a harmful effect, this min-max value should not over 1")]
+    [Tooltip("Chance to prevent application of a nerf effect, this min-max value should not over 1")]
     public SingleAttribute resistanceChance = new SingleAttribute();
 
     public Attributes Clone()
