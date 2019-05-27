@@ -138,7 +138,7 @@ public class UIFormationManager : UIBase
         if (uiCharacterList != null)
             uiCharacterList.ClearListItems();
 
-        if (characterFormation != null)
+        if (characterFormation != null && formationType == EFormationType.Stage)
             characterFormation.SetFormationCharacters(EBattleType.Stage);
     }
 
