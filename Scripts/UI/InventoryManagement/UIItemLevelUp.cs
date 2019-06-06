@@ -8,11 +8,15 @@ public class UIItemLevelUp : UIItemWithMaterials
 {
     // UI
     public Button levelUpButton;
+    public AnimItemLevelUp animCharacterLevelUp;
+    public AnimItemLevelUp animEquipmentLevelUp;
     // Events
     public UnityEvent eventLevelUpSuccess;
     public UnityEvent eventLevelUpFail;
     // Private
     private int totalLevelUpPrice;
+    private PlayerItem newItem;
+    private List<PlayerItem> materials;
 
     public override void Show()
     {
@@ -25,18 +29,20 @@ public class UIItemLevelUp : UIItemWithMaterials
         if (levelUpButton != null)
             levelUpButton.interactable = Item.CanLevelUp;
 
-        var selectedItem = GetSelectedItems();
+        materials = GetSelectedItems();
         var levelUpPrice = Item.LevelUpPrice;
         var increasingExp = 0;
         totalLevelUpPrice = 0;
-        foreach (var entry in selectedItem)
+        foreach (var entry in materials)
         {
             increasingExp += entry.Amount * entry.RewardExp;
             totalLevelUpPrice += entry.Amount * levelUpPrice;
         }
 
+        newItem = Item.CreateLevelUpItem(increasingExp);
+
         if (uiAfterInfo != null)
-            uiAfterInfo.SetData(Item.CreateLevelUpItem(increasingExp));
+            uiAfterInfo.SetData(newItem);
 
         if (uiCurrency != null)
         {
@@ -98,6 +104,12 @@ public class UIItemLevelUp : UIItemWithMaterials
 
     private void OnLevelUpSuccess(ItemResult result)
     {
+        if (animCharacterLevelUp != null && Item.CharacterData != null)
+            animCharacterLevelUp.Play(Item, newItem, materials);
+
+        if (animEquipmentLevelUp != null && Item.EquipmentData != null)
+            animEquipmentLevelUp.Play(Item, newItem, materials);
+
         GameInstance.Singleton.OnGameServiceItemResult(result);
         eventLevelUpSuccess.Invoke();
         if (uiSelectedItemList != null)
