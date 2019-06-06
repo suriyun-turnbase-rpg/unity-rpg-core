@@ -8,8 +8,12 @@ public class AnimItemLevelUp : MonoBehaviour
     public UIItem uiLevelUpItem;
     public UIItem[] uiMaterials;
     public UILevel uiLevel;
+    public Animator animAnimator;
     public float gageDuration = 0.75f;
-    public float startDelay = 1f;
+    [Tooltip("Total duration = `animationDurationEachMaterials` * {materials amount} + `extraAnimationDuration`")]
+    public float animationDurationEachMaterials = 0.8f;
+    [Tooltip("Total duration = `animationDurationEachMaterials` * {materials amount} + `extraAnimationDuration`")]
+    public float extraAnimationDuration = 0f;
     public UnityEvent onLevelUp;
     public UnityEvent onStart;
     public UnityEvent onEnd;
@@ -51,6 +55,7 @@ public class AnimItemLevelUp : MonoBehaviour
                 uiMaterial.Hide();
             }
         }
+
         uiLevel.gameObject.SetActive(oldItem.ActorItemData != null);
         uiLevel.level = oldItem.Level;
         uiLevel.maxLevel = oldItem.MaxLevel;
@@ -74,7 +79,11 @@ public class AnimItemLevelUp : MonoBehaviour
         isEnd = false;
         // Enable update function after delay
         gameObject.SetActive(true);
-        StartCoroutine(DelayBeforePlay(startDelay));
+
+        if (animAnimator != null)
+            animAnimator.SetInteger("MaterialsAmount", materials.Count);
+
+        StartCoroutine(DelayBeforePlay(animationDurationEachMaterials * materials.Count + extraAnimationDuration));
     }
 
     IEnumerator DelayBeforePlay(float delay)
@@ -107,6 +116,7 @@ public class AnimItemLevelUp : MonoBehaviour
             {
                 // End, after end it will not after and not able to skip
                 isEnd = true;
+                uiLevelUpItem.SetData(newItem);
                 onEnd.Invoke();
             }
         }
@@ -128,6 +138,7 @@ public class AnimItemLevelUp : MonoBehaviour
             collectExp = targetExp = afterLevelUpTargetExp;
             onLevelUp.Invoke();
         }
+        uiLevelUpItem.SetData(newItem);
         onEnd.Invoke();
     }
 }
