@@ -10,11 +10,16 @@ public class UIItemEvolve : UIItemWithMaterials
     public bool autoSelectMaterials;
     // UI
     public Button evolveButton;
+    public AnimItemEvolve animCharacterEvolve;
+    public AnimItemEvolve animEquipmentEvolve;
     // Events
     public UnityEvent eventEvolveSuccess;
     public UnityEvent eventEvolveFail;
     // Private
     private Dictionary<string, int> evolveMaterials = new Dictionary<string, int>();
+    private PlayerItem newItem;
+    private List<PlayerItem> materials;
+
     public override void Show()
     {
         base.Show();
@@ -29,23 +34,27 @@ public class UIItemEvolve : UIItemWithMaterials
     {
         if (evolveButton != null)
             evolveButton.interactable = Item.CanEvolve;
-
+        
         if (Item.EvolveItem != null)
         {
-            if (uiAfterInfo != null)
-                uiAfterInfo.SetData(Item.CreateEvolveItem());
+            newItem = Item.CreateEvolveItem();
 
+            if (uiAfterInfo != null)
+                uiAfterInfo.SetData(newItem);
+
+            materials = new List<PlayerItem>();
             evolveMaterials = Item.EvolveMaterials;
-            if (uiSelectedItemList != null)
+            foreach (var evolveItem in evolveMaterials)
             {
-                foreach (var evolveItem in evolveMaterials)
+                var evolveItemDataId = evolveItem.Key;
+                var evolveItemAmount = evolveItem.Value;
+                var materialItem = new PlayerItem();
+                materialItem.Id = evolveItemDataId;
+                materialItem.DataId = evolveItemDataId;
+                materialItem.Amount = 1;
+                materials.Add(materialItem);
+                if (uiSelectedItemList != null)
                 {
-                    var evolveItemDataId = evolveItem.Key;
-                    var evolveItemAmount = evolveItem.Value;
-                    var materialItem = new PlayerItem();
-                    materialItem.Id = evolveItemDataId;
-                    materialItem.DataId = evolveItemDataId;
-                    materialItem.Amount = 1;
                     var newUIMaterial = uiSelectedItemList.SetListItem(materialItem);
                     newUIMaterial.ForceUpdate();
                     newUIMaterial.SetupSelectedAmount(0, evolveItemAmount);
@@ -131,6 +140,12 @@ public class UIItemEvolve : UIItemWithMaterials
 
     private void OnEvolveSuccess(ItemResult result)
     {
+        if (animCharacterEvolve != null && Item.CharacterData != null)
+            animCharacterEvolve.Play(Item, newItem, materials);
+
+        if (animEquipmentEvolve != null && Item.EquipmentData != null)
+            animEquipmentEvolve.Play(Item, newItem, materials);
+
         GameInstance.Singleton.OnGameServiceItemResult(result);
         eventEvolveSuccess.Invoke();
         var items = GetAvailableItems();
