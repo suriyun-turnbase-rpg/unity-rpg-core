@@ -7,6 +7,7 @@ public class UIInventoryManager : UIBase
     public UIItem uiSelectedInfo;
     public UIItemList uiItemList;
     public UIItemListFilterSetting filterSetting;
+    public bool dontSelectFirstEntryOnShow;
 
     public override void Show()
     {
@@ -25,18 +26,25 @@ public class UIInventoryManager : UIBase
             list.SortLevel();
             uiItemList.SetListItems(list);
 
-            if (uiItemList.UIEntries.Count > 0)
+            if (dontSelectFirstEntryOnShow)
             {
-                var allUIs = uiItemList.UIEntries.Values.ToList();
-                allUIs[0].Selected = true;
-                SelectItem(allUIs[0]);
+                uiItemList.DeselectedItems(null);
             }
             else
             {
-                if (uiSelectedInfo != null)
+                if (uiItemList.UIEntries.Count > 0)
                 {
-                    uiSelectedInfo.Clear();
-                    uiSelectedInfo.Hide();
+                    var allUIs = uiItemList.UIEntries.Values.ToList();
+                    allUIs[0].Selected = true;
+                    SelectItem(allUIs[0]);
+                }
+                else
+                {
+                    if (uiSelectedInfo != null)
+                    {
+                        uiSelectedInfo.Clear();
+                        uiSelectedInfo.Hide();
+                    }
                 }
             }
         }

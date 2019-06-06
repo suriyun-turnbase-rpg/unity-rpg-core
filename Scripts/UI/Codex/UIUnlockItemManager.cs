@@ -8,6 +8,7 @@ public class UIUnlockItemManager : UIBase
     public UIUnlockItemList uiUnlockItemList;
     public bool showCharacter;
     public bool showEquipment;
+    public bool dontSelectFirstEntryOnShow;
     public override void Show()
     {
         base.Show();
@@ -41,18 +42,25 @@ public class UIUnlockItemManager : UIBase
                 list.AddRange(listEquipment);
             uiUnlockItemList.SetListItems(list);
 
-            if (uiUnlockItemList.UIEntries.Count > 0)
+            if (dontSelectFirstEntryOnShow)
             {
-                var allUIs = uiUnlockItemList.UIEntries.Values.ToList();
-                allUIs[0].Selected = true;
-                SelectItem(allUIs[0]);
+                uiUnlockItemList.DeselectedItems(null);
             }
             else
             {
-                if (uiSelectedInfo != null)
+                if (uiUnlockItemList.UIEntries.Count > 0)
                 {
-                    uiSelectedInfo.Clear();
-                    uiSelectedInfo.Hide();
+                    var allUIs = uiUnlockItemList.UIEntries.Values.ToList();
+                    allUIs[0].Selected = true;
+                    SelectItem(allUIs[0]);
+                }
+                else
+                {
+                    if (uiSelectedInfo != null)
+                    {
+                        uiSelectedInfo.Clear();
+                        uiSelectedInfo.Hide();
+                    }
                 }
             }
         }
