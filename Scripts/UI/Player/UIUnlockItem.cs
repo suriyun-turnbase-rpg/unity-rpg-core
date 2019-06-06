@@ -38,17 +38,20 @@ public class UIUnlockItem : UIDataItem<string>
     public override void UpdateData()
     {
         if (uiItem != null)
+            uiItem.data = GetPlayerItem();
+    }
+
+    public PlayerItem GetPlayerItem()
+    {
+        return new PlayerItem()
         {
-            uiItem.data = new PlayerItem()
-            {
-                Id = "",
-                PlayerId = "",
-                DataId = data,
-                Amount = 1,
-                Exp = 0,
-                EquipItemId = "",
-                EquipPosition = "",
-            };
-        }
+            Id = "",
+            PlayerId = "",
+            DataId = data,
+            Amount = 1,
+            Exp = 0,
+            EquipItemId = "",
+            EquipPosition = "",
+        };
     }
 }
