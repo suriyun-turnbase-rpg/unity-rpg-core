@@ -1,13 +1,14 @@
 {
-    "name": "BaseRPG",
+    "name": "BaseRPGEditor",
     "references": [
-        "CameraAndInput",
-        "UIUtilities",
         "UnityEditorUtilsEditor",
-        "UnityEditorUtils"
+        "UnityEditorUtils",
+        "BaseRPG"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
