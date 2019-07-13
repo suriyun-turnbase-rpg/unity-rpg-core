@@ -136,10 +136,15 @@ public abstract class BaseCharacterEntity : MonoBehaviour
 #if UNITY_EDITOR
     private void OnValidate()
     {
+        var hasChanges = false;
         var cacheAnimator = GetComponent<Animator>();
         if (animatorController == null && cacheAnimator != null)
+        {
             animatorController = cacheAnimator.runtimeAnimatorController;
-        EditorUtility.SetDirty(gameObject);
+            hasChanges = true;
+        }
+        if (hasChanges)
+            EditorUtility.SetDirty(this);
     }
 #endif
 
