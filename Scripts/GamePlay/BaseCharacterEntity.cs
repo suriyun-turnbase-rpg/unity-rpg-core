@@ -229,15 +229,9 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         var attributes = GetTotalAttributes();
         target.ReceiveDamage(
             Item.CharacterData.elemental,
-            Mathf.CeilToInt(attributes.pAtk * pAtkRate),
-#if !NO_MAGIC_STATS
-            Mathf.CeilToInt(attributes.mAtk * mAtkRate),
-#endif
-#if !NO_EVADE_STATS
-            (int)attributes.acc,
-#endif
-            attributes.critChance,
-            attributes.critDamageRate,
+            GetTotalAttributes(),
+            pAtkRate,
+            mAtkRate,
             hitCount,
             fixDamage);
     }
@@ -257,71 +251,47 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     }
 
     public virtual bool ReceiveDamage(
-        Elemental elemental,
-        int pAtk,
-#if !NO_MAGIC_STATS
-        int mAtk,
-#endif
-#if !NO_EVADE_STATS
-        int acc,
-#endif
-        float critChance,
-        float critDamageRate,
-        int hitCount = 1, int
-        fixDamage = 0
+        Elemental attackerElemental,
+        CalculationAttributes attackerAttributes,
+        float pAtkRate = 1f,
+        float mAtkRate = 1f,
+        int hitCount = 1,
+        int fixDamage = 0
         )
     {
-        if (hitCount <= 0)
-            hitCount = 1;
-        var gameDb = GameInstance.GameDatabase;
-        var attributes = GetTotalAttributes();
-        var pDmg = pAtk - attributes.pDef;
-#if !NO_MAGIC_STATS
-        var mDmg = mAtk - attributes.mDef;
-#endif
-        if (pDmg < 0)
-            pDmg = 0;
-#if !NO_MAGIC_STATS
-        if (mDmg < 0)
-            mDmg = 0;
-#endif
-        var totalDmg = pDmg;
-#if !NO_MAGIC_STATS
-        totalDmg += mDmg;
-#endif
-        // Increase / Decrease damage by effectiveness
-        var effectiveness = 1f;
-        if (elemental != null && elemental.CacheElementEffectiveness.TryGetValue(Item.CharacterData.elemental, out effectiveness))
-            totalDmg *= effectiveness;
+        var defenderElemental = Item.CharacterData.elemental;
+        var defenderAttributes = GetTotalAttributes();
+        var totalDmg = GameInstance.GameplayRule.GetDamage(
+            attackerElemental,
+            defenderElemental,
+            attackerAttributes,
+            defenderAttributes,
+            pAtkRate,
+            mAtkRate,
+            hitCount,
+            fixDamage);
 
         var isCritical = false;
         var isBlock = false;
-        totalDmg += Mathf.CeilToInt(totalDmg * Random.Range(gameDb.minAtkVaryRate, gameDb.maxAtkVaryRate)) + fixDamage;
         // Critical occurs
-        if (Random.value <= critChance)
+        if (GameInstance.GameplayRule.IsCrit(attackerAttributes, defenderAttributes))
         {
-            totalDmg = Mathf.CeilToInt(totalDmg * critDamageRate);
+            totalDmg = GameInstance.GameplayRule.GetCritDamage(attackerAttributes, defenderAttributes, totalDmg);
             isCritical = true;
         }
         // Block occurs
-        if (Random.value <= attributes.blockChance)
+        if (GameInstance.GameplayRule.IsBlock(attackerAttributes, defenderAttributes))
         {
-            totalDmg = Mathf.CeilToInt(totalDmg / attributes.blockDamageRate);
+            totalDmg = GameInstance.GameplayRule.GetBlockDamage(attackerAttributes, defenderAttributes, totalDmg);
             isBlock = true;
         }
-
-#if !NO_EVADE_STATS
-        var hitChance = 1f;
-        if (acc > 0 && attributes.eva > 0)
-            hitChance = acc / attributes.eva;
-
+        
         // Cannot evade, receive damage
-        if (hitChance < 0 || Random.value > hitChance)
+        if (GameInstance.GameplayRule.IsHit(attackerAttributes, defenderAttributes))
         {
             Manager.SpawnMissText(this);
         }
         else
-#endif
         {
             if (isBlock)
                 Manager.SpawnBlockText((int)totalDmg, this);

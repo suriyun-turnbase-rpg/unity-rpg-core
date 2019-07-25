@@ -19,6 +19,7 @@ public partial class GameInstance : MonoBehaviour
         GoToBattleScene,
     }
     public GameDatabase gameDatabase;
+    public BaseGameplayRule gameplayRule;
     public UIMessageDialog messageDialog;
     public UIInputDialog inputDialog;
     public UIItemList rewardItemsDialog;
@@ -30,6 +31,7 @@ public partial class GameInstance : MonoBehaviour
 
     public static GameInstance Singleton { get; private set; }
     public static GameDatabase GameDatabase { get; private set; }
+    public static BaseGameplayRule GameplayRule { get; private set; }
     public static BaseGameService GameService { get; private set; }
     public static readonly List<string> AvailableLootBoxes = new List<string>();
     public static readonly List<string> AvailableIapPackages = new List<string>();
@@ -62,6 +64,10 @@ public partial class GameInstance : MonoBehaviour
             Debug.LogError("`Game Database` has not been set");
         else
             GameDatabase.Setup();
+
+        GameplayRule = gameplayRule;
+        if (GameplayRule == null)
+            GameplayRule = ScriptableObject.CreateInstance<BaseGameplayRule>();
 
         GameService = GetComponent<BaseGameService>();
         if (GameService == null)
