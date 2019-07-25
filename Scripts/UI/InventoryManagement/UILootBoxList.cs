@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class UILootBoxList : UIDataItemList<UILootBox, LootBox>
 {
+    public AnimItemsRewarding animItemsRewarding;
+
     public void SetListItems(List<LootBox> list, UnityAction<UILootBox> onSetListItem = null)
     {
         ClearListItems();

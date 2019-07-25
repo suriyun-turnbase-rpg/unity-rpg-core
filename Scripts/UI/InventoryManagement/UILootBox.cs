@@ -107,7 +107,13 @@ public class UILootBox : UIDataItem<LootBox>
         items.AddRange(result.createItems);
         items.AddRange(result.updateItems);
         if (items.Count > 0)
-            GameInstance.Singleton.ShowRewardItemsDialog(items);
+        {
+            var lootBoxList = list as UILootBoxList;
+            if (lootBoxList != null && lootBoxList.animItemsRewarding != null)
+                lootBoxList.animItemsRewarding.Play(items);
+            else
+                GameInstance.Singleton.ShowRewardItemsDialog(items);
+        }
     }
 
     private void OnOpenLootBoxFail(string error)
