@@ -573,7 +573,7 @@ public partial class GameInstance : MonoBehaviour
     {
         if (rewardItemsDialog == null)
         {
-            Debug.LogWarning("Reward Items Dialog` has not been set");
+            Debug.LogWarning("`Reward Items Dialog` has not been set");
             return;
         }
         rewardItemsDialog.SetListItems(items);
@@ -584,7 +584,7 @@ public partial class GameInstance : MonoBehaviour
     {
         if (rewardItemsDialog == null)
         {
-            Debug.LogWarning("Reward Items Dialog` has not been set");
+            Debug.LogWarning("`Reward Items Dialog` has not been set");
             return;
         }
         rewardItemsDialog.Hide();
