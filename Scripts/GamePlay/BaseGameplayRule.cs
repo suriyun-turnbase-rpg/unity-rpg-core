@@ -66,7 +66,7 @@ public class BaseGameplayRule : ScriptableObject
         var hitChance = 1f;
         if (attackerAttributes.acc > 0 && defenderAttributes.eva > 0)
             hitChance = attackerAttributes.acc / defenderAttributes.eva;
-        return hitChance < 0 || Random.value > hitChance;
+        return !(hitChance < 0 || Random.value > hitChance);
 #else
         return true;
 #endif
