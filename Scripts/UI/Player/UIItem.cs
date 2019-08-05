@@ -87,6 +87,8 @@ public class UIItem : UIDataItem<PlayerItem>
     public bool useFormatForInfo;
     public bool excludeEquipmentAttributes;
 
+    public System.Action<BaseCharacterEntity> onInstantiateCharacter;
+
     // Selection
     private int selectedAmount;
     public int SelectedAmount
@@ -421,6 +423,8 @@ public class UIItem : UIDataItem<PlayerItem>
                 {
                     characterRenderer.gameObject.layer = characterModelLayer;
                 }
+                if (onInstantiateCharacter != null)
+                    onInstantiateCharacter.Invoke(character);
             }
         }
     }
