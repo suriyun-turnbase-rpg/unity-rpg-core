@@ -6,7 +6,7 @@ public class AnimItemRewarding : MonoBehaviour
 {
     public UIItem uiRewardItem;
 
-    public void Play(PlayerItem item)
+    public virtual void Play(PlayerItem item)
     {
         uiRewardItem.SetData(item);
     }
