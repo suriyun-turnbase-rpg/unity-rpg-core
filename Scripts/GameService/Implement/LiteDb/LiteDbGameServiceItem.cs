@@ -425,4 +425,9 @@ public partial class LiteDbGameService
         }
         onFinish(result);
     }
+
+    protected override void DoEarnAchievementReward(string playerId, string loginToken, string achievementId, UnityAction<EarnAchievementResult> onFinish)
+    {
+        // TODO: Implement it later
+    }
 }

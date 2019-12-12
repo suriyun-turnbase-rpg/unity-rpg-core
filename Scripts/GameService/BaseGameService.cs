@@ -647,6 +647,16 @@ public abstract class BaseGameService : MonoBehaviour
         DoFinishDuel(playerId, loginToken, session, battleResult, deadCharacters, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void EarnAchievementReward(string achievementId, UnityAction<EarnAchievementResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: EarnAchievementReward");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoEarnAchievementReward(playerId, loginToken, achievementId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -688,4 +698,5 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoStartDuel(string playerId, string loginToken, string targetPlayerId, UnityAction<StartDuelResult> onFinish);
     protected abstract void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish);
+    protected abstract void DoEarnAchievementReward(string playerId, string loginToken, string achievementId, UnityAction<EarnAchievementResult> onFinish);
 }
