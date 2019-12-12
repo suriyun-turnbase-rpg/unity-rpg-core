@@ -121,16 +121,6 @@ public static class OfflineAchievementHelpers
         UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountWinDuel, out createPlayerAchievements, out updatePlayerAchievements);
     }
 
-    public static void UpdateCountSellCharacter(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
-    {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountSellCharacter, out createPlayerAchievements, out updatePlayerAchievements);
-    }
-
-    public static void UpdateCountSellEquipment(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
-    {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountSellEquipment, out createPlayerAchievements, out updatePlayerAchievements);
-    }
-
     public static void UpdateCountingProgress(string playerId, List<PlayerAchievement> playerAchievements, AchievementType type, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
     {
         createPlayerAchievements = new List<PlayerAchievement>();

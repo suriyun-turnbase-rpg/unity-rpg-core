@@ -13,9 +13,7 @@ public enum AchievementType : byte
     CountRevive,
     CountUseHelper,
     CountWinStage,
-    CountWinDuel,
-    CountSellCharacter,
-    CountSellEquipment,
+    CountWinDuel
 }
 
 public class Achievement : BaseGameData
