@@ -52,6 +52,7 @@ public abstract class BaseGameService : MonoBehaviour
     {
         Player.CurrentPlayer = null;
         Player.ClearData();
+        PlayerAchievement.ClearData();
         PlayerAuth.ClearData();
         PlayerCurrency.ClearData();
         PlayerFormation.ClearData();
@@ -367,6 +368,21 @@ public abstract class BaseGameService : MonoBehaviour
     }
 
     /// <summary>
+    /// GetAchievementList
+    /// </summary>
+    /// <param name="onSuccess"></param>
+    /// <param name="onError"></param>
+    public void GetAchievementList(UnityAction<AchievementListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetAchievementList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetAchievementList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    /// <summary>
     /// GetAuthList
     /// </summary>
     /// <param name="onSuccess"></param>
@@ -646,6 +662,7 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoSelectFormation(string playerId, string loginToken, string formationName, EFormationType formationType, UnityAction<PlayerResult> onFinish);
     protected abstract void DoEquipItem(string playerId, string loginToken, string characterId, string equipmentId, string equipPosition, UnityAction<ItemResult> onFinish);
     protected abstract void DoUnEquipItem(string playerId, string loginToken, string equipmentId, UnityAction<ItemResult> onFinish);
+    protected abstract void DoGetAchievementList(string playerId, string loginToken, UnityAction<AchievementListResult> onFinish);
     protected abstract void DoGetAuthList(string playerId, string loginToken, UnityAction<AuthListResult> onFinish);
     protected abstract void DoGetItemList(string playerId, string loginToken, UnityAction<ItemListResult> onFinish);
     protected abstract void DoGetCurrencyList(string playerId, string loginToken, UnityAction<CurrencyListResult> onFinish);

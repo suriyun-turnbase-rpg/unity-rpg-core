@@ -38,6 +38,7 @@ public partial class GameInstance : MonoBehaviour
 
     private readonly Queue<UIMessageDialog.Data> messageDialogData = new Queue<UIMessageDialog.Data>();
     private LoadAllPlayerDataState loadAllPlayerDataState;
+    private static bool isPlayerAchievementListLoaded;
     private static bool isPlayerAuthListLoaded;
     private static bool isPlayerCurrencyListLoaded;
     private static bool isPlayerFormationListLoaded;
@@ -125,6 +126,7 @@ public partial class GameInstance : MonoBehaviour
 
     public void OnGameServiceLogout()
     {
+        isPlayerAchievementListLoaded = false;
         isPlayerAuthListLoaded = false;
         isPlayerCurrencyListLoaded = false;
         isPlayerFormationListLoaded = false;
@@ -196,6 +198,14 @@ public partial class GameInstance : MonoBehaviour
         var currentPlayer = Player.CurrentPlayer;
         if (currentPlayer != null)
             currentPlayer.ProfileName = result.player.ProfileName;
+    }
+
+    public void OnGameServiceAchievementListResult(AchievementListResult result)
+    {
+        if (!result.Success)
+            return;
+
+        PlayerAchievement.SetDataRange(result.list);
     }
 
     public void OnGameServiceAuthListResult(AuthListResult result)
@@ -302,6 +312,22 @@ public partial class GameInstance : MonoBehaviour
         GetClearStageList();
         GetAvailableLootBoxList();
         GetAvailableIAPPackageList();
+    }
+
+    /// <summary>
+    /// Get achievement list for current player
+    /// </summary>
+    private void GetAchievementList()
+    {
+        isPlayerAchievementListLoaded = false;
+        GameService.GetAchievementList(OnGetAchievementListSuccess, (error) => OnGameServiceError(error, GetAchievementList));
+    }
+
+    private void OnGetAchievementListSuccess(AchievementListResult result)
+    {
+        OnGameServiceAchievementListResult(result);
+        isPlayerAchievementListLoaded = true;
+        ValidatePlayerData();
     }
 
     /// <summary>
@@ -453,7 +479,8 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void ValidatePlayerData()
     {
-        if (isPlayerAuthListLoaded &&
+        if (isPlayerAchievementListLoaded &&
+            isPlayerAuthListLoaded &&
             isPlayerCurrencyListLoaded &&
             isPlayerFormationListLoaded &&
             isPlayerItemListLoaded &&

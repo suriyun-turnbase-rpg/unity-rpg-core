@@ -91,6 +91,12 @@ public class ItemResult : GameServiceResult
 }
 
 [System.Serializable]
+public class AchievementListResult : GameServiceResult
+{
+    public List<PlayerAchievement> list = new List<PlayerAchievement>();
+}
+
+[System.Serializable]
 public class AuthListResult : GameServiceResult
 {
     public List<PlayerAuth> list = new List<PlayerAuth>();
