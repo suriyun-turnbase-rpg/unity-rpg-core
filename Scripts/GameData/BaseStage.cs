@@ -14,6 +14,11 @@ public abstract class BaseStage : BaseGameData
     public int rewardPlayerExp;
     public int rewardCharacterExp;
     public ItemDrop[] rewardItems;
+    [Header("First Clear Rewards")]
+    public int firstClearRewardHardCurrency;
+    public int firstClearRewardSoftCurrency;
+    public int firstClearRewardPlayerExp;
+    public ItemDrop[] firstClearRewardItems;
     [Header("Unlock")]
     public BaseStage[] unlockStages;
 
