@@ -255,6 +255,13 @@ public partial class SQLiteGameService : BaseGameService
             equipItemId TEXT NOT NULL,
             equipPosition TEXT NOT NULL)");
 
+        ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerAchievement (
+            id TEXT NOT NULL PRIMARY KEY,
+            playerId TEXT NOT NULL,
+            dataId TEXT NOT NULL,
+            progress INTEGER NOT NULL,
+            earned INTEGER NOT NULL)");
+
         ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerAuth (
             id TEXT NOT NULL PRIMARY KEY,
             playerId TEXT NOT NULL,
@@ -386,6 +393,33 @@ public partial class SQLiteGameService : BaseGameService
         }
         connection.Close();
         return result;
+    }
+
+    protected override void DoGetAchievementList(string playerId, string loginToken, UnityAction<AchievementListResult> onFinish)
+    {
+        var result = new AchievementListResult();
+        var player = ExecuteScalar(@"SELECT COUNT(*) FROM player WHERE id=@playerId AND loginToken=@loginToken",
+            new SqliteParameter("@playerId", playerId),
+            new SqliteParameter("@loginToken", loginToken));
+        if (player == null || (long)player <= 0)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else
+        {
+            var reader = ExecuteReader(@"SELECT * FROM playerAchievement WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
+            var list = new List<PlayerAchievement>();
+            while (reader.Read())
+            {
+                var entry = new PlayerAchievement();
+                entry.Id = reader.GetString(0);
+                entry.PlayerId = reader.GetString(1);
+                entry.DataId = reader.GetString(2);
+                entry.Progress = reader.GetInt32(3);
+                entry.Earned = reader.GetInt32(4) > 0;
+                list.Add(entry);
+            }
+            result.list = list;
+        }
+        onFinish(result);
     }
 
     protected override void DoGetAuthList(string playerId, string loginToken, UnityAction<AuthListResult> onFinish)

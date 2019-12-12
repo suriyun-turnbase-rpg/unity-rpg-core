@@ -10,6 +10,7 @@ public partial class LiteDbGameService : BaseGameService
     private LiteDatabase db;
     private LiteCollection<DbPlayer> colPlayer;
     private LiteCollection<DbPlayerItem> colPlayerItem;
+    private LiteCollection<DbPlayerAchievement> colPlayerAchievement;
     private LiteCollection<DbPlayerAuth> colPlayerAuth;
     private LiteCollection<DbPlayerCurrency> colPlayerCurrency;
     private LiteCollection<DbPlayerStamina> colPlayerStamina;
@@ -31,6 +32,7 @@ public partial class LiteDbGameService : BaseGameService
         db = new LiteDatabase(dbPath);
         colPlayer = db.GetCollection<DbPlayer>("player");
         colPlayerItem = db.GetCollection<DbPlayerItem>("playerItem");
+        colPlayerAchievement = db.GetCollection<DbPlayerAchievement>("playerAchievement");
         colPlayerAuth = db.GetCollection<DbPlayerAuth>("playerAuth");
         colPlayerCurrency = db.GetCollection<DbPlayerCurrency>("playerCurrency");
         colPlayerStamina = db.GetCollection<DbPlayerStamina>("playerStamina");
@@ -38,6 +40,17 @@ public partial class LiteDbGameService : BaseGameService
         colPlayerUnlockItem = db.GetCollection<DbPlayerUnlockItem>("playerUnlockItem");
         colPlayerClearStage = db.GetCollection<DbPlayerClearStage>("playerClearStage");
         colPlayerBattle = db.GetCollection<DbPlayerBattle>("playerBattle");
+    }
+
+    protected override void DoGetAchievementList(string playerId, string loginToken, UnityAction<AchievementListResult> onFinish)
+    {
+        var result = new AchievementListResult();
+        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else
+            result.list.AddRange(DbPlayerAchievement.CloneList(colPlayerAchievement.Find(a => a.PlayerId == playerId)));
+        onFinish(result);
     }
 
     protected override void DoGetAuthList(string playerId, string loginToken, UnityAction<AuthListResult> onFinish)
