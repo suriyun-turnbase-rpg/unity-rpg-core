@@ -404,22 +404,25 @@ public partial class SQLiteGameService : BaseGameService
         if (player == null || (long)player <= 0)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else
-        {
-            var reader = ExecuteReader(@"SELECT * FROM playerAchievement WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
-            var list = new List<PlayerAchievement>();
-            while (reader.Read())
-            {
-                var entry = new PlayerAchievement();
-                entry.Id = reader.GetString(0);
-                entry.PlayerId = reader.GetString(1);
-                entry.DataId = reader.GetString(2);
-                entry.Progress = reader.GetInt32(3);
-                entry.Earned = reader.GetInt32(4) > 0;
-                list.Add(entry);
-            }
-            result.list = list;
-        }
+            result.list = GetPlayerAchievements(playerId);
         onFinish(result);
+    }
+
+    protected List<PlayerAchievement> GetPlayerAchievements(string playerId)
+    {
+        var reader = ExecuteReader(@"SELECT * FROM playerAchievement WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
+        var list = new List<PlayerAchievement>();
+        while (reader.Read())
+        {
+            var entry = new PlayerAchievement();
+            entry.Id = reader.GetString(0);
+            entry.PlayerId = reader.GetString(1);
+            entry.DataId = reader.GetString(2);
+            entry.Progress = reader.GetInt32(3);
+            entry.Earned = reader.GetInt32(4) > 0;
+            list.Add(entry);
+        }
+        return list;
     }
 
     protected override void DoGetAuthList(string playerId, string loginToken, UnityAction<AuthListResult> onFinish)
@@ -431,23 +434,27 @@ public partial class SQLiteGameService : BaseGameService
         if (player == null || (long)player <= 0)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else
-        {
-            var reader = ExecuteReader(@"SELECT * FROM playerAuth WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
-            var list = new List<PlayerAuth>();
-            while (reader.Read())
-            {
-                var entry = new PlayerAuth();
-                entry.Id = reader.GetString(0);
-                entry.PlayerId = reader.GetString(1);
-                entry.Type = reader.GetString(2);
-                entry.Username = reader.GetString(3);
-                entry.Password = reader.GetString(4);
-                list.Add(entry);
-            }
-            result.list = list;
-        }
+            result.list = GetPlayerAuths(playerId);
         onFinish(result);
     }
+
+    protected List<PlayerAuth> GetPlayerAuths(string playerId)
+    {
+        var reader = ExecuteReader(@"SELECT * FROM playerAuth WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
+        var list = new List<PlayerAuth>();
+        while (reader.Read())
+        {
+            var entry = new PlayerAuth();
+            entry.Id = reader.GetString(0);
+            entry.PlayerId = reader.GetString(1);
+            entry.Type = reader.GetString(2);
+            entry.Username = reader.GetString(3);
+            entry.Password = reader.GetString(4);
+            list.Add(entry);
+        }
+        return list;
+    }
+
 
     protected override void DoGetItemList(string playerId, string loginToken, UnityAction<ItemListResult> onFinish)
     {
@@ -458,24 +465,27 @@ public partial class SQLiteGameService : BaseGameService
         if (player == null || (long)player <= 0)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else
-        {
-            var reader = ExecuteReader(@"SELECT * FROM playerItem WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
-            var list = new List<PlayerItem>();
-            while (reader.Read())
-            {
-                var entry = new PlayerItem();
-                entry.Id = reader.GetString(0);
-                entry.PlayerId = reader.GetString(1);
-                entry.DataId = reader.GetString(2);
-                entry.Amount = reader.GetInt32(3);
-                entry.Exp = reader.GetInt32(4);
-                entry.EquipItemId = reader.GetString(5);
-                entry.EquipPosition = reader.GetString(6);
-                list.Add(entry);
-            }
-            result.list = list;
-        }
+            result.list = GetPlayerItems(playerId);
         onFinish(result);
+    }
+
+    protected List<PlayerItem> GetPlayerItems(string playerId)
+    {
+        var reader = ExecuteReader(@"SELECT * FROM playerItem WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
+        var list = new List<PlayerItem>();
+        while (reader.Read())
+        {
+            var entry = new PlayerItem();
+            entry.Id = reader.GetString(0);
+            entry.PlayerId = reader.GetString(1);
+            entry.DataId = reader.GetString(2);
+            entry.Amount = reader.GetInt32(3);
+            entry.Exp = reader.GetInt32(4);
+            entry.EquipItemId = reader.GetString(5);
+            entry.EquipPosition = reader.GetString(6);
+            list.Add(entry);
+        }
+        return list;
     }
 
     protected override void DoGetCurrencyList(string playerId, string loginToken, UnityAction<CurrencyListResult> onFinish)
@@ -487,22 +497,25 @@ public partial class SQLiteGameService : BaseGameService
         if (player == null || (long)player <= 0)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else
-        {
-            var reader = ExecuteReader(@"SELECT * FROM playerCurrency WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
-            var list = new List<PlayerCurrency>();
-            while (reader.Read())
-            {
-                var entry = new PlayerCurrency();
-                entry.Id = reader.GetString(0);
-                entry.PlayerId = reader.GetString(1);
-                entry.DataId = reader.GetString(2);
-                entry.Amount = reader.GetInt32(3);
-                entry.PurchasedAmount = reader.GetInt32(4);
-                list.Add(entry);
-            }
-            result.list = list;
-        }
+            result.list = GetPlayerCurrencies(playerId);
         onFinish(result);
+    }
+
+    protected List<PlayerCurrency> GetPlayerCurrencies(string playerId)
+    {
+        var reader = ExecuteReader(@"SELECT * FROM playerCurrency WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
+        var list = new List<PlayerCurrency>();
+        while (reader.Read())
+        {
+            var entry = new PlayerCurrency();
+            entry.Id = reader.GetString(0);
+            entry.PlayerId = reader.GetString(1);
+            entry.DataId = reader.GetString(2);
+            entry.Amount = reader.GetInt32(3);
+            entry.PurchasedAmount = reader.GetInt32(4);
+            list.Add(entry);
+        }
+        return list;
     }
 
     protected override void DoGetStaminaList(string playerId, string loginToken, UnityAction<StaminaListResult> onFinish)
@@ -514,22 +527,25 @@ public partial class SQLiteGameService : BaseGameService
         if (player == null || (long)player <= 0)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else
-        {
-            var reader = ExecuteReader(@"SELECT * FROM playerStamina WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
-            var list = new List<PlayerStamina>();
-            while (reader.Read())
-            {
-                var entry = new PlayerStamina();
-                entry.Id = reader.GetString(0);
-                entry.PlayerId = reader.GetString(1);
-                entry.DataId = reader.GetString(2);
-                entry.Amount = reader.GetInt32(3);
-                entry.RecoveredTime = reader.GetInt64(4);
-                list.Add(entry);
-            }
-            result.list = list;
-        }
+            result.list = GetPlayerStaminas(playerId);
         onFinish(result);
+    }
+
+    protected List<PlayerStamina> GetPlayerStaminas(string playerId)
+    {
+        var reader = ExecuteReader(@"SELECT * FROM playerStamina WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
+        var list = new List<PlayerStamina>();
+        while (reader.Read())
+        {
+            var entry = new PlayerStamina();
+            entry.Id = reader.GetString(0);
+            entry.PlayerId = reader.GetString(1);
+            entry.DataId = reader.GetString(2);
+            entry.Amount = reader.GetInt32(3);
+            entry.RecoveredTime = reader.GetInt64(4);
+            list.Add(entry);
+        }
+        return list;
     }
 
     protected override void DoGetFormationList(string playerId, string loginToken, UnityAction<FormationListResult> onFinish)
@@ -541,22 +557,25 @@ public partial class SQLiteGameService : BaseGameService
         if (player == null || (long)player <= 0)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else
-        {
-            var reader = ExecuteReader(@"SELECT * FROM playerFormation WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
-            var list = new List<PlayerFormation>();
-            while (reader.Read())
-            {
-                var entry = new PlayerFormation();
-                entry.Id = reader.GetString(0);
-                entry.PlayerId = reader.GetString(1);
-                entry.DataId = reader.GetString(2);
-                entry.Position = reader.GetInt32(3);
-                entry.ItemId = reader.GetString(4);
-                list.Add(entry);
-            }
-            result.list = list;
-        }
+            result.list = GetPlayerFormations(playerId);
         onFinish(result);
+    }
+
+    protected List<PlayerFormation> GetPlayerFormations(string playerId)
+    {
+        var reader = ExecuteReader(@"SELECT * FROM playerFormation WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
+        var list = new List<PlayerFormation>();
+        while (reader.Read())
+        {
+            var entry = new PlayerFormation();
+            entry.Id = reader.GetString(0);
+            entry.PlayerId = reader.GetString(1);
+            entry.DataId = reader.GetString(2);
+            entry.Position = reader.GetInt32(3);
+            entry.ItemId = reader.GetString(4);
+            list.Add(entry);
+        }
+        return list;
     }
 
     protected override void DoGetUnlockItemList(string playerId, string loginToken, UnityAction<UnlockItemListResult> onFinish)
@@ -568,21 +587,24 @@ public partial class SQLiteGameService : BaseGameService
         if (player == null || (long)player <= 0)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else
-        {
-            var reader = ExecuteReader(@"SELECT * FROM playerUnlockItem WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
-            var list = new List<PlayerUnlockItem>();
-            while (reader.Read())
-            {
-                var entry = new PlayerUnlockItem();
-                entry.Id = reader.GetString(0);
-                entry.PlayerId = reader.GetString(1);
-                entry.DataId = reader.GetString(2);
-                entry.Amount = reader.GetInt32(3);
-                list.Add(entry);
-            }
-            result.list = list;
-        }
+            result.list = GetPlayerUnlockItems(playerId);
         onFinish(result);
+    }
+
+    protected List<PlayerUnlockItem> GetPlayerUnlockItems(string playerId)
+    {
+        var reader = ExecuteReader(@"SELECT * FROM playerUnlockItem WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
+        var list = new List<PlayerUnlockItem>();
+        while (reader.Read())
+        {
+            var entry = new PlayerUnlockItem();
+            entry.Id = reader.GetString(0);
+            entry.PlayerId = reader.GetString(1);
+            entry.DataId = reader.GetString(2);
+            entry.Amount = reader.GetInt32(3);
+            list.Add(entry);
+        }
+        return list;
     }
 
     protected override void DoGetClearStageList(string playerId, string loginToken, UnityAction<ClearStageListResult> onFinish)
@@ -594,21 +616,24 @@ public partial class SQLiteGameService : BaseGameService
         if (player == null || (long)player <= 0)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else
-        {
-            var reader = ExecuteReader(@"SELECT * FROM playerClearStage WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
-            var list = new List<PlayerClearStage>();
-            while (reader.Read())
-            {
-                var entry = new PlayerClearStage();
-                entry.Id = reader.GetString(0);
-                entry.PlayerId = reader.GetString(1);
-                entry.DataId = reader.GetString(2);
-                entry.BestRating = reader.GetInt32(3);
-                list.Add(entry);
-            }
-            result.list = list;
-        }
+            result.list = GetPlayerClearStages(playerId);
         onFinish(result);
+    }
+
+    protected List<PlayerClearStage> GetPlayerClearStages(string playerId)
+    {
+        var reader = ExecuteReader(@"SELECT * FROM playerClearStage WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
+        var list = new List<PlayerClearStage>();
+        while (reader.Read())
+        {
+            var entry = new PlayerClearStage();
+            entry.Id = reader.GetString(0);
+            entry.PlayerId = reader.GetString(1);
+            entry.DataId = reader.GetString(2);
+            entry.BestRating = reader.GetInt32(3);
+            list.Add(entry);
+        }
+        return list;
     }
 
     protected override void DoGetServiceTime(UnityAction<ServiceTimeResult> onFinish)
