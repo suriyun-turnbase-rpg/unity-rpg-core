@@ -642,4 +642,41 @@ public partial class SQLiteGameService : BaseGameService
         result.serviceTime = Timestamp;
         onFinish(result);
     }
+
+    protected PlayerItem QueryCreatePlayerItem(PlayerItem playerItem)
+    {
+        playerItem.Id = System.Guid.NewGuid().ToString();
+        ExecuteNonQuery(@"INSERT INTO playerItem (id, playerId, dataId, amount, exp, equipItemId, equipPosition) VALUES (@id, @playerId, @dataId, @amount, @exp, @equipItemId, @equipPosition)",
+            new SqliteParameter("@id", playerItem.Id),
+            new SqliteParameter("@playerId", playerItem.PlayerId),
+            new SqliteParameter("@dataId", playerItem.DataId),
+            new SqliteParameter("@amount", playerItem.Amount),
+            new SqliteParameter("@exp", playerItem.Exp),
+            new SqliteParameter("@equipItemId", playerItem.EquipItemId),
+            new SqliteParameter("@equipPosition", playerItem.EquipPosition));
+        return playerItem;
+    }
+
+    protected PlayerItem QueryUpdatePlayerItem(PlayerItem playerItem)
+    {
+        ExecuteNonQuery(@"UPDATE playerItem SET playerId=@playerId, dataId=@dataId, amount=@amount, exp=@exp, equipItemId=@equipItemId, equipPosition=@equipPosition WHERE id=@id",
+            new SqliteParameter("@playerId", playerItem.PlayerId),
+            new SqliteParameter("@dataId", playerItem.DataId),
+            new SqliteParameter("@amount", playerItem.Amount),
+            new SqliteParameter("@exp", playerItem.Exp),
+            new SqliteParameter("@equipItemId", playerItem.EquipItemId),
+            new SqliteParameter("@equipPosition", playerItem.EquipPosition),
+            new SqliteParameter("@id", playerItem.Id));
+        return playerItem;
+    }
+
+    protected PlayerAchievement QueryCreatePlayerAchievement(PlayerAchievement playerAchievement)
+    {
+        return playerAchievement;
+    }
+
+    protected PlayerAchievement QueryUpdatePlayerAchievement(PlayerAchievement playerAchievement)
+    {
+        return playerAchievement;
+    }
 }
