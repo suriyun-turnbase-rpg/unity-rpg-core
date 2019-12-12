@@ -587,7 +587,7 @@ public partial class SQLiteGameService
             result.updateCurrencies.Clear();
             // Player exp
             result.firstClearRewardPlayerExp = stage.firstClearRewardPlayerExp;
-            player.Exp += stage.rewardPlayerExp;
+            player.Exp += stage.firstClearRewardPlayerExp;
             ExecuteNonQuery(@"UPDATE player SET exp=@exp WHERE id=@playerId",
                 new SqliteParameter("@exp", player.Exp),
                 new SqliteParameter("@playerId", player.Id));
