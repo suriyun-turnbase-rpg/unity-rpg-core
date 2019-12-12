@@ -134,29 +134,14 @@ public partial class SQLiteGameService
                     {
                         foreach (var createEntry in createItems)
                         {
-                            createEntry.Id = System.Guid.NewGuid().ToString();
-                            ExecuteNonQuery(@"INSERT INTO playerItem (id, playerId, dataId, amount, exp, equipItemId, equipPosition) VALUES (@id, @playerId, @dataId, @amount, @exp, @equipItemId, @equipPosition)",
-                                new SqliteParameter("@id", createEntry.Id),
-                                new SqliteParameter("@playerId", createEntry.PlayerId),
-                                new SqliteParameter("@dataId", createEntry.DataId),
-                                new SqliteParameter("@amount", createEntry.Amount),
-                                new SqliteParameter("@exp", createEntry.Exp),
-                                new SqliteParameter("@equipItemId", createEntry.EquipItemId),
-                                new SqliteParameter("@equipPosition", createEntry.EquipPosition));
+                            QueryCreatePlayerItem(createEntry);
                             result.rewardItems.Add(createEntry);
                             result.createItems.Add(createEntry);
                             HelperUnlockItem(player.Id, rewardItem.Id);
                         }
                         foreach (var updateEntry in updateItems)
                         {
-                            ExecuteNonQuery(@"UPDATE playerItem SET playerId=@playerId, dataId=@dataId, amount=@amount, exp=@exp, equipItemId=@equipItemId, equipPosition=@equipPosition WHERE id=@id",
-                                new SqliteParameter("@playerId", updateEntry.PlayerId),
-                                new SqliteParameter("@dataId", updateEntry.DataId),
-                                new SqliteParameter("@amount", updateEntry.Amount),
-                                new SqliteParameter("@exp", updateEntry.Exp),
-                                new SqliteParameter("@equipItemId", updateEntry.EquipItemId),
-                                new SqliteParameter("@equipPosition", updateEntry.EquipPosition),
-                                new SqliteParameter("@id", updateEntry.Id));
+                            QueryUpdatePlayerItem(updateEntry);
                             result.rewardItems.Add(updateEntry);
                             result.updateItems.Add(updateEntry);
                         }
