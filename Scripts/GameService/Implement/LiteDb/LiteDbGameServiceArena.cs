@@ -151,6 +151,19 @@ public partial class LiteDbGameService
                     }
                     // End reward items loop
                 }
+                // Update achievement
+                List<PlayerAchievement> createAchievements;
+                List<PlayerAchievement> updateAchievements;
+                OfflineAchievementHelpers.UpdateCountWinDuel(playerId, DbPlayerAchievement.CloneList(colPlayerAchievement.Find(a => a.PlayerId == playerId)), out createAchievements, out updateAchievements);
+                foreach (var createEntry in createAchievements)
+                {
+                    createEntry.Id = System.Guid.NewGuid().ToString();
+                    colPlayerAchievement.Insert(PlayerAchievement.CloneTo(createEntry, new DbPlayerAchievement()));
+                }
+                foreach (var updateEntry in updateAchievements)
+                {
+                    colPlayerAchievement.Update(PlayerAchievement.CloneTo(updateEntry, new DbPlayerAchievement()));
+                }
             }
             else
             {

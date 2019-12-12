@@ -672,11 +672,24 @@ public partial class SQLiteGameService : BaseGameService
 
     protected PlayerAchievement QueryCreatePlayerAchievement(PlayerAchievement playerAchievement)
     {
+        playerAchievement.Id = System.Guid.NewGuid().ToString();
+        ExecuteNonQuery(@"INSERT INTO playerAchievement (id, playerId, dataId, progress, earned) VALUES (@id, @playerId, @dataId, @progress, @earned)",
+            new SqliteParameter("@id", playerAchievement.Id),
+            new SqliteParameter("@playerId", playerAchievement.PlayerId),
+            new SqliteParameter("@dataId", playerAchievement.DataId),
+            new SqliteParameter("@progress", playerAchievement.Progress),
+            new SqliteParameter("@earned", playerAchievement.Earned ? 1 : 0));
         return playerAchievement;
     }
 
     protected PlayerAchievement QueryUpdatePlayerAchievement(PlayerAchievement playerAchievement)
     {
+        ExecuteNonQuery(@"UPDATE playerAchievement SET playerId=@playerId, dataId=@dataId, progress=@progress, earned=@earned WHERE id=@id",
+            new SqliteParameter("@playerId", playerAchievement.PlayerId),
+            new SqliteParameter("@dataId", playerAchievement.DataId),
+            new SqliteParameter("@progress", playerAchievement.Progress),
+            new SqliteParameter("@earned", playerAchievement.Earned ? 1 : 0),
+            new SqliteParameter("@id", playerAchievement.Id));
         return playerAchievement;
     }
 }

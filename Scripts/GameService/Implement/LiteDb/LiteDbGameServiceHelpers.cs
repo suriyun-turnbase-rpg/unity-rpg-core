@@ -451,6 +451,41 @@ public partial class LiteDbGameService
             }
         }
         result.clearStage = PlayerClearStage.CloneTo(clearStage, new PlayerClearStage());
+        // Update achievement
+        var playerAchievements = DbPlayerAchievement.CloneList(colPlayerAchievement.Find(a => a.PlayerId == player.Id));
+        var playerClearStages = DbPlayerClearStage.CloneList(colPlayerClearStage.Find(a => a.PlayerId == player.Id));
+        List<PlayerAchievement> createAchievements;
+        List<PlayerAchievement> updateAchievements;
+        OfflineAchievementHelpers.UpdateTotalClearStage(player.Id, playerAchievements, playerClearStages, out createAchievements, out updateAchievements);
+        foreach (var createEntry in createAchievements)
+        {
+            createEntry.Id = System.Guid.NewGuid().ToString();
+            colPlayerAchievement.Insert(PlayerAchievement.CloneTo(createEntry, new DbPlayerAchievement()));
+        }
+        foreach (var updateEntry in updateAchievements)
+        {
+            colPlayerAchievement.Update(PlayerAchievement.CloneTo(updateEntry, new DbPlayerAchievement()));
+        }
+        OfflineAchievementHelpers.UpdateTotalClearStageRating(player.Id, playerAchievements, playerClearStages, out createAchievements, out updateAchievements);
+        foreach (var createEntry in createAchievements)
+        {
+            createEntry.Id = System.Guid.NewGuid().ToString();
+            colPlayerAchievement.Insert(PlayerAchievement.CloneTo(createEntry, new DbPlayerAchievement()));
+        }
+        foreach (var updateEntry in updateAchievements)
+        {
+            colPlayerAchievement.Update(PlayerAchievement.CloneTo(updateEntry, new DbPlayerAchievement()));
+        }
+        OfflineAchievementHelpers.UpdateCountWinStage(player.Id, playerAchievements, out createAchievements, out updateAchievements);
+        foreach (var createEntry in createAchievements)
+        {
+            createEntry.Id = System.Guid.NewGuid().ToString();
+            colPlayerAchievement.Insert(PlayerAchievement.CloneTo(createEntry, new DbPlayerAchievement()));
+        }
+        foreach (var updateEntry in updateAchievements)
+        {
+            colPlayerAchievement.Update(PlayerAchievement.CloneTo(updateEntry, new DbPlayerAchievement()));
+        }
         return result;
     }
 }

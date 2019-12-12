@@ -35,6 +35,23 @@ public partial class LiteDbGameService
                 var stamina = GetStamina(player.Id, stageStaminaTable.id);
                 result.stamina = PlayerStamina.CloneTo(stamina, new PlayerStamina());
                 result.session = playerBattle.Session;
+
+                // Update achievement
+                if (!string.IsNullOrEmpty(helperPlayerId))
+                {
+                    List<PlayerAchievement> createAchievements;
+                    List<PlayerAchievement> updateAchievements;
+                    OfflineAchievementHelpers.UpdateCountUseHelper(playerId, DbPlayerAchievement.CloneList(colPlayerAchievement.Find(a => a.PlayerId == playerId)), out createAchievements, out updateAchievements);
+                    foreach (var createEntry in createAchievements)
+                    {
+                        createEntry.Id = System.Guid.NewGuid().ToString();
+                        colPlayerAchievement.Insert(PlayerAchievement.CloneTo(createEntry, new DbPlayerAchievement()));
+                    }
+                    foreach (var updateEntry in updateAchievements)
+                    {
+                        colPlayerAchievement.Update(PlayerAchievement.CloneTo(updateEntry, new DbPlayerAchievement()));
+                    }
+                }
             }
         }
         onFinish(result);
@@ -155,6 +172,19 @@ public partial class LiteDbGameService
                 hardCurrency.Amount -= revivePrice;
                 colPlayerCurrency.Update(hardCurrency);
                 result.updateCurrencies.Add(PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency()));
+                // Update achievement
+                List<PlayerAchievement> createAchievements;
+                List<PlayerAchievement> updateAchievements;
+                OfflineAchievementHelpers.UpdateCountRevive(playerId, DbPlayerAchievement.CloneList(colPlayerAchievement.Find(a => a.PlayerId == playerId)), out createAchievements, out updateAchievements);
+                foreach (var createEntry in createAchievements)
+                {
+                    createEntry.Id = System.Guid.NewGuid().ToString();
+                    colPlayerAchievement.Insert(PlayerAchievement.CloneTo(createEntry, new DbPlayerAchievement()));
+                }
+                foreach (var updateEntry in updateAchievements)
+                {
+                    colPlayerAchievement.Update(PlayerAchievement.CloneTo(updateEntry, new DbPlayerAchievement()));
+                }
             }
         }
         onFinish(result);

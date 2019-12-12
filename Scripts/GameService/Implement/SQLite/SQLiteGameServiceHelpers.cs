@@ -644,6 +644,15 @@ public partial class SQLiteGameService
         {
             QueryUpdatePlayerAchievement(updateEntry);
         }
+        OfflineAchievementHelpers.UpdateCountWinStage(player.Id, playerAchievements, out createAchievements, out updateAchievements);
+        foreach (var createEntry in createAchievements)
+        {
+            QueryCreatePlayerAchievement(createEntry);
+        }
+        foreach (var updateEntry in updateAchievements)
+        {
+            QueryUpdatePlayerAchievement(updateEntry);
+        }
         return result;
     }
 

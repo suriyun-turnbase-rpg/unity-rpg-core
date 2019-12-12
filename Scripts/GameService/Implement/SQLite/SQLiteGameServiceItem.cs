@@ -30,7 +30,7 @@ public partial class SQLiteGameService
                 var foundMaterial = GetPlayerItemById(materialItemId);
                 if (foundMaterial == null || foundMaterial.PlayerId != playerId)
                     continue;
-                
+
                 if (foundMaterial.CanBeMaterial)
                     materialItems.Add(foundMaterial);
             }
@@ -59,14 +59,7 @@ public partial class SQLiteGameService
                 updateItems.Add(foundItem);
                 foreach (var updateItem in updateItems)
                 {
-                    ExecuteNonQuery(@"UPDATE playerItem SET playerId=@playerId, dataId=@dataId, amount=@amount, exp=@exp, equipItemId=@equipItemId, equipPosition=@equipPosition WHERE id=@id",
-                        new SqliteParameter("@playerId", updateItem.PlayerId),
-                        new SqliteParameter("@dataId", updateItem.DataId),
-                        new SqliteParameter("@amount", updateItem.Amount),
-                        new SqliteParameter("@exp", updateItem.Exp),
-                        new SqliteParameter("@equipItemId", updateItem.EquipItemId),
-                        new SqliteParameter("@equipPosition", updateItem.EquipPosition),
-                        new SqliteParameter("@id", updateItem.Id));
+                    QueryUpdatePlayerItem(updateItem);
                 }
                 foreach (var deleteItemId in deleteItemIds)
                 {
@@ -75,6 +68,26 @@ public partial class SQLiteGameService
                 result.updateCurrencies.Add(softCurrency);
                 result.updateItems = updateItems;
                 result.deleteItemIds = deleteItemIds;
+                // Update achievement
+                if (foundItem.ActorItemData.Type.Equals("CharacterItem") ||
+                    foundItem.ActorItemData.Type.Equals("EquipmentItem"))
+                {
+                    var playerAchievements = GetPlayerAchievements(playerId);
+                    List<PlayerAchievement> createAchievements = null;
+                    List<PlayerAchievement> updateAchievements = null;
+                    if (foundItem.ActorItemData.Type.Equals("CharacterItem"))
+                        OfflineAchievementHelpers.UpdateCountLevelUpCharacter(playerId, playerAchievements, out createAchievements, out updateAchievements);
+                    if (foundItem.ActorItemData.Type.Equals("EquipmentItem"))
+                        OfflineAchievementHelpers.UpdateCountLevelUpEquipment(playerId, playerAchievements, out createAchievements, out updateAchievements);
+                    foreach (var createEntry in createAchievements)
+                    {
+                        QueryCreatePlayerAchievement(createEntry);
+                    }
+                    foreach (var updateEntry in updateAchievements)
+                    {
+                        QueryUpdatePlayerAchievement(updateEntry);
+                    }
+                }
             }
         }
         onFinish(result);
@@ -156,14 +169,7 @@ public partial class SQLiteGameService
                     updateItems.Add(foundItem);
                     foreach (var updateItem in updateItems)
                     {
-                        ExecuteNonQuery(@"UPDATE playerItem SET playerId=@playerId, dataId=@dataId, amount=@amount, exp=@exp, equipItemId=@equipItemId, equipPosition=@equipPosition WHERE id=@id",
-                            new SqliteParameter("@playerId", updateItem.PlayerId),
-                            new SqliteParameter("@dataId", updateItem.DataId),
-                            new SqliteParameter("@amount", updateItem.Amount),
-                            new SqliteParameter("@exp", updateItem.Exp),
-                            new SqliteParameter("@equipItemId", updateItem.EquipItemId),
-                            new SqliteParameter("@equipPosition", updateItem.EquipPosition),
-                            new SqliteParameter("@id", updateItem.Id));
+                        QueryUpdatePlayerItem(updateItem);
                     }
                     foreach (var deleteItemId in deleteItemIds)
                     {
@@ -172,6 +178,26 @@ public partial class SQLiteGameService
                     result.updateCurrencies.Add(softCurrency);
                     result.updateItems = updateItems;
                     result.deleteItemIds = deleteItemIds;
+                    // Update achievement
+                    if (foundItem.ActorItemData.Type.Equals("CharacterItem") ||
+                        foundItem.ActorItemData.Type.Equals("EquipmentItem"))
+                    {
+                        var playerAchievements = GetPlayerAchievements(playerId);
+                        List<PlayerAchievement> createAchievements = null;
+                        List<PlayerAchievement> updateAchievements = null;
+                        if (foundItem.ActorItemData.Type.Equals("CharacterItem"))
+                            OfflineAchievementHelpers.UpdateCountEvolveCharacter(playerId, playerAchievements, out createAchievements, out updateAchievements);
+                        if (foundItem.ActorItemData.Type.Equals("EquipmentItem"))
+                            OfflineAchievementHelpers.UpdateCountEvolveEquipment(playerId, playerAchievements, out createAchievements, out updateAchievements);
+                        foreach (var createEntry in createAchievements)
+                        {
+                            QueryCreatePlayerAchievement(createEntry);
+                        }
+                        foreach (var updateEntry in updateAchievements)
+                        {
+                            QueryUpdatePlayerAchievement(updateEntry);
+                        }
+                    }
                 }
             }
         }

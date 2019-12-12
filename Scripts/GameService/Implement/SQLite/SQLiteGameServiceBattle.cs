@@ -6,7 +6,7 @@ using Mono.Data.Sqlite;
 
 public partial class SQLiteGameService
 {
-    protected override void DoStartStage(string playerId, string loginToken, string stageDataId, string playerHelperId, UnityAction<StartStageResult> onFinish)
+    protected override void DoStartStage(string playerId, string loginToken, string stageDataId, string helperPlayerId, UnityAction<StartStageResult> onFinish)
     {
         var result = new StartStageResult();
         var gameDb = GameInstance.GameDatabase;
@@ -46,6 +46,22 @@ public partial class SQLiteGameService
                 var stamina = GetStamina(player.Id, stageStaminaTable.id);
                 result.stamina = stamina;
                 result.session = playerBattle.Session;
+
+                // Update achievement
+                if (!string.IsNullOrEmpty(helperPlayerId))
+                {
+                    List<PlayerAchievement> createAchievements;
+                    List<PlayerAchievement> updateAchievements;
+                    OfflineAchievementHelpers.UpdateCountUseHelper(playerId, GetPlayerAchievements(playerId), out createAchievements, out updateAchievements);
+                    foreach (var createEntry in createAchievements)
+                    {
+                        QueryCreatePlayerAchievement(createEntry);
+                    }
+                    foreach (var updateEntry in updateAchievements)
+                    {
+                        QueryUpdatePlayerAchievement(updateEntry);
+                    }
+                }
             }
         }
         onFinish(result);
@@ -175,6 +191,18 @@ public partial class SQLiteGameService
                     new SqliteParameter("@amount", hardCurrency.Amount),
                     new SqliteParameter("@id", hardCurrency.Id));
                 result.updateCurrencies.Add(hardCurrency);
+                // Update achievement
+                List<PlayerAchievement> createAchievements;
+                List<PlayerAchievement> updateAchievements;
+                OfflineAchievementHelpers.UpdateCountRevive(playerId, GetPlayerAchievements(playerId), out createAchievements, out updateAchievements);
+                foreach (var createEntry in createAchievements)
+                {
+                    QueryCreatePlayerAchievement(createEntry);
+                }
+                foreach (var updateEntry in updateAchievements)
+                {
+                    QueryUpdatePlayerAchievement(updateEntry);
+                }
             }
         }
         onFinish(result);

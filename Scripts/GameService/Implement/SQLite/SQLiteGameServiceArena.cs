@@ -168,6 +168,18 @@ public partial class SQLiteGameService
                     }
                     // End reward items loop
                 }
+                // Update achievement
+                List<PlayerAchievement> createAchievements;
+                List<PlayerAchievement> updateAchievements;
+                OfflineAchievementHelpers.UpdateCountWinDuel(playerId, GetPlayerAchievements(playerId), out createAchievements, out updateAchievements);
+                foreach (var createEntry in createAchievements)
+                {
+                    QueryCreatePlayerAchievement(createEntry);
+                }
+                foreach (var updateEntry in updateAchievements)
+                {
+                    QueryUpdatePlayerAchievement(updateEntry);
+                }
             }
             else
             {

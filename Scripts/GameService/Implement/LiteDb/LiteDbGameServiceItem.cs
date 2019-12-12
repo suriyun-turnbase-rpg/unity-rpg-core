@@ -67,6 +67,27 @@ public partial class LiteDbGameService
                 result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
                 result.updateItems = updateItems;
                 result.deleteItemIds = deleteItemIds;
+                // Update achievement
+                if (item.ActorItemData.Type.Equals("CharacterItem") ||
+                    item.ActorItemData.Type.Equals("EquipmentItem"))
+                {
+                    var playerAchievements = DbPlayerAchievement.CloneList(colPlayerAchievement.Find(a => a.PlayerId == playerId));
+                    List<PlayerAchievement> createAchievements = null;
+                    List<PlayerAchievement> updateAchievements = null;
+                    if (item.ActorItemData.Type.Equals("CharacterItem"))
+                        OfflineAchievementHelpers.UpdateCountLevelUpCharacter(playerId, playerAchievements, out createAchievements, out updateAchievements);
+                    if (item.ActorItemData.Type.Equals("EquipmentItem"))
+                        OfflineAchievementHelpers.UpdateCountLevelUpEquipment(playerId, playerAchievements, out createAchievements, out updateAchievements);
+                    foreach (var createEntry in createAchievements)
+                    {
+                        createEntry.Id = System.Guid.NewGuid().ToString();
+                        colPlayerAchievement.Insert(PlayerAchievement.CloneTo(createEntry, new DbPlayerAchievement()));
+                    }
+                    foreach (var updateEntry in updateAchievements)
+                    {
+                        colPlayerAchievement.Update(PlayerAchievement.CloneTo(updateEntry, new DbPlayerAchievement()));
+                    }
+                }
             }
         }
         onFinish(result);
@@ -159,6 +180,27 @@ public partial class LiteDbGameService
                     result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
                     result.updateItems = updateItems;
                     result.deleteItemIds = deleteItemIds;
+                    // Update achievement
+                    if (item.ActorItemData.Type.Equals("CharacterItem") ||
+                        item.ActorItemData.Type.Equals("EquipmentItem"))
+                    {
+                        var playerAchievements = DbPlayerAchievement.CloneList(colPlayerAchievement.Find(a => a.PlayerId == playerId));
+                        List<PlayerAchievement> createAchievements = null;
+                        List<PlayerAchievement> updateAchievements = null;
+                        if (item.ActorItemData.Type.Equals("CharacterItem"))
+                            OfflineAchievementHelpers.UpdateCountEvolveCharacter(playerId, playerAchievements, out createAchievements, out updateAchievements);
+                        if (item.ActorItemData.Type.Equals("EquipmentItem"))
+                            OfflineAchievementHelpers.UpdateCountEvolveEquipment(playerId, playerAchievements, out createAchievements, out updateAchievements);
+                        foreach (var createEntry in createAchievements)
+                        {
+                            createEntry.Id = System.Guid.NewGuid().ToString();
+                            colPlayerAchievement.Insert(PlayerAchievement.CloneTo(createEntry, new DbPlayerAchievement()));
+                        }
+                        foreach (var updateEntry in updateAchievements)
+                        {
+                            colPlayerAchievement.Update(PlayerAchievement.CloneTo(updateEntry, new DbPlayerAchievement()));
+                        }
+                    }
                 }
             }
         }
