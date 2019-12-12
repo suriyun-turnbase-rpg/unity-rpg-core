@@ -4,18 +4,18 @@ using UnityEngine;
 
 public enum AchievementType : byte
 {
-    totalClearStage,
-    totalClearStageRating,
-    countLevelUpCharacter,
-    countLevelUpEquipment,
-    countEvolveCharacter,
-    countEvolveEquipment,
-    countRevive,
-    countUseHelper,
-    countWinStage,
-    countWinDuel,
-    countSellCharacter,
-    countSellEquipment,
+    TotalClearStage,
+    TotalClearStageRating,
+    CountLevelUpCharacter,
+    CountLevelUpEquipment,
+    CountEvolveCharacter,
+    CountEvolveEquipment,
+    CountRevive,
+    CountUseHelper,
+    CountWinStage,
+    CountWinDuel,
+    CountSellCharacter,
+    CountSellEquipment,
 }
 
 public class Achievement : BaseGameData

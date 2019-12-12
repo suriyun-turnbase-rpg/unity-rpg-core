@@ -30,7 +30,7 @@ public static class OfflineAchievementHelpers
     {
         createPlayerAchievements = new List<PlayerAchievement>();
         updatePlayerAchievements = new List<PlayerAchievement>();
-        var achievements = FilterAchievements(AchievementType.totalClearStage);
+        var achievements = FilterAchievements(AchievementType.TotalClearStage);
         var playerAchievementDict = FilterPlayerAchievements(achievements, playerAchievements);
         foreach (var achievement in achievements.Values)
         {
@@ -55,7 +55,7 @@ public static class OfflineAchievementHelpers
     {
         createPlayerAchievements = new List<PlayerAchievement>();
         updatePlayerAchievements = new List<PlayerAchievement>();
-        var achievements = FilterAchievements(AchievementType.totalClearStageRating);
+        var achievements = FilterAchievements(AchievementType.TotalClearStageRating);
         var playerAchievementDict = FilterPlayerAchievements(achievements, playerAchievements);
         var countRating = 0;
         foreach (var playerClearStage in playerClearStages)
@@ -83,52 +83,52 @@ public static class OfflineAchievementHelpers
 
     public static void UpdateCountLevelUpCharacter(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
     {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.countLevelUpCharacter, out createPlayerAchievements, out updatePlayerAchievements);
+        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountLevelUpCharacter, out createPlayerAchievements, out updatePlayerAchievements);
     }
 
     public static void UpdateCountLevelUpEquipment(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
     {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.countLevelUpEquipment, out createPlayerAchievements, out updatePlayerAchievements);
+        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountLevelUpEquipment, out createPlayerAchievements, out updatePlayerAchievements);
     }
 
     public static void UpdateCountEvolveCharacter(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
     {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.countEvolveCharacter, out createPlayerAchievements, out updatePlayerAchievements);
+        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountEvolveCharacter, out createPlayerAchievements, out updatePlayerAchievements);
     }
 
     public static void UpdateCountEvolveEquipment(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
     {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.countEvolveEquipment, out createPlayerAchievements, out updatePlayerAchievements);
+        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountEvolveEquipment, out createPlayerAchievements, out updatePlayerAchievements);
     }
 
     public static void UpdateCountRevive(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
     {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.countRevive, out createPlayerAchievements, out updatePlayerAchievements);
+        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountRevive, out createPlayerAchievements, out updatePlayerAchievements);
     }
 
     public static void UpdateCountUseHelper(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
     {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.countUseHelper, out createPlayerAchievements, out updatePlayerAchievements);
+        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountUseHelper, out createPlayerAchievements, out updatePlayerAchievements);
     }
 
     public static void UpdateCountWinStage(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
     {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.countWinStage, out createPlayerAchievements, out updatePlayerAchievements);
+        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountWinStage, out createPlayerAchievements, out updatePlayerAchievements);
     }
 
     public static void UpdateCountWinDuel(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
     {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.countWinDuel, out createPlayerAchievements, out updatePlayerAchievements);
+        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountWinDuel, out createPlayerAchievements, out updatePlayerAchievements);
     }
 
     public static void UpdateCountSellCharacter(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
     {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.countSellCharacter, out createPlayerAchievements, out updatePlayerAchievements);
+        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountSellCharacter, out createPlayerAchievements, out updatePlayerAchievements);
     }
 
     public static void UpdateCountSellEquipment(string playerId, List<PlayerAchievement> playerAchievements, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
     {
-        UpdateCountingProgress(playerId, playerAchievements, AchievementType.countSellEquipment, out createPlayerAchievements, out updatePlayerAchievements);
+        UpdateCountingProgress(playerId, playerAchievements, AchievementType.CountSellEquipment, out createPlayerAchievements, out updatePlayerAchievements);
     }
 
     public static void UpdateCountingProgress(string playerId, List<PlayerAchievement> playerAchievements, AchievementType type, out List<PlayerAchievement> createPlayerAchievements, out List<PlayerAchievement> updatePlayerAchievements)
