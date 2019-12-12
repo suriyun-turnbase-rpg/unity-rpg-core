@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public partial class LiteDbGameService
 {
-    protected override void DoStartStage(string playerId, string loginToken, string stageDataId, UnityAction<StartStageResult> onFinish)
+    protected override void DoStartStage(string playerId, string loginToken, string helperPlayerId, string stageDataId, UnityAction<StartStageResult> onFinish)
     {
         var result = new StartStageResult();
         var gameDb = GameInstance.GameDatabase;

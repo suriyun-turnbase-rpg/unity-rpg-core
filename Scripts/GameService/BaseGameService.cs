@@ -222,17 +222,17 @@ public abstract class BaseGameService : MonoBehaviour
     /// StartStage
     /// </summary>
     /// <param name="stageDataId"></param>
-    /// <param name="formationName"></param>
+    /// <param name="helperPlayerId"></param>
     /// <param name="onSuccess"></param>
     /// <param name="onError"></param>
-    public void StartStage(string stageDataId, UnityAction<StartStageResult> onSuccess = null, UnityAction<string> onError = null)
+    public void StartStage(string stageDataId, string helperPlayerId, UnityAction<StartStageResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: StartStage");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
         HandleServiceCall();
-        DoStartStage(playerId, loginToken, stageDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+        DoStartStage(playerId, loginToken, stageDataId, helperPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     /// <summary>
@@ -640,7 +640,7 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoLevelUpItem(string playerId, string loginToken, string itemId, Dictionary<string, int> materials, UnityAction<ItemResult> onFinish);
     protected abstract void DoEvolveItem(string playerId, string loginToken, string itemId, Dictionary<string, int> materials, UnityAction<ItemResult> onFinish);
     protected abstract void DoSellItems(string playerId, string loginToken, Dictionary<string, int> items, UnityAction<ItemResult> onFinish);
-    protected abstract void DoStartStage(string playerId, string loginToken, string stageDataId, UnityAction<StartStageResult> onFinish);
+    protected abstract void DoStartStage(string playerId, string loginToken, string stageDataId, string helperPlayerId, UnityAction<StartStageResult> onFinish);
     protected abstract void DoFinishStage(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishStageResult> onFinish);
     protected abstract void DoReviveCharacters(string playerId, string loginToken, UnityAction<CurrencyResult> onFinish);
     protected abstract void DoSelectFormation(string playerId, string loginToken, string formationName, EFormationType formationType, UnityAction<PlayerResult> onFinish);

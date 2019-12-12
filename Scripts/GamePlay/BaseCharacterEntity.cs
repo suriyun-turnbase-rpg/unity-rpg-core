@@ -226,7 +226,6 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     {
         if (target == null)
             return;
-        var attributes = GetTotalAttributes();
         target.ReceiveDamage(
             Item.CharacterData.elemental,
             GetTotalAttributes(),

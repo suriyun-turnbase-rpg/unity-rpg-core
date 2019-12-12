@@ -6,7 +6,7 @@ using Mono.Data.Sqlite;
 
 public partial class SQLiteGameService
 {
-    protected override void DoStartStage(string playerId, string loginToken, string stageDataId, UnityAction<StartStageResult> onFinish)
+    protected override void DoStartStage(string playerId, string loginToken, string stageDataId, string playerHelperId, UnityAction<StartStageResult> onFinish)
     {
         var result = new StartStageResult();
         var gameDb = GameInstance.GameDatabase;

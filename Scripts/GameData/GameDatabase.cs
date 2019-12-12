@@ -35,6 +35,10 @@ public class GameDatabase : ScriptableObject
     [Tooltip("List of game stages, place all stages here")]
     public List<BaseStage> stages;
 
+    [Header("Achievement database")]
+    [Tooltip("List of achievements, place all achievements here")]
+    public List<Achievement> achievements;
+
     [Header("Loot Box database")]
     [Tooltip("List of game loot boxes, place all loot boxes here")]
     public List<LootBox> lootBoxes;
@@ -78,6 +82,7 @@ public class GameDatabase : ScriptableObject
     public readonly Dictionary<string, Stamina> Staminas = new Dictionary<string, Stamina>();
     public readonly Dictionary<string, Formation> Formations = new Dictionary<string, Formation>();
     public readonly Dictionary<string, BaseStage> Stages = new Dictionary<string, BaseStage>();
+    public readonly Dictionary<string, Achievement> Achievements = new Dictionary<string, Achievement>();
     public readonly Dictionary<string, LootBox> LootBoxes = new Dictionary<string, LootBox>();
     public readonly Dictionary<string, IapPackage> IapPackages = new Dictionary<string, IapPackage>();
     public readonly Dictionary<string, FakePlayer> FakePlayers = new Dictionary<string, FakePlayer>();
@@ -89,6 +94,7 @@ public class GameDatabase : ScriptableObject
         Staminas.Clear();
         Formations.Clear();
         Stages.Clear();
+        Achievements.Clear();
         LootBoxes.Clear();
         IapPackages.Clear();
         FakePlayers.Clear();
@@ -116,6 +122,7 @@ public class GameDatabase : ScriptableObject
         AddFormationsToDatabase(formations);
         AddStagesToDatabase(stages);
         AddStagesToDatabase(unlockStages);
+        AddAchievementsToDatabase(achievements);
         AddLootBoxesToDatabase(lootBoxes);
         AddIapPackagesToDatabase(iapPackages);
         AddFakePlayersToDatabase(fakePlayers);
@@ -159,6 +166,20 @@ public class GameDatabase : ScriptableObject
             if (!string.IsNullOrEmpty(dataId) && !Stages.ContainsKey(dataId))
             {
                 Stages[dataId] = stage;
+            }
+        }
+    }
+
+    private void AddAchievementsToDatabase(IEnumerable<Achievement> achievements)
+    {
+        foreach (var achievement in achievements)
+        {
+            if (achievement == null)
+                continue;
+            var dataId = achievement.Id;
+            if (!string.IsNullOrEmpty(dataId) && !Achievements.ContainsKey(dataId))
+            {
+                Achievements[dataId] = achievement;
             }
         }
     }

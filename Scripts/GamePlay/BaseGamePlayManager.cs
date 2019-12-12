@@ -258,7 +258,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         PlayingStage = data;
         Helper = helper;
         BattleType = EBattleType.Stage;
-        GameInstance.GameService.StartStage(data.Id, (result) =>
+        GameInstance.GameService.StartStage(data.Id, helper.Id, (result) =>
         {
             GameInstance.Singleton.OnGameServiceStartStageResult(result);
             BattleSession = result.session;
