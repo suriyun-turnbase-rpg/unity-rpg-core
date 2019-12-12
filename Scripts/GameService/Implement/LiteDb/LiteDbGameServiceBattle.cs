@@ -66,10 +66,9 @@ public partial class LiteDbGameService
             if (battleResult == EBattleResult.Win)
             {
                 var stage = gameDb.Stages[battle.DataId];
-                var rewardPlayerExp = stage.rewardPlayerExp;
-                result.rewardPlayerExp = rewardPlayerExp;
                 // Player exp
-                player.Exp += rewardPlayerExp;
+                result.rewardPlayerExp = stage.rewardPlayerExp;
+                player.Exp += stage.rewardPlayerExp;
                 colPlayer.Update(player);
                 result.player = Player.CloneTo(player, new Player());
                 // Character exp
@@ -132,7 +131,7 @@ public partial class LiteDbGameService
                     // End add item condition
                 }
                 // End reward items loop
-                result = HelperClearStage(result, playerId, stage.Id, rating);
+                result = HelperClearStage(result, player, stage, rating);
             }
         }
         onFinish(result);

@@ -381,17 +381,66 @@ public partial class LiteDbGameService
         return unlockItem;
     }
 
-    private FinishStageResult HelperClearStage(FinishStageResult result, string playerId, string dataId, int grade)
+    private FinishStageResult HelperClearStage(FinishStageResult result, DbPlayer player, BaseStage stage, int grade)
     {
-        var clearStage = colPlayerClearStage.FindById(PlayerClearStage.GetId(playerId, dataId));
+        var gameDb = GameInstance.GameDatabase;
+        var clearStage = colPlayerClearStage.FindById(PlayerClearStage.GetId(player.Id, stage.Id));
         if (clearStage == null)
         {
             clearStage = new DbPlayerClearStage();
-            clearStage.Id = PlayerClearStage.GetId(playerId, dataId);
-            clearStage.PlayerId = playerId;
-            clearStage.DataId = dataId;
+            clearStage.Id = PlayerClearStage.GetId(player.Id, stage.Id);
+            clearStage.PlayerId = player.Id;
+            clearStage.DataId = stage.Id;
             clearStage.BestRating = grade;
             colPlayerClearStage.Insert(clearStage);
+            // First clear rewards
+            result.updateCurrencies.Clear();
+            // Player exp
+            result.firstClearRewardPlayerExp = stage.firstClearRewardPlayerExp;
+            player.Exp += stage.firstClearRewardPlayerExp;
+            colPlayer.Update(player);
+            result.player = Player.CloneTo(player, new Player());
+            // Soft currency
+            var softCurrency = GetCurrency(player.Id, gameDb.softCurrency.id);
+            result.firstClearRewardSoftCurrency = stage.firstClearRewardSoftCurrency;
+            softCurrency.Amount += stage.firstClearRewardSoftCurrency;
+            colPlayerCurrency.Update(softCurrency);
+            result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
+            // Hard currency
+            var hardCurrency = GetCurrency(player.Id, gameDb.hardCurrency.id);
+            result.firstClearRewardHardCurrency = stage.firstClearRewardHardCurrency;
+            hardCurrency.Amount += stage.firstClearRewardHardCurrency;
+            colPlayerCurrency.Update(hardCurrency);
+            result.updateCurrencies.Add(PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency()));
+            // Items
+            for (var i = 0; i < stage.firstClearRewardItems.Length; ++i)
+            {
+                var rewardItem = stage.firstClearRewardItems[i];
+                if (rewardItem == null || rewardItem.item == null)
+                    continue;
+                var createItems = new List<DbPlayerItem>();
+                var updateItems = new List<DbPlayerItem>();
+                if (AddItems(player.Id, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
+                {
+                    foreach (var createEntry in createItems)
+                    {
+                        createEntry.Id = System.Guid.NewGuid().ToString();
+                        colPlayerItem.Insert(createEntry);
+                        var resultItem = PlayerItem.CloneTo(createEntry, new PlayerItem());
+                        result.firstClearRewardItems.Add(resultItem);
+                        result.createItems.Add(resultItem);
+                        HelperUnlockItem(player.Id, rewardItem.Id);
+                    }
+                    foreach (var updateEntry in updateItems)
+                    {
+                        colPlayerItem.Update(updateEntry);
+                        var resultItem = PlayerItem.CloneTo(updateEntry, new PlayerItem());
+                        result.firstClearRewardItems.Add(resultItem);
+                        result.updateItems.Add(resultItem);
+                    }
+                }
+                // End add item condition
+            }
         }
         else
         {

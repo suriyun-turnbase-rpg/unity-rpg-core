@@ -563,18 +563,19 @@ public partial class SQLiteGameService
         }
     }
 
-    private FinishStageResult HelperClearStage(FinishStageResult result, string playerId, string dataId, int grade)
+    private FinishStageResult HelperClearStage(FinishStageResult result, Player player, BaseStage stage, int grade)
     {
+        var gameDb = GameInstance.GameDatabase;
         PlayerClearStage clearStage = null;
         var clearStages = ExecuteReader(@"SELECT * FROM playerClearStage WHERE playerId=@playerId AND dataId=@dataId LIMIT 1",
-            new SqliteParameter("@playerId", playerId),
-            new SqliteParameter("@dataId", dataId));
+            new SqliteParameter("@playerId", player.Id),
+            new SqliteParameter("@dataId", stage.Id));
         if (!clearStages.Read())
         {
             clearStage = new PlayerClearStage();
-            clearStage.Id = PlayerClearStage.GetId(playerId, dataId);
-            clearStage.PlayerId = playerId;
-            clearStage.DataId = dataId;
+            clearStage.Id = PlayerClearStage.GetId(player.Id, stage.Id);
+            clearStage.PlayerId = player.Id;
+            clearStage.DataId = stage.Id;
             clearStage.BestRating = grade;
             ExecuteNonQuery(@"INSERT INTO playerClearStage (id, playerId, dataId, bestRating)
                 VALUES (@id, @playerId, @dataId, @bestRating)",
@@ -582,6 +583,72 @@ public partial class SQLiteGameService
                 new SqliteParameter("@playerId", clearStage.PlayerId),
                 new SqliteParameter("@dataId", clearStage.DataId),
                 new SqliteParameter("@bestRating", clearStage.BestRating));
+            // First clear rewards
+            result.updateCurrencies.Clear();
+            // Player exp
+            result.firstClearRewardPlayerExp = stage.firstClearRewardPlayerExp;
+            player.Exp += stage.rewardPlayerExp;
+            ExecuteNonQuery(@"UPDATE player SET exp=@exp WHERE id=@playerId",
+                new SqliteParameter("@exp", player.Exp),
+                new SqliteParameter("@playerId", player.Id));
+            result.player = player;
+            // Soft currency
+            var softCurrency = GetCurrency(player.Id, gameDb.softCurrency.id);
+            result.firstClearRewardSoftCurrency = stage.firstClearRewardSoftCurrency;
+            softCurrency.Amount += stage.firstClearRewardSoftCurrency;
+            ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                new SqliteParameter("@amount", softCurrency.Amount),
+                new SqliteParameter("@id", softCurrency.Id));
+            result.updateCurrencies.Add(softCurrency);
+            // Hard currency
+            var hardCurrency = GetCurrency(player.Id, gameDb.hardCurrency.id);
+            result.firstClearRewardHardCurrency = stage.firstClearRewardHardCurrency;
+            hardCurrency.Amount += stage.firstClearRewardHardCurrency;
+            ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                new SqliteParameter("@amount", hardCurrency.Amount),
+                new SqliteParameter("@id", hardCurrency.Id));
+            result.updateCurrencies.Add(hardCurrency);
+            // Items
+            for (var i = 0; i < stage.firstClearRewardItems.Length; ++i)
+            {
+                var rewardItem = stage.firstClearRewardItems[i];
+                if (rewardItem == null || rewardItem.item == null)
+                    continue;
+                var createItems = new List<PlayerItem>();
+                var updateItems = new List<PlayerItem>();
+                if (AddItems(player.Id, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
+                {
+                    foreach (var createEntry in createItems)
+                    {
+                        createEntry.Id = System.Guid.NewGuid().ToString();
+                        ExecuteNonQuery(@"INSERT INTO playerItem (id, playerId, dataId, amount, exp, equipItemId, equipPosition) VALUES (@id, @playerId, @dataId, @amount, @exp, @equipItemId, @equipPosition)",
+                            new SqliteParameter("@id", createEntry.Id),
+                            new SqliteParameter("@playerId", createEntry.PlayerId),
+                            new SqliteParameter("@dataId", createEntry.DataId),
+                            new SqliteParameter("@amount", createEntry.Amount),
+                            new SqliteParameter("@exp", createEntry.Exp),
+                            new SqliteParameter("@equipItemId", createEntry.EquipItemId),
+                            new SqliteParameter("@equipPosition", createEntry.EquipPosition));
+                        result.firstClearRewardItems.Add(createEntry);
+                        result.createItems.Add(createEntry);
+                        HelperUnlockItem(player.Id, rewardItem.Id);
+                    }
+                    foreach (var updateEntry in updateItems)
+                    {
+                        ExecuteNonQuery(@"UPDATE playerItem SET playerId=@playerId, dataId=@dataId, amount=@amount, exp=@exp, equipItemId=@equipItemId, equipPosition=@equipPosition WHERE id=@id",
+                            new SqliteParameter("@playerId", updateEntry.PlayerId),
+                            new SqliteParameter("@dataId", updateEntry.DataId),
+                            new SqliteParameter("@amount", updateEntry.Amount),
+                            new SqliteParameter("@exp", updateEntry.Exp),
+                            new SqliteParameter("@equipItemId", updateEntry.EquipItemId),
+                            new SqliteParameter("@equipPosition", updateEntry.EquipPosition),
+                            new SqliteParameter("@id", updateEntry.Id));
+                        result.firstClearRewardItems.Add(updateEntry);
+                        result.updateItems.Add(updateEntry);
+                    }
+                }
+                // End add item condition
+            }
         }
         else
         {

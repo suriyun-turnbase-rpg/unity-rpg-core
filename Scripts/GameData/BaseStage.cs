@@ -15,10 +15,10 @@ public abstract class BaseStage : BaseGameData
     public int rewardCharacterExp;
     public ItemDrop[] rewardItems;
     [Header("First Clear Rewards")]
-    public int firstClearRewardHardCurrency;
     public int firstClearRewardSoftCurrency;
+    public int firstClearRewardHardCurrency;
     public int firstClearRewardPlayerExp;
-    public ItemDrop[] firstClearRewardItems;
+    public ItemAmount[] firstClearRewardItems;
     [Header("Unlock")]
     public BaseStage[] unlockStages;
 
@@ -53,6 +53,15 @@ public abstract class BaseStage : BaseGameData
             jsonRewardItems += entry.ToJson();
         }
         jsonRewardItems = "[" + jsonRewardItems + "]";
+        // First Clear Reward Items
+        var jsonClearTimeRewardItems = "";
+        foreach (var entry in firstClearRewardItems)
+        {
+            if (!string.IsNullOrEmpty(jsonClearTimeRewardItems))
+                jsonClearTimeRewardItems += ",";
+            jsonClearTimeRewardItems += entry.ToJson();
+        }
+        jsonClearTimeRewardItems = "[" + jsonClearTimeRewardItems + "]";
         // Unlock Stages
         var jsonUnlockStages = "";
         foreach (var entry in unlockStages)
@@ -69,6 +78,10 @@ public abstract class BaseStage : BaseGameData
             "\"rewardPlayerExp\":" + rewardPlayerExp + "," +
             "\"rewardCharacterExp\":" + rewardCharacterExp + "," +
             "\"rewardItems\":" + jsonRewardItems + "," +
+            "\"firstClearRewardSoftCurrency\":" + firstClearRewardSoftCurrency + "," +
+            "\"firstClearRewardHardCurrency\":" + firstClearRewardHardCurrency + "," +
+            "\"firstClearRewardPlayerExp\":" + firstClearRewardPlayerExp + "," +
+            "\"firstClearRewardItems\":" + jsonClearTimeRewardItems + "," +
             "\"unlockStages\":" + jsonUnlockStages + "}";
     }
 }

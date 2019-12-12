@@ -80,10 +80,9 @@ public partial class SQLiteGameService
             if (battleResult == EBattleResult.Win)
             {
                 var stage = gameDb.Stages[battle.DataId];
-                var rewardPlayerExp = stage.rewardPlayerExp;
-                result.rewardPlayerExp = rewardPlayerExp;
                 // Player exp
-                player.Exp += rewardPlayerExp;
+                result.rewardPlayerExp = stage.rewardPlayerExp;
+                player.Exp += stage.rewardPlayerExp;
                 ExecuteNonQuery(@"UPDATE player SET exp=@exp WHERE id=@playerId",
                     new SqliteParameter("@exp", player.Exp),
                     new SqliteParameter("@playerId", playerId));
@@ -165,7 +164,7 @@ public partial class SQLiteGameService
                     // End add item condition
                 }
                 // End reward items loop
-                result = HelperClearStage(result, playerId, stage.Id, rating);
+                result = HelperClearStage(result, player, stage, rating);
             }
         }
         onFinish(result);
