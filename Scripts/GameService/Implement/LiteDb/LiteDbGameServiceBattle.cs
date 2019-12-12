@@ -33,9 +33,7 @@ public partial class LiteDbGameService
                 colPlayerBattle.Insert(playerBattle);
 
                 var stamina = GetStamina(player.Id, stageStaminaTable.id);
-                var resultStamina = new PlayerStamina();
-                PlayerStamina.CloneTo(stamina, resultStamina);
-                result.stamina = resultStamina;
+                result.stamina = PlayerStamina.CloneTo(stamina, new PlayerStamina());
                 result.session = playerBattle.Session;
             }
         }
@@ -73,9 +71,7 @@ public partial class LiteDbGameService
                 // Player exp
                 player.Exp += rewardPlayerExp;
                 colPlayer.Update(player);
-                var resultPlayer = new Player();
-                Player.CloneTo(player, resultPlayer);
-                result.player = resultPlayer;
+                result.player = Player.CloneTo(player, new Player());
                 // Character exp
                 var formations = new List<DbPlayerFormation>(colPlayerFormation.Find(a => a.PlayerId == playerId && a.DataId == player.SelectedFormation));
                 var countFormation = 0;
@@ -95,9 +91,7 @@ public partial class LiteDbGameService
                         {
                             character.Exp += devivedExp;
                             colPlayerItem.Update(character);
-                            var resultCharacter = new PlayerItem();
-                            PlayerItem.CloneTo(character, resultCharacter);
-                            result.updateItems.Add(resultCharacter);
+                            result.updateItems.Add(PlayerItem.CloneTo(character, new PlayerItem()));
                         }
                     }
                 }
@@ -107,9 +101,7 @@ public partial class LiteDbGameService
                 result.rewardSoftCurrency = rewardSoftCurrency;
                 softCurrency.Amount += rewardSoftCurrency;
                 colPlayerCurrency.Update(softCurrency);
-                var resultSoftCurrency = new PlayerCurrency();
-                PlayerCurrency.CloneTo(softCurrency, resultSoftCurrency);
-                result.updateCurrencies.Add(resultSoftCurrency);
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
                 // Items
                 for (var i = 0; i < stage.rewardItems.Length; ++i)
                 {
@@ -124,8 +116,7 @@ public partial class LiteDbGameService
                         {
                             createEntry.Id = System.Guid.NewGuid().ToString();
                             colPlayerItem.Insert(createEntry);
-                            var resultItem = new PlayerItem();
-                            PlayerItem.CloneTo(createEntry, resultItem);
+                            var resultItem = PlayerItem.CloneTo(createEntry, new PlayerItem());
                             result.rewardItems.Add(resultItem);
                             result.createItems.Add(resultItem);
                             HelperUnlockItem(player.Id, rewardItem.Id);
@@ -133,8 +124,7 @@ public partial class LiteDbGameService
                         foreach (var updateEntry in updateItems)
                         {
                             colPlayerItem.Update(updateEntry);
-                            var resultItem = new PlayerItem();
-                            PlayerItem.CloneTo(updateEntry, resultItem);
+                            var resultItem = PlayerItem.CloneTo(updateEntry, new PlayerItem());
                             result.rewardItems.Add(resultItem);
                             result.updateItems.Add(resultItem);
                         }
@@ -142,10 +132,7 @@ public partial class LiteDbGameService
                     // End add item condition
                 }
                 // End reward items loop
-                var clearedStage = HelperClearStage(playerId, stage.Id, rating);
-                var resultClearedStage = new PlayerClearStage();
-                PlayerClearStage.CloneTo(clearedStage, resultClearedStage);
-                result.clearStage = resultClearedStage;
+                result = HelperClearStage(result, playerId, stage.Id, rating);
             }
         }
         onFinish(result);
@@ -168,9 +155,7 @@ public partial class LiteDbGameService
             {
                 hardCurrency.Amount -= revivePrice;
                 colPlayerCurrency.Update(hardCurrency);
-                var resultHardCurrency = new PlayerCurrency();
-                PlayerCurrency.CloneTo(hardCurrency, resultHardCurrency);
-                result.updateCurrencies.Add(resultHardCurrency);
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency()));
             }
         }
         onFinish(result);
@@ -193,9 +178,7 @@ public partial class LiteDbGameService
                 player.SelectedArenaFormation = formationName;
                 
             colPlayer.Update(player);
-            var resultPlayer = new Player();
-            Player.CloneTo(player, resultPlayer);
-            result.player = resultPlayer;
+            result.player = Player.CloneTo(player, new Player());
         }
         onFinish(result);
     }
@@ -207,9 +190,7 @@ public partial class LiteDbGameService
         PlayerItem character = null;
         if (!string.IsNullOrEmpty(characterId))
         {
-            var dbCharacter = colPlayerItem.FindOne(a => a.Id == characterId && a.PlayerId == playerId);
-            character = new PlayerItem();
-            PlayerItem.CloneTo(dbCharacter, character);
+            character = PlayerItem.CloneTo(colPlayerItem.FindOne(a => a.Id == characterId && a.PlayerId == playerId), new PlayerItem());
         }
 
         if (player == null)

@@ -18,18 +18,17 @@ public class PlayerAuth : BasePlayerData, IPlayerAuth
 
     public PlayerAuth Clone()
     {
-        var result = new PlayerAuth();
-        CloneTo(this, result);
-        return result;
+        return CloneTo(this, new PlayerAuth());
     }
 
-    public static void CloneTo(IPlayerAuth from, IPlayerAuth to)
+    public static T CloneTo<T>(IPlayerAuth from, T to) where T : IPlayerAuth
     {
         to.Id = from.Id;
         to.PlayerId = from.PlayerId;
         to.Type = from.Type;
         to.Username = from.Username;
         to.Password = from.Password;
+        return to;
     }
 
     public static string GetId(string playerId, string type)

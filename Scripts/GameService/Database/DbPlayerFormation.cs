@@ -20,9 +20,7 @@ public class DbPlayerFormation : IPlayerFormation
         var result = new List<PlayerFormation>();
         foreach (var entry in list)
         {
-            var newEntry = new PlayerFormation();
-            PlayerFormation.CloneTo(entry, newEntry);
-            result.Add(newEntry);
+            result.Add(PlayerFormation.CloneTo(entry, new PlayerFormation()));
         }
         return result;
     }

@@ -20,9 +20,7 @@ public class DbPlayerCurrency : IPlayerCurrency
         var result = new List<PlayerCurrency>();
         foreach (var entry in list)
         {
-            var newEntry = new PlayerCurrency();
-            PlayerCurrency.CloneTo(entry, newEntry);
-            result.Add(newEntry);
+            result.Add(PlayerCurrency.CloneTo(entry, new PlayerCurrency()));
         }
         return result;
     }

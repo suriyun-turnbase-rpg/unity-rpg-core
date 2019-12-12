@@ -63,12 +63,10 @@ public class Player : BasePlayerData, ILevel, IPlayer
 
     public Player Clone()
     {
-        var result = new Player();
-        CloneTo(this, result);
-        return result;
+        return CloneTo(this, new Player());
     }
 
-    public static void CloneTo(IPlayer from, IPlayer to)
+    public static T CloneTo<T>(IPlayer from, T to) where T : IPlayer
     {
         to.Id = from.Id;
         to.ProfileName = from.ProfileName;
@@ -81,6 +79,7 @@ public class Player : BasePlayerData, ILevel, IPlayer
         to.ArenaScore = from.ArenaScore;
         to.HighestArenaRank = from.HighestArenaRank;
         to.HighestArenaRankCurrentSeason = from.HighestArenaRankCurrentSeason;
+        return to;
     }
 
     #region Non Serialize Fields

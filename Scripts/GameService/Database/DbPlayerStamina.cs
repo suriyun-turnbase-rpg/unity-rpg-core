@@ -20,9 +20,7 @@ public class DbPlayerStamina : IPlayerStamina
         var result = new List<PlayerStamina>();
         foreach (var entry in list)
         {
-            var newEntry = new PlayerStamina();
-            PlayerStamina.CloneTo(entry, newEntry);
-            result.Add(newEntry);
+            result.Add(PlayerStamina.CloneTo(entry, new PlayerStamina()));
         }
         return result;
     }

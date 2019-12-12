@@ -563,7 +563,7 @@ public partial class SQLiteGameService
         }
     }
 
-    private PlayerClearStage HelperClearStage(string playerId, string dataId, int grade)
+    private FinishStageResult HelperClearStage(FinishStageResult result, string playerId, string dataId, int grade)
     {
         PlayerClearStage clearStage = null;
         var clearStages = ExecuteReader(@"SELECT * FROM playerClearStage WHERE playerId=@playerId AND dataId=@dataId LIMIT 1",
@@ -598,7 +598,8 @@ public partial class SQLiteGameService
                     new SqliteParameter("@id", clearStage.Id));
             }
         }
-        return clearStage;
+        result.clearStage = clearStage;
+        return result;
     }
 
     private Player GetPlayerByLoginToken(string playerId, string loginToken)

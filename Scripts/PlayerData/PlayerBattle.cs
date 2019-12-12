@@ -23,12 +23,10 @@ public class PlayerBattle : BasePlayerData, IPlayerBattle
 
     public PlayerBattle Clone()
     {
-        var result = new PlayerBattle();
-        CloneTo(this, result);
-        return result;
+        return CloneTo(this, new PlayerBattle());
     }
 
-    public static void CloneTo(IPlayerBattle from, IPlayerBattle to)
+    public static T CloneTo<T>(IPlayerBattle from, T to) where T : IPlayerBattle
     {
         to.Id = from.Id;
         to.PlayerId = from.PlayerId;
@@ -37,6 +35,7 @@ public class PlayerBattle : BasePlayerData, IPlayerBattle
         to.BattleResult = from.BattleResult;
         to.Rating = from.Rating;
         to.BattleType = from.BattleType;
+        return to;
     }
 
     public static void SetData(PlayerBattle data)

@@ -18,9 +18,7 @@ public class DbPlayerClearStage : IPlayerClearStage
         var result = new List<PlayerClearStage>();
         foreach (var entry in list)
         {
-            var newEntry = new PlayerClearStage();
-            PlayerClearStage.CloneTo(entry, newEntry);
-            result.Add(newEntry);
+            result.Add(PlayerClearStage.CloneTo(entry, new PlayerClearStage()));
         }
         return result;
     }

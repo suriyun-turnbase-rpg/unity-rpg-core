@@ -31,18 +31,17 @@ public class PlayerFormation : BasePlayerData, IPlayerFormation
 
     public PlayerFormation Clone()
     {
-        var result = new PlayerFormation();
-        CloneTo(this, result);
-        return result;
+        return CloneTo(this, new PlayerFormation());
     }
 
-    public static void CloneTo(IPlayerFormation from, IPlayerFormation to)
+    public static T CloneTo<T>(IPlayerFormation from, T to) where T : IPlayerFormation
     {
         to.Id = from.Id;
         to.PlayerId = from.PlayerId;
         to.DataId = from.DataId;
         to.Position = from.Position;
         to.ItemId = from.ItemId;
+        return to;
     }
 
     public static string GetId(string playerId, string dataId, int position)

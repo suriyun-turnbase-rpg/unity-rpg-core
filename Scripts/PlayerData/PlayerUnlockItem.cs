@@ -16,17 +16,16 @@ public class PlayerUnlockItem : BasePlayerData, IPlayerUnlockItem
 
     public PlayerUnlockItem Clone()
     {
-        var result = new PlayerUnlockItem();
-        CloneTo(this, result);
-        return result;
+        return CloneTo(this, new PlayerUnlockItem());
     }
 
-    public static void CloneTo(IPlayerUnlockItem from, IPlayerUnlockItem to)
+    public static T CloneTo<T>(IPlayerUnlockItem from, T to) where T : IPlayerUnlockItem
     {
         to.Id = from.Id;
         to.PlayerId = from.PlayerId;
         to.DataId = from.DataId;
         to.Amount = from.Amount;
+        return to;
     }
 
     public static string GetId(string playerId, string dataId)

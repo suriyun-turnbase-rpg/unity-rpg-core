@@ -15,8 +15,7 @@ public partial class LiteDbGameService
             result.error = GameServiceErrorCode.INVALID_PLAYER_ITEM_DATA;
         else
         {
-            var item = new PlayerItem();
-            PlayerItem.CloneTo(foundItem, item);
+            var item = PlayerItem.CloneTo(foundItem, new PlayerItem());
             var softCurrency = GetCurrency(playerId, GameInstance.GameDatabase.softCurrency.id);
             var levelUpPrice = item.LevelUpPrice;
             var requireCurrency = 0;
@@ -31,8 +30,7 @@ public partial class LiteDbGameService
                 if (foundMaterial == null)
                     continue;
 
-                var resultItem = new PlayerItem();
-                PlayerItem.CloneTo(foundMaterial, resultItem);
+                var resultItem = PlayerItem.CloneTo(foundMaterial, new PlayerItem());
                 if (resultItem.CanBeMaterial)
                     materialItems.Add(resultItem);
             }
@@ -60,17 +58,13 @@ public partial class LiteDbGameService
                 updateItems.Add(item);
                 foreach (var updateItem in updateItems)
                 {
-                    var dbUpdateItem = new DbPlayerItem();
-                    PlayerItem.CloneTo(updateItem, dbUpdateItem);
-                    colPlayerItem.Update(dbUpdateItem);
+                    colPlayerItem.Update(PlayerItem.CloneTo(updateItem, new DbPlayerItem()));
                 }
                 foreach (var deleteItemId in deleteItemIds)
                 {
                     colPlayerItem.Delete(deleteItemId);
                 }
-                var resultSoftCurrency = new PlayerCurrency();
-                PlayerCurrency.CloneTo(softCurrency, resultSoftCurrency);
-                result.updateCurrencies.Add(resultSoftCurrency);
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
                 result.updateItems = updateItems;
                 result.deleteItemIds = deleteItemIds;
             }
@@ -89,8 +83,7 @@ public partial class LiteDbGameService
             result.error = GameServiceErrorCode.INVALID_PLAYER_ITEM_DATA;
         else
         {
-            var item = new PlayerItem();
-            PlayerItem.CloneTo(foundItem, item);
+            var item = PlayerItem.CloneTo(foundItem, new PlayerItem());
 
             if (!item.CanEvolve)
                 result.error = GameServiceErrorCode.CANNOT_EVOLVE;
@@ -112,8 +105,7 @@ public partial class LiteDbGameService
                     if (foundMaterial == null)
                         continue;
 
-                    var resultItem = new PlayerItem();
-                    PlayerItem.CloneTo(foundMaterial, resultItem);
+                    var resultItem = PlayerItem.CloneTo(foundMaterial, new PlayerItem());
                     if (resultItem.CanBeMaterial)
                         materialItems.Add(resultItem);
                 }
@@ -158,17 +150,13 @@ public partial class LiteDbGameService
                     updateItems.Add(item);
                     foreach (var updateItem in updateItems)
                     {
-                        var dbUpdateItem = new DbPlayerItem();
-                        PlayerItem.CloneTo(updateItem, dbUpdateItem);
-                        colPlayerItem.Update(dbUpdateItem);
+                        colPlayerItem.Update(PlayerItem.CloneTo(updateItem, new DbPlayerItem()));
                     }
                     foreach (var deleteItemId in deleteItemIds)
                     {
                         colPlayerItem.Delete(deleteItemId);
                     }
-                    var resultSoftCurrency = new PlayerCurrency();
-                    PlayerCurrency.CloneTo(softCurrency, resultSoftCurrency);
-                    result.updateCurrencies.Add(resultSoftCurrency);
+                    result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
                     result.updateItems = updateItems;
                     result.deleteItemIds = deleteItemIds;
                 }
@@ -197,8 +185,7 @@ public partial class LiteDbGameService
                 if (foundItem == null)
                     continue;
 
-                var resultItem = new PlayerItem();
-                PlayerItem.CloneTo(foundItem, resultItem);
+                var resultItem = PlayerItem.CloneTo(foundItem, new PlayerItem());
                 if (resultItem.CanSell)
                     sellingItems.Add(resultItem);
             }
@@ -219,17 +206,13 @@ public partial class LiteDbGameService
             colPlayerCurrency.Update(softCurrency);
             foreach (var updateItem in updateItems)
             {
-                var dbUpdateItem = new DbPlayerItem();
-                PlayerItem.CloneTo(updateItem, dbUpdateItem);
-                colPlayerItem.Update(dbUpdateItem);
+                colPlayerItem.Update(PlayerItem.CloneTo(updateItem, new DbPlayerItem()));
             }
             foreach (var deleteItemId in deleteItemIds)
             {
                 colPlayerItem.Delete(deleteItemId);
             }
-            var resultSoftCurrency = new PlayerCurrency();
-            PlayerCurrency.CloneTo(softCurrency, resultSoftCurrency);
-            result.updateCurrencies.Add(resultSoftCurrency);
+            result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
             result.updateItems = updateItems;
             result.deleteItemIds = deleteItemIds;
         }
@@ -246,14 +229,12 @@ public partial class LiteDbGameService
         EquipmentItem equipmentData = null;
         if (foundCharacter != null)
         {
-            var character = new PlayerItem();
-            PlayerItem.CloneTo(foundCharacter, character);
+            var character = PlayerItem.CloneTo(foundCharacter, new PlayerItem());
             characterData = character.CharacterData;
         }
         if (foundEquipment != null)
         {
-            var equipment = new PlayerItem();
-            PlayerItem.CloneTo(foundEquipment, equipment);
+            var equipment = PlayerItem.CloneTo(foundEquipment, new PlayerItem());
             equipmentData = equipment.EquipmentData;
         }
         if (foundPlayer == null)
@@ -273,16 +254,12 @@ public partial class LiteDbGameService
                 unEquipItem.EquipItemId = "";
                 unEquipItem.EquipPosition = "";
                 colPlayerItem.Update(unEquipItem);
-                var resultUnEquipItem = new PlayerItem();
-                PlayerItem.CloneTo(unEquipItem, resultUnEquipItem);
-                result.updateItems.Add(resultUnEquipItem);
+                result.updateItems.Add(PlayerItem.CloneTo(unEquipItem, new PlayerItem()));
             }
             foundEquipment.EquipItemId = characterId;
             foundEquipment.EquipPosition = equipPosition;
             colPlayerItem.Update(foundEquipment);
-            var resultEquipment = new PlayerItem();
-            PlayerItem.CloneTo(foundEquipment, resultEquipment);
-            result.updateItems.Add(resultEquipment);
+            result.updateItems.Add(PlayerItem.CloneTo(foundEquipment, new PlayerItem()));
         }
         onFinish(result);
     }
@@ -302,9 +279,7 @@ public partial class LiteDbGameService
             unEquipItem.EquipItemId = "";
             unEquipItem.EquipPosition = "";
             colPlayerItem.Update(unEquipItem);
-            var resultItem = new PlayerItem();
-            PlayerItem.CloneTo(unEquipItem, resultItem);
-            result.updateItems.Add(resultItem);
+            result.updateItems.Add(PlayerItem.CloneTo(unEquipItem, new PlayerItem()));
         }
         onFinish(result);
     }
@@ -351,20 +326,17 @@ public partial class LiteDbGameService
                 result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
             else
             {
-                var resultCurrency = new PlayerCurrency();
                 switch (requirementType)
                 {
                     case LootBoxRequirementType.RequireSoftCurrency:
                         softCurrency.Amount -= price;
                         colPlayerCurrency.Update(softCurrency);
-                        PlayerCurrency.CloneTo(softCurrency, resultCurrency);
-                        result.updateCurrencies.Add(resultCurrency);
+                        result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
                         break;
                     case LootBoxRequirementType.RequireHardCurrency:
                         hardCurrency.Amount -= price;
                         colPlayerCurrency.Update(hardCurrency);
-                        PlayerCurrency.CloneTo(hardCurrency, resultCurrency);
-                        result.updateCurrencies.Add(resultCurrency);
+                        result.updateCurrencies.Add(PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency()));
                         break;
                 }
 
@@ -380,17 +352,13 @@ public partial class LiteDbGameService
                         {
                             createEntry.Id = System.Guid.NewGuid().ToString();
                             colPlayerItem.Insert(createEntry);
-                            var resultItem = new PlayerItem();
-                            PlayerItem.CloneTo(createEntry, resultItem);
-                            result.createItems.Add(resultItem);
+                            result.createItems.Add(PlayerItem.CloneTo(createEntry, new PlayerItem()));
                             HelperUnlockItem(player.Id, rewardItem.Id);
                         }
                         foreach (var updateEntry in updateItems)
                         {
                             colPlayerItem.Update(updateEntry);
-                            var resultItem = new PlayerItem();
-                            PlayerItem.CloneTo(updateEntry, resultItem);
-                            result.updateItems.Add(resultItem);
+                            result.updateItems.Add(PlayerItem.CloneTo(updateEntry, new PlayerItem()));
                         }
                     }
                 }
@@ -423,19 +391,16 @@ public partial class LiteDbGameService
             result.error = GameServiceErrorCode.INVALID_IAP_PACKAGE_DATA;
         else
         {
-            var resultCurrency = new PlayerCurrency();
             // Add soft currency
             var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
             softCurrency.Amount += iapPackage.rewardSoftCurrency;
             colPlayerCurrency.Update(softCurrency);
-            PlayerCurrency.CloneTo(softCurrency, resultCurrency);
-            result.updateCurrencies.Add(resultCurrency);
+            result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
             // Add hard currency
             var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
             hardCurrency.Amount += iapPackage.rewardHardCurrency;
             colPlayerCurrency.Update(hardCurrency);
-            PlayerCurrency.CloneTo(hardCurrency, resultCurrency);
-            result.updateCurrencies.Add(resultCurrency);
+            result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
             // Add items
             foreach (var rewardItem in iapPackage.rewardItems)
             {
@@ -447,17 +412,13 @@ public partial class LiteDbGameService
                     {
                         createEntry.Id = System.Guid.NewGuid().ToString();
                         colPlayerItem.Insert(createEntry);
-                        var resultItem = new PlayerItem();
-                        PlayerItem.CloneTo(createEntry, resultItem);
-                        result.createItems.Add(resultItem);
+                        result.createItems.Add(PlayerItem.CloneTo(createEntry, new PlayerItem()));
                         HelperUnlockItem(player.Id, rewardItem.Id);
                     }
                     foreach (var updateEntry in updateItems)
                     {
                         colPlayerItem.Update(updateEntry);
-                        var resultItem = new PlayerItem();
-                        PlayerItem.CloneTo(updateEntry, resultItem);
-                        result.updateItems.Add(resultItem);
+                        result.updateItems.Add(PlayerItem.CloneTo(updateEntry, new PlayerItem()));
                     }
                 }
             }

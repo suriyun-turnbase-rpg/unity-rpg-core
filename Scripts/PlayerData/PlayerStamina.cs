@@ -38,18 +38,17 @@ public class PlayerStamina : BasePlayerData, IPlayerStamina
 
     public PlayerStamina Clone()
     {
-        var result = new PlayerStamina();
-        CloneTo(this, result);
-        return result;
+        return CloneTo(this, new PlayerStamina());
     }
 
-    public static void CloneTo(IPlayerStamina from, IPlayerStamina to)
+    public static T CloneTo<T>(IPlayerStamina from, T to) where T : IPlayerStamina
     {
         to.Id = from.Id;
         to.PlayerId = from.PlayerId;
         to.DataId = from.DataId;
         to.Amount = from.Amount;
         to.RecoveredTime = from.RecoveredTime;
+        return to;
     }
 
     public PlayerStamina SetAmount(int amount, long recoveredTime)

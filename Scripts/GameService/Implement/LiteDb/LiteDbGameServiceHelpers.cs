@@ -139,8 +139,7 @@ public partial class LiteDbGameService
     {
         var gameDb = GameInstance.GameDatabase;
         var stamina = GetStamina(player.Id, staminaTable.id);
-        var gamePlayer = new Player();
-        Player.CloneTo(player, gamePlayer);
+        var gamePlayer = Player.CloneTo(player, new Player());
         var maxStamina = staminaTable.maxAmountTable.Calculate(gamePlayer.Level, gameDb.playerMaxLevel);
         if (stamina.Amount >= decreaseAmount)
         {
@@ -159,8 +158,7 @@ public partial class LiteDbGameService
         var gameDb = GameInstance.GameDatabase;
 
         var stamina = GetStamina(player.Id, staminaTable.id);
-        var gamePlayer = new Player();
-        Player.CloneTo(player, gamePlayer);
+        var gamePlayer = Player.CloneTo(player, new Player());
         var maxStamina = staminaTable.maxAmountTable.Calculate(gamePlayer.Level, gameDb.playerMaxLevel);
         if (stamina.Amount < maxStamina)
         {
@@ -300,8 +298,7 @@ public partial class LiteDbGameService
         var materials = colPlayerItem.Find(a => a.DataId == dataId && a.PlayerId == playerId);
         foreach (var material in materials)
         {
-            var gamePlayerItem = new PlayerItem();
-            PlayerItem.CloneTo(material, gamePlayerItem);
+            var gamePlayerItem = PlayerItem.CloneTo(material, new PlayerItem());
 
             if ((!conditionCanLevelUp || gamePlayerItem.CanLevelUp) &&
                 (!conditionCanEvolve || gamePlayerItem.CanEvolve) &&
@@ -384,7 +381,7 @@ public partial class LiteDbGameService
         return unlockItem;
     }
 
-    private DbPlayerClearStage HelperClearStage(string playerId, string dataId, int grade)
+    private FinishStageResult HelperClearStage(FinishStageResult result, string playerId, string dataId, int grade)
     {
         var clearStage = colPlayerClearStage.FindById(PlayerClearStage.GetId(playerId, dataId));
         if (clearStage == null)
@@ -404,6 +401,7 @@ public partial class LiteDbGameService
                 colPlayerClearStage.Update(clearStage);
             }
         }
-        return clearStage;
+        result.clearStage = PlayerClearStage.CloneTo(clearStage, new PlayerClearStage());
+        return result;
     }
 }

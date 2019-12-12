@@ -16,17 +16,16 @@ public class PlayerClearStage : BasePlayerData, IPlayerClearStage
 
     public PlayerClearStage Clone()
     {
-        var result = new PlayerClearStage();
-        CloneTo(this, result);
-        return result;
+        return CloneTo(this, new PlayerClearStage());
     }
 
-    public static void CloneTo(IPlayerClearStage from, IPlayerClearStage to)
+    public static T CloneTo<T>(IPlayerClearStage from, T to) where T : IPlayerClearStage
     {
         to.Id = from.Id;
         to.PlayerId = from.PlayerId;
         to.DataId = from.DataId;
         to.BestRating = from.BestRating;
+        return to;
     }
 
     public static string GetId(string playerId, string dataId)

@@ -52,12 +52,10 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
 
     public PlayerItem Clone()
     {
-        var result = new PlayerItem();
-        CloneTo(this, result);
-        return result;
+        return CloneTo(this, new PlayerItem());
     }
 
-    public static void CloneTo(IPlayerItem from, IPlayerItem to)
+    public static T CloneTo<T>(IPlayerItem from, T to) where T : IPlayerItem
     {
         to.Id = from.Id;
         to.PlayerId = from.PlayerId;
@@ -66,6 +64,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         to.Exp = from.Exp;
         to.EquipItemId = from.EquipItemId;
         to.EquipPosition = from.EquipPosition;
+        return to;
     }
 
     public PlayerItem CreateLevelUpItem(int increaseExp)

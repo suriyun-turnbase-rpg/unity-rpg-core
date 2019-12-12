@@ -24,9 +24,7 @@ public class DbPlayerBattle : IPlayerBattle
         var result = new List<PlayerBattle>();
         foreach (var entry in list)
         {
-            var newEntry = new PlayerBattle();
-            PlayerBattle.CloneTo(entry, newEntry);
-            result.Add(newEntry);
+            result.Add(PlayerBattle.CloneTo(entry, new PlayerBattle()));
         }
         return result;
     }

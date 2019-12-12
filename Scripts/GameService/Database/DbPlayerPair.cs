@@ -16,9 +16,7 @@ public class DbPlayerPair : IPlayerPair
         var result = new List<PlayerPair>();
         foreach (var entry in list)
         {
-            var newEntry = new PlayerPair();
-            PlayerPair.CloneTo(entry, newEntry);
-            result.Add(newEntry);
+            result.Add(PlayerPair.CloneTo(entry, new PlayerPair()));
         }
         return result;
     }

@@ -12,16 +12,15 @@ public class PlayerPair : BasePlayerData, IPlayerPair
 
     public PlayerPair Clone()
     {
-        var result = new PlayerPair();
-        CloneTo(this, result);
-        return result;
+        return CloneTo(this, new PlayerPair());
     }
 
-    public static void CloneTo(IPlayerPair from, IPlayerPair to)
+    public static T CloneTo<T>(IPlayerPair from, T to) where T : IPlayerPair
     {
         to.Id = from.Id;
         to.PlayerId = from.PlayerId;
         to.PairPlayerId = from.PairPlayerId;
+        return to;
     }
 
     public static string GetId(string playerId, string pairPlayerId)

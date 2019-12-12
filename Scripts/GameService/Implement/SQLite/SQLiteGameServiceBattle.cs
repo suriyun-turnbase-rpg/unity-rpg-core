@@ -165,8 +165,7 @@ public partial class SQLiteGameService
                     // End add item condition
                 }
                 // End reward items loop
-                var clearedStage = HelperClearStage(playerId, stage.Id, rating);
-                result.clearStage = clearedStage;
+                result = HelperClearStage(result, playerId, stage.Id, rating);
             }
         }
         onFinish(result);

@@ -24,9 +24,7 @@ public class DbPlayerItem : IPlayerItem
         var result = new List<PlayerItem>();
         foreach (var entry in list)
         {
-            var newEntry = new PlayerItem();
-            PlayerItem.CloneTo(entry, newEntry);
-            result.Add(newEntry);
+            result.Add(PlayerItem.CloneTo(entry, new PlayerItem()));
         }
         return result;
     }

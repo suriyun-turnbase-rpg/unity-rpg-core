@@ -20,9 +20,7 @@ public class DbPlayerAuth : IPlayerAuth
         var result = new List<PlayerAuth>();
         foreach (var entry in list)
         {
-            var newEntry = new PlayerAuth();
-            PlayerAuth.CloneTo(entry, newEntry);
-            result.Add(newEntry);
+            result.Add(PlayerAuth.CloneTo(entry, new PlayerAuth()));
         }
         return result;
     }

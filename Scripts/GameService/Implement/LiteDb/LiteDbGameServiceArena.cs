@@ -48,9 +48,7 @@ public partial class LiteDbGameService
                 colPlayerBattle.Insert(playerBattle);
 
                 var stamina = GetStamina(player.Id, arenaStaminaTable.id);
-                var resultStamina = new PlayerStamina();
-                PlayerStamina.CloneTo(stamina, resultStamina);
-                result.stamina = resultStamina;
+                result.stamina = PlayerStamina.CloneTo(stamina, new PlayerStamina());
                 result.session = playerBattle.Session;
                 
                 // Opponent characters
@@ -97,8 +95,7 @@ public partial class LiteDbGameService
                 result.updateScore = gameDb.arenaWinScoreIncrease;
                 player.ArenaScore += gameDb.arenaWinScoreIncrease;
                 colPlayer.Update(player);
-                Player.CloneTo(player, resultPlayer);
-                result.player = resultPlayer;
+                result.player = Player.CloneTo(player, resultPlayer);
 
                 // Arena rank up, rewarding items
                 if (arenaRank != null && resultPlayer.ArenaLevel > oldArenaLevel && player.HighestArenaRankCurrentSeason < resultPlayer.ArenaLevel)
@@ -115,18 +112,14 @@ public partial class LiteDbGameService
                     result.rewardSoftCurrency = rewardSoftCurrency;
                     softCurrency.Amount += rewardSoftCurrency;
                     colPlayerCurrency.Update(softCurrency);
-                    var resultSoftCurrency = new PlayerCurrency();
-                    PlayerCurrency.CloneTo(softCurrency, resultSoftCurrency);
-                    result.updateCurrencies.Add(resultSoftCurrency);
+                    result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
                     // Hard currency
                     var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
                     var rewardHardCurrency = arenaRank.rewardHardCurrency;
                     result.rewardHardCurrency = rewardHardCurrency;
                     hardCurrency.Amount += rewardHardCurrency;
                     colPlayerCurrency.Update(hardCurrency);
-                    var resultHardCurrency = new PlayerCurrency();
-                    PlayerCurrency.CloneTo(hardCurrency, resultHardCurrency);
-                    result.updateCurrencies.Add(resultHardCurrency);
+                    result.updateCurrencies.Add(PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency()));
                     // Items
                     for (var i = 0; i < arenaRank.rewardItems.Length; ++i)
                     {
@@ -141,8 +134,7 @@ public partial class LiteDbGameService
                             {
                                 createEntry.Id = System.Guid.NewGuid().ToString();
                                 colPlayerItem.Insert(createEntry);
-                                var resultItem = new PlayerItem();
-                                PlayerItem.CloneTo(createEntry, resultItem);
+                                var resultItem = PlayerItem.CloneTo(createEntry, new PlayerItem());
                                 result.rewardItems.Add(resultItem);
                                 result.createItems.Add(resultItem);
                                 HelperUnlockItem(player.Id, rewardItem.Id);
@@ -150,8 +142,7 @@ public partial class LiteDbGameService
                             foreach (var updateEntry in updateItems)
                             {
                                 colPlayerItem.Update(updateEntry);
-                                var resultItem = new PlayerItem();
-                                PlayerItem.CloneTo(updateEntry, resultItem);
+                                var resultItem = PlayerItem.CloneTo(updateEntry, new PlayerItem());
                                 result.rewardItems.Add(resultItem);
                                 result.updateItems.Add(resultItem);
                             }
@@ -163,12 +154,10 @@ public partial class LiteDbGameService
             }
             else
             {
-                var resultPlayer = new Player();
                 result.updateScore = -gameDb.arenaLoseScoreDecrease;
                 player.ArenaScore -= gameDb.arenaLoseScoreDecrease;
                 colPlayer.Update(player);
-                Player.CloneTo(player, resultPlayer);
-                result.player = resultPlayer;
+                result.player = Player.CloneTo(player, new Player());
             }
         }
         onFinish(result);

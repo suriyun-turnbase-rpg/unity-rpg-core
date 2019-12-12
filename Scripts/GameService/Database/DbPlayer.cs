@@ -32,9 +32,7 @@ public class DbPlayer : IPlayer
         var result = new List<Player>();
         foreach (var entry in list)
         {
-            var newEntry = new Player();
-            Player.CloneTo(entry, newEntry);
-            result.Add(newEntry);
+            result.Add(Player.CloneTo(entry, new Player()));
         }
         return result;
     }

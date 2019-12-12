@@ -18,9 +18,7 @@ public class DbPlayerUnlockItem : IPlayerUnlockItem
         var result = new List<PlayerUnlockItem>();
         foreach (var entry in list)
         {
-            var newEntry = new PlayerUnlockItem();
-            PlayerUnlockItem.CloneTo(entry, newEntry);
-            result.Add(newEntry);
+            result.Add(PlayerUnlockItem.CloneTo(entry, new PlayerUnlockItem()));
         }
         return result;
     }

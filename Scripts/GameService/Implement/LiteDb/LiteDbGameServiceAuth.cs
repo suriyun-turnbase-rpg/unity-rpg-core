@@ -18,9 +18,7 @@ public partial class LiteDbGameService
             {
                 player = UpdatePlayerLoginToken(player);
                 UpdatePlayerStamina(player);
-                var resultPlayer = new Player();
-                Player.CloneTo(player, resultPlayer);
-                result.player = resultPlayer;
+                result.player = Player.CloneTo(player, new Player());
             }
         }
         onFinish(result);
@@ -48,17 +46,12 @@ public partial class LiteDbGameService
             {
                 player = UpdatePlayerLoginToken(player);
                 UpdatePlayerStamina(player);
-                var resultPlayer = new Player();
-                Player.CloneTo(player, resultPlayer);
-                result.player = resultPlayer;
+                result.player = Player.CloneTo(player, new Player());
             }
         }
         else
         {
-            var player = InsertNewPlayer(AUTH_GUEST, deviceId, deviceId);
-            var resultPlayer = new Player();
-            Player.CloneTo(player, resultPlayer);
-            result.player = resultPlayer;
+            result.player = Player.CloneTo(InsertNewPlayer(AUTH_GUEST, deviceId, deviceId), new Player());
         }
         onFinish(result);
     }
@@ -76,9 +69,7 @@ public partial class LiteDbGameService
             if (refreshToken)
                 player = UpdatePlayerLoginToken(player);
             UpdatePlayerStamina(player);
-            var resultPlayer = new Player();
-            Player.CloneTo(player, resultPlayer);
-            result.player = resultPlayer;
+            result.player = Player.CloneTo(player, new Player());
         }
         onFinish(result);
     }
@@ -100,9 +91,7 @@ public partial class LiteDbGameService
         {
             player.ProfileName = profileName;
             colPlayer.Update(player);
-            var resultPlayer = new Player();
-            Player.CloneTo(player, resultPlayer);
-            result.player = resultPlayer;
+            result.player = Player.CloneTo(player, new Player());
         }
         onFinish(result);
     }
@@ -116,10 +105,7 @@ public partial class LiteDbGameService
             result.error = GameServiceErrorCode.EXISTED_USERNAME;
         else
         {
-            var player = InsertNewPlayer(AUTH_NORMAL, username, password);
-            var resultPlayer = new Player();
-            Player.CloneTo(player, resultPlayer);
-            result.player = resultPlayer;
+            result.player = Player.CloneTo(InsertNewPlayer(AUTH_NORMAL, username, password), new Player()); ;
         }
         onFinish(result);
     }

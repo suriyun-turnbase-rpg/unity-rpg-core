@@ -38,18 +38,17 @@ public class PlayerCurrency : BasePlayerData, IPlayerCurrency
 
     public PlayerCurrency Clone()
     {
-        var result = new PlayerCurrency();
-        CloneTo(this, result);
-        return result;
+        return CloneTo(this, new PlayerCurrency());
     }
 
-    public static void CloneTo(IPlayerCurrency from, IPlayerCurrency to)
+    public static T CloneTo<T>(IPlayerCurrency from, T to) where T : IPlayerCurrency
     {
         to.Id = from.Id;
         to.PlayerId = from.PlayerId;
         to.DataId = from.DataId;
         to.Amount = from.Amount;
         to.PurchasedAmount = from.PurchasedAmount;
+        return to;
     }
 
     public PlayerCurrency SetAmount(int amount, int purchasedAmount)
