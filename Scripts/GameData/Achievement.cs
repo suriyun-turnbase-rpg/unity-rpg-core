@@ -37,7 +37,7 @@ public class Achievement : BaseGameData
             jsonRewardItems += entry.ToJson();
         }
         jsonRewardItems = "[" + jsonRewardItems + "]";
-        return "{\"type\":" + type + "," +
+        return "{\"type\":" + (byte)type + "," +
             "\"targetAmount\":" + targetAmount + "," +
             "\"rewardSoftCurrency\":" + rewardSoftCurrency + "," +
             "\"rewardHardCurrency\":" + rewardHardCurrency + "," +
