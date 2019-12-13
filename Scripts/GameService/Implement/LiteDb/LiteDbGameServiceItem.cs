@@ -496,11 +496,13 @@ public partial class LiteDbGameService
                 result.player = Player.CloneTo(player, new Player());
                 // Add soft currency
                 var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+                result.rewardSoftCurrency = achievement.rewardSoftCurrency;
                 softCurrency.Amount += achievement.rewardSoftCurrency;
                 colPlayerCurrency.Update(softCurrency);
                 result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
                 // Add hard currency
                 var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+                result.rewardHardCurrency = achievement.rewardHardCurrency;
                 hardCurrency.Amount += achievement.rewardHardCurrency;
                 colPlayerCurrency.Update(hardCurrency);
                 result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
@@ -515,13 +517,17 @@ public partial class LiteDbGameService
                         {
                             createEntry.Id = System.Guid.NewGuid().ToString();
                             colPlayerItem.Insert(createEntry);
-                            result.createItems.Add(PlayerItem.CloneTo(createEntry, new PlayerItem()));
+                            var resultItem = PlayerItem.CloneTo(createEntry, new PlayerItem());
+                            result.createItems.Add(resultItem);
+                            result.rewardItems.Add(resultItem);
                             HelperUnlockItem(player.Id, rewardItem.Id);
                         }
                         foreach (var updateEntry in updateItems)
                         {
                             colPlayerItem.Update(updateEntry);
-                            result.updateItems.Add(PlayerItem.CloneTo(updateEntry, new PlayerItem()));
+                            var resultItem = PlayerItem.CloneTo(updateEntry, new PlayerItem());
+                            result.updateItems.Add(resultItem);
+                            result.rewardItems.Add(resultItem);
                         }
                     }
                 }

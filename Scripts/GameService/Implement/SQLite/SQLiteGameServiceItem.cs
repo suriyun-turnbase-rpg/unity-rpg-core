@@ -512,6 +512,7 @@ public partial class SQLiteGameService
                 result.player = player;
                 // Add soft currency
                 var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+                result.rewardSoftCurrency = achievement.rewardSoftCurrency;
                 softCurrency.Amount += achievement.rewardSoftCurrency;
                 ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
                     new SqliteParameter("@amount", softCurrency.Amount),
@@ -519,6 +520,7 @@ public partial class SQLiteGameService
                 result.updateCurrencies.Add(softCurrency);
                 // Add hard currency
                 var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+                result.rewardHardCurrency = achievement.rewardHardCurrency;
                 hardCurrency.Amount += achievement.rewardHardCurrency;
                 ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
                     new SqliteParameter("@amount", hardCurrency.Amount),
@@ -536,12 +538,14 @@ public partial class SQLiteGameService
                         {
                             QueryCreatePlayerItem(createEntry);
                             result.createItems.Add(createEntry);
+                            result.rewardItems.Add(createEntry);
                             HelperUnlockItem(player.Id, rewardItem.Id);
                         }
                         foreach (var updateEntry in updateItems)
                         {
                             QueryUpdatePlayerItem(updateEntry);
                             result.updateItems.Add(updateEntry);
+                            result.rewardItems.Add(updateEntry);
                         }
                     }
                 }
