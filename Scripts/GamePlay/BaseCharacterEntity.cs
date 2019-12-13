@@ -286,7 +286,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         }
         
         // Cannot evade, receive damage
-        if (GameInstance.GameplayRule.IsHit(attackerAttributes, defenderAttributes))
+        if (!GameInstance.GameplayRule.IsHit(attackerAttributes, defenderAttributes))
         {
             Manager.SpawnMissText(this);
         }
