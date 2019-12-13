@@ -54,14 +54,14 @@ public abstract class BaseStage : BaseGameData
         }
         jsonRewardItems = "[" + jsonRewardItems + "]";
         // First Clear Reward Items
-        var jsonClearTimeRewardItems = "";
+        var jsonFirstClearRewardItems = "";
         foreach (var entry in firstClearRewardItems)
         {
-            if (!string.IsNullOrEmpty(jsonClearTimeRewardItems))
-                jsonClearTimeRewardItems += ",";
-            jsonClearTimeRewardItems += entry.ToJson();
+            if (!string.IsNullOrEmpty(jsonFirstClearRewardItems))
+                jsonFirstClearRewardItems += ",";
+            jsonFirstClearRewardItems += entry.ToJson();
         }
-        jsonClearTimeRewardItems = "[" + jsonClearTimeRewardItems + "]";
+        jsonFirstClearRewardItems = "[" + jsonFirstClearRewardItems + "]";
         // Unlock Stages
         var jsonUnlockStages = "";
         foreach (var entry in unlockStages)
@@ -81,7 +81,7 @@ public abstract class BaseStage : BaseGameData
             "\"firstClearRewardSoftCurrency\":" + firstClearRewardSoftCurrency + "," +
             "\"firstClearRewardHardCurrency\":" + firstClearRewardHardCurrency + "," +
             "\"firstClearRewardPlayerExp\":" + firstClearRewardPlayerExp + "," +
-            "\"firstClearRewardItems\":" + jsonClearTimeRewardItems + "," +
+            "\"firstClearRewardItems\":" + jsonFirstClearRewardItems + "," +
             "\"unlockStages\":" + jsonUnlockStages + "}";
     }
 }
