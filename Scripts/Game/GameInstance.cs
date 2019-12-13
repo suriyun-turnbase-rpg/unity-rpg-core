@@ -303,6 +303,7 @@ public partial class GameInstance : MonoBehaviour
     public void GetAllPlayerData(LoadAllPlayerDataState loadAllPlayerDataState)
     {
         this.loadAllPlayerDataState = loadAllPlayerDataState;
+        GetAchievementList();
         GetAuthList();
         GetCurrencyList();
         GetFormationList();
