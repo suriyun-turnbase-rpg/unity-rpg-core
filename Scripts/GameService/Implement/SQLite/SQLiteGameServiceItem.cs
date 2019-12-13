@@ -484,6 +484,72 @@ public partial class SQLiteGameService
 
     protected override void DoEarnAchievementReward(string playerId, string loginToken, string achievementId, UnityAction<EarnAchievementResult> onFinish)
     {
-        // TODO: Implement it later
+        var result = new EarnAchievementResult();
+        var gameDb = GameInstance.GameDatabase;
+        var player = GetPlayerByLoginToken(playerId, loginToken);
+        Achievement achievement;
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!gameDb.Achievements.TryGetValue(achievementId, out achievement))
+            result.error = GameServiceErrorCode.INVALID_ACHIEVEMENT_DATA;
+        else
+        {
+            var playerAchievement = GetPlayerAchievement(playerId, achievement.Id);
+            if (playerAchievement == null)
+                result.error = GameServiceErrorCode.ACHIEVEMENT_UNDONE;
+            else if (playerAchievement.Earned)
+                result.error = GameServiceErrorCode.ACHIEVEMENT_EARNED;
+            else if (playerAchievement.Progress < achievement.targetAmount)
+                result.error = GameServiceErrorCode.ACHIEVEMENT_UNDONE;
+            else
+            {
+                // Player exp
+                result.rewardPlayerExp = achievement.rewardPlayerExp;
+                player.Exp += achievement.rewardPlayerExp;
+                ExecuteNonQuery(@"UPDATE player SET exp=@exp WHERE id=@playerId",
+                    new SqliteParameter("@exp", player.Exp),
+                    new SqliteParameter("@playerId", player.Id));
+                result.player = player;
+                // Add soft currency
+                var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+                softCurrency.Amount += achievement.rewardSoftCurrency;
+                ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                    new SqliteParameter("@amount", softCurrency.Amount),
+                    new SqliteParameter("@id", softCurrency.Id));
+                result.updateCurrencies.Add(softCurrency);
+                // Add hard currency
+                var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+                hardCurrency.Amount += achievement.rewardHardCurrency;
+                ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                    new SqliteParameter("@amount", hardCurrency.Amount),
+                    new SqliteParameter("@id", hardCurrency.Id));
+                result.updateCurrencies.Add(hardCurrency);
+                // Add items
+                foreach (var rewardItem in achievement.rewardItems)
+                {
+                    var createItems = new List<PlayerItem>();
+                    var updateItems = new List<PlayerItem>();
+                    if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
+                    {
+
+                        foreach (var createEntry in createItems)
+                        {
+                            QueryCreatePlayerItem(createEntry);
+                            result.createItems.Add(createEntry);
+                            HelperUnlockItem(player.Id, rewardItem.Id);
+                        }
+                        foreach (var updateEntry in updateItems)
+                        {
+                            QueryUpdatePlayerItem(updateEntry);
+                            result.updateItems.Add(updateEntry);
+                        }
+                    }
+                }
+                // Update achievement status
+                playerAchievement.Earned = true;
+                QueryUpdatePlayerAchievement(playerAchievement);
+            }
+        }
+        onFinish(result);
     }
 }

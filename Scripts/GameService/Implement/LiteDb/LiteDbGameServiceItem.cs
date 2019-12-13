@@ -470,6 +470,66 @@ public partial class LiteDbGameService
 
     protected override void DoEarnAchievementReward(string playerId, string loginToken, string achievementId, UnityAction<EarnAchievementResult> onFinish)
     {
-        // TODO: Implement it later
+        var result = new EarnAchievementResult();
+        var gameDb = GameInstance.GameDatabase;
+        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        Achievement achievement;
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!gameDb.Achievements.TryGetValue(achievementId, out achievement))
+            result.error = GameServiceErrorCode.INVALID_ACHIEVEMENT_DATA;
+        else
+        {
+            var playerAchievement = colPlayerAchievement.FindOne(a => a.PlayerId == playerId && a.DataId == achievement.Id);
+            if (playerAchievement == null)
+                result.error = GameServiceErrorCode.ACHIEVEMENT_UNDONE;
+            if (playerAchievement.Earned)
+                result.error = GameServiceErrorCode.ACHIEVEMENT_EARNED;
+            else if (playerAchievement.Progress < achievement.targetAmount)
+                result.error = GameServiceErrorCode.ACHIEVEMENT_UNDONE;
+            else
+            {
+                // Player exp
+                result.rewardPlayerExp = achievement.rewardPlayerExp;
+                player.Exp += achievement.rewardPlayerExp;
+                colPlayer.Update(player);
+                result.player = Player.CloneTo(player, new Player());
+                // Add soft currency
+                var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+                softCurrency.Amount += achievement.rewardSoftCurrency;
+                colPlayerCurrency.Update(softCurrency);
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
+                // Add hard currency
+                var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+                hardCurrency.Amount += achievement.rewardHardCurrency;
+                colPlayerCurrency.Update(hardCurrency);
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
+                // Add items
+                foreach (var rewardItem in achievement.rewardItems)
+                {
+                    var createItems = new List<DbPlayerItem>();
+                    var updateItems = new List<DbPlayerItem>();
+                    if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
+                    {
+                        foreach (var createEntry in createItems)
+                        {
+                            createEntry.Id = System.Guid.NewGuid().ToString();
+                            colPlayerItem.Insert(createEntry);
+                            result.createItems.Add(PlayerItem.CloneTo(createEntry, new PlayerItem()));
+                            HelperUnlockItem(player.Id, rewardItem.Id);
+                        }
+                        foreach (var updateEntry in updateItems)
+                        {
+                            colPlayerItem.Update(updateEntry);
+                            result.updateItems.Add(PlayerItem.CloneTo(updateEntry, new PlayerItem()));
+                        }
+                    }
+                }
+                // Update achievement status
+                playerAchievement.Earned = true;
+                colPlayerAchievement.Update(PlayerAchievement.CloneTo(playerAchievement, new DbPlayerAchievement()));
+            }
+        }
+        onFinish(result);
     }
 }

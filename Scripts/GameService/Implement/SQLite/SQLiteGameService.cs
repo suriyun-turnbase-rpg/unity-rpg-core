@@ -425,6 +425,24 @@ public partial class SQLiteGameService : BaseGameService
         return list;
     }
 
+    protected PlayerAchievement GetPlayerAchievement(string playerId, string dataId)
+    {
+        var reader = ExecuteReader(@"SELECT * FROM playerAchievement WHERE playerId=@playerId AND dataId=@dataId LIMIT 1",
+            new SqliteParameter("@playerId", playerId),
+            new SqliteParameter("@dataId", dataId));
+        PlayerAchievement result = null;
+        if (reader.Read())
+        {
+            result = new PlayerAchievement();
+            result.Id = reader.GetString(0);
+            result.PlayerId = reader.GetString(1);
+            result.DataId = reader.GetString(2);
+            result.Progress = reader.GetInt32(3);
+            result.Earned = reader.GetInt32(4) > 0;
+        }
+        return result;
+    }
+
     protected override void DoGetAuthList(string playerId, string loginToken, UnityAction<AuthListResult> onFinish)
     {
         var result = new AuthListResult();
