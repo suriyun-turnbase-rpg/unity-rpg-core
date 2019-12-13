@@ -131,6 +131,8 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_STAGE_STAMINA, "Not enough " + Texts[GameText.TITLE_STAGE_STAMINA]);
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_ARENA_STAMINA, "Not enough " + Texts[GameText.TITLE_ARENA_STAMINA]);
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_ITEMS, "Not enough items");
+        Texts.Add(GameServiceErrorCode.ACHIEVEMENT_UNDONE, "Achievement's task isn't done");
+        Texts.Add(GameServiceErrorCode.ACHIEVEMENT_EARNED, "Achievement's rewards earned");
         Texts.Add(GameServiceErrorCode.CANNOT_EVOLVE, "Cannot evolve");
         Texts.Add(GameServiceErrorCode.NOT_AVAILABLE, "Services not available");
         Texts.Add(GameServiceErrorCode.UNKNOW, "Unknow Error");

@@ -27,6 +27,8 @@ public class GameServiceErrorCode
     public const string NOT_ENOUGH_STAGE_STAMINA = ERROR_PREFIX + "NOT_ENOUGH_STAGE_STAMINA";
     public const string NOT_ENOUGH_ARENA_STAMINA = ERROR_PREFIX + "NOT_ENOUGH_ARENA_STAMINA";
     public const string NOT_ENOUGH_ITEMS = ERROR_PREFIX + "NOT_ENOUGH_ITEMS";
+    public const string ACHIEVEMENT_UNDONE = ERROR_PREFIX + "ACHIEVEMENT_UNDONE";
+    public const string ACHIEVEMENT_EARNED = ERROR_PREFIX + "ACHIEVEMENT_EARNED";
     public const string CANNOT_EVOLVE = ERROR_PREFIX + "CANNOT_EVOLVE";
     public const string NOT_AVAILABLE = ERROR_PREFIX + "NOT_AVAILABLE";
 }
@@ -182,6 +184,7 @@ public class FinishDuelResult : PlayerResult
 [System.Serializable]
 public class EarnAchievementResult : PlayerResult
 {
+    public int rewardPlayerExp;
     public int rewardSoftCurrency;
     public int rewardHardCurrency;
     public List<PlayerItem> rewardItems = new List<PlayerItem>();
