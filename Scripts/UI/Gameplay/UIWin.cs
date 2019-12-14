@@ -8,14 +8,23 @@ public class UIWin : UIDataItem<FinishStageResult>
     public const string ANIM_KEY_BATTLE_RATING = "Rating";
     public Animator ratingAnimator;
     public UIPlayer uiPlayer;
+    [Header("Win Rewards")]
     public Text textRewardPlayerExp;
     public Text textRewardCharacterExp;
     public UIItemList uiIncreasedExpCharacters;
     public UIItemList uiRewardItems;
     public UICurrency uiRewardCurrency;
+    [Header("First Win Rewards")]
+    public UIBase firstClearPanelRoot;
+    public Text textFirstClearRewardPlayerExp;
+    public UIItemList uiFirstClearRewardItems;
+    public UICurrency uiFirstClearRewardSoftCurrency;
+    public UICurrency uiFirstClearRewardHardCurrency;
+    [Header("Buttons")]
     public Button buttonRestart;
     public Button buttonGoToManageScene;
     public Button buttonGoToNextStage;
+
     public BaseStage NextStage
     {
         get
@@ -70,11 +79,23 @@ public class UIWin : UIDataItem<FinishStageResult>
         if (uiRewardItems != null)
             uiRewardItems.ClearListItems();
 
+        if (firstClearPanelRoot != null)
+            firstClearPanelRoot.Hide();
+
         if (uiRewardCurrency != null)
-        {
-            var currencyData = PlayerCurrency.SoftCurrency.Clone().SetAmount(0, 0);
-            uiRewardCurrency.SetData(currencyData);
-        }
+            uiRewardCurrency.SetData(PlayerCurrency.SoftCurrency.Clone().SetAmount(0, 0));
+
+        if (textFirstClearRewardPlayerExp != null)
+            textFirstClearRewardPlayerExp.text = "0";
+
+        if (uiFirstClearRewardItems != null)
+            uiFirstClearRewardItems.ClearListItems();
+
+        if (uiFirstClearRewardSoftCurrency != null)
+            uiFirstClearRewardSoftCurrency.SetData(PlayerCurrency.SoftCurrency.Clone().SetAmount(0, 0));
+
+        if (uiFirstClearRewardHardCurrency != null)
+            uiFirstClearRewardHardCurrency.SetData(PlayerCurrency.HardCurrency.Clone().SetAmount(0, 0));
     }
 
     public override bool IsEmpty()
@@ -126,11 +147,32 @@ public class UIWin : UIDataItem<FinishStageResult>
             uiRewardItems.SetListItems(data.rewardItems);
         }
 
-        if (uiRewardCurrency != null)
+        if (firstClearPanelRoot != null)
         {
-            var currencyData = PlayerCurrency.SoftCurrency.Clone().SetAmount(data.rewardSoftCurrency, 0);
-            uiRewardCurrency.SetData(currencyData);
+            if (data.isFirstClear)
+                firstClearPanelRoot.Show();
+            else
+                firstClearPanelRoot.Hide();
         }
+
+        if (uiRewardCurrency != null)
+            uiRewardCurrency.SetData(PlayerCurrency.SoftCurrency.Clone().SetAmount(data.rewardSoftCurrency, 0));
+
+        if (textFirstClearRewardPlayerExp != null)
+            textFirstClearRewardPlayerExp.text = data.firstClearRewardPlayerExp.ToString("N0");
+
+        if (uiFirstClearRewardItems != null)
+        {
+            uiFirstClearRewardItems.selectable = false;
+            uiFirstClearRewardItems.multipleSelection = false;
+            uiFirstClearRewardItems.SetListItems(data.firstClearRewardItems);
+        }
+
+        if (uiFirstClearRewardSoftCurrency != null)
+            uiFirstClearRewardSoftCurrency.SetData(PlayerCurrency.SoftCurrency.Clone().SetAmount(data.firstClearRewardSoftCurrency, 0));
+
+        if (uiFirstClearRewardHardCurrency != null)
+            uiFirstClearRewardHardCurrency.SetData(PlayerCurrency.HardCurrency.Clone().SetAmount(data.firstClearRewardHardCurrency, 0));
     }
 
     public void OnClickRestart()
