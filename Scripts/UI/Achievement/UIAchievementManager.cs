@@ -10,7 +10,11 @@ public class UIAchievementManager : UIBase
     public override void Show()
     {
         base.Show();
-        ReloadList();
+        GameInstance.GameService.GetAchievementList((result) =>
+        {
+            GameInstance.Singleton.OnGameServiceAchievementListResult(result);
+            ReloadList();
+        });
     }
 
     public void ReloadList()
