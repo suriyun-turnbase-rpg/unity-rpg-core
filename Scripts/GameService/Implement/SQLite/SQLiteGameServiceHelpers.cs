@@ -554,6 +554,7 @@ public partial class SQLiteGameService
                 new SqliteParameter("@dataId", clearStage.DataId),
                 new SqliteParameter("@bestRating", clearStage.BestRating));
             // First clear rewards
+            result.isFirstClear = true;
             result.updateCurrencies.Clear();
             // Player exp
             result.firstClearRewardPlayerExp = stage.firstClearRewardPlayerExp;

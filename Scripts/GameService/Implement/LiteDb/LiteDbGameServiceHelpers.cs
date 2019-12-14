@@ -394,6 +394,7 @@ public partial class LiteDbGameService
             clearStage.BestRating = grade;
             colPlayerClearStage.Insert(clearStage);
             // First clear rewards
+            result.isFirstClear = true;
             result.updateCurrencies.Clear();
             // Player exp
             result.firstClearRewardPlayerExp = stage.firstClearRewardPlayerExp;

@@ -67,6 +67,7 @@ public class FinishStageResult : PlayerResult
     public int rewardCharacterExp;
     public int rewardSoftCurrency;
     public List<PlayerItem> rewardItems = new List<PlayerItem>();
+    public bool isFirstClear;
     public int firstClearRewardSoftCurrency;
     public int firstClearRewardHardCurrency;
     public int firstClearRewardPlayerExp;
