@@ -18,6 +18,7 @@ public enum AchievementType : byte
 
 public class Achievement : BaseGameData
 {
+    public Sprite icon;
     public AchievementType type;
     public int targetAmount;
     [Header("Rewards")]

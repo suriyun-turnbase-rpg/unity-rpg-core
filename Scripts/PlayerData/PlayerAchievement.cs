@@ -15,6 +15,15 @@ public class PlayerAchievement : BasePlayerData, IPlayerAchievement
     public int Progress { get { return progress; } set { progress = value; } }
     public bool earned;
     public bool Earned { get { return earned; } set { earned = value; } }
+    public Achievement Achievement
+    {
+        get
+        {
+            if (GameDatabase != null && GameDatabase.Achievements.ContainsKey(DataId))
+                return GameDatabase.Achievements[DataId];
+            return null;
+        }
+    }
 
     public PlayerAchievement Clone()
     {
@@ -43,14 +52,14 @@ public class PlayerAchievement : BasePlayerData, IPlayerAchievement
         DataMap[data.Id] = data;
     }
 
-    public static bool TryGetData(string playerId, string type, out PlayerAchievement data)
+    public static bool TryGetData(string playerId, string dataId, out PlayerAchievement data)
     {
-        return DataMap.TryGetValue(GetId(playerId, type), out data);
+        return DataMap.TryGetValue(GetId(playerId, dataId), out data);
     }
 
-    public static bool TryGetData(string type, out PlayerAchievement data)
+    public static bool TryGetData(string dataId, out PlayerAchievement data)
     {
-        return TryGetData(Player.CurrentPlayerId, type, out data);
+        return TryGetData(Player.CurrentPlayerId, dataId, out data);
     }
 
     public static bool RemoveData(string id)

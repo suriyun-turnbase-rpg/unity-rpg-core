@@ -139,6 +139,18 @@ public partial class GameInstance : MonoBehaviour
         LoadLoginScene();
     }
 
+    public void OnGameServiceEarnAchievementResult(EarnAchievementResult result)
+    {
+        if (!result.Success)
+            return;
+
+        Player.SetData(result.player);
+        PlayerCurrency.SetDataRange(result.updateCurrencies);
+        PlayerItem.SetDataRange(result.createItems);
+        PlayerItem.SetDataRange(result.updateItems);
+        PlayerItem.RemoveDataRange(result.deleteItemIds);
+    }
+
     public void OnGameServiceItemResult(ItemResult result)
     {
         if (!result.Success)
