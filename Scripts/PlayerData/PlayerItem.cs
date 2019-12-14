@@ -115,11 +115,6 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         get { return ActorItemData == null ? null : ActorItemData.itemTier; }
     }
     
-    public Sprite Icon
-    {
-        get { return ItemData == null ? null : ItemData.icon; }
-    }
-    
     public int Level
     {
         get

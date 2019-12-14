@@ -344,7 +344,7 @@ public class UIItem : UIDataItem<PlayerItem>
             textDescription.text = itemData == null ? "" : itemData.description;
 
         if (imageIcon != null)
-            imageIcon.sprite = data.Icon;
+            imageIcon.sprite = itemData == null ? null : itemData.icon;
 
         if (textElementalTitle != null)
         {
