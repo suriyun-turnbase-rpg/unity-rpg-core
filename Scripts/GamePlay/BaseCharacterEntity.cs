@@ -76,6 +76,18 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     public readonly List<BaseCharacterSkill> Skills = new List<BaseCharacterSkill>();
     public BaseGamePlayFormation Formation { get; protected set; }
     public int Position { get; protected set; }
+    public bool IsStun
+    {
+        get
+        {
+            foreach (var buff in Buffs.Values)
+            {
+                if (buff.Buff.isStun)
+                    return true;
+            }
+            return false;
+        }
+    }
 
     public int MaxHp
     {
