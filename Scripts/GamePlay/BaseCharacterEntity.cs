@@ -309,8 +309,9 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     {
         if (skill == null || buffIndex < 0 || buffIndex >= skill.GetBuffs().Count || skill.GetBuffs()[buffIndex] == null || Hp <= 0)
             return;
-        
-        if (skill.GetBuffs()[buffIndex].type == BuffType.Nerf)
+
+        var buffData = skill.GetBuffs()[buffIndex];
+        if (buffData.type == BuffType.Nerf)
         {
             // Resistance
             var attributes = GetTotalAttributes();
@@ -319,6 +320,38 @@ public abstract class BaseCharacterEntity : MonoBehaviour
                 // Reisted, nerf will not applied
                 Manager.SpawnResistText(this);
                 return;
+            }
+        }
+
+        if (buffData.clearBuffs > 0 || buffData.clearNerfs > 0)
+        {
+            int countClearBuffs = 0;
+            int countClearNerfs = 0;
+            var buffs = new List<BaseCharacterBuff>(Buffs.Values);
+            foreach (var clearingBuff in buffs)
+            {
+                switch (clearingBuff.Buff.type)
+                {
+                    case BuffType.Buff:
+                        if (countClearBuffs < buffData.clearBuffs)
+                        {
+                            clearingBuff.BuffRemove();
+                            Buffs.Remove(clearingBuff.Id);
+                        }
+                        countClearBuffs++;
+                        break;
+                    case BuffType.Nerf:
+                        if (countClearNerfs < buffData.clearNerfs)
+                        {
+                            clearingBuff.BuffRemove();
+                            Buffs.Remove(clearingBuff.Id);
+                        }
+                        countClearNerfs++;
+                        break;
+                }
+                if (countClearBuffs >= buffData.clearBuffs &&
+                    countClearNerfs >= buffData.clearNerfs)
+                    break;
             }
         }
 
