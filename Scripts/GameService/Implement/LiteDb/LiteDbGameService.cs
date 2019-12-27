@@ -29,7 +29,7 @@ public partial class LiteDbGameService : BaseGameService
                 dbPath = "/" + dbPath;
             dbPath = Application.persistentDataPath + dbPath;
         }
-        db = new LiteDatabase(dbPath);
+        db = new LiteDatabase("filename=" + dbPath + ";upgrade=true");
         colPlayer = db.GetCollection<DbPlayer>("player");
         colPlayerItem = db.GetCollection<DbPlayerItem>("playerItem");
         colPlayerAchievement = db.GetCollection<DbPlayerAchievement>("playerAchievement");

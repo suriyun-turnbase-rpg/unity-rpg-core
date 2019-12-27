@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public abstract class Attribute<T>
@@ -13,7 +14,7 @@ public abstract class Attribute<T>
     {
         return "{\"minValue\":" + minValue+ "," +
             "\"maxValue\":" + maxValue + "," +
-            "\"growth\":" + growth + "}";
+            "\"growth\":" + growth.ToString(new CultureInfo("en-US", false)) + "}";
     }
 }
 

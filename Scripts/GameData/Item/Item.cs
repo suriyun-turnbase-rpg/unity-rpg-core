@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Globalization;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -35,7 +36,7 @@ public abstract class BaseItemDrop<T> : BaseItemAmount<T> where T : BaseItem
             return "";
         return "{\"id\":\"" + Id + "\"," +
             "\"amount\":" + amount + "," +
-            "\"randomRate\":" + randomRate + "}";
+            "\"randomRate\":" + randomRate.ToString(new CultureInfo("en-US", false)) + "}";
     }
 }
 
