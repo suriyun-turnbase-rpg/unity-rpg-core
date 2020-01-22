@@ -26,12 +26,14 @@ public class GameEffect : MonoBehaviour
         particles = GetComponentsInChildren<ParticleSystem>();
         foreach (var particle in particles)
         {
-            particle.Play();
+            if (particle)
+                particle.Play();
         }
         audioSources = GetComponentsInChildren<AudioSource>();
         foreach (var audioSource in audioSources)
         {
-            audioSource.Play();
+            if (audioSource)
+                audioSource.Play();
         }
     }
 
@@ -45,12 +47,16 @@ public class GameEffect : MonoBehaviour
     {
         foreach (var particle in particles)
         {
-            var mainEmitter = particle.main;
-            mainEmitter.loop = false;
+            if (particle)
+            {
+                var mainEmitter = particle.main;
+                mainEmitter.loop = false;
+            }
         }
         foreach (var audioSource in audioSources)
         {
-            audioSource.loop = false;
+            if (audioSource)
+                audioSource.loop = false;
         }
         Destroy(gameObject, lifeTime);
     }
