@@ -91,8 +91,8 @@ public class LootBox : BaseGameData
         jsonLootBoxRewards = "[" + jsonLootBoxRewards + "]";
         // Combine
         return "{\"id\":\"" + Id + "\"," +
-            "\"requirementType\":"+(byte)requirementType + "," +
-            "\"lootboxPacks\":"+ jsonLootBoxPacks + "," +
+            "\"requirementType\":" + (byte)requirementType + "," +
+            "\"lootboxPacks\":" + jsonLootBoxPacks + "," +
             "\"lootboxRewards\":" + jsonLootBoxRewards + "}";
     }
 }
