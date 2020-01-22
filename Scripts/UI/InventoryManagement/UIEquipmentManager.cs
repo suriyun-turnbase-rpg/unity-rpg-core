@@ -58,6 +58,7 @@ public class UIEquipmentManager : UIBase
         if (uiCharacterInfo != null)
             uiCharacterInfo.SetData(character);
 
+        // Setup empty slots
         if (UIEquipmentSlots.Count == 0)
         {
             foreach (var uiEquipmentSlotContainer in uiEquipmentSlotContainers)
@@ -89,6 +90,7 @@ public class UIEquipmentManager : UIBase
         }
 
         var equippedItems = Character.EquippedItems;
+        // Set item to slots
         foreach (var slot in UIEquipmentSlots)
         {
             var equipmentPosition = slot.Key;
