@@ -25,7 +25,7 @@ public class UICurrency : UIDataItem<PlayerCurrency>
         var currencyData = data.CurrencyData;
 
         if (imageIcon != null)
-            imageIcon.sprite = currencyData == null ? null : currencyData.icon;
+            imageIcon.sprite = currencyData.icon;
 
         if (textAmount != null)
             textAmount.text = data.Amount.ToString("N0");

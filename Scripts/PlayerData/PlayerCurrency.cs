@@ -63,10 +63,10 @@ public class PlayerCurrency : BasePlayerData, IPlayerCurrency
     {
         get
         {
-            Currency currency;
+            Currency currency = default(Currency);
             if (GameDatabase != null && !string.IsNullOrEmpty(DataId) && GameDatabase.Currencies.TryGetValue(DataId, out currency))
                 return currency;
-            return null;
+            return currency;
         }
     }
     #endregion

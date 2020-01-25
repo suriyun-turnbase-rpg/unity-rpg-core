@@ -33,6 +33,8 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
     public string EquipItemId { get { return equipItemId; } set { equipItemId = value; } }
     public string equipPosition;
     public string EquipPosition { get { return equipPosition; } set { equipPosition = value; } }
+    public int randomedAttributePreset;
+    public int RandomedAttributePreset { get { return randomedAttributePreset; } set { randomedAttributePreset = value; } }
 
     private int level = -1;
     private int collectExp = -1;
@@ -48,6 +50,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         Exp = 0;
         EquipItemId = "";
         EquipPosition = "";
+        RandomedAttributePreset = -1;
     }
 
     public PlayerItem Clone()
@@ -64,6 +67,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         to.Exp = from.Exp;
         to.EquipItemId = from.EquipItemId;
         to.EquipPosition = from.EquipPosition;
+        to.RandomedAttributePreset = from.RandomedAttributePreset;
         return to;
     }
 
@@ -94,27 +98,27 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             return null;
         }
     }
-    
+
     public BaseActorItem ActorItemData
     {
         get { return ItemData == null ? null : ItemData as BaseActorItem; }
     }
-    
+
     public CharacterItem CharacterData
     {
         get { return ActorItemData == null ? null : ActorItemData as CharacterItem; }
     }
-    
+
     public EquipmentItem EquipmentData
     {
         get { return ActorItemData == null ? null : ActorItemData as EquipmentItem; }
     }
-    
+
     public ItemTier Tier
     {
         get { return ActorItemData == null ? null : ActorItemData.itemTier; }
     }
-    
+
     public int Level
     {
         get
@@ -123,7 +127,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             return level;
         }
     }
-    
+
     public int CollectExp
     {
         get
@@ -132,32 +136,32 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             return collectExp;
         }
     }
-    
+
     public int MaxLevel
     {
         get { return ActorItemData == null ? 1 : Tier.maxLevel; }
     }
-    
+
     public SpecificItemEvolve SpecificEvolveInfo
     {
         get { return ActorItemData == null ? null : ActorItemData.GetSpecificItemEvolve(); }
     }
-    
+
     public BaseItem EvolveItem
     {
         get { return SpecificEvolveInfo == null ? null : SpecificEvolveInfo.GetEvolveItem(); }
     }
-    
+
     public int EvolvePrice
     {
         get { return Tier == null ? 0 : Tier.evolvePrice; }
     }
-    
+
     public int NextExp
     {
         get { return Tier == null ? 0 : Tier.expTable.Calculate(Level, Tier.maxLevel); }
     }
-    
+
     public int SellPrice
     {
         get
@@ -169,7 +173,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             return Tier == null ? 0 : Tier.sellPriceTable.Calculate(Level, Tier.maxLevel);
         }
     }
-    
+
     public int LevelUpPrice
     {
         get
@@ -181,7 +185,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             return Tier == null ? 0 : Tier.levelUpPriceTable.Calculate(Level, Tier.maxLevel);
         }
     }
-    
+
     public int RewardExp
     {
         get
@@ -190,15 +194,15 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
                 return 0;
             if (ActorItemData.useFixRewardExp)
                 return ActorItemData.fixRewardExp;
-            return Tier == null ? 0 :Tier.rewardExpTable.Calculate(Level, Tier.maxLevel);
+            return Tier == null ? 0 : Tier.rewardExpTable.Calculate(Level, Tier.maxLevel);
         }
     }
-    
+
     public bool IsReachMaxLevel
     {
         get { return Level == MaxLevel; }
     }
-    
+
     public Dictionary<string, int> EvolveMaterials
     {
         get
@@ -208,43 +212,47 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             return evolveMaterials;
         }
     }
-    
-    public CalculationAttributes EquipmentBonus
+
+    public CalculatedAttributes EquipmentBonus
     {
         get
         {
             var equippedItems = EquippedItems.Values;
-            var result = new CalculationAttributes();
+            var result = new CalculatedAttributes();
             foreach (var equippedItem in equippedItems)
                 result += equippedItem.Attributes;
             return result;
         }
     }
-    
-    public CalculationAttributes Attributes
+
+    public CalculatedAttributes Attributes
     {
         get
         {
             // If item is character or equipment
             if (CharacterData != null)
             {
-                var result = new CalculationAttributes();
+                var result = new CalculatedAttributes();
                 result += CharacterData.attributes.CreateCalculationAttributes(Level, MaxLevel);
                 if (GameDatabase != null)
                     result += GameDatabase.characterBaseAttributes;
+                if (RandomedAttributePreset >= 0 && RandomedAttributePreset < CharacterData.randomAttributesPresets.Length)
+                    result += CharacterData.randomAttributesPresets[RandomedAttributePreset];
                 return result;
             }
             if (EquipmentData != null)
             {
-                var result = new CalculationAttributes();
+                var result = new CalculatedAttributes();
                 result += EquipmentData.attributes.CreateCalculationAttributes(Level, MaxLevel);
                 result += EquipmentData.extraAttributes;
+                if (RandomedAttributePreset >= 0 && RandomedAttributePreset < EquipmentData.randomAttributesPresets.Length)
+                    result += EquipmentData.randomAttributesPresets[RandomedAttributePreset];
                 return result;
             }
-            return null;
+            return new CalculatedAttributes();
         }
     }
-    
+
     public List<PlayerFormation> InTeamFormations
     {
         get
@@ -258,7 +266,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             return list;
         }
     }
-    
+
     public PlayerItem EquippedByItem
     {
         get
@@ -269,7 +277,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             return null;
         }
     }
-    
+
     public Dictionary<string, PlayerItem> EquippedItems
     {
         get
@@ -280,7 +288,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
                 return result;
 
             var valueList = DataMap.Values;
-            var list = valueList.Where(entry => 
+            var list = valueList.Where(entry =>
                 entry.PlayerId == PlayerId &&
                 entry.EquipmentData != null &&
                 entry.EquipItemId == Id &&
@@ -295,30 +303,30 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             return result;
         }
     }
-    
+
     public bool CanLevelUp
     {
         get { return !IsReachMaxLevel && (CharacterData != null || EquipmentData != null); }
     }
-    
+
     public bool CanEvolve
     {
         get { return IsReachMaxLevel && EvolveItem != null && Level >= MaxLevel; }
     }
-    
+
     public bool CanSell
     {
         get { return !PlayerFormation.ContainsDataWithItemId(Id) && EquippedByItem == null; }
     }
-    
+
     public bool CanBeMaterial
     {
         get { return !PlayerFormation.ContainsDataWithItemId(Id) && EquippedByItem == null; }
     }
-    
+
     public bool CanBeEquipped
     {
-        get {  return EquipmentData != null; }
+        get { return EquipmentData != null; }
     }
 
     public bool IsInTeamFormation(string formationName)

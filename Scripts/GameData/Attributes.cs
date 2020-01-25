@@ -4,23 +4,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 
-public abstract class Attribute<T>
-{
-    public T minValue;
-    public T maxValue;
-    public float growth;
-    public abstract T Calculate(int currentLevel, int maxLevel);
-    public virtual string ToJson()
-    {
-        return "{\"minValue\":" + minValue+ "," +
-            "\"maxValue\":" + maxValue + "," +
-            "\"growth\":" + growth.ToString(new CultureInfo("en-US", false)) + "}";
-    }
-}
-
 [Serializable]
-public class Int32Attribute : Attribute<int>
+public struct Int32Attribute
 {
+    public int minValue;
+    public int maxValue;
+    public float growth;
+
     public Int32Attribute Clone()
     {
         var result = new Int32Attribute();
@@ -30,7 +20,7 @@ public class Int32Attribute : Attribute<int>
         return result;
     }
 
-    public override int Calculate(int currentLevel, int maxLevel)
+    public int Calculate(int currentLevel, int maxLevel)
     {
         if (currentLevel <= 0)
             currentLevel = 1;
@@ -50,11 +40,22 @@ public class Int32Attribute : Attribute<int>
         result.maxValue = Mathf.RoundToInt(a.maxValue * multiplier);
         return result;
     }
+
+    public string ToJson()
+    {
+        return "{\"minValue\":" + minValue + "," +
+            "\"maxValue\":" + maxValue + "," +
+            "\"growth\":" + growth.ToString(new CultureInfo("en-US", false)) + "}";
+    }
 }
 
 [Serializable]
-public class SingleAttribute : Attribute<float>
+public struct SingleAttribute
 {
+    public float minValue;
+    public float maxValue;
+    public float growth;
+
     public SingleAttribute Clone()
     {
         var result = new SingleAttribute();
@@ -64,7 +65,7 @@ public class SingleAttribute : Attribute<float>
         return result;
     }
 
-    public override float Calculate(int currentLevel, int maxLevel)
+    public float Calculate(int currentLevel, int maxLevel)
     {
         if (currentLevel <= 0)
             currentLevel = 1;
@@ -84,44 +85,51 @@ public class SingleAttribute : Attribute<float>
         result.maxValue = a.maxValue * multiplier;
         return result;
     }
+
+    public string ToJson()
+    {
+        return "{\"minValue\":" + minValue + "," +
+            "\"maxValue\":" + maxValue + "," +
+            "\"growth\":" + growth.ToString(new CultureInfo("en-US", false)) + "}";
+    }
 }
 
 [Serializable]
-public class Attributes
+public struct Attributes
 {
     [Tooltip("Max Hp, When battle if character's Hp = 0, The character will die")]
-    public Int32Attribute hp = new Int32Attribute();
+    public Int32Attribute hp;
     [Tooltip("P.Attack (P stands for physical), This will minus to pDef to calculate damage")]
-    public Int32Attribute pAtk = new Int32Attribute();
+    public Int32Attribute pAtk;
     [Tooltip("P.Defend (P stands for physical), pAtk will minus to this to calculate damage")]
-    public Int32Attribute pDef = new Int32Attribute();
+    public Int32Attribute pDef;
 #if !NO_MAGIC_STATS
     [Tooltip("M.Attack (M stands for magical), This will minus to mDef to calculate damage")]
-    public Int32Attribute mAtk = new Int32Attribute();
+    public Int32Attribute mAtk;
     [Tooltip("M.Defend (M stands for magical), mAtk will minus to this to calculate damage")]
-    public Int32Attribute mDef = new Int32Attribute();
+    public Int32Attribute mDef;
 #endif
     [Tooltip("Speed, Character with higher speed will have more chance to attack")]
-    public Int32Attribute spd = new Int32Attribute();
+    public Int32Attribute spd;
 #if !NO_EVADE_STATS
     [Tooltip("Evasion, Character with higher evasion will have more chance to avoid damage from character with lower accuracy")]
-    public Int32Attribute eva = new Int32Attribute();
+    public Int32Attribute eva;
     [Tooltip("Accuracy, Character with higher accuracy will have more chance to take damage to character with lower evasion")]
-    public Int32Attribute acc = new Int32Attribute();
+    public Int32Attribute acc;
 #endif
     [Header("Critical attributes")]
     [Tooltip("Chance to critical attack (Increase damage by `critDamageRate`), this min-max value should not over 1")]
-    public SingleAttribute critChance = new SingleAttribute();
+    public SingleAttribute critChance;
     [Tooltip("Damage when critical attack = this * Damage")]
-    public SingleAttribute critDamageRate = new SingleAttribute();
+    public SingleAttribute critDamageRate;
     [Header("Block attributes")]
     [Tooltip("Chance to block (Reduce damage by `blockDamageRate`), this min-max value should not over 1")]
-    public SingleAttribute blockChance = new SingleAttribute();
+    public SingleAttribute blockChance;
     [Tooltip("Damage when block = this / Damage")]
-    public SingleAttribute blockDamageRate = new SingleAttribute();
+    public SingleAttribute blockDamageRate;
     [Header("Resistance Attributes")]
     [Tooltip("Chance to prevent application of a nerf effect, this min-max value should not over 1")]
-    public SingleAttribute resistanceChance = new SingleAttribute();
+    public SingleAttribute resistanceChance;
 
     public Attributes Clone()
     {
@@ -146,9 +154,9 @@ public class Attributes
         return result;
     }
 
-    public CalculationAttributes CreateCalculationAttributes(int currentLevel, int maxLevel)
+    public CalculatedAttributes CreateCalculationAttributes(int currentLevel, int maxLevel)
     {
-        CalculationAttributes result = new CalculationAttributes();
+        CalculatedAttributes result = new CalculatedAttributes();
         result.hp = hp.Calculate(currentLevel, maxLevel);
         result.pAtk = pAtk.Calculate(currentLevel, maxLevel);
         result.pDef = pDef.Calculate(currentLevel, maxLevel);
@@ -256,7 +264,7 @@ public class Attributes
 }
 
 [Serializable]
-public class CalculationAttributes
+public struct CalculatedAttributes
 {
     [Header("Fix attributes")]
     [Tooltip("C.hp (C stands for Character) = C.hp + this")]
@@ -319,9 +327,9 @@ public class CalculationAttributes
     [Range(0f, 1f)]
     public float resistanceChance;
 
-    public CalculationAttributes Clone()
+    public CalculatedAttributes Clone()
     {
-        CalculationAttributes result = new CalculationAttributes();
+        CalculatedAttributes result = new CalculatedAttributes();
         result.hp = hp;
         result.pAtk = pAtk;
         result.pDef = pDef;
@@ -360,9 +368,9 @@ public class CalculationAttributes
     }
 
 #region Calculating between CalculationAttributes and CalculationAttributes
-    public static CalculationAttributes operator +(CalculationAttributes a, CalculationAttributes b)
+    public static CalculatedAttributes operator +(CalculatedAttributes a, CalculatedAttributes b)
     {
-        CalculationAttributes result = a.Clone();
+        CalculatedAttributes result = a.Clone();
         result.hp += b.hp;
         result.pAtk += b.pAtk;
         result.pDef += b.pDef;
@@ -400,9 +408,9 @@ public class CalculationAttributes
         return result;
     }
 
-    public static CalculationAttributes operator -(CalculationAttributes a, CalculationAttributes b)
+    public static CalculatedAttributes operator -(CalculatedAttributes a, CalculatedAttributes b)
     {
-        CalculationAttributes result = a.Clone();
+        CalculatedAttributes result = a.Clone();
         result.hp -= b.hp;
         result.pAtk -= b.pAtk;
         result.pDef -= b.pDef;
@@ -440,9 +448,9 @@ public class CalculationAttributes
         return result;
     }
 
-    public static CalculationAttributes operator *(CalculationAttributes a, float b)
+    public static CalculatedAttributes operator *(CalculatedAttributes a, float b)
     {
-        CalculationAttributes result = new CalculationAttributes();
+        CalculatedAttributes result = new CalculatedAttributes();
         result.hp = Mathf.CeilToInt(a.hp * b);
         result.pAtk = Mathf.CeilToInt(a.pAtk * b);
         result.pDef = Mathf.CeilToInt(a.pDef * b);
@@ -481,7 +489,7 @@ public class CalculationAttributes
     }
 #endregion
 
-    public string GetDescription(CalculationAttributes bonusAttributes)
+    public string GetDescription(CalculatedAttributes bonusAttributes)
     {
         var result = "";
 

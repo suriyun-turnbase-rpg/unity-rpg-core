@@ -7,8 +7,8 @@ public class BaseGameplayRule : ScriptableObject
     public virtual float GetDamage(
         Elemental attackerElemental,
         Elemental defenderElemental,
-        CalculationAttributes attackerAttributes,
-        CalculationAttributes defenderAttributes,
+        CalculatedAttributes attackerAttributes,
+        CalculatedAttributes defenderAttributes,
         float pAtkRate = 1f,
         float mAtkRate = 1f,
         int hitCount = 1,
@@ -40,27 +40,27 @@ public class BaseGameplayRule : ScriptableObject
         return totalDmg;
     }
 
-    public virtual bool IsCrit(CalculationAttributes attackerAttributes, CalculationAttributes defenderAttributes)
+    public virtual bool IsCrit(CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
     {
         return Random.value <= attackerAttributes.critChance;
     }
 
-    public virtual float GetCritDamage(CalculationAttributes attackerAttributes, CalculationAttributes defenderAttributes, float damage)
+    public virtual float GetCritDamage(CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes, float damage)
     {
         return damage * attackerAttributes.critDamageRate;
     }
 
-    public virtual bool IsBlock(CalculationAttributes attackerAttributes, CalculationAttributes defenderAttributes)
+    public virtual bool IsBlock(CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
     {
         return Random.value <= defenderAttributes.blockChance;
     }
 
-    public virtual float GetBlockDamage(CalculationAttributes attributes, CalculationAttributes defenderAttributes, float damage)
+    public virtual float GetBlockDamage(CalculatedAttributes attributes, CalculatedAttributes defenderAttributes, float damage)
     {
         return damage / defenderAttributes.blockDamageRate;
     }
 
-    public virtual bool IsHit(CalculationAttributes attackerAttributes, CalculationAttributes defenderAttributes)
+    public virtual bool IsHit(CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
     {
 #if !NO_EVADE_STATS
         var hitChance = 1f;

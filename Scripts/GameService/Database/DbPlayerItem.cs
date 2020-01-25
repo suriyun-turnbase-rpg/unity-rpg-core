@@ -18,6 +18,8 @@ public class DbPlayerItem : IPlayerItem
     public string EquipItemId { get { return equipItemId; } set { equipItemId = value; } }
     public string equipPosition;
     public string EquipPosition { get { return equipPosition; } set { equipPosition = value; } }
+    public int randomedAttributePreset;
+    public int RandomedAttributePreset { get { return randomedAttributePreset; } set { randomedAttributePreset = value; } }
 
     public static List<PlayerItem> CloneList(IEnumerable<DbPlayerItem> list)
     {

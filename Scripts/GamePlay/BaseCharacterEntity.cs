@@ -183,7 +183,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         }
     }
 
-    public CalculationAttributes GetTotalAttributes()
+    public CalculatedAttributes GetTotalAttributes()
     {
         var result = Item.Attributes;
         var equipmentBonus = Item.EquipmentBonus;
@@ -263,7 +263,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
 
     public virtual bool ReceiveDamage(
         Elemental attackerElemental,
-        CalculationAttributes attackerAttributes,
+        CalculatedAttributes attackerAttributes,
         float pAtkRate = 1f,
         float mAtkRate = 1f,
         int hitCount = 1,

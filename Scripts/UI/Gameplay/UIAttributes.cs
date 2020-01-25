@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIAttributes : UIDataItem<CalculationAttributes>
+public class UIAttributes : UIDataItem<CalculatedAttributes>
 {
     [Header("Fix attributes")]
     public GameObject containerHp;
@@ -62,14 +62,11 @@ public class UIAttributes : UIDataItem<CalculationAttributes>
 
     public override void Clear()
     {
-        SetupInfo(null);
+        SetupInfo(default(CalculatedAttributes));
     }
 
-    private void SetupInfo(CalculationAttributes data)
+    private void SetupInfo(CalculatedAttributes data)
     {
-        if (data == null)
-            data = new CalculationAttributes();
-
         if (textHp != null)
         {
             textHp.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_HP, data.hp) : LanguageManager.FormatNumber(data.hp);

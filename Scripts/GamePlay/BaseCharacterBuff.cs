@@ -22,7 +22,7 @@ public abstract class BaseCharacterBuff
         }
     }
     public BaseSkillBuff Buff { get { return Buffs[BuffIndex]; } }
-    public CalculationAttributes Attributes { get { return Buff.GetAttributes(Level); } }
+    public CalculatedAttributes Attributes { get { return Buff.GetAttributes(Level); } }
     public float PAtkHealRate { get { return Buff.GetPAtkHealRate(Level); } }
 #if !NO_MAGIC_STATS
     public float MAtkHealRate { get { return Buff.GetMAtkHealRate(Level); } }

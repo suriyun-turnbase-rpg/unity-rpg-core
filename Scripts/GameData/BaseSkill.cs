@@ -19,8 +19,8 @@ public abstract class BaseSkillBuff
     [Range(0f, 1f)]
     public float applyChanceIncreaseEachLevel;
     [Header("Attributes")]
-    public CalculationAttributes attributes;
-    public CalculationAttributes attributesIncreaseEachLevel;
+    public CalculatedAttributes attributes;
+    public CalculatedAttributes attributesIncreaseEachLevel;
     [Header("Heals")]
     [Tooltip("This will multiply with pAtk to calculate heal amount, You can set this value to be negative to make it as poison")]
     public float pAtkHealRate = 0;
@@ -50,7 +50,7 @@ public abstract class BaseSkillBuff
         return applyChance + (applyChanceIncreaseEachLevel * level);
     }
 
-    public CalculationAttributes GetAttributes(int level = 1)
+    public CalculatedAttributes GetAttributes(int level = 1)
     {
         return attributes + (attributesIncreaseEachLevel * level);
     }

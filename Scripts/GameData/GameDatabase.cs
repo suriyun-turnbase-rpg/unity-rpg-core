@@ -47,6 +47,9 @@ public class GameDatabase : ScriptableObject
     [Tooltip("List of game IAP packages, place all IAP packages here")]
     public List<IapPackage> iapPackages;
 
+    [Header("Hard Currency Convertion")]
+    public List<HardCurrencyConvertion> hardCurrencyConvertions;
+
     [Header("Game beginning")]
     [Tooltip("List of start items, place items that you want to give to players when begin the game")]
     public List<ItemAmount> startItems;
@@ -61,7 +64,7 @@ public class GameDatabase : ScriptableObject
 
     [Header("Gameplay")]
     [Tooltip("Base attributes for all characters while battle")]
-    public CalculationAttributes characterBaseAttributes;
+    public CalculatedAttributes characterBaseAttributes;
     [Tooltip("Price to revive all characters when all characters dies, this use hard currency")]
     public int revivePrice = 5;
     [Tooltip("This will caculate with sum Atk to random Atk as: Atk = Mathf.Random(Atk * minAtkVaryRate, Atk * maxAtkVaryRate)")]

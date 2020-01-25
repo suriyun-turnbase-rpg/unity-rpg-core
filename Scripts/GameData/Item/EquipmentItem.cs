@@ -5,7 +5,7 @@ using UnityEngine;
 public class EquipmentItem : BaseActorItem
 {
     [Header("Equipment Data")]
-    public CalculationAttributes extraAttributes;
+    public CalculatedAttributes extraAttributes;
     public List<string> equippablePositions;
     public EquipmentItemEvolve evolveInfo;
 

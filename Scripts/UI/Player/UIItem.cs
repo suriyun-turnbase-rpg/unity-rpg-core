@@ -215,75 +215,75 @@ public class UIItem : UIDataItem<PlayerItem>
                 textDisplayStats.text = SelectedAmount.ToString("N0");
                 return;
             case DisplayStats.AttributeHp:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_HP, attributes.hp);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_HP, attributes.hp);
                 return;
             case DisplayStats.AttributePAtk:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_PATK, attributes.pAtk);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_PATK, attributes.pAtk);
                 return;
             case DisplayStats.AttributePDef:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_PDEF, attributes.pDef);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_PDEF, attributes.pDef);
                 return;
 #if !NO_MAGIC_STATS
             case DisplayStats.AttributeMAtk:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MATK, attributes.mAtk);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MATK, attributes.mAtk);
                 return;
             case DisplayStats.AttributeMDef:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MDEF, attributes.mDef);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MDEF, attributes.mDef);
                 return;
 #endif
             case DisplayStats.AttributeSpd:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_SPD, attributes.spd);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_SPD, attributes.spd);
                 return;
 #if !NO_EVADE_STATS
             case DisplayStats.AttributeEva:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_EVA, attributes.eva);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_EVA, attributes.eva);
                 return;
             case DisplayStats.AttributeAcc:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_ACC, attributes.acc);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_ACC, attributes.acc);
                 return;
 #endif
             case DisplayStats.AttributeHpRate:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_HP_RATE, attributes.hpRate);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_HP_RATE, attributes.hpRate);
                 return;
             case DisplayStats.AttributePAtkRate:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_PATK_RATE, attributes.pAtkRate);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_PATK_RATE, attributes.pAtkRate);
                 return;
             case DisplayStats.AttributePDefRate:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_PDEF_RATE, attributes.pDefRate);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_PDEF_RATE, attributes.pDefRate);
                 return;
 #if !NO_MAGIC_STATS
             case DisplayStats.AttributeMAtkRate:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MATK_RATE, attributes.mAtkRate);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MATK_RATE, attributes.mAtkRate);
                 return;
             case DisplayStats.AttributeMDefRate:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MDEF_RATE, attributes.mDefRate);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MDEF_RATE, attributes.mDefRate);
                 return;
 #endif
             case DisplayStats.AttributeSpdRate:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_SPD_RATE, attributes.spdRate);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_SPD_RATE, attributes.spdRate);
                 return;
 #if !NO_EVADE_STATS
             case DisplayStats.AttributeEvaRate:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_EVA_RATE, attributes.evaRate);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_EVA_RATE, attributes.evaRate);
                 return;
             case DisplayStats.AttributeAccRate:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_ACC_RATE, attributes.accRate);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_ACC_RATE, attributes.accRate);
                 return;
 #endif
             case DisplayStats.AttributeCritChance:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_CRIT_CHANCE, attributes.critChance);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_CRIT_CHANCE, attributes.critChance);
                 return;
             case DisplayStats.AttributeCritDamageRate:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_CRIT_DAMAGE_RATE, attributes.critDamageRate);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_CRIT_DAMAGE_RATE, attributes.critDamageRate);
                 return;
             case DisplayStats.AttributeBlockChance:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_BLOCK_CHANCE, attributes.blockChance);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_BLOCK_CHANCE, attributes.blockChance);
                 return;
             case DisplayStats.AttributeBlockDamageRate:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_BLOCK_DAMAGE_RATE, attributes.blockDamageRate);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_BLOCK_DAMAGE_RATE, attributes.blockDamageRate);
                 return;
             case DisplayStats.AttributeResistanceChance:
-                textDisplayStats.text = attributes == null ? "" : LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_RESISTANCE_CHANCE, attributes.resistanceChance);
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_RESISTANCE_CHANCE, attributes.resistanceChance);
                 return;
             default:
                 textDisplayStats.text = "";
@@ -328,7 +328,7 @@ public class UIItem : UIDataItem<PlayerItem>
         RequiredAmount = 0;
         SetupSelectedAmount();
     }
-    
+
     private void SetupInfo(PlayerItem data)
     {
         if (data == null)
@@ -368,7 +368,7 @@ public class UIItem : UIDataItem<PlayerItem>
         }
 
         if (textAttributes != null)
-            textAttributes.text = attributes == null ? "" : attributes.GetDescription(data.EquipmentBonus);
+            textAttributes.text = attributes.GetDescription(data.EquipmentBonus);
 
         // Attributes
         if (uiAttributes != null)
@@ -381,7 +381,7 @@ public class UIItem : UIDataItem<PlayerItem>
             if (excludeEquipmentAttributes)
                 uiAttributes.SetData(attributes);
             else
-                uiAttributes.SetData(attributes == null ? data.EquipmentBonus : attributes + data.EquipmentBonus);
+                uiAttributes.SetData(attributes + data.EquipmentBonus);
         }
 
         // Stats

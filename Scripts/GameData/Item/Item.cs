@@ -189,6 +189,8 @@ public abstract class BaseActorItem : BaseItem
 
     [Tooltip("Max values of these attributes are max values of `GameDatabase.itemMaxLevel` level")]
     public Attributes attributes;
+    
+    public CalculatedAttributes[] randomAttributesPresets;
 
 #if UNITY_EDITOR
     #region Helpers Variables
