@@ -657,6 +657,16 @@ public abstract class BaseGameService : MonoBehaviour
         DoEarnAchievementReward(playerId, loginToken, achievementId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void ConvertHardCurrency(int requireHardCurrency, UnityAction<HardCurrencyConversionResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ConvertHardCurrency");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoConvertHardCurrency(playerId, loginToken, requireHardCurrency, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -699,4 +709,5 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoStartDuel(string playerId, string loginToken, string targetPlayerId, UnityAction<StartDuelResult> onFinish);
     protected abstract void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish);
     protected abstract void DoEarnAchievementReward(string playerId, string loginToken, string achievementId, UnityAction<EarnAchievementResult> onFinish);
+    protected abstract void DoConvertHardCurrency(string playerId, string loginToken, int requireHardCurrency, UnityAction<HardCurrencyConversionResult> onFinish);
 }

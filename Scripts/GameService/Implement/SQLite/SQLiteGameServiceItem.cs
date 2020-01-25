@@ -556,4 +556,41 @@ public partial class SQLiteGameService
         }
         onFinish(result);
     }
+
+    protected override void DoConvertHardCurrency(string playerId, string loginToken, int requireHardCurrency, UnityAction<HardCurrencyConversionResult> onFinish)
+    {
+        var result = new HardCurrencyConversionResult();
+        var gameDb = GameInstance.GameDatabase;
+        var player = GetPlayerByLoginToken(playerId, loginToken);
+        int receiveSoftCurrency;
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!gameDb.HardCurrencyConversions.TryGetValue(requireHardCurrency, out receiveSoftCurrency))
+            result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
+        else
+        {
+            var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+            if (hardCurrency.Amount < requireHardCurrency)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
+            else
+            {
+                // Decrease hard currency
+                result.requireHardCurrency = requireHardCurrency;
+                hardCurrency.Amount -= requireHardCurrency;
+                ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                    new SqliteParameter("@amount", hardCurrency.Amount),
+                    new SqliteParameter("@id", hardCurrency.Id));
+                result.updateCurrencies.Add(hardCurrency);
+                // Increase soft currency
+                var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+                result.receiveSoftCurrency = receiveSoftCurrency;
+                softCurrency.Amount += receiveSoftCurrency;
+                ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                    new SqliteParameter("@amount", softCurrency.Amount),
+                    new SqliteParameter("@id", softCurrency.Id));
+                result.updateCurrencies.Add(softCurrency);
+            }
+        }
+        onFinish(result);
+    }
 }

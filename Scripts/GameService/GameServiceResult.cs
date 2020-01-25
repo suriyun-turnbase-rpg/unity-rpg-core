@@ -194,3 +194,11 @@ public class EarnAchievementResult : PlayerResult
     public List<PlayerItem> updateItems = new List<PlayerItem>();
     public List<string> deleteItemIds = new List<string>();
 }
+
+[System.Serializable]
+public class HardCurrencyConversionResult : GameServiceResult
+{
+    public int requireHardCurrency;
+    public int receiveSoftCurrency;
+    public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
+}

@@ -1,5 +1,5 @@
 ﻿[System.Serializable]
-public struct HardCurrencyConvertion
+public struct HardCurrencyConversion
 {
     public int requireHardCurrency;
     public int receiveSoftCurrency;
