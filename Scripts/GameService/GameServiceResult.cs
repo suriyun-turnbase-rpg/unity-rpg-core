@@ -19,6 +19,7 @@ public class GameServiceErrorCode
     public const string INVALID_STAGE_DATA = ERROR_PREFIX + "INVALID_STAGE_DATA";
     public const string INVALID_LOOT_BOX_DATA = ERROR_PREFIX + "INVALID_LOOT_BOX_DATA";
     public const string INVALID_IAP_PACKAGE_DATA = ERROR_PREFIX + "INVALID_IAP_PACKAGE_DATA";
+    public const string INVALID_IN_GAME_PACKAGE_DATA = ERROR_PREFIX + "INVALID_IN_GAME_PACKAGE_DATA";
     public const string INVALID_ACHIEVEMENT_DATA = ERROR_PREFIX + "INVALID_ACHIEVEMENT_DATA";
     public const string INVALID_EQUIP_POSITION = ERROR_PREFIX + "INVALID_EQUIP_POSITION";
     public const string INVALID_BATTLE_SESSION = ERROR_PREFIX + "INVALID_BATTLE_SESSION";
@@ -150,6 +151,12 @@ public class AvailableLootBoxListResult : GameServiceResult
 
 [System.Serializable]
 public class AvailableIapPackageListResult : GameServiceResult
+{
+    public List<string> list = new List<string>();
+}
+
+[System.Serializable]
+public class AvailableInGamePackageListResult : GameServiceResult
 {
     public List<string> list = new List<string>();
 }

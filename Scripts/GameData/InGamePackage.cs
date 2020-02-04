@@ -11,8 +11,11 @@ public enum InGamePackageRequirementType : byte
 public class InGamePackage : BaseGameData
 {
     public Sprite icon;
+    public Sprite highlight;
     public InGamePackageRequirementType requirementType;
     public int price = 0;
+    public int rewardSoftCurrency;
+    public int rewardHardCurrency;
     public ItemAmount[] rewardItems;
 
     public virtual string ToJson()

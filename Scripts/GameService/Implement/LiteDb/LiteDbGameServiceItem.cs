@@ -342,6 +342,14 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
+    protected override void DoGetAvailableInGamePackageList(UnityAction<AvailableInGamePackageListResult> onFinish)
+    {
+        var result = new AvailableInGamePackageListResult();
+        var gameDb = GameInstance.GameDatabase;
+        result.list.AddRange(gameDb.InGamePackages.Keys);
+        onFinish(result);
+    }
+
     protected override void DoOpenLootBox(string playerId, string loginToken, string lootBoxDataId, int packIndex, UnityAction<ItemResult> onFinish)
     {
         var result = new ItemResult();
@@ -567,5 +575,70 @@ public partial class LiteDbGameService
             }
         }
         onFinish(result);
+    }
+
+    protected override void DoOpenInGamePackage(string playerId, string loginToken, string inGamePackageDataId, UnityAction<ItemResult> onFinish)
+    {
+        var result = new ItemResult();
+        var gameDb = GameInstance.GameDatabase;
+        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        InGamePackage inGamePackage;
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!gameDb.InGamePackages.TryGetValue(inGamePackageDataId, out inGamePackage))
+            result.error = GameServiceErrorCode.INVALID_IN_GAME_PACKAGE_DATA;
+        else
+        {
+            var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+            var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+            var requirementType = inGamePackage.requirementType;
+            var price = inGamePackage.price;
+            if (requirementType == InGamePackageRequirementType.RequireSoftCurrency && price > softCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_SOFT_CURRENCY;
+            else if (requirementType == InGamePackageRequirementType.RequireHardCurrency && price > hardCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
+            else
+            {
+                switch (requirementType)
+                {
+                    case InGamePackageRequirementType.RequireSoftCurrency:
+                        softCurrency.Amount -= price;
+                        break;
+                    case InGamePackageRequirementType.RequireHardCurrency:
+                        hardCurrency.Amount -= price;
+                        break;
+                }
+                // Add soft currency
+                softCurrency.Amount += inGamePackage.rewardSoftCurrency;
+                colPlayerCurrency.Update(softCurrency);
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
+                // Add hard currency
+                hardCurrency.Amount += inGamePackage.rewardHardCurrency;
+                colPlayerCurrency.Update(hardCurrency);
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
+                // Add items
+                foreach (var rewardItem in inGamePackage.rewardItems)
+                {
+                    var createItems = new List<DbPlayerItem>();
+                    var updateItems = new List<DbPlayerItem>();
+                    if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
+                    {
+                        foreach (var createEntry in createItems)
+                        {
+                            createEntry.Id = System.Guid.NewGuid().ToString();
+                            colPlayerItem.Insert(createEntry);
+                            result.createItems.Add(PlayerItem.CloneTo(createEntry, new PlayerItem()));
+                            HelperUnlockItem(player.Id, rewardItem.Id);
+                        }
+                        foreach (var updateEntry in updateItems)
+                        {
+                            colPlayerItem.Update(updateEntry);
+                            result.updateItems.Add(PlayerItem.CloneTo(updateEntry, new PlayerItem()));
+                        }
+                    }
+                }
+            }
+            onFinish(result);
+        }
     }
 }

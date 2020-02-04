@@ -529,6 +529,18 @@ public abstract class BaseGameService : MonoBehaviour
         DoGetAvailableIapPackageList((finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    /// <summary>
+    /// GetAvailableInGamePackageList
+    /// </summary>
+    /// <param name="onSuccess"></param>
+    /// <param name="onError"></param>
+    public void GetAvailableInGamePackageList(UnityAction<AvailableInGamePackageListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetAvailableInGamePackageList");
+        HandleServiceCall();
+        DoGetAvailableInGamePackageList((finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     public void GetHelperList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetRandomPlayerList");
@@ -667,6 +679,16 @@ public abstract class BaseGameService : MonoBehaviour
         DoConvertHardCurrency(playerId, loginToken, requireHardCurrency, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void OpenInGamePackage(string inGamePackageDataId, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: OpenInGamePackage");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoOpenInGamePackage(playerId, loginToken, inGamePackageDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -692,6 +714,7 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoGetClearStageList(string playerId, string loginToken, UnityAction<ClearStageListResult> onFinish);
     protected abstract void DoGetAvailableLootBoxList(UnityAction<AvailableLootBoxListResult> onFinish);
     protected abstract void DoGetAvailableIapPackageList(UnityAction<AvailableIapPackageListResult> onFinish);
+    protected abstract void DoGetAvailableInGamePackageList(UnityAction<AvailableInGamePackageListResult> onFinish);
     protected abstract void DoSetFormation(string playerId, string loginToken, string characterId, string formationName, int position, UnityAction<FormationListResult> onFinish);
     protected abstract void DoOpenLootBox(string playerId, string loginToken, string lootBoxDataId, int packIndex, UnityAction<ItemResult> onFinish);
     protected abstract void DoOpenIapPackage_iOS(string playerId, string loginToken, string iapPackageDataId, string receipt, UnityAction<ItemResult> onFinish);
@@ -710,4 +733,5 @@ public abstract class BaseGameService : MonoBehaviour
     protected abstract void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish);
     protected abstract void DoEarnAchievementReward(string playerId, string loginToken, string achievementId, UnityAction<EarnAchievementResult> onFinish);
     protected abstract void DoConvertHardCurrency(string playerId, string loginToken, int requireHardCurrency, UnityAction<HardCurrencyConversionResult> onFinish);
+    protected abstract void DoOpenInGamePackage(string playerId, string loginToken, string inGamePackageDataId, UnityAction<ItemResult> onFinish);
 }
