@@ -544,11 +544,8 @@ public partial class LiteDbGameService
         var result = new HardCurrencyConversionResult();
         var gameDb = GameInstance.GameDatabase;
         var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
-        int receiveSoftCurrency;
         if (player == null)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
-        else if (!gameDb.HardCurrencyConversions.TryGetValue(requireHardCurrency, out receiveSoftCurrency))
-            result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
         else
         {
             var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
@@ -563,8 +560,8 @@ public partial class LiteDbGameService
                 result.updateCurrencies.Add(PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency()));
                 // Increase soft currency
                 var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
-                result.receiveSoftCurrency = receiveSoftCurrency;
-                softCurrency.Amount += receiveSoftCurrency;
+                result.receiveSoftCurrency = gameDb.hardToSoftCurrencyConversion * requireHardCurrency;
+                softCurrency.Amount += result.receiveSoftCurrency;
                 colPlayerCurrency.Update(softCurrency);
                 result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
             }

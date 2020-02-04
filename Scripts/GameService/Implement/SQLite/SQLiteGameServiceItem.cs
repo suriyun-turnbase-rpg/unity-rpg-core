@@ -562,11 +562,8 @@ public partial class SQLiteGameService
         var result = new HardCurrencyConversionResult();
         var gameDb = GameInstance.GameDatabase;
         var player = GetPlayerByLoginToken(playerId, loginToken);
-        int receiveSoftCurrency;
         if (player == null)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
-        else if (!gameDb.HardCurrencyConversions.TryGetValue(requireHardCurrency, out receiveSoftCurrency))
-            result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
         else
         {
             var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
@@ -583,8 +580,8 @@ public partial class SQLiteGameService
                 result.updateCurrencies.Add(hardCurrency);
                 // Increase soft currency
                 var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
-                result.receiveSoftCurrency = receiveSoftCurrency;
-                softCurrency.Amount += receiveSoftCurrency;
+                result.receiveSoftCurrency = gameDb.hardToSoftCurrencyConversion * requireHardCurrency;
+                softCurrency.Amount += result.receiveSoftCurrency;
                 ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
                     new SqliteParameter("@amount", softCurrency.Amount),
                     new SqliteParameter("@id", softCurrency.Id));

@@ -47,8 +47,8 @@ public class GameDatabase : ScriptableObject
     [Tooltip("List of game IAP packages, place all IAP packages here")]
     public List<IapPackage> iapPackages;
 
-    [Header("Hard Currency Conversions")]
-    public List<HardCurrencyConversion> hardCurrencyConversions;
+    [Header("Hard Currency Conversion")]
+    public int hardToSoftCurrencyConversion;
 
     [Header("Game beginning")]
     [Tooltip("List of start items, place items that you want to give to players when begin the game")]
@@ -88,7 +88,6 @@ public class GameDatabase : ScriptableObject
     public readonly Dictionary<string, Achievement> Achievements = new Dictionary<string, Achievement>();
     public readonly Dictionary<string, LootBox> LootBoxes = new Dictionary<string, LootBox>();
     public readonly Dictionary<string, IapPackage> IapPackages = new Dictionary<string, IapPackage>();
-    public readonly Dictionary<int, int> HardCurrencyConversions = new Dictionary<int, int>();
     public readonly Dictionary<string, FakePlayer> FakePlayers = new Dictionary<string, FakePlayer>();
 
     public void Setup()
@@ -101,7 +100,6 @@ public class GameDatabase : ScriptableObject
         Achievements.Clear();
         LootBoxes.Clear();
         IapPackages.Clear();
-        HardCurrencyConversions.Clear();
         FakePlayers.Clear();
 
         AddItemsToDatabase(items);
@@ -130,7 +128,6 @@ public class GameDatabase : ScriptableObject
         AddAchievementsToDatabase(achievements);
         AddLootBoxesToDatabase(lootBoxes);
         AddIapPackagesToDatabase(iapPackages);
-        AddHardCurrencyConversionsToDatabase(hardCurrencyConversions);
         AddFakePlayersToDatabase(fakePlayers);
     }
 
@@ -214,18 +211,6 @@ public class GameDatabase : ScriptableObject
             if (!string.IsNullOrEmpty(dataId) && !IapPackages.ContainsKey(dataId))
             {
                 IapPackages[dataId] = iapPackage;
-            }
-        }
-    }
-
-    private void AddHardCurrencyConversionsToDatabase(IEnumerable<HardCurrencyConversion> hardCurrencyConversions)
-    {
-        foreach (var hardCurrencyConversion in hardCurrencyConversions)
-        {
-            var dataId = hardCurrencyConversion.requireHardCurrency;
-            if (!HardCurrencyConversions.ContainsKey(dataId))
-            {
-                HardCurrencyConversions[dataId] = hardCurrencyConversion.receiveSoftCurrency;
             }
         }
     }
