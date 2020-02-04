@@ -47,7 +47,7 @@ public class EquipmentItem : BaseActorItem
             "\"useFixRewardExp\":" + (useFixRewardExp ? 1 : 0) + "," +
             "\"fixRewardExp\":" + fixRewardExp + "," +
             "\"evolveInfo\":" + GetSpecificItemEvolve().ToJson() + "," +
-            "\"randomingAttributes\":" + randomingAttributes.ToJson() + "," +
+            "\"randomAttributes\":" + randomAttributes.ToJson() + "," +
             "\"equippablePositions\":" + jsonEquippablePositions + "}";
     }
 }

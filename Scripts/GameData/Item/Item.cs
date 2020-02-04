@@ -190,7 +190,7 @@ public abstract class BaseActorItem : BaseItem
     [Tooltip("Max values of these attributes are max values of `GameDatabase.itemMaxLevel` level")]
     public Attributes attributes;
 
-    public RandomingAttributes randomingAttributes;
+    public RandomAttributes randomAttributes;
 
 #if UNITY_EDITOR
     #region Helpers Variables
@@ -364,6 +364,6 @@ public abstract class BaseActorItem : BaseItem
             "\"useFixRewardExp\":" + (useFixRewardExp ? 1 : 0) + "," +
             "\"fixRewardExp\":" + fixRewardExp + "," +
             "\"evolveInfo\":" + GetSpecificItemEvolve().ToJson() + "," +
-            "\"randomingAttributes\":" + randomingAttributes.ToJson() + "}";
+            "\"randomAttributes\":" + randomAttributes.ToJson() + "}";
     }
 }

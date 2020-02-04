@@ -118,7 +118,7 @@ public enum AttributeType
 
 //CalculatedAttributes
 [Serializable]
-public struct RandomingAttributes
+public struct RandomAttributes
 {
     [Header("Type of attributes")]
     public int minType;
