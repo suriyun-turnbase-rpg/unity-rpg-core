@@ -232,6 +232,8 @@ public struct RandomAttributes
         List<AttributeType> shufflingKeys = new List<AttributeType>(randomingAmounts.Keys);
         shufflingKeys = shufflingKeys.OrderBy(a => UnityEngine.Random.value).ToList();
         tempIntVal = UnityEngine.Random.Range(minType, maxType);
+        if (randomingAmounts.Count < tempIntVal)
+            tempIntVal = randomingAmounts.Count;
         for (int i = 0; i < tempIntVal; ++i)
         {
             switch (shufflingKeys[i])

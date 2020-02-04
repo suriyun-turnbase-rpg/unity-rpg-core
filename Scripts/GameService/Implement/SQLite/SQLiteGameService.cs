@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Mono.Data.Sqlite;
 using System.Data;
+using Newtonsoft.Json;
 
 public class DbRowsReader
 {
@@ -253,7 +254,8 @@ public partial class SQLiteGameService : BaseGameService
             amount INTEGER NOT NULL,
             exp INTEGER NOT NULL,
             equipItemId TEXT NOT NULL,
-            equipPosition TEXT NOT NULL)");
+            equipPosition TEXT NOT NULL,
+            randomedAttributes TEXT NOT NULL DEFAULT '{}')");
 
         ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerAchievement (
             id TEXT NOT NULL PRIMARY KEY,
@@ -325,6 +327,9 @@ public partial class SQLiteGameService : BaseGameService
 
         if (!IsColumnExist("playerBattle", "battleType"))
             ExecuteNonQuery("ALTER TABLE playerBattle ADD battleType INTEGER NOT NULL DEFAULT 0;");
+
+        if (!IsColumnExist("playerItem", "randomedAttributes"))
+            ExecuteNonQuery("ALTER TABLE playerItem ADD randomedAttributes TEXT NOT NULL DEFAULT '{}';");
     }
 
     private bool IsColumnExist(string tableName, string findingColumn)
@@ -415,11 +420,11 @@ public partial class SQLiteGameService : BaseGameService
         while (reader.Read())
         {
             var entry = new PlayerAchievement();
-            entry.Id = reader.GetString(0);
-            entry.PlayerId = reader.GetString(1);
-            entry.DataId = reader.GetString(2);
-            entry.Progress = reader.GetInt32(3);
-            entry.Earned = reader.GetInt32(4) > 0;
+            entry.Id = reader.GetString("id");
+            entry.PlayerId = reader.GetString("playerId");
+            entry.DataId = reader.GetString("dataId");
+            entry.Progress = reader.GetInt32("progress");
+            entry.Earned = reader.GetInt32("earned") > 0;
             list.Add(entry);
         }
         return list;
@@ -434,11 +439,11 @@ public partial class SQLiteGameService : BaseGameService
         if (reader.Read())
         {
             result = new PlayerAchievement();
-            result.Id = reader.GetString(0);
-            result.PlayerId = reader.GetString(1);
-            result.DataId = reader.GetString(2);
-            result.Progress = reader.GetInt32(3);
-            result.Earned = reader.GetInt32(4) > 0;
+            result.Id = reader.GetString("id");
+            result.PlayerId = reader.GetString("playerId");
+            result.DataId = reader.GetString("dataId");
+            result.Progress = reader.GetInt32("progress");
+            result.Earned = reader.GetInt32("earned") > 0;
         }
         return result;
     }
@@ -463,11 +468,11 @@ public partial class SQLiteGameService : BaseGameService
         while (reader.Read())
         {
             var entry = new PlayerAuth();
-            entry.Id = reader.GetString(0);
-            entry.PlayerId = reader.GetString(1);
-            entry.Type = reader.GetString(2);
-            entry.Username = reader.GetString(3);
-            entry.Password = reader.GetString(4);
+            entry.Id = reader.GetString("id");
+            entry.PlayerId = reader.GetString("playerId");
+            entry.Type = reader.GetString("type");
+            entry.Username = reader.GetString("username");
+            entry.Password = reader.GetString("password");
             list.Add(entry);
         }
         return list;
@@ -494,13 +499,18 @@ public partial class SQLiteGameService : BaseGameService
         while (reader.Read())
         {
             var entry = new PlayerItem();
-            entry.Id = reader.GetString(0);
-            entry.PlayerId = reader.GetString(1);
-            entry.DataId = reader.GetString(2);
-            entry.Amount = reader.GetInt32(3);
-            entry.Exp = reader.GetInt32(4);
-            entry.EquipItemId = reader.GetString(5);
-            entry.EquipPosition = reader.GetString(6);
+            entry.Id = reader.GetString("id");
+            entry.PlayerId = reader.GetString("playerId");
+            entry.DataId = reader.GetString("dataId");
+            entry.Amount = reader.GetInt32("amount");
+            entry.Exp = reader.GetInt32("exp");
+            entry.EquipItemId = reader.GetString("equipItemId");
+            entry.EquipPosition = reader.GetString("equipPosition");
+            try
+            {
+                entry.RandomedAttributes = JsonConvert.DeserializeObject<CalculatedAttributes>(reader.GetString("randomedAttributes"));
+            }
+            catch { }
             list.Add(entry);
         }
         return list;
@@ -526,11 +536,11 @@ public partial class SQLiteGameService : BaseGameService
         while (reader.Read())
         {
             var entry = new PlayerCurrency();
-            entry.Id = reader.GetString(0);
-            entry.PlayerId = reader.GetString(1);
-            entry.DataId = reader.GetString(2);
-            entry.Amount = reader.GetInt32(3);
-            entry.PurchasedAmount = reader.GetInt32(4);
+            entry.Id = reader.GetString("id");
+            entry.PlayerId = reader.GetString("playerId");
+            entry.DataId = reader.GetString("dataId");
+            entry.Amount = reader.GetInt32("amount");
+            entry.PurchasedAmount = reader.GetInt32("purchasedAmount");
             list.Add(entry);
         }
         return list;
@@ -556,11 +566,11 @@ public partial class SQLiteGameService : BaseGameService
         while (reader.Read())
         {
             var entry = new PlayerStamina();
-            entry.Id = reader.GetString(0);
-            entry.PlayerId = reader.GetString(1);
-            entry.DataId = reader.GetString(2);
-            entry.Amount = reader.GetInt32(3);
-            entry.RecoveredTime = reader.GetInt64(4);
+            entry.Id = reader.GetString("id");
+            entry.PlayerId = reader.GetString("playerId");
+            entry.DataId = reader.GetString("dataId");
+            entry.Amount = reader.GetInt32("amount");
+            entry.RecoveredTime = reader.GetInt64("recoveredTime");
             list.Add(entry);
         }
         return list;
@@ -586,11 +596,11 @@ public partial class SQLiteGameService : BaseGameService
         while (reader.Read())
         {
             var entry = new PlayerFormation();
-            entry.Id = reader.GetString(0);
-            entry.PlayerId = reader.GetString(1);
-            entry.DataId = reader.GetString(2);
-            entry.Position = reader.GetInt32(3);
-            entry.ItemId = reader.GetString(4);
+            entry.Id = reader.GetString("id");
+            entry.PlayerId = reader.GetString("playerId");
+            entry.DataId = reader.GetString("dataId");
+            entry.Position = reader.GetInt32("position");
+            entry.ItemId = reader.GetString("itemId");
             list.Add(entry);
         }
         return list;
@@ -616,10 +626,10 @@ public partial class SQLiteGameService : BaseGameService
         while (reader.Read())
         {
             var entry = new PlayerUnlockItem();
-            entry.Id = reader.GetString(0);
-            entry.PlayerId = reader.GetString(1);
-            entry.DataId = reader.GetString(2);
-            entry.Amount = reader.GetInt32(3);
+            entry.Id = reader.GetString("id");
+            entry.PlayerId = reader.GetString("playerId");
+            entry.DataId = reader.GetString("dataId");
+            entry.Amount = reader.GetInt32("amount");
             list.Add(entry);
         }
         return list;
@@ -645,10 +655,10 @@ public partial class SQLiteGameService : BaseGameService
         while (reader.Read())
         {
             var entry = new PlayerClearStage();
-            entry.Id = reader.GetString(0);
-            entry.PlayerId = reader.GetString(1);
-            entry.DataId = reader.GetString(2);
-            entry.BestRating = reader.GetInt32(3);
+            entry.Id = reader.GetString("id");
+            entry.PlayerId = reader.GetString("playerId");
+            entry.DataId = reader.GetString("dataId");
+            entry.BestRating = reader.GetInt32("bestRating");
             list.Add(entry);
         }
         return list;

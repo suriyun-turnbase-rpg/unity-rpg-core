@@ -265,6 +265,8 @@ public partial class LiteDbGameService
             var newEntry = new DbPlayerItem();
             newEntry.PlayerId = playerId;
             newEntry.DataId = dataId;
+            if (itemData is BaseActorItem)
+                newEntry.RandomedAttributes = (itemData as BaseActorItem).randomAttributes.GetCalculatedAttributes();
             if (amount > maxStack)
             {
                 newEntry.Amount = maxStack;

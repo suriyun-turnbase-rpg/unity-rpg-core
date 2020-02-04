@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Mono.Data.Sqlite;
+using Newtonsoft.Json;
 
 public partial class SQLiteGameService
 {
@@ -344,6 +345,11 @@ public partial class SQLiteGameService
             entry.Exp = oldEntries.GetInt32("exp");
             entry.EquipItemId = oldEntries.GetString("equipItemId");
             entry.EquipPosition = oldEntries.GetString("equipPosition");
+            try
+            {
+                entry.RandomedAttributes = JsonConvert.DeserializeObject<CalculatedAttributes>(oldEntries.GetString("randomedAttributes"));
+            }
+            catch { }
             var sumAmount = entry.Amount + amount;
             if (sumAmount > maxStack)
             {
@@ -365,6 +371,8 @@ public partial class SQLiteGameService
             var newEntry = new PlayerItem();
             newEntry.PlayerId = playerId;
             newEntry.DataId = dataId;
+            if (itemData is BaseActorItem)
+                newEntry.RandomedAttributes = (itemData as BaseActorItem).randomAttributes.GetCalculatedAttributes();
             if (amount > maxStack)
             {
                 newEntry.Amount = maxStack;
