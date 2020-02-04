@@ -43,6 +43,10 @@ public class GameDatabase : ScriptableObject
     [Tooltip("List of game loot boxes, place all loot boxes here")]
     public List<LootBox> lootBoxes;
 
+    [Header("In-Game Package database")]
+    [Tooltip("List of game In-Game packages, place all In-Game packages here")]
+    public List<InGamePackage> inGamePackages;
+
     [Header("In-App Purchasing Package database")]
     [Tooltip("List of game IAP packages, place all IAP packages here")]
     public List<IapPackage> iapPackages;
@@ -87,6 +91,7 @@ public class GameDatabase : ScriptableObject
     public readonly Dictionary<string, BaseStage> Stages = new Dictionary<string, BaseStage>();
     public readonly Dictionary<string, Achievement> Achievements = new Dictionary<string, Achievement>();
     public readonly Dictionary<string, LootBox> LootBoxes = new Dictionary<string, LootBox>();
+    public readonly Dictionary<string, InGamePackage> InGamePackages = new Dictionary<string, InGamePackage>();
     public readonly Dictionary<string, IapPackage> IapPackages = new Dictionary<string, IapPackage>();
     public readonly Dictionary<string, FakePlayer> FakePlayers = new Dictionary<string, FakePlayer>();
 
@@ -99,6 +104,7 @@ public class GameDatabase : ScriptableObject
         Stages.Clear();
         Achievements.Clear();
         LootBoxes.Clear();
+        InGamePackages.Clear();
         IapPackages.Clear();
         FakePlayers.Clear();
 
@@ -127,6 +133,7 @@ public class GameDatabase : ScriptableObject
         AddStagesToDatabase(unlockStages);
         AddAchievementsToDatabase(achievements);
         AddLootBoxesToDatabase(lootBoxes);
+        AddInGamePackagesToDatabase(inGamePackages);
         AddIapPackagesToDatabase(iapPackages);
         AddFakePlayersToDatabase(fakePlayers);
     }
@@ -197,6 +204,20 @@ public class GameDatabase : ScriptableObject
             if (!string.IsNullOrEmpty(dataId) && !LootBoxes.ContainsKey(dataId))
             {
                 LootBoxes[dataId] = lootBox;
+            }
+        }
+    }
+
+    private void AddInGamePackagesToDatabase(IEnumerable<InGamePackage> inGamePackages)
+    {
+        foreach (var inGamePackage in inGamePackages)
+        {
+            if (inGamePackage == null)
+                continue;
+            var dataId = inGamePackage.Id;
+            if (!string.IsNullOrEmpty(dataId) && !InGamePackages.ContainsKey(dataId))
+            {
+                InGamePackages[dataId] = inGamePackage;
             }
         }
     }
