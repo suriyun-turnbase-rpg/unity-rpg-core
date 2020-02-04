@@ -189,8 +189,8 @@ public abstract class BaseActorItem : BaseItem
 
     [Tooltip("Max values of these attributes are max values of `GameDatabase.itemMaxLevel` level")]
     public Attributes attributes;
-    
-    public CalculatedAttributes[] randomAttributesPresets;
+
+    public RandomingAttributes randomingAttributes;
 
 #if UNITY_EDITOR
     #region Helpers Variables
@@ -234,7 +234,7 @@ public abstract class BaseActorItem : BaseItem
     [Header("Create Evolve Item Tool")]
     [Tooltip("Create new evolve item based on this item with context menu `Create Evolve Item`")]
     public CreateEvolveItemData[] createEvolveItems;
-#endregion
+    #endregion
 #endif
 
     public override int MaxStack
@@ -342,7 +342,7 @@ public abstract class BaseActorItem : BaseItem
         newItem.attributes = attributes.CreateOverrideMaxLevelAttributes(itemTier.maxLevel, newItem.itemTier.maxLevel) * createEvolveItemData.attributesRate;
         EditorUtility.SetDirty(newItem);
     }
-#endregion
+    #endregion
 #endif
 
     public abstract SpecificItemEvolve GetSpecificItemEvolve();
@@ -363,6 +363,7 @@ public abstract class BaseActorItem : BaseItem
             "\"fixLevelUpPrice\":" + fixLevelUpPrice + "," +
             "\"useFixRewardExp\":" + (useFixRewardExp ? 1 : 0) + "," +
             "\"fixRewardExp\":" + fixRewardExp + "," +
-            "\"evolveInfo\":" + GetSpecificItemEvolve().ToJson() + "}";
+            "\"evolveInfo\":" + GetSpecificItemEvolve().ToJson() + "," +
+            "\"randomingAttributes\":" + randomingAttributes.ToJson() + "}";
     }
 }

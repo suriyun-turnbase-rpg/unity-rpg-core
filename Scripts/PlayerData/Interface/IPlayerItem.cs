@@ -7,5 +7,5 @@
     int Exp { get; set; }
     string EquipItemId { get; set; }
     string EquipPosition { get; set; }
-    int RandomedAttributePreset { get; set; }
+    CalculatedAttributes RandomedAttributes { get; set; }
 }

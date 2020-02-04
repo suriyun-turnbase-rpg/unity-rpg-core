@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -91,6 +92,233 @@ public struct SingleAttribute
         return "{\"minValue\":" + minValue + "," +
             "\"maxValue\":" + maxValue + "," +
             "\"growth\":" + growth.ToString(new CultureInfo("en-US", false)) + "}";
+    }
+}
+
+public enum AttributeType
+{
+    Hp = 0,
+    PAtk = 1,
+    PDef = 2,
+#if !NO_MAGIC_STATS
+    MAtk = 3,
+    MDef = 4,
+#endif
+    Spd = 5,
+#if !NO_EVADE_STATS
+    Eva = 6,
+    Acc = 7,
+#endif
+    CritChance = 8,
+    CritDamageRate = 9,
+    BlockChance = 10,
+    BlockDamageRate = 11,
+    ResistanceChance = 12
+}
+
+//CalculatedAttributes
+[Serializable]
+public struct RandomingAttributes
+{
+    [Header("Type of attributes")]
+    public int minType;
+    public int maxType;
+    [Header("Hp")]
+    public int minHp;
+    public int maxHp;
+    [Header("P.Attack")]
+    public int minPAtk;
+    public int maxPAtk;
+    [Header("P.Defend")]
+    public int minPDef;
+    public int maxPDef;
+#if !NO_MAGIC_STATS
+    [Header("M.Attack")]
+    public int minMAtk;
+    public int maxMAtk;
+    [Header("M.Defend")]
+    public int minMDef;
+    public int maxMDef;
+#endif
+    [Header("Speed")]
+    public int minSpd;
+    public int maxSpd;
+#if !NO_EVADE_STATS
+    [Header("Evasion")]
+    public int minEva;
+    public int maxEva;
+    [Header("Accuracy")]
+    public int minAcc;
+    public int maxAcc;
+#endif
+    [Header("Critical Chance")]
+    public float minCritChance;
+    public float maxCritChance;
+    [Header("Critical Damage Rate")]
+    public float minCritDamageRate;
+    public float maxCritDamageRate;
+    [Header("Block Chance")]
+    public float minBlockChance;
+    public float maxBlockChance;
+    [Header("Block Damage Rate")]
+    public float minBlockDamageRate;
+    public float maxBlockDamageRate;
+    [Header("Resistance Chance")]
+    public float minResistanceChance;
+    public float maxResistanceChance;
+
+    public CalculatedAttributes GetCalculatedAttributes()
+    {
+        CalculatedAttributes result = new CalculatedAttributes();
+        Dictionary<AttributeType, float> randomingAmounts = new Dictionary<AttributeType, float>();
+        int tempIntVal = 0;
+        float tempFloatVal = 0;
+        // Hp
+        tempIntVal = UnityEngine.Random.Range(minHp, maxHp);
+        if (tempIntVal != 0)
+            randomingAmounts[AttributeType.Hp] = tempIntVal;
+        // PAtk
+        tempIntVal = UnityEngine.Random.Range(minPAtk, maxPAtk);
+        if (tempIntVal != 0)
+            randomingAmounts[AttributeType.PAtk] = tempIntVal;
+        // PDef
+        tempIntVal = UnityEngine.Random.Range(minPDef, maxPDef);
+        if (tempIntVal != 0)
+            randomingAmounts[AttributeType.PDef] = tempIntVal;
+#if !NO_MAGIC_STATS
+        // MAtk
+        tempIntVal = UnityEngine.Random.Range(minMAtk, maxMAtk);
+        if (tempIntVal != 0)
+            randomingAmounts[AttributeType.MAtk] = tempIntVal;
+        // MDef
+        tempIntVal = UnityEngine.Random.Range(minMDef, maxMDef);
+        if (tempIntVal != 0)
+            randomingAmounts[AttributeType.MDef] = tempIntVal;
+#endif
+        // Spd
+        tempIntVal = UnityEngine.Random.Range(minSpd, maxSpd);
+        if (tempIntVal != 0)
+            randomingAmounts[AttributeType.Spd] = tempIntVal;
+#if !NO_EVADE_STATS
+        // Eva
+        tempIntVal = UnityEngine.Random.Range(minEva, maxEva);
+        if (tempIntVal != 0)
+            randomingAmounts[AttributeType.Eva] = tempIntVal;
+        // Acc
+        tempIntVal = UnityEngine.Random.Range(minAcc, maxAcc);
+        if (tempIntVal != 0)
+            randomingAmounts[AttributeType.Acc] = tempIntVal;
+#endif
+        // Crit Chance
+        tempFloatVal = UnityEngine.Random.Range(minCritChance, maxCritChance);
+        if (tempFloatVal != 0)
+            randomingAmounts[AttributeType.CritChance] = tempFloatVal;
+        // Crit Damage Rate
+        tempFloatVal = UnityEngine.Random.Range(minCritDamageRate, maxCritDamageRate);
+        if (tempFloatVal != 0)
+            randomingAmounts[AttributeType.CritDamageRate] = tempFloatVal;
+        // Block Chance
+        tempFloatVal = UnityEngine.Random.Range(minBlockChance, maxBlockChance);
+        if (tempFloatVal != 0)
+            randomingAmounts[AttributeType.BlockChance] = tempFloatVal;
+        // Block Damage Rate
+        tempFloatVal = UnityEngine.Random.Range(minBlockDamageRate, maxBlockDamageRate);
+        if (tempFloatVal != 0)
+            randomingAmounts[AttributeType.BlockDamageRate] = tempFloatVal;
+        // Resistance
+        tempFloatVal = UnityEngine.Random.Range(minResistanceChance, maxResistanceChance);
+        if (tempFloatVal != 0)
+            randomingAmounts[AttributeType.ResistanceChance] = tempFloatVal;
+        List<AttributeType> shufflingKeys = new List<AttributeType>(randomingAmounts.Keys);
+        shufflingKeys = shufflingKeys.OrderBy(a => UnityEngine.Random.value).ToList();
+        tempIntVal = UnityEngine.Random.Range(minType, maxType);
+        for (int i = 0; i < tempIntVal; ++i)
+        {
+            switch (shufflingKeys[i])
+            {
+                case AttributeType.Hp:
+                    result.hp = (int)randomingAmounts[shufflingKeys[i]];
+                    break;
+                case AttributeType.PAtk:
+                    result.pAtk = (int)randomingAmounts[shufflingKeys[i]];
+                    break;
+                case AttributeType.PDef:
+                    result.pDef = (int)randomingAmounts[shufflingKeys[i]];
+                    break;
+#if !NO_MAGIC_STATS
+                case AttributeType.MAtk:
+                    result.mAtk = (int)randomingAmounts[shufflingKeys[i]];
+                    break;
+                case AttributeType.MDef:
+                    result.mDef = (int)randomingAmounts[shufflingKeys[i]];
+                    break;
+#endif
+                case AttributeType.Spd:
+                    result.spd = (int)randomingAmounts[shufflingKeys[i]];
+                    break;
+#if !NO_EVADE_STATS
+                case AttributeType.Eva:
+                    result.eva = (int)randomingAmounts[shufflingKeys[i]];
+                    break;
+                case AttributeType.Acc:
+                    result.acc = (int)randomingAmounts[shufflingKeys[i]];
+                    break;
+#endif
+                case AttributeType.CritChance:
+                    result.critChance = randomingAmounts[shufflingKeys[i]];
+                    break;
+                case AttributeType.CritDamageRate:
+                    result.critDamageRate = randomingAmounts[shufflingKeys[i]];
+                    break;
+                case AttributeType.BlockChance:
+                    result.blockChance = randomingAmounts[shufflingKeys[i]];
+                    break;
+                case AttributeType.BlockDamageRate:
+                    result.blockDamageRate = randomingAmounts[shufflingKeys[i]];
+                    break;
+                case AttributeType.ResistanceChance:
+                    result.resistanceChance = randomingAmounts[shufflingKeys[i]];
+                    break;
+            }
+        }
+        return result;
+    }
+
+    public string ToJson()
+    {
+        return "{" +
+            "\"minType\":" + minType + "," +
+            "\"maxType\":" + maxType + "," +
+            "\"minHp\":" + minHp + "," +
+            "\"maxHp\":" + maxHp + "," +
+            "\"minPAtk\":" + minPAtk + "," +
+            "\"maxPAtk\":" + maxPAtk + "," +
+            "\"minPDef\":" + minPDef + "," +
+            "\"maxPDef\":" + maxPDef + "," +
+#if !NO_MAGIC_STATS
+            "\"minMAtk\":" + minMAtk + "," +
+            "\"maxMAtk\":" + maxMAtk + "," +
+            "\"minMDef\":" + minMDef + "," +
+            "\"maxMDef\":" + maxMDef + "," +
+#endif
+            "\"minSpd\":" + minSpd + "," +
+            "\"maxSpd\":" + maxSpd + "," +
+#if !NO_EVADE_STATS
+            "\"minEva\":" + minEva + "," +
+            "\"maxEva\":" + maxEva + "," +
+            "\"minAcc\":" + minAcc + "," +
+            "\"maxAcc\":" + maxAcc + "," +
+#endif
+            "\"minCritChance\":" + minCritChance + "," +
+            "\"maxCritChance\":" + maxCritChance + "," +
+            "\"minCritDamageRate\":" + minCritDamageRate + "," +
+            "\"maxCritDamageRate\":" + maxCritDamageRate + "," +
+            "\"minBlockChance\":" + minBlockChance + "," +
+            "\"maxBlockChance\":" + maxBlockChance + "," +
+            "\"minBlockDamageRate\":" + minBlockDamageRate + "," +
+            "\"maxBlockDamageRate\":" + maxBlockDamageRate + "," +
+            "\"minResistanceChance\":" + minResistanceChance + "," +
+            "\"maxResistanceChance\":" + maxResistanceChance + "}";
     }
 }
 

@@ -33,8 +33,8 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
     public string EquipItemId { get { return equipItemId; } set { equipItemId = value; } }
     public string equipPosition;
     public string EquipPosition { get { return equipPosition; } set { equipPosition = value; } }
-    public int randomedAttributePreset;
-    public int RandomedAttributePreset { get { return randomedAttributePreset; } set { randomedAttributePreset = value; } }
+    public CalculatedAttributes randomedAttributes;
+    public CalculatedAttributes RandomedAttributes { get { return randomedAttributes; } set { randomedAttributes = value; } }
 
     private int level = -1;
     private int collectExp = -1;
@@ -50,7 +50,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         Exp = 0;
         EquipItemId = "";
         EquipPosition = "";
-        RandomedAttributePreset = -1;
+        RandomedAttributes = new CalculatedAttributes();
     }
 
     public PlayerItem Clone()
@@ -67,7 +67,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         to.Exp = from.Exp;
         to.EquipItemId = from.EquipItemId;
         to.EquipPosition = from.EquipPosition;
-        to.RandomedAttributePreset = from.RandomedAttributePreset;
+        to.RandomedAttributes = from.RandomedAttributes;
         return to;
     }
 
@@ -236,8 +236,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
                 result += CharacterData.attributes.CreateCalculationAttributes(Level, MaxLevel);
                 if (GameDatabase != null)
                     result += GameDatabase.characterBaseAttributes;
-                if (RandomedAttributePreset >= 0 && RandomedAttributePreset < CharacterData.randomAttributesPresets.Length)
-                    result += CharacterData.randomAttributesPresets[RandomedAttributePreset];
+                result += RandomedAttributes;
                 return result;
             }
             if (EquipmentData != null)
@@ -245,8 +244,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
                 var result = new CalculatedAttributes();
                 result += EquipmentData.attributes.CreateCalculationAttributes(Level, MaxLevel);
                 result += EquipmentData.extraAttributes;
-                if (RandomedAttributePreset >= 0 && RandomedAttributePreset < EquipmentData.randomAttributesPresets.Length)
-                    result += EquipmentData.randomAttributesPresets[RandomedAttributePreset];
+                result += RandomedAttributes;
                 return result;
             }
             return new CalculatedAttributes();
