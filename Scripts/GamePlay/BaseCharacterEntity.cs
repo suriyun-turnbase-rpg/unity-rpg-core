@@ -189,10 +189,29 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         var equipmentBonus = Item.EquipmentBonus;
         result += equipmentBonus;
 
-        var buffs = new List<BaseCharacterBuff>(Buffs.Values);
-        foreach (var buff in buffs)
+        // Add attributes by passive skills
+        var skills = new List<BaseCharacterSkill>(Skills);
+        if (skills != null)
         {
-            result += buff.Attributes;
+            foreach (var skill in skills)
+            {
+                if (!skill.Skill || !skill.Skill.isPassive) continue;
+                var skillBuffs = skill.Skill.GetBuffs();
+                foreach (var buff in skillBuffs)
+                {
+                    result += buff.GetAttributes(skill.Level);
+                }
+            }
+        }
+
+        // Add attributes by buffs
+        var buffs = new List<BaseCharacterBuff>(Buffs.Values);
+        if (buffs != null)
+        {
+            foreach (var buff in buffs)
+            {
+                result += buff.Attributes;
+            }
         }
 
         // If this is character item, applies rate attributes
