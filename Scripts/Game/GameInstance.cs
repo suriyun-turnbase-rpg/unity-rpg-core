@@ -157,6 +157,7 @@ public partial class GameInstance : MonoBehaviour
         if (!result.Success)
             return;
 
+        PlayerCurrency.SetDataRange(result.updateCurrencies);
         PlayerItem.SetDataRange(result.createItems);
         PlayerItem.SetDataRange(result.updateItems);
         PlayerItem.RemoveDataRange(result.deleteItemIds);
