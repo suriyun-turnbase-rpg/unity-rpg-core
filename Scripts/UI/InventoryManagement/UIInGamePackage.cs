@@ -86,16 +86,13 @@ public class UIInGamePackage : UIDataItem<InGamePackage>
     private void OnOpenInGamePackageSuccess(ItemResult result)
     {
         GameInstance.Singleton.OnGameServiceItemResult(result);
-        var items = new List<PlayerItem>();
-        items.AddRange(result.createItems);
-        items.AddRange(result.updateItems);
-        if (items.Count > 0)
+        if (result.rewardItems.Count > 0)
         {
-            var inGamePackageList = list as UIInGamePackageList;
-            if (inGamePackageList != null && inGamePackageList.animItemsRewarding != null)
-                inGamePackageList.animItemsRewarding.Play(items);
+            var lootBoxList = list as UILootBoxList;
+            if (lootBoxList != null && lootBoxList.animItemsRewarding != null)
+                lootBoxList.animItemsRewarding.Play(result.rewardItems);
             else
-                GameInstance.Singleton.ShowRewardItemsDialog(items);
+                GameInstance.Singleton.ShowRewardItemsDialog(result.rewardItems);
         }
     }
 

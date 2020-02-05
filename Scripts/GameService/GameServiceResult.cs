@@ -90,6 +90,7 @@ public class CurrencyResult : GameServiceResult
 public class ItemResult : GameServiceResult
 {
     public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
+    public List<PlayerItem> rewardItems = new List<PlayerItem>();
     public List<PlayerItem> createItems = new List<PlayerItem>();
     public List<PlayerItem> updateItems = new List<PlayerItem>();
     public List<string> deleteItemIds = new List<string>();
