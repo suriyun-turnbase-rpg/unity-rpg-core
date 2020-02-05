@@ -11,6 +11,7 @@ public enum InGamePackageRequirementType : byte
 public class InGamePackage : BaseGameData
 {
     public Sprite icon;
+    public string category;
     public Sprite highlight;
     public InGamePackageRequirementType requirementType;
     public int price = 0;

@@ -54,6 +54,7 @@ public enum LootBoxRequirementType : byte
 public class LootBox : BaseGameData
 {
     public Sprite icon;
+    public string category;
     public Sprite highlight;
     public LootBoxRequirementType requirementType;
     public LootBoxPack[] lootboxPacks;
