@@ -80,31 +80,26 @@ public class UIInGamePackage : UIDataItem<InGamePackage>
                 }
                 break;
         }
-        gameService.OpenInGamePackage(data.Id, OnOpenInGameSuccess, OnOpenInGameFail);
+        gameService.OpenInGamePackage(data.Id, OnOpenInGamePackageSuccess, OnOpenInGamePackageFail);
     }
 
-    private void OnOpenInGameSuccess(ItemResult result)
+    private void OnOpenInGamePackageSuccess(ItemResult result)
     {
         GameInstance.Singleton.OnGameServiceItemResult(result);
-        var updateCurrencies = result.updateCurrencies;
-        foreach (var updateCurrency in updateCurrencies)
-        {
-            PlayerCurrency.SetData(updateCurrency);
-        }
         var items = new List<PlayerItem>();
         items.AddRange(result.createItems);
         items.AddRange(result.updateItems);
         if (items.Count > 0)
         {
-            var lootBoxList = list as UILootBoxList;
-            if (lootBoxList != null && lootBoxList.animItemsRewarding != null)
-                lootBoxList.animItemsRewarding.Play(items);
+            var inGamePackageList = list as UIInGamePackageList;
+            if (inGamePackageList != null && inGamePackageList.animItemsRewarding != null)
+                inGamePackageList.animItemsRewarding.Play(items);
             else
                 GameInstance.Singleton.ShowRewardItemsDialog(items);
         }
     }
 
-    private void OnOpenInGameFail(string error)
+    private void OnOpenInGamePackageFail(string error)
     {
         GameInstance.Singleton.OnGameServiceError(error);
     }

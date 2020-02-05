@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class UIInGamePackageList : UIDataItemList<UIInGamePackage, InGamePackage>
 {
+    public AnimItemsRewarding animItemsRewarding;
+
     public void SetListItems(List<InGamePackage> list, UnityAction<UIInGamePackage> onSetListItem = null)
     {
         ClearListItems();

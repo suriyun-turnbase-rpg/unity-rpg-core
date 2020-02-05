@@ -14,7 +14,7 @@ public class UIInGamePackageManager : UIBase
 
         if (uiInGamePackageList != null)
         {
-            var availableInGamePackages = GameInstance.AvailableIapPackages;
+            var availableInGamePackages = GameInstance.AvailableInGamePackages;
             var allInGamePackagees = GameInstance.GameDatabase.InGamePackages;
             var list = allInGamePackagees.Values.Where(a => availableInGamePackages.Contains(a.Id) && ContainCategory(a.category)).ToList();
             uiInGamePackageList.SetListItems(list);
