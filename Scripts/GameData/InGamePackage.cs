@@ -33,6 +33,8 @@ public class InGamePackage : BaseGameData
         return "{\"id\":\"" + Id + "\"," +
             "\"requirementType\":" + (byte)requirementType + "," +
             "\"price\":" + price + "," +
+            "\"rewardSoftCurrency\":" + rewardSoftCurrency + "," +
+            "\"rewardHardCurrency\":" + rewardHardCurrency + "," +
             "\"rewardItems\":" + jsonRewardItems + "}";
     }
 }
