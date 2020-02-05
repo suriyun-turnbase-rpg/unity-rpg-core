@@ -597,17 +597,20 @@ public partial class SQLiteGameService
                 var updateItems = new List<PlayerItem>();
                 if (AddItems(player.Id, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
                 {
+                    result.firstClearRewardItems.Add(new PlayerItem()
+                    {
+                        DataId = rewardItem.Id,
+                        Amount = rewardItem.amount
+                    });
                     foreach (var createEntry in createItems)
                     {
                         QueryCreatePlayerItem(createEntry);
-                        result.firstClearRewardItems.Add(createEntry);
                         result.createItems.Add(createEntry);
                         HelperUnlockItem(player.Id, rewardItem.Id);
                     }
                     foreach (var updateEntry in updateItems)
                     {
                         QueryUpdatePlayerItem(updateEntry);
-                        result.firstClearRewardItems.Add(updateEntry);
                         result.updateItems.Add(updateEntry);
                     }
                 }

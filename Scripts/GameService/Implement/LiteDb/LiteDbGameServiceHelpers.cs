@@ -425,12 +425,16 @@ public partial class LiteDbGameService
                 var updateItems = new List<DbPlayerItem>();
                 if (AddItems(player.Id, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
                 {
+                    result.firstClearRewardItems.Add(new PlayerItem()
+                    {
+                        DataId = rewardItem.Id,
+                        Amount = rewardItem.amount
+                    });
                     foreach (var createEntry in createItems)
                     {
                         createEntry.Id = System.Guid.NewGuid().ToString();
                         colPlayerItem.Insert(createEntry);
                         var resultItem = PlayerItem.CloneTo(createEntry, new PlayerItem());
-                        result.firstClearRewardItems.Add(resultItem);
                         result.createItems.Add(resultItem);
                         HelperUnlockItem(player.Id, rewardItem.Id);
                     }
@@ -438,7 +442,6 @@ public partial class LiteDbGameService
                     {
                         colPlayerItem.Update(updateEntry);
                         var resultItem = PlayerItem.CloneTo(updateEntry, new PlayerItem());
-                        result.firstClearRewardItems.Add(resultItem);
                         result.updateItems.Add(resultItem);
                     }
                 }
