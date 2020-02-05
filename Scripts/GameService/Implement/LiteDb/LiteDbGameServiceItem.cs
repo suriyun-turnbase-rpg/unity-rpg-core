@@ -615,7 +615,7 @@ public partial class LiteDbGameService
                 // Add hard currency
                 hardCurrency.Amount += inGamePackage.rewardHardCurrency;
                 colPlayerCurrency.Update(hardCurrency);
-                result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency()));
                 // Add items
                 foreach (var rewardItem in inGamePackage.rewardItems)
                 {
