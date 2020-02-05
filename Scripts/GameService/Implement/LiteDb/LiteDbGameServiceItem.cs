@@ -399,6 +399,8 @@ public partial class LiteDbGameService
                     {
                         result.rewardItems.Add(new PlayerItem()
                         {
+                            Id = i.ToString(),
+                            PlayerId = player.Id,
                             DataId = rewardItem.Id,
                             Amount = rewardItem.amount
                         });
@@ -456,14 +458,17 @@ public partial class LiteDbGameService
             colPlayerCurrency.Update(hardCurrency);
             result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
             // Add items
-            foreach (var rewardItem in iapPackage.rewardItems)
+            for (var i = 0; i < iapPackage.rewardItems.Length; ++i)
             {
+                var rewardItem = iapPackage.rewardItems[i];
                 var createItems = new List<DbPlayerItem>();
                 var updateItems = new List<DbPlayerItem>();
                 if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
                 {
                     result.rewardItems.Add(new PlayerItem()
                     {
+                        Id = i.ToString(),
+                        PlayerId = player.Id,
                         DataId = rewardItem.Id,
                         Amount = rewardItem.amount
                     });
@@ -524,14 +529,17 @@ public partial class LiteDbGameService
                 colPlayerCurrency.Update(hardCurrency);
                 result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
                 // Add items
-                foreach (var rewardItem in achievement.rewardItems)
+                for (var i = 0; i < achievement.rewardItems.Length; ++i)
                 {
+                    var rewardItem = achievement.rewardItems[i];
                     var createItems = new List<DbPlayerItem>();
                     var updateItems = new List<DbPlayerItem>();
                     if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
                     {
                         result.rewardItems.Add(new PlayerItem()
                         {
+                            Id = i.ToString(),
+                            PlayerId = player.Id,
                             DataId = rewardItem.Id,
                             Amount = rewardItem.amount
                         });
@@ -629,14 +637,17 @@ public partial class LiteDbGameService
                 colPlayerCurrency.Update(hardCurrency);
                 result.updateCurrencies.Add(PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency()));
                 // Add items
-                foreach (var rewardItem in inGamePackage.rewardItems)
+                for (var i = 0; i < inGamePackage.rewardItems.Length; ++i)
                 {
+                    var rewardItem = inGamePackage.rewardItems[i];
                     var createItems = new List<DbPlayerItem>();
                     var updateItems = new List<DbPlayerItem>();
                     if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
                     {
                         result.rewardItems.Add(new PlayerItem()
                         {
+                            Id = i.ToString(),
+                            PlayerId = player.Id,
                             DataId = rewardItem.Id,
                             Amount = rewardItem.amount
                         });

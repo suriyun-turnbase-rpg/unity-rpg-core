@@ -427,6 +427,7 @@ public partial class LiteDbGameService
                 {
                     result.firstClearRewardItems.Add(new PlayerItem()
                     {
+                        PlayerId = player.Id,
                         DataId = rewardItem.Id,
                         Amount = rewardItem.amount
                     });

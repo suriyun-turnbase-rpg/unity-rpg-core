@@ -410,6 +410,8 @@ public partial class SQLiteGameService
                     {
                         result.rewardItems.Add(new PlayerItem()
                         {
+                            Id = i.ToString(),
+                            PlayerId = player.Id,
                             DataId = rewardItem.Id,
                             Amount = rewardItem.amount
                         });
@@ -470,14 +472,17 @@ public partial class SQLiteGameService
                 new SqliteParameter("@id", hardCurrency.Id));
             result.updateCurrencies.Add(hardCurrency);
             // Add items
-            foreach (var rewardItem in iapPackage.rewardItems)
+            for (var i = 0; i < iapPackage.rewardItems.Length; ++i)
             {
+                var rewardItem = iapPackage.rewardItems[i];
                 var createItems = new List<PlayerItem>();
                 var updateItems = new List<PlayerItem>();
                 if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
                 {
                     result.rewardItems.Add(new PlayerItem()
                     {
+                        Id = i.ToString(),
+                        PlayerId = player.Id,
                         DataId = rewardItem.Id,
                         Amount = rewardItem.amount
                     });
@@ -543,14 +548,17 @@ public partial class SQLiteGameService
                     new SqliteParameter("@id", hardCurrency.Id));
                 result.updateCurrencies.Add(hardCurrency);
                 // Add items
-                foreach (var rewardItem in achievement.rewardItems)
+                for (var i = 0; i < achievement.rewardItems.Length; ++i)
                 {
+                    var rewardItem = achievement.rewardItems[i];
                     var createItems = new List<PlayerItem>();
                     var updateItems = new List<PlayerItem>();
                     if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
                     {
                         result.rewardItems.Add(new PlayerItem()
                         {
+                            Id = i.ToString(),
+                            PlayerId = player.Id,
                             DataId = rewardItem.Id,
                             Amount = rewardItem.amount
                         });
@@ -653,14 +661,17 @@ public partial class SQLiteGameService
                     new SqliteParameter("@id", hardCurrency.Id));
                 result.updateCurrencies.Add(hardCurrency);
                 // Add items
-                foreach (var rewardItem in inGamePackage.rewardItems)
+                for (var i = 0; i < inGamePackage.rewardItems.Length; ++i)
                 {
+                    var rewardItem = inGamePackage.rewardItems[i];
                     var createItems = new List<PlayerItem>();
                     var updateItems = new List<PlayerItem>();
                     if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
                     {
                         result.rewardItems.Add(new PlayerItem()
                         {
+                            Id = i.ToString(),
+                            PlayerId = player.Id,
                             DataId = rewardItem.Id,
                             Amount = rewardItem.amount
                         });

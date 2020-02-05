@@ -599,6 +599,7 @@ public partial class SQLiteGameService
                 {
                     result.firstClearRewardItems.Add(new PlayerItem()
                     {
+                        PlayerId = player.Id,
                         DataId = rewardItem.Id,
                         Amount = rewardItem.amount
                     });

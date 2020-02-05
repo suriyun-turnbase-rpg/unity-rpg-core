@@ -132,6 +132,8 @@ public partial class LiteDbGameService
                         {
                             result.rewardItems.Add(new PlayerItem()
                             {
+                                Id = i.ToString(),
+                                PlayerId = player.Id,
                                 DataId = rewardItem.Id,
                                 Amount = rewardItem.amount
                             });
