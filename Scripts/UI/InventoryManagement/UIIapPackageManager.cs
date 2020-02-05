@@ -14,9 +14,9 @@ public class UIIapPackageManager : UIBase
 
         if (uiIapPackageList != null)
         {
-            var availableIAPPackagees = GameInstance.AvailableIapPackages;
-            var allIAPPackagees = GameInstance.GameDatabase.IapPackages;
-            var list = allIAPPackagees.Values.Where(a => availableIAPPackagees.Contains(a.Id) && ContainCategory(a.category)).ToList();
+            var availableIAPPackages = GameInstance.AvailableIapPackages;
+            var allIAPPackages = GameInstance.GameDatabase.IapPackages;
+            var list = allIAPPackages.Values.Where(a => availableIAPPackages.Contains(a.Id) && ContainCategory(a.category)).ToList();
             uiIapPackageList.SetListItems(list);
         }
     }

@@ -98,11 +98,6 @@ public class UILootBox : UIDataItem<LootBox>
     private void OnOpenLootBoxSuccess(ItemResult result)
     {
         GameInstance.Singleton.OnGameServiceItemResult(result);
-        var updateCurrencies = result.updateCurrencies;
-        foreach (var updateCurrency in updateCurrencies)
-        {
-            PlayerCurrency.SetData(updateCurrency);
-        }
         var items = new List<PlayerItem>();
         items.AddRange(result.createItems);
         items.AddRange(result.updateItems);
