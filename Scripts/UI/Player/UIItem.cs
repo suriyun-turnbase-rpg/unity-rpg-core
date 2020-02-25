@@ -42,6 +42,7 @@ public class UIItem : UIDataItem<PlayerItem>
     public Text textTitle;
     public Text textDescription;
     public Image imageIcon;
+    public Text textAmount;
     [Header("Elemental (For Character Only)")]
     public Text textElementalTitle;
     public Text textElementalDescription;
@@ -345,6 +346,9 @@ public class UIItem : UIDataItem<PlayerItem>
 
         if (imageIcon != null)
             imageIcon.sprite = itemData == null ? null : itemData.icon;
+
+        if (textAmount != null)
+            textAmount.text = data.Amount.ToString("N0") + "/" + data.ItemData.MaxStack.ToString("N0");
 
         if (textElementalTitle != null)
         {
