@@ -416,6 +416,11 @@ public partial class SQLiteGameService
             material.Exp = materials.GetInt32("exp");
             material.EquipItemId = materials.GetString("equipItemId");
             material.EquipPosition = materials.GetString("equipPosition");
+            try
+            {
+                material.RandomedAttributes = JsonConvert.DeserializeObject<CalculatedAttributes>(materials.GetString("randomedAttributes"));
+            }
+            catch { }
 
             if ((!conditionCanLevelUp || material.CanLevelUp) &&
                 (!conditionCanEvolve || material.CanEvolve) &&
@@ -451,7 +456,7 @@ public partial class SQLiteGameService
     private void HelperSetFormation(string playerId, string characterId, string formationName, int position)
     {
         PlayerFormation oldFormation = null;
-            if (!string.IsNullOrEmpty(characterId))
+        if (!string.IsNullOrEmpty(characterId))
         {
             var oldFormations = ExecuteReader(@"SELECT * FROM playerFormation WHERE playerId=@playerId AND dataId=@dataId AND itemId=@itemId",
                 new SqliteParameter("@playerId", playerId),
@@ -725,6 +730,11 @@ public partial class SQLiteGameService
             playerItem.Exp = playerItems.GetInt32("exp");
             playerItem.EquipItemId = playerItems.GetString("equipItemId");
             playerItem.EquipPosition = playerItems.GetString("equipPosition");
+            try
+            {
+                playerItem.RandomedAttributes = JsonConvert.DeserializeObject<CalculatedAttributes>(playerItems.GetString("randomedAttributes"));
+            }
+            catch { }
         }
         return playerItem;
     }
@@ -746,6 +756,11 @@ public partial class SQLiteGameService
             playerItem.Exp = playerItems.GetInt32("exp");
             playerItem.EquipItemId = playerItems.GetString("equipItemId");
             playerItem.EquipPosition = playerItems.GetString("equipPosition");
+            try
+            {
+                playerItem.RandomedAttributes = JsonConvert.DeserializeObject<CalculatedAttributes>(playerItems.GetString("randomedAttributes"));
+            }
+            catch { }
         }
         return playerItem;
     }

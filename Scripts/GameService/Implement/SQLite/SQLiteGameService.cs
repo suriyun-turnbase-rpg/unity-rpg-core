@@ -674,14 +674,15 @@ public partial class SQLiteGameService : BaseGameService
     protected PlayerItem QueryCreatePlayerItem(PlayerItem playerItem)
     {
         playerItem.Id = System.Guid.NewGuid().ToString();
-        ExecuteNonQuery(@"INSERT INTO playerItem (id, playerId, dataId, amount, exp, equipItemId, equipPosition) VALUES (@id, @playerId, @dataId, @amount, @exp, @equipItemId, @equipPosition)",
+        ExecuteNonQuery(@"INSERT INTO playerItem (id, playerId, dataId, amount, exp, equipItemId, equipPosition, randomedAttributes) VALUES (@id, @playerId, @dataId, @amount, @exp, @equipItemId, @equipPosition, @randomedAttributes)",
             new SqliteParameter("@id", playerItem.Id),
             new SqliteParameter("@playerId", playerItem.PlayerId),
             new SqliteParameter("@dataId", playerItem.DataId),
             new SqliteParameter("@amount", playerItem.Amount),
             new SqliteParameter("@exp", playerItem.Exp),
             new SqliteParameter("@equipItemId", playerItem.EquipItemId),
-            new SqliteParameter("@equipPosition", playerItem.EquipPosition));
+            new SqliteParameter("@equipPosition", playerItem.EquipPosition),
+            new SqliteParameter("@randomedAttributes", JsonConvert.SerializeObject(playerItem.RandomedAttributes)));
         return playerItem;
     }
 

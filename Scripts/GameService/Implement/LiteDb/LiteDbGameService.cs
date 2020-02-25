@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using LiteDB;
+using Newtonsoft.Json;
 
 public partial class LiteDbGameService : BaseGameService
 {
@@ -21,6 +22,10 @@ public partial class LiteDbGameService : BaseGameService
 
     private void Awake()
     {
+        BsonMapper.Global.RegisterType(
+            (attributes) => JsonConvert.SerializeObject(attributes),
+            (bson) => JsonConvert.DeserializeObject<CalculatedAttributes>(bson));
+
         if (Application.isMobilePlatform)
         {
             if (dbPath.StartsWith("./"))
