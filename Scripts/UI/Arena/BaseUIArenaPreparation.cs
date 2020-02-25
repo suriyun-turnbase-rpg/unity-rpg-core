@@ -18,7 +18,8 @@ public abstract class BaseUIArenaPreparation : UIBase
 
         if (uiCurrentFormation != null)
         {
-            if (!GameInstance.GameDatabase.Formations.ContainsKey(Player.CurrentPlayer.SelectedArenaFormation) ||
+            if (string.IsNullOrEmpty(Player.CurrentPlayer.SelectedArenaFormation) ||
+                !GameInstance.GameDatabase.Formations.ContainsKey(Player.CurrentPlayer.SelectedArenaFormation) ||
                 GameInstance.GameDatabase.Formations[Player.CurrentPlayer.SelectedArenaFormation].formationType != EFormationType.Arena)
             {
                 // Try set selected formation to arena formation
