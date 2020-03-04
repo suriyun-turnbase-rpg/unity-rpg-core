@@ -177,15 +177,10 @@ public abstract class BaseItem : BaseGameData
     }
 }
 
-public abstract class BaseActorItem : BaseItem
+public abstract class BaseActorItem : MaterialItem
 {
-    [Header("Fix/Override variables")]
-    public bool useFixSellPrice = false;
-    public int fixSellPrice = 0;
     public bool useFixLevelUpPrice = false;
     public int fixLevelUpPrice = 0;
-    public bool useFixRewardExp = false;
-    public int fixRewardExp = 0;
 
     [Tooltip("Max values of these attributes are max values of `GameDatabase.itemMaxLevel` level")]
     public Attributes attributes;

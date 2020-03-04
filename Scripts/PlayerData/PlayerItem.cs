@@ -99,6 +99,11 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         }
     }
 
+    public MaterialItem MaterialData
+    {
+        get { return ItemData == null ? null : ItemData as MaterialItem; }
+    }
+
     public BaseActorItem ActorItemData
     {
         get { return ItemData == null ? null : ItemData as BaseActorItem; }
@@ -106,17 +111,17 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
 
     public CharacterItem CharacterData
     {
-        get { return ActorItemData == null ? null : ActorItemData as CharacterItem; }
+        get { return ItemData == null ? null : ItemData as CharacterItem; }
     }
 
     public EquipmentItem EquipmentData
     {
-        get { return ActorItemData == null ? null : ActorItemData as EquipmentItem; }
+        get { return ItemData == null ? null : ItemData as EquipmentItem; }
     }
 
     public ItemTier Tier
     {
-        get { return ActorItemData == null ? null : ActorItemData.itemTier; }
+        get { return ItemData == null ? null : ItemData.itemTier; }
     }
 
     public int Level
@@ -139,7 +144,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
 
     public int MaxLevel
     {
-        get { return ActorItemData == null ? 1 : Tier.maxLevel; }
+        get { return ItemData == null ? 1 : Tier.maxLevel; }
     }
 
     public SpecificItemEvolve SpecificEvolveInfo
@@ -166,10 +171,10 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
     {
         get
         {
-            if (ActorItemData == null)
+            if (MaterialData == null)
                 return 0;
-            if (ActorItemData.useFixSellPrice)
-                return ActorItemData.fixSellPrice;
+            if (MaterialData.useFixSellPrice)
+                return MaterialData.fixSellPrice;
             return Tier == null ? 0 : Tier.sellPriceTable.Calculate(Level, Tier.maxLevel);
         }
     }
@@ -190,10 +195,10 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
     {
         get
         {
-            if (ActorItemData == null)
+            if (MaterialData == null)
                 return 0;
-            if (ActorItemData.useFixRewardExp)
-                return ActorItemData.fixRewardExp;
+            if (MaterialData.useFixRewardExp)
+                return MaterialData.fixRewardExp;
             return Tier == null ? 0 : Tier.rewardExpTable.Calculate(Level, Tier.maxLevel);
         }
     }
