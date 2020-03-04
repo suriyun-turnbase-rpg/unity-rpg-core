@@ -43,6 +43,7 @@ public class UIItem : UIDataItem<PlayerItem>
     public Text textDescription;
     public Image imageIcon;
     public Text textAmount;
+    public Text textSelectedAmount;
     [Header("Elemental (For Character Only)")]
     public Text textElementalTitle;
     public Text textElementalDescription;
@@ -80,7 +81,6 @@ public class UIItem : UIDataItem<PlayerItem>
     public UICurrency uiEvolvePrice;
     public UICurrency uiSellPrice;
     public Text textRewardExp;
-    public Text textSelectedAmount;
     [Header("Character")]
     public Transform characterModelContainer;
     public int characterModelLayer;
