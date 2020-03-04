@@ -616,6 +616,50 @@ public partial class GameInstance : MonoBehaviour
         }
     }
 
+    public void ShowInputDialog(string title,
+        string content,
+        UnityAction<int> onConfirmInteger,
+        int? minAmount = null,
+        int? maxAmount = null,
+        int defaultAmount = 0)
+    {
+        if (inputDialog == null)
+        {
+            Debug.LogWarning("`Input Dialog` has not been set");
+            return;
+        }
+        inputDialog.SetInputPropertiesToDefault();
+        if (!inputDialog.IsVisible())
+        {
+            inputDialog.Show(title, content, onConfirmInteger, minAmount, maxAmount, defaultAmount);
+            inputDialog.actionYes = null;
+            inputDialog.actionNo = null;
+            inputDialog.actionCancel = null;
+        }
+    }
+
+    public void ShowInputDialog(string title,
+        string content,
+        UnityAction<float> onConfirmDecimal,
+        int? minAmount = null,
+        int? maxAmount = null,
+        int defaultAmount = 0)
+    {
+        if (inputDialog == null)
+        {
+            Debug.LogWarning("`Input Dialog` has not been set");
+            return;
+        }
+        inputDialog.SetInputPropertiesToDefault();
+        if (!inputDialog.IsVisible())
+        {
+            inputDialog.Show(title, content, onConfirmDecimal, minAmount, maxAmount, defaultAmount);
+            inputDialog.actionYes = null;
+            inputDialog.actionNo = null;
+            inputDialog.actionCancel = null;
+        }
+    }
+
     public void HideInputDialog()
     {
         if (inputDialog == null)
