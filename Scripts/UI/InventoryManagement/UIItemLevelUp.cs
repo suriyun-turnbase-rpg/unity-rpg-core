@@ -16,7 +16,7 @@ public class UIItemLevelUp : UIItemWithMaterials
     // Private
     private int totalLevelUpPrice;
     private PlayerItem newItem;
-    private List<PlayerItem> materials;
+    private Dictionary<PlayerItem, int> materials;
 
     public override void Show()
     {
@@ -29,14 +29,14 @@ public class UIItemLevelUp : UIItemWithMaterials
         if (levelUpButton != null)
             levelUpButton.interactable = Item.CanLevelUp;
 
-        materials = GetSelectedItems();
+        materials = GetSelectedItemAmountPair(true);
         var levelUpPrice = Item.LevelUpPrice;
         var increasingExp = 0;
         totalLevelUpPrice = 0;
         foreach (var entry in materials)
         {
-            increasingExp += entry.Amount * entry.RewardExp;
-            totalLevelUpPrice += entry.Amount * levelUpPrice;
+            increasingExp += entry.Value * entry.Key.RewardExp;
+            totalLevelUpPrice += entry.Value * levelUpPrice;
         }
 
         newItem = Item.CreateLevelUpItem(increasingExp);
@@ -57,13 +57,15 @@ public class UIItemLevelUp : UIItemWithMaterials
         {
             if (Item.CharacterData != null)
             {
-                var list = PlayerItem.DataMap.Values.Where(a => a.CharacterData != null && !a.Id.Equals(Item.Id) && a.CanBeMaterial).ToList();
+                var filterSetting = GameInstance.GameDatabase.characterLevelUpMaterialFilter;
+                var list = PlayerItem.DataMap.Values.Where(a => !a.Id.Equals(Item.Id) && a.CanBeMaterial && UIItemListFilter.Filter(a, filterSetting)).ToList();
                 list.SortRewardExp();
                 return list;
             }
             if (Item.EquipmentData != null)
             {
-                var list = PlayerItem.DataMap.Values.Where(a => a.EquipmentData != null && !a.Id.Equals(Item.Id) && a.CanBeMaterial).ToList();
+                var filterSetting = GameInstance.GameDatabase.equipmentLevelUpMaterialFilter;
+                var list = PlayerItem.DataMap.Values.Where(a => !a.Id.Equals(Item.Id) && a.CanBeMaterial && UIItemListFilter.Filter(a, filterSetting)).ToList();
                 list.SortRewardExp();
                 return list;
             }
@@ -105,10 +107,10 @@ public class UIItemLevelUp : UIItemWithMaterials
     private void OnLevelUpSuccess(ItemResult result)
     {
         if (animCharacterLevelUp != null && Item.CharacterData != null)
-            animCharacterLevelUp.Play(Item, newItem, materials);
+            animCharacterLevelUp.Play(Item, newItem, materials.Keys.ToList());
 
         if (animEquipmentLevelUp != null && Item.EquipmentData != null)
-            animEquipmentLevelUp.Play(Item, newItem, materials);
+            animEquipmentLevelUp.Play(Item, newItem, materials.Keys.ToList());
 
         GameInstance.Singleton.OnGameServiceItemResult(result);
         eventLevelUpSuccess.Invoke();
@@ -142,5 +144,10 @@ public class UIItemLevelUp : UIItemWithMaterials
     {
         GameInstance.Singleton.OnGameServiceError(error);
         eventLevelUpFail.Invoke();
+    }
+
+    protected override void OnUpdateItemAmount(PlayerItem item, int amount)
+    {
+        SetupLevelUp();
     }
 }

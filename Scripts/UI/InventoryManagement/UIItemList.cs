@@ -7,6 +7,7 @@ public class UIItemList : UIDataItemList<UIItem, PlayerItem>
 {
     // Private
     private readonly Dictionary<string, int> selectedItemIdAmountPair = new Dictionary<string, int>();
+    private readonly Dictionary<PlayerItem, int> selectedItemAmountPair = new Dictionary<PlayerItem, int>();
 
     public void SetListItems(List<PlayerItem> list, UnityAction<UIItem> onSetListItem = null)
     {
@@ -32,12 +33,14 @@ public class UIItemList : UIDataItemList<UIItem, PlayerItem>
     {
         base.MakeSelectedList(id, uiEntry);
         selectedItemIdAmountPair.Add(id, uiEntry.SelectedAmount);
+        selectedItemAmountPair.Add(uiEntry.data, uiEntry.SelectedAmount);
     }
 
     protected override void ClearSelectedLists()
     {
         base.ClearSelectedLists();
         selectedItemIdAmountPair.Clear();
+        selectedItemAmountPair.Clear();
     }
 
     public List<UIItem> GetSelectedUIList(string dataId)
@@ -61,15 +64,21 @@ public class UIItemList : UIDataItemList<UIItem, PlayerItem>
         return list;
     }
 
-    public Dictionary<string, int> GetSelectedItemIdAmountPair()
+    public Dictionary<string, int> GetSelectedItemIdAmountPair(bool forceRebuild = false)
     {
-        MakeSelectedLists();
+        MakeSelectedLists(forceRebuild);
         return selectedItemIdAmountPair;
     }
 
-    public bool ContainsItemWithDataId(string dataId)
+    public Dictionary<PlayerItem, int> GetSelectedItemAmountPair(bool forceRebuild = false)
     {
-        MakeSelectedLists();
+        MakeSelectedLists(forceRebuild);
+        return selectedItemAmountPair;
+    }
+
+    public bool ContainsItemWithDataId(string dataId, bool forceRebuild = false)
+    {
+        MakeSelectedLists(forceRebuild);
         var list = GetSelectedDataList();
         foreach (var entry in list)
         {

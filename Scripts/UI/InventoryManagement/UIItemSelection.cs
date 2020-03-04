@@ -45,9 +45,19 @@ public abstract class UIItemSelection : UIBase
 
     protected virtual void SelectItem(UIDataItem ui)
     {
-        if (uiSelectedItemList == null)
-            return;
-        uiSelectedItemList.SetListItem((ui as UIItem).data);
+        var uiItem = ui as UIItem;
+        if (uiItem.data.Amount > 1)
+        {
+            GameInstance.Singleton.ShowInputDialog(string.Empty, string.Empty, (amount) =>
+            {
+                uiItem.SelectedAmount = amount;
+                if (uiSelectedItemList != null)
+                    uiSelectedItemList.GetListItem(uiItem.data.Id).SelectedAmount = amount;
+                OnUpdateItemAmount(uiItem.data, amount);
+            }, 1, uiItem.data.ItemData.MaxStack, uiItem.data.Amount);
+        }
+        if (uiSelectedItemList != null)
+            uiSelectedItemList.SetListItem((ui as UIItem).data);
     }
 
     protected virtual void DeselectItem(UIDataItem ui)
@@ -99,17 +109,29 @@ public abstract class UIItemSelection : UIBase
         return uiAvailableItemList.GetSelectedDataList(dataId);
     }
 
-    public List<string> GetSelectedItemIds()
+    public List<string> GetSelectedItemIds(bool forceRebuild = false)
     {
         if (uiAvailableItemList == null)
             return new List<string>();
-        return uiAvailableItemList.GetSelectedIdList();
+        return uiAvailableItemList.GetSelectedIdList(forceRebuild);
     }
 
-    public Dictionary<string, int> GetSelectedItemIdAmountPair()
+    public Dictionary<string, int> GetSelectedItemIdAmountPair(bool forceRebuild = false)
     {
         if (uiAvailableItemList == null)
             return new Dictionary<string, int>();
-        return uiAvailableItemList.GetSelectedItemIdAmountPair();
+        return uiAvailableItemList.GetSelectedItemIdAmountPair(forceRebuild);
+    }
+
+    public Dictionary<PlayerItem, int> GetSelectedItemAmountPair(bool forceRebuild = false)
+    {
+        if (uiAvailableItemList == null)
+            return new Dictionary<PlayerItem, int>();
+        return uiAvailableItemList.GetSelectedItemAmountPair(forceRebuild);
+    }
+
+    protected virtual void OnUpdateItemAmount(PlayerItem item, int amount)
+    {
+
     }
 }

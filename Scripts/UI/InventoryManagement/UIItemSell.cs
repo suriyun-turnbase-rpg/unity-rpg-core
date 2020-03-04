@@ -69,11 +69,11 @@ public class UIItemSell : UIItemSelection
 
     public void Calculate()
     {
-        var selectedItem = GetSelectedItems();
+        var selectedItem = GetSelectedItemAmountPair();
         totalSellPrice = 0;
         foreach (var entry in selectedItem)
         {
-            totalSellPrice += entry.Amount * entry.SellPrice;
+            totalSellPrice += entry.Value * entry.Key.SellPrice;
         }
 
         if (uiCurrency != null)
@@ -137,5 +137,10 @@ public class UIItemSell : UIItemSelection
     {
         GameInstance.Singleton.OnGameServiceError(error);
         eventSellFail.Invoke();
+    }
+
+    protected override void OnUpdateItemAmount(PlayerItem item, int amount)
+    {
+        Calculate();
     }
 }
