@@ -27,6 +27,16 @@ public class GameDatabase : ScriptableObject
         new Formation() { id = "ARENA_FORMATION_C", formationType = EFormationType.Arena },
     };
 
+    [Header("Item Levelup Mechanic")]
+    public UIItemListFilterSetting characterLevelUpMaterialFilter = new UIItemListFilterSetting()
+    {
+        showCharacter = true
+    };
+    public UIItemListFilterSetting equipmentLevelUpMaterialFilter = new UIItemListFilterSetting()
+    {
+        showEquipment = true
+    };
+
     [Header("Item database")]
     [Tooltip("List of game items, place all items here (includes character, equipment)")]
     public List<BaseItem> items;
