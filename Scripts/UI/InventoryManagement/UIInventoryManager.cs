@@ -64,7 +64,10 @@ public class UIInventoryManager : UIBase
     protected virtual void SelectItem(UIDataItem ui)
     {
         if (uiSelectedInfo != null)
+        {
             uiSelectedInfo.SetData((ui as UIItem).data);
+            uiSelectedInfo.Show();
+        }
     }
 
     protected virtual void DeselectItem(UIDataItem ui)
