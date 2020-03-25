@@ -14,6 +14,7 @@ public class UIPlayer : UIDataItem<Player>
     public Button buttonFriendAccept;
     public Button buttonFriendDecline;
     public Button buttonFriendDelete;
+    public Button buttonRequestDelete;
     public Text textArenaScore;
     public UIArenaRank uiArenaRank;
     // Events
@@ -25,6 +26,8 @@ public class UIPlayer : UIDataItem<Player>
     public UnityEvent eventFriendDeclineFail;
     public UnityEvent eventFriendDeleteSuccess;
     public UnityEvent eventFriendDeleteFail;
+    public UnityEvent eventFriendRequestDeleteSuccess;
+    public UnityEvent eventFriendRequestDeleteFail;
 
     public override void UpdateData()
     {
@@ -52,6 +55,12 @@ public class UIPlayer : UIDataItem<Player>
             buttonFriendDelete.onClick.RemoveListener(OnClickFriendDelete);
             buttonFriendDelete.onClick.AddListener(OnClickFriendDelete);
             buttonFriendDelete.gameObject.SetActive(!IsEmpty());
+        }
+        if (buttonRequestDelete != null)
+        {
+            buttonRequestDelete.onClick.RemoveListener(OnClickRequestDelete);
+            buttonRequestDelete.onClick.AddListener(OnClickRequestDelete);
+            buttonRequestDelete.gameObject.SetActive(!IsEmpty());
         }
     }
 
@@ -181,5 +190,25 @@ public class UIPlayer : UIDataItem<Player>
         GameInstance.Singleton.OnGameServiceError(error);
         if (eventFriendDeleteFail != null)
             eventFriendDeleteFail.Invoke();
+    }
+
+    public void OnClickRequestDelete()
+    {
+        GameInstance.GameService.FriendRequestDelete(data.Id, OnRequestDeleteSuccess, OnRequestDeleteFail);
+    }
+
+    private void OnRequestDeleteSuccess(GameServiceResult result)
+    {
+        if (uiPlayerList != null)
+            uiPlayerList.RemoveListItem(data.Id);
+        if (eventFriendRequestDeleteSuccess != null)
+            eventFriendRequestDeleteSuccess.Invoke();
+    }
+
+    private void OnRequestDeleteFail(string error)
+    {
+        GameInstance.Singleton.OnGameServiceError(error);
+        if (eventFriendRequestDeleteFail != null)
+            eventFriendRequestDeleteFail.Invoke();
     }
 }
