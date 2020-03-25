@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class BaseGameService : MonoBehaviour
+public abstract partial class BaseGameService : MonoBehaviour
 {
     public const string AUTH_NORMAL = "NORMAL";
     public const string AUTH_GUEST = "GUEST";
