@@ -258,8 +258,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         if (target == null)
             return;
         target.ReceiveDamage(
-            Item.CharacterData.elemental,
-            GetTotalAttributes(),
+            this,
             pAtkRate,
             mAtkRate,
             hitCount,
@@ -281,14 +280,15 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     }
 
     public virtual bool ReceiveDamage(
-        Elemental attackerElemental,
-        CalculatedAttributes attackerAttributes,
+        BaseCharacterEntity attacker,
         float pAtkRate = 1f,
         float mAtkRate = 1f,
         int hitCount = 1,
-        int fixDamage = 0
-        )
+        int fixDamage = 0)
     {
+        var stealHp = 0f;
+        var attackerElemental = Item.CharacterData.elemental;
+        var attackerAttributes = GetTotalAttributes();
         var defenderElemental = Item.CharacterData.elemental;
         var defenderAttributes = GetTotalAttributes();
         var totalDmg = GameInstance.GameplayRule.GetDamage(
@@ -296,6 +296,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             defenderElemental,
             attackerAttributes,
             defenderAttributes,
+            out stealHp,
             pAtkRate,
             mAtkRate,
             hitCount,
@@ -315,7 +316,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             totalDmg = GameInstance.GameplayRule.GetBlockDamage(attackerAttributes, defenderAttributes, totalDmg);
             isBlock = true;
         }
-        
+
         // Cannot evade, receive damage
         if (!GameInstance.GameplayRule.IsHit(attackerAttributes, defenderAttributes))
         {
@@ -331,6 +332,12 @@ public abstract class BaseCharacterEntity : MonoBehaviour
                 Manager.SpawnDamageText((int)totalDmg, this);
 
             Hp -= (int)totalDmg;
+
+            if (stealHp > 0f)
+            {
+                Manager.SpawnHealText((int)stealHp, this);
+                attacker.Hp += stealHp;
+            }
         }
 
         return true;

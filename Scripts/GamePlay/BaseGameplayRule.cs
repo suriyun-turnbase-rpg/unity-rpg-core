@@ -9,20 +9,24 @@ public class BaseGameplayRule : ScriptableObject
         Elemental defenderElemental,
         CalculatedAttributes attackerAttributes,
         CalculatedAttributes defenderAttributes,
+        out float stealHp,
         float pAtkRate = 1f,
         float mAtkRate = 1f,
         int hitCount = 1,
         int fixDamage = 0)
     {
+        stealHp = 0;
+
         if (hitCount <= 0)
             hitCount = 1;
 
-        var gameDb = GameInstance.GameDatabase;
         var calcPAtk = attackerAttributes.pAtk * pAtkRate;
         var pDmg = calcPAtk - defenderAttributes.pDef;
+        stealHp += pDmg * attackerAttributes.bloodStealRateByPAtk;
 #if !NO_MAGIC_STATS
         var calcMAtk = attackerAttributes.mAtk * mAtkRate;
         var mDmg = calcMAtk - defenderAttributes.mDef;
+        stealHp += mDmg * attackerAttributes.bloodStealRateByMAtk;
 #endif
         if (pDmg < 0)
             pDmg = 0;
@@ -38,7 +42,7 @@ public class BaseGameplayRule : ScriptableObject
         var effectiveness = 1f;
         if (attackerElemental != null && attackerElemental.CacheElementEffectiveness.TryGetValue(defenderElemental, out effectiveness))
             totalDmg *= effectiveness;
-        totalDmg += Mathf.CeilToInt(totalDmg * Random.Range(gameDb.minAtkVaryRate, gameDb.maxAtkVaryRate)) + fixDamage;
+        totalDmg += Mathf.CeilToInt(totalDmg * Random.Range(GameInstance.GameDatabase.minAtkVaryRate, GameInstance.GameDatabase.maxAtkVaryRate)) + fixDamage;
         return totalDmg;
     }
 
