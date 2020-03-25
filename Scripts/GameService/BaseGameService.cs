@@ -571,6 +571,16 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetFriendRequestList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void GetPendingRequestList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetPendingRequestList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetPendingRequestList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     public void FindUser(string displayName, UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: FindUser");
@@ -722,6 +732,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoGetHelperList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoGetFriendList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
+    protected abstract void DoGetPendingRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoFindUser(string playerId, string loginToken, string displayName, UnityAction<FriendListResult> onFinish);
     protected abstract void DoFriendRequest(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
