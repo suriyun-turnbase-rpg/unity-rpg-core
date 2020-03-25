@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 [System.Serializable]
-public class Player : BasePlayerData, ILevel, IPlayer
+public partial class Player : BasePlayerData, ILevel, IPlayer
 {
     public static string CurrentPlayerId { get; private set; }
     public static readonly Dictionary<string, Player> DataMap = new Dictionary<string, Player>();
