@@ -66,4 +66,10 @@ public partial class LiteDbGameService
         var result = new PlayerResult();
         onFinish(result);
     }
+
+    protected override void DoFriendRequestDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new PlayerResult();
+        onFinish(result);
+    }
 }

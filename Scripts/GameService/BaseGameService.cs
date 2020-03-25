@@ -593,7 +593,7 @@ public abstract partial class BaseGameService : MonoBehaviour
 
     public void FriendRequest(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
     {
-        Debug.Log("Call Service: SendFriendRequest");
+        Debug.Log("Call Service: FriendRequest");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -603,7 +603,7 @@ public abstract partial class BaseGameService : MonoBehaviour
 
     public void FriendAccept(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
     {
-        Debug.Log("Call Service: SendFriendAccept");
+        Debug.Log("Call Service: FriendAccept");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -613,7 +613,7 @@ public abstract partial class BaseGameService : MonoBehaviour
 
     public void FriendDecline(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
     {
-        Debug.Log("Call Service: SendFriendDecline");
+        Debug.Log("Call Service: FriendDecline");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
@@ -623,12 +623,22 @@ public abstract partial class BaseGameService : MonoBehaviour
 
     public void FriendDelete(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
     {
-        Debug.Log("Call Service: SendFriendDelete");
+        Debug.Log("Call Service: FriendDelete");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
         HandleServiceCall();
         DoFriendDelete(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void FriendRequestDelete(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: FriendRequestDelete");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoFriendRequestDelete(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     public void GetServiceTime()
@@ -738,6 +748,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoFriendAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoFriendRequestDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoGetServiceTime(UnityAction<ServiceTimeResult> onFinish);
     protected abstract void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
     protected abstract void DoStartDuel(string playerId, string loginToken, string targetPlayerId, UnityAction<StartDuelResult> onFinish);
