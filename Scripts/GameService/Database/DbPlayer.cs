@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 [System.Serializable]
-public class DbPlayer : IPlayer
+public partial class DbPlayer : IPlayer
 {
     public string id;
     [LiteDB.BsonId]
