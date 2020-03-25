@@ -1,4 +1,4 @@
-﻿public interface IPlayer
+﻿public partial interface IPlayer
 {
     string Id { get; set; }
     string ProfileName { get; set; }
