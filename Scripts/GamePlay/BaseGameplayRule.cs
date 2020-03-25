@@ -18,9 +18,11 @@ public class BaseGameplayRule : ScriptableObject
             hitCount = 1;
 
         var gameDb = GameInstance.GameDatabase;
-        var pDmg = attackerAttributes.pAtk - defenderAttributes.pDef;
+        var calcPAtk = attackerAttributes.pAtk * pAtkRate;
+        var pDmg = calcPAtk - defenderAttributes.pDef;
 #if !NO_MAGIC_STATS
-        var mDmg = attackerAttributes.mAtk - defenderAttributes.mDef;
+        var calcMAtk = attackerAttributes.mAtk * mAtkRate;
+        var mDmg = calcMAtk - defenderAttributes.mDef;
 #endif
         if (pDmg < 0)
             pDmg = 0;
