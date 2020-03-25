@@ -51,6 +51,8 @@ public class GameText
     public const string TITLE_ATTRIBUTE_BLOCK_CHANCE = TEXT_PREFIX + "TITLE_ATTRIBUTE_BLOCK_CHANCE";
     public const string TITLE_ATTRIBUTE_BLOCK_DAMAGE_RATE = TEXT_PREFIX + "TITLE_ATTRIBUTE_BLOCK_DAMAGE_RATE";
     public const string TITLE_ATTRIBUTE_RESISTANCE_CHANCE = TEXT_PREFIX + "TITLE_ATTRIBUTE_RESISTANCE";
+    public const string TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_PATK = TEXT_PREFIX + "TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_PATK";
+    public const string TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_MATK = TEXT_PREFIX + "TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_MATK";
     // Formats
     public const string FORMAT_INFO = FORMAT_PREFIX + "FORMAT_INFO";
     public const string FORMAT_ATTRIBUTE = FORMAT_PREFIX + "FORMAT_ATTRIBUTE";
@@ -105,6 +107,8 @@ public static class DefaultLocale
         Texts.Add(GameText.TITLE_ATTRIBUTE_BLOCK_CHANCE, "Block Chance");
         Texts.Add(GameText.TITLE_ATTRIBUTE_BLOCK_DAMAGE_RATE, "Block Damage Rate");
         Texts.Add(GameText.TITLE_ATTRIBUTE_RESISTANCE_CHANCE, "Resistance");
+        Texts.Add(GameText.TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_PATK, "Blood Steal Rate by P.Atk");
+        Texts.Add(GameText.TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_MATK, "Blood Steal Rate by M.Atk");
         // Format
         Texts.Add(GameText.FORMAT_INFO, "{0}{1}");
         Texts.Add(GameText.FORMAT_ATTRIBUTE, "{0}: {1}{2}");
