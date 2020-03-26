@@ -11,10 +11,16 @@ public class UIClan : UIDataItem<Clan>
     public UIClanList uiClanList;
     public Button buttonJoinRequest;
     public Button buttonJoinRequestDelete;
+    public Button buttonTerminate;
+    public Button buttonExit;
     public UnityEvent eventJoinRequestSuccess;
     public UnityEvent eventJoinRequestFail;
     public UnityEvent eventJoinRequestDeleteSuccess;
     public UnityEvent eventJoinRequestDeleteFail;
+    public UnityEvent eventTerminateSuccess;
+    public UnityEvent eventTerminateFail;
+    public UnityEvent eventExitSuccess;
+    public UnityEvent eventExitFail;
 
     public override void Clear()
     {
@@ -40,6 +46,18 @@ public class UIClan : UIDataItem<Clan>
             buttonJoinRequestDelete.onClick.RemoveListener(OnClickJoinRequestDelete);
             buttonJoinRequestDelete.onClick.AddListener(OnClickJoinRequestDelete);
             buttonJoinRequestDelete.gameObject.SetActive(!IsEmpty());
+        }
+        if (buttonTerminate != null)
+        {
+            buttonTerminate.onClick.RemoveListener(OnClickTerminate);
+            buttonTerminate.onClick.AddListener(OnClickTerminate);
+            buttonTerminate.gameObject.SetActive(!IsEmpty());
+        }
+        if (buttonExit != null)
+        {
+            buttonExit.onClick.RemoveListener(OnClickExit);
+            buttonExit.onClick.AddListener(OnClickExit);
+            buttonExit.gameObject.SetActive(!IsEmpty());
         }
     }
 
@@ -71,6 +89,7 @@ public class UIClan : UIDataItem<Clan>
         if (eventJoinRequestFail != null)
             eventJoinRequestFail.Invoke();
     }
+
     public void OnClickJoinRequestDelete()
     {
         GameInstance.GameService.ClanJoinRequestDelete(data.Id, OnJoinRequestDeleteSuccess, OnJoinRequestDeleteFail);
@@ -89,5 +108,41 @@ public class UIClan : UIDataItem<Clan>
         GameInstance.Singleton.OnGameServiceError(error);
         if (eventJoinRequestDeleteFail != null)
             eventJoinRequestDeleteFail.Invoke();
+    }
+
+    public void OnClickTerminate()
+    {
+        GameInstance.GameService.ClanTerminate(OnTerminateSuccess, OnTerminateFail);
+    }
+
+    private void OnTerminateSuccess(GameServiceResult result)
+    {
+        if (eventTerminateSuccess != null)
+            eventTerminateSuccess.Invoke();
+    }
+
+    private void OnTerminateFail(string error)
+    {
+        GameInstance.Singleton.OnGameServiceError(error);
+        if (eventTerminateFail != null)
+            eventTerminateFail.Invoke();
+    }
+
+    public void OnClickExit()
+    {
+        GameInstance.GameService.ClanExit(OnExitSuccess, OnExitFail);
+    }
+
+    private void OnExitSuccess(GameServiceResult result)
+    {
+        if (eventExitSuccess != null)
+            eventExitSuccess.Invoke();
+    }
+
+    private void OnExitFail(string error)
+    {
+        GameInstance.Singleton.OnGameServiceError(error);
+        if (eventExitFail != null)
+            eventExitFail.Invoke();
     }
 }
