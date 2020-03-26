@@ -220,7 +220,7 @@ public class ClanResult : GameServiceResult
 [System.Serializable]
 public class ClanListResult : GameServiceResult
 {
-    public List<Clan> clan = new List<Clan>();
+    public List<Clan> list = new List<Clan>();
 }
 
 [System.Serializable]
