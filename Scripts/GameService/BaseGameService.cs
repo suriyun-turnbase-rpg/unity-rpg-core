@@ -819,6 +819,36 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetClan(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void GetClanJoinRequestList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetClanJoinRequestList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetClanJoinRequestList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void GetClanJoinPendingRequestList(UnityAction<ClanListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetClanJoinPendingRequestList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetClanJoinPendingRequestList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void ClanExit(UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ClanExit");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoClanExit(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -877,4 +907,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoClanOwnerTransfer(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoClanTerminate(string playerId, string loginToken, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoGetClan(string playerId, string loginToken, UnityAction<ClanResult> onFinish);
+    protected abstract void DoGetClanJoinRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
+    protected abstract void DoGetClanJoinPendingRequestList(string playerId, string loginToken, UnityAction<ClanListResult> onFinish);
+    protected abstract void DoClanExit(string playerId, string loginToken, UnityAction<GameServiceResult> onFinish);
 }
