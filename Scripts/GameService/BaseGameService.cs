@@ -709,6 +709,116 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoOpenInGamePackage(playerId, loginToken, inGamePackageDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void CreateClan(string clanName, UnityAction<CreateClanResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: CreateClan");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoCreateClan(playerId, loginToken, clanName, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void FindClan(string clanName, UnityAction<ClanListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: FindClan");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoFindClan(playerId, loginToken, clanName, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void ClanJoinRequest(string clanId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ClanJoinRequest");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoClanJoinRequest(playerId, loginToken, clanId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void ClanJoinAccept(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ClanJoinAccept");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoClanJoinAccept(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void ClanJoinDecline(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ClanJoinDecline");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoClanJoinDecline(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void ClanMemberDelete(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ClanMemberDelete");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoClanMemberDelete(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void ClanJoinRequestDelete(string clanId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ClanJoinRequestDelete");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoClanJoinRequestDelete(playerId, loginToken, clanId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void GetClanMemberList(UnityAction<FriendListResult> onFinish)
+    {
+        Debug.Log("Call Service: GetClanMemberList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetClanMemberList(playerId, loginToken, onFinish);
+    }
+
+    public void ClanOwnerTransfer(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ClanOwnerTransfer");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoClanOwnerTransfer(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void ClanTerminate(UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ClanTerminate");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoClanTerminate(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void GetClan(UnityAction<ClanResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetClan");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetClan(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -756,4 +866,15 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoEarnAchievementReward(string playerId, string loginToken, string achievementId, UnityAction<EarnAchievementResult> onFinish);
     protected abstract void DoConvertHardCurrency(string playerId, string loginToken, int requireHardCurrency, UnityAction<HardCurrencyConversionResult> onFinish);
     protected abstract void DoOpenInGamePackage(string playerId, string loginToken, string inGamePackageDataId, UnityAction<ItemResult> onFinish);
+    protected abstract void DoCreateClan(string playerId, string loginToken, string clanName, UnityAction<CreateClanResult> onFinish);
+    protected abstract void DoFindClan(string playerId, string loginToken, string clanName, UnityAction<ClanListResult> onFinish);
+    protected abstract void DoClanJoinRequest(string playerId, string loginToken, string clanId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoClanJoinAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoClanJoinDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoClanMemberDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoClanJoinRequestDelete(string playerId, string loginToken, string clanId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoGetClanMemberList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
+    protected abstract void DoClanOwnerTransfer(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoClanTerminate(string playerId, string loginToken, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoGetClan(string playerId, string loginToken, UnityAction<ClanResult> onFinish);
 }

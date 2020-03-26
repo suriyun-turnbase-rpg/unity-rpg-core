@@ -210,3 +210,22 @@ public class HardCurrencyConversionResult : GameServiceResult
     public int receiveSoftCurrency;
     public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
 }
+
+[System.Serializable]
+public class ClanResult : GameServiceResult
+{
+    public Clan clan;
+}
+
+[System.Serializable]
+public class ClanListResult : GameServiceResult
+{
+    public List<Clan> clan = new List<Clan>();
+}
+
+[System.Serializable]
+public class CreateClanResult : GameServiceResult
+{
+    public Clan clan;
+    public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
+}
