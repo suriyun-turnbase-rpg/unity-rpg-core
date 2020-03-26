@@ -11,4 +11,5 @@
     int ArenaScore { get; set; }
     int HighestArenaRank { get; set; }
     int HighestArenaRankCurrentSeason { get; set; }
+    string ClanId { get; set; }
 }

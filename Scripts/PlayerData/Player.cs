@@ -46,6 +46,8 @@ public partial class Player : BasePlayerData, ILevel, IPlayer
     public int HighestArenaRank { get { return highestArenaRank; } set { highestArenaRank = value; } }
     public int highestArenaRankCurrentSeason;
     public int HighestArenaRankCurrentSeason { get { return highestArenaRankCurrentSeason; } set { highestArenaRankCurrentSeason = value; } }
+    public string clanId;
+    public string ClanId { get { return clanId; } set { clanId = value; } }
     public bool isFriend;
 
     private int level = -1;
@@ -78,6 +80,7 @@ public partial class Player : BasePlayerData, ILevel, IPlayer
         to.ArenaScore = from.ArenaScore;
         to.HighestArenaRank = from.HighestArenaRank;
         to.HighestArenaRankCurrentSeason = from.HighestArenaRankCurrentSeason;
+        to.ClanId = from.ClanId;
         return to;
     }
 
