@@ -5,10 +5,10 @@ using UnityEngine.Events;
 
 public partial class LiteDbGameService
 {
-    protected override void DoGetHelperList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoGetHelperList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
         // Random players from fake players list
-        var result = new FriendListResult();
+        var result = new PlayerListResult();
         var gameDb = GameInstance.GameDatabase;
         foreach (var fakePlayer in gameDb.fakePlayers)
         {
@@ -19,27 +19,27 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoGetFriendList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoGetFriendList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
-        var result = new FriendListResult();
+        var result = new PlayerListResult();
         onFinish(result);
     }
 
-    protected override void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
-        var result = new FriendListResult();
+        var result = new PlayerListResult();
         onFinish(result);
     }
 
-    protected override void DoGetPendingRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoGetPendingRequestList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
-        var result = new FriendListResult();
+        var result = new PlayerListResult();
         onFinish(result);
     }
 
-    protected override void DoFindUser(string playerId, string loginToken, string displayName, UnityAction<FriendListResult> onFinish)
+    protected override void DoFindUser(string playerId, string loginToken, string displayName, UnityAction<PlayerListResult> onFinish)
     {
-        var result = new FriendListResult();
+        var result = new PlayerListResult();
         onFinish(result);
     }
 

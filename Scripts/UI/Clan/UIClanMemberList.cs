@@ -18,7 +18,7 @@ public class UIClanMemberList : UIPlayerList
         GameInstance.GameService.GetClanMemberList(OnRefreshListSuccess, OnRefreshListFail);
     }
 
-    private void OnRefreshListSuccess(FriendListResult result)
+    private void OnRefreshListSuccess(PlayerListResult result)
     {
         itemPrefab = manager.IsOwner ? ownerPrefab : nonOwnerPrefab;
         SetListItems(result.list);

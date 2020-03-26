@@ -13,7 +13,7 @@ public class UIPendingRequestList : UIPlayerList
         GameInstance.GameService.GetPendingRequestList(OnRefreshListSuccess, OnRefreshListFail);
     }
 
-    private void OnRefreshListSuccess(FriendListResult result)
+    private void OnRefreshListSuccess(PlayerListResult result)
     {
         SetListItems(result.list);
     }

@@ -13,7 +13,7 @@ public class UIHelperList : UIPlayerList
         GameInstance.GameService.GetHelperList(OnRefreshListSuccess, OnRefreshListFail);
     }
 
-    private void OnRefreshListSuccess(FriendListResult result)
+    private void OnRefreshListSuccess(PlayerListResult result)
     {
         SetListItems(result.list);
     }

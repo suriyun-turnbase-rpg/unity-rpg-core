@@ -13,7 +13,7 @@ public class UIFriendList : UIPlayerList
         GameInstance.GameService.GetFriendList(OnRefreshListSuccess, OnRefreshListFail);
     }
 
-    private void OnRefreshListSuccess(FriendListResult result)
+    private void OnRefreshListSuccess(PlayerListResult result)
     {
         SetListItems(result.list);
     }

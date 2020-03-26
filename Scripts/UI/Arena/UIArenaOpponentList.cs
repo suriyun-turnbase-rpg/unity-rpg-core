@@ -14,7 +14,7 @@ public class UIArenaOpponentList : UIPlayerList
         GameInstance.GameService.GetArenaOpponentList(OnRefreshListSuccess, OnRefreshListFail);
     }
 
-    private void OnRefreshListSuccess(FriendListResult result)
+    private void OnRefreshListSuccess(PlayerListResult result)
     {
         SetListItems(result.list);
     }

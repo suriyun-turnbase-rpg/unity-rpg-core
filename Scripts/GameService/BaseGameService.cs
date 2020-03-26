@@ -541,7 +541,7 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetAvailableInGamePackageList((finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void GetHelperList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    public void GetHelperList(UnityAction<PlayerListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetRandomPlayerList");
         var player = Player.CurrentPlayer;
@@ -551,7 +551,7 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetHelperList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void GetFriendList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    public void GetFriendList(UnityAction<PlayerListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetFriendList");
         var player = Player.CurrentPlayer;
@@ -561,7 +561,7 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetFriendList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void GetFriendRequestList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    public void GetFriendRequestList(UnityAction<PlayerListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetFriendRequestList");
         var player = Player.CurrentPlayer;
@@ -571,7 +571,7 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetFriendRequestList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void GetPendingRequestList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    public void GetPendingRequestList(UnityAction<PlayerListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetPendingRequestList");
         var player = Player.CurrentPlayer;
@@ -581,7 +581,7 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetPendingRequestList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void FindUser(string displayName, UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    public void FindUser(string displayName, UnityAction<PlayerListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: FindUser");
         var player = Player.CurrentPlayer;
@@ -649,7 +649,7 @@ public abstract partial class BaseGameService : MonoBehaviour
         });
     }
 
-    public void GetArenaOpponentList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    public void GetArenaOpponentList(UnityAction<PlayerListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: FindUser");
         var player = Player.CurrentPlayer;
@@ -779,7 +779,7 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoClanJoinRequestDelete(playerId, loginToken, clanId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void GetClanMemberList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    public void GetClanMemberList(UnityAction<PlayerListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetClanMemberList");
         var player = Player.CurrentPlayer;
@@ -819,7 +819,7 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetClan(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void GetClanJoinRequestList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
+    public void GetClanJoinRequestList(UnityAction<PlayerListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetClanJoinRequestList");
         var player = Player.CurrentPlayer;
@@ -879,18 +879,18 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoOpenLootBox(string playerId, string loginToken, string lootBoxDataId, int packIndex, UnityAction<ItemResult> onFinish);
     protected abstract void DoOpenIapPackage_iOS(string playerId, string loginToken, string iapPackageDataId, string receipt, UnityAction<ItemResult> onFinish);
     protected abstract void DoOpenIapPackage_Android(string playerId, string loginToken, string iapPackageDataId, string data, string signature, UnityAction<ItemResult> onFinish);
-    protected abstract void DoGetHelperList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
-    protected abstract void DoGetFriendList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
-    protected abstract void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
-    protected abstract void DoGetPendingRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
-    protected abstract void DoFindUser(string playerId, string loginToken, string displayName, UnityAction<FriendListResult> onFinish);
+    protected abstract void DoGetHelperList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);
+    protected abstract void DoGetFriendList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);
+    protected abstract void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);
+    protected abstract void DoGetPendingRequestList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);
+    protected abstract void DoFindUser(string playerId, string loginToken, string displayName, UnityAction<PlayerListResult> onFinish);
     protected abstract void DoFriendRequest(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendRequestDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoGetServiceTime(UnityAction<ServiceTimeResult> onFinish);
-    protected abstract void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
+    protected abstract void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);
     protected abstract void DoStartDuel(string playerId, string loginToken, string targetPlayerId, UnityAction<StartDuelResult> onFinish);
     protected abstract void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish);
     protected abstract void DoEarnAchievementReward(string playerId, string loginToken, string achievementId, UnityAction<EarnAchievementResult> onFinish);
@@ -903,11 +903,11 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoClanJoinDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoClanMemberDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoClanJoinRequestDelete(string playerId, string loginToken, string clanId, UnityAction<GameServiceResult> onFinish);
-    protected abstract void DoGetClanMemberList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
+    protected abstract void DoGetClanMemberList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);
     protected abstract void DoClanOwnerTransfer(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoClanTerminate(string playerId, string loginToken, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoGetClan(string playerId, string loginToken, UnityAction<ClanResult> onFinish);
-    protected abstract void DoGetClanJoinRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish);
+    protected abstract void DoGetClanJoinRequestList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);
     protected abstract void DoGetClanJoinPendingRequestList(string playerId, string loginToken, UnityAction<ClanListResult> onFinish);
     protected abstract void DoClanExit(string playerId, string loginToken, UnityAction<GameServiceResult> onFinish);
 }

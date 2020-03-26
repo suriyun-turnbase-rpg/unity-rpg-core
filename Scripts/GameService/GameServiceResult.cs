@@ -163,7 +163,7 @@ public class AvailableInGamePackageListResult : GameServiceResult
 }
 
 [System.Serializable]
-public class FriendListResult : GameServiceResult
+public class PlayerListResult : GameServiceResult
 {
     public List<Player> list = new List<Player>();
 }

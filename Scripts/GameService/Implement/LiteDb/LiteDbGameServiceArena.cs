@@ -6,9 +6,9 @@ using UnityEngine.Events;
 
 public partial class LiteDbGameService
 {
-    protected override void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
-        var result = new FriendListResult();
+        var result = new PlayerListResult();
         var gameDb = GameInstance.GameDatabase;
         foreach (var fakePlayer in gameDb.fakePlayers)
         {

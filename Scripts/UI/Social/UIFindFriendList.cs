@@ -17,7 +17,7 @@ public class UIFindFriendList : UIPlayerList
         GameInstance.GameService.FindUser(inputDisplayName.text, OnFindUserSuccess, OnFindUserFail);
     }
 
-    private void OnFindUserSuccess(FriendListResult result)
+    private void OnFindUserSuccess(PlayerListResult result)
     {
         SetListItems(result.list);
     }
