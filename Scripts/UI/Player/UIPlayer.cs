@@ -23,7 +23,6 @@ public class UIPlayer : UIDataItem<Player>
     public Button buttonClanJoinDecline;
     public Button buttonClanMemberDelete;
     public Button buttonClanOwnerTransfer;
-    public Button buttonClanJoinRequestDelete;
     [Header("Arena UIs")]
     public Text textArenaScore;
     public UIArenaRank uiArenaRank;
@@ -48,8 +47,6 @@ public class UIPlayer : UIDataItem<Player>
     public UnityEvent eventClanMemberDeleteFail;
     public UnityEvent eventClanOwnerTransferSuccess;
     public UnityEvent eventClanOwnerTransferFail;
-    public UnityEvent eventClanJoinRequestDeleteSuccess;
-    public UnityEvent eventClanJoinRequestDeleteFail;
 
     public override void UpdateData()
     {
@@ -109,12 +106,6 @@ public class UIPlayer : UIDataItem<Player>
             buttonClanOwnerTransfer.onClick.RemoveListener(OnClickClanOwnerTransfer);
             buttonClanOwnerTransfer.onClick.AddListener(OnClickClanOwnerTransfer);
             buttonClanOwnerTransfer.gameObject.SetActive(!IsEmpty());
-        }
-        if (buttonClanJoinRequestDelete != null)
-        {
-            buttonClanJoinRequestDelete.onClick.RemoveListener(OnClickClanJoinRequestDelete);
-            buttonClanJoinRequestDelete.onClick.AddListener(OnClickClanJoinRequestDelete);
-            buttonClanJoinRequestDelete.gameObject.SetActive(!IsEmpty());
         }
     }
 
@@ -341,25 +332,5 @@ public class UIPlayer : UIDataItem<Player>
         GameInstance.Singleton.OnGameServiceError(error);
         if (eventClanOwnerTransferFail != null)
             eventClanOwnerTransferFail.Invoke();
-    }
-
-    public void OnClickClanJoinRequestDelete()
-    {
-        GameInstance.GameService.ClanJoinRequestDelete(data.Id, ClanJoinRequestDeleteSuccess, ClanJoinRequestDeleteFail);
-    }
-
-    private void ClanJoinRequestDeleteSuccess(GameServiceResult result)
-    {
-        if (uiPlayerList != null)
-            uiPlayerList.RemoveListItem(data.Id);
-        if (eventClanJoinRequestDeleteSuccess != null)
-            eventClanJoinRequestDeleteSuccess.Invoke();
-    }
-
-    private void ClanJoinRequestDeleteFail(string error)
-    {
-        GameInstance.Singleton.OnGameServiceError(error);
-        if (eventClanJoinRequestDeleteFail != null)
-            eventClanJoinRequestDeleteFail.Invoke();
     }
 }

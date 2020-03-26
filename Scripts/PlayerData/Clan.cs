@@ -12,8 +12,8 @@ public partial class Clan : IClan
     public string Name { get { return name; } set { name = value; } }
     public string description;
     public string Description { get { return description; } set { description = value; } }
-    public IPlayer owner;
-    public IPlayer Owner { get { return owner; } set { owner = value; } }
+    public Player owner;
+    public Player Owner { get { return owner; } set { owner = value; } }
 
     public Clan Clone()
     {
