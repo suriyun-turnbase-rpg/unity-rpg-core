@@ -779,14 +779,14 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoClanJoinRequestDelete(playerId, loginToken, clanId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void GetClanMemberList(UnityAction<FriendListResult> onFinish)
+    public void GetClanMemberList(UnityAction<FriendListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetClanMemberList");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
         HandleServiceCall();
-        DoGetClanMemberList(playerId, loginToken, onFinish);
+        DoGetClanMemberList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     public void ClanOwnerTransfer(string targetPlayerId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
