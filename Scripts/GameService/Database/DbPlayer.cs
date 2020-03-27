@@ -28,6 +28,8 @@ public partial class DbPlayer : IPlayer
     public int HighestArenaRankCurrentSeason { get { return highestArenaRankCurrentSeason; } set { highestArenaRankCurrentSeason = value; } }
     public string clanId;
     public string ClanId { get { return clanId; } set { clanId = value; } }
+    public byte clanRole;
+    public byte ClanRole { get { return clanRole; } set { clanRole = value; } }
 
     public static List<Player> CloneList(IEnumerable<DbPlayer> list)
     {
