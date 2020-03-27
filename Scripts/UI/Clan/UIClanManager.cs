@@ -12,16 +12,26 @@ public class UIClanManager : UIClan
     public GameObject[] ownerObjects;
     public bool IsManager { get { return !IsEmpty() && Player.CurrentPlayer.ClanId.Equals(data.Id) && Player.CurrentPlayer.ClanRole == 1; } }
     public bool IsOwner { get { return !IsEmpty() && Player.CurrentPlayer.ClanId.Equals(data.Id) && Player.CurrentPlayer.ClanRole == 2; } }
+    
+    private byte? previousClanRole;
 
     private void OnEnable()
     {
         RefreshData();
     }
 
-    public override void UpdateData()
+    protected override void Update()
     {
-        base.UpdateData();
-        // Update state
+        base.Update();
+        if (!previousClanRole.HasValue || previousClanRole.Value != Player.CurrentPlayer.ClanRole)
+        {
+            previousClanRole = Player.CurrentPlayer.ClanRole;
+            UpdateState();
+        }
+    }
+
+    private void UpdateState()
+    {
         foreach (var notJoinedClanObject in notJoinedClanObjects)
         {
             notJoinedClanObject.SetActive(IsEmpty());
@@ -63,6 +73,12 @@ public class UIClanManager : UIClan
                 }
                 break;
         }
+    }
+
+    public override void UpdateData()
+    {
+        base.UpdateData();
+        UpdateState();
     }
 
     public void RefreshData()

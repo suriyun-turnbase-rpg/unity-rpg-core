@@ -58,6 +58,46 @@ public class UIPlayer : UIDataItem<Player>
     public GameObject[] managerObjects;
     public GameObject[] ownerObjects;
 
+    private void UpdateState()
+    {
+        foreach (var memberObject in memberObjects)
+        {
+            memberObject.SetActive(false);
+        }
+        foreach (var managerObject in managerObjects)
+        {
+            managerObject.SetActive(false);
+        }
+        foreach (var ownerObject in ownerObjects)
+        {
+            ownerObject.SetActive(false);
+        }
+        if (!IsEmpty())
+        {
+            switch (data.ClanRole)
+            {
+                case 0:
+                    foreach (var memberObject in memberObjects)
+                    {
+                        memberObject.SetActive(true);
+                    }
+                    break;
+                case 1:
+                    foreach (var managerObject in managerObjects)
+                    {
+                        managerObject.SetActive(true);
+                    }
+                    break;
+                case 2:
+                    foreach (var ownerObject in ownerObjects)
+                    {
+                        ownerObject.SetActive(true);
+                    }
+                    break;
+            }
+        }
+    }
+
     public override void UpdateData()
     {
         SetupInfo(data);
@@ -129,43 +169,7 @@ public class UIPlayer : UIDataItem<Player>
             buttonClanSetRoleToManager.onClick.AddListener(OnClickClanSetRoleToManager);
             buttonClanSetRoleToManager.gameObject.SetActive(!IsEmpty());
         }
-        // Update state
-        foreach (var memberObject in memberObjects)
-        {
-            memberObject.SetActive(false);
-        }
-        foreach (var managerObject in managerObjects)
-        {
-            managerObject.SetActive(false);
-        }
-        foreach (var ownerObject in ownerObjects)
-        {
-            ownerObject.SetActive(false);
-        }
-        if (!IsEmpty())
-        {
-            switch (data.ClanRole)
-            {
-                case 0:
-                    foreach (var memberObject in memberObjects)
-                    {
-                        memberObject.SetActive(true);
-                    }
-                    break;
-                case 1:
-                    foreach (var managerObject in managerObjects)
-                    {
-                        managerObject.SetActive(true);
-                    }
-                    break;
-                case 2:
-                    foreach (var ownerObject in ownerObjects)
-                    {
-                        ownerObject.SetActive(true);
-                    }
-                    break;
-            }
-        }
+        UpdateState();
     }
 
     public override void Clear()
