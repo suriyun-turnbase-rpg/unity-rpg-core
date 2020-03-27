@@ -11,6 +11,18 @@ public class UICreateClan : UIBase
     private void OnEnable()
     {
         inputClanName.text = "";
+
+        PlayerCurrency currencyData = null;
+        switch (GameInstance.GameDatabase.createClanCurrencyType)
+        {
+            case CreateClanRequirementType.RequireSoftCurrency:
+                currencyData = PlayerCurrency.SoftCurrency.Clone().SetAmount(GameInstance.GameDatabase.createClanCurrencyAmount, 0);
+                break;
+            case CreateClanRequirementType.RequireHardCurrency:
+                currencyData = PlayerCurrency.HardCurrency.Clone().SetAmount(GameInstance.GameDatabase.createClanCurrencyAmount, 0);
+                break;
+        }
+        uiRequireCurrency.SetData(currencyData);
     }
 
     public void OnClickCreate()
