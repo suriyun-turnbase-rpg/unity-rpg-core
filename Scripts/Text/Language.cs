@@ -53,6 +53,25 @@ public class GameText
     public const string TITLE_ATTRIBUTE_RESISTANCE_CHANCE = TEXT_PREFIX + "TITLE_ATTRIBUTE_RESISTANCE";
     public const string TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_PATK = TEXT_PREFIX + "TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_PATK";
     public const string TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_MATK = TEXT_PREFIX + "TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_MATK";
+    // Warn
+    public const string WARN_TITLE_DELETE_FRIEND = TEXT_PREFIX + "WARN_TITLE_DELETE_FRIEND";
+    public const string WARN_DESCRIPTION_DELETE_FRIEND = TEXT_PREFIX + "WARN_DESCRIPTION_DELETE_FRIEND";
+    public const string WARN_TITLE_DELETE_REQUEST = TEXT_PREFIX + "WARN_TITLE_DELETE_REQUEST";
+    public const string WARN_DESCRIPTION_DELETE_REQUEST = TEXT_PREFIX + "WARN_DESCRIPTION_DELETE_REQUEST";
+    public const string WARN_TITLE_DELETE_CLAN_MEMBER = TEXT_PREFIX + "WARN_TITLE_DELETE_CLAN_MEMBER";
+    public const string WARN_DESCRIPTION_DELETE_CLAN_MEMBER = TEXT_PREFIX + "WARN_DESCRIPTION_DELETE_CLAN_MEMBER";
+    public const string WARN_TITLE_CLAN_OWNER_TRANSFER = TEXT_PREFIX + "WARN_TITLE_CLAN_OWNER_TRANSFER";
+    public const string WARN_DESCRIPTION_CLAN_OWNER_TRANSFER = TEXT_PREFIX + "WARN_DESCRIPTION_CLAN_OWNER_TRANSFER";
+    public const string WARN_TITLE_CLAN_SET_ROLE_TO_MEMBER = TEXT_PREFIX + "WARN_TITLE_CLAN_SET_ROLE_TO_MEMBER";
+    public const string WARN_DESCRIPTION_CLAN_SET_ROLE_TO_MEMBER = TEXT_PREFIX + "WARN_DESCRIPTION_CLAN_SET_ROLE_TO_MEMBER";
+    public const string WARN_TITLE_CLAN_SET_ROLE_TO_MANAGER = TEXT_PREFIX + "WARN_TITLE_CLAN_SET_ROLE_TO_MANAGER";
+    public const string WARN_DESCRIPTION_CLAN_SET_ROLE_TO_MANAGER = TEXT_PREFIX + "WARN_DESCRIPTION_CLAN_SET_ROLE_TO_MANAGER";
+    public const string WARN_TITLE_DELETE_CLAN_JOIN_REQUEST = TEXT_PREFIX + "WARN_TITLE_DELETE_CLAN_JOIN_REQUEST";
+    public const string WARN_DESCRIPTION_DELETE_CLAN_JOIN_REQUEST = TEXT_PREFIX + "WARN_DESCRIPTION_DELETE_CLAN_JOIN_REQUEST";
+    public const string WARN_TITLE_CLAN_TERMINATE = TEXT_PREFIX + "WARN_TITLE_CLAN_TERMINATE";
+    public const string WARN_DESCRIPTION_CLAN_TERMINATE = TEXT_PREFIX + "WARN_DESCRIPTION_CLAN_TERMINATE";
+    public const string WARN_TITLE_CLAN_EXIT = TEXT_PREFIX + "WARN_TITLE_CLAN_EXIT";
+    public const string WARN_DESCRIPTION_CLAN_EXIT = TEXT_PREFIX + "WARN_DESCRIPTION_CLAN_EXIT";
     // Formats
     public const string FORMAT_INFO = FORMAT_PREFIX + "FORMAT_INFO";
     public const string FORMAT_ATTRIBUTE = FORMAT_PREFIX + "FORMAT_ATTRIBUTE";
@@ -109,6 +128,25 @@ public static class DefaultLocale
         Texts.Add(GameText.TITLE_ATTRIBUTE_RESISTANCE_CHANCE, "Resistance");
         Texts.Add(GameText.TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_PATK, "Blood Steal Rate by P.Atk");
         Texts.Add(GameText.TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_MATK, "Blood Steal Rate by M.Atk");
+        // Warn
+        Texts.Add(GameText.WARN_TITLE_DELETE_FRIEND, "Delete Friend");
+        Texts.Add(GameText.WARN_DESCRIPTION_DELETE_FRIEND, "Do you want to delete this player from your friend list?");
+        Texts.Add(GameText.WARN_TITLE_DELETE_REQUEST, "Delete Friend Request");
+        Texts.Add(GameText.WARN_DESCRIPTION_DELETE_REQUEST, "Do you want to delete this friend request?");
+        Texts.Add(GameText.WARN_TITLE_DELETE_CLAN_MEMBER, "Expel Member");
+        Texts.Add(GameText.WARN_DESCRIPTION_DELETE_CLAN_MEMBER, "Do you want to expel this clan member?");
+        Texts.Add(GameText.WARN_TITLE_CLAN_OWNER_TRANSFER, "Promote");
+        Texts.Add(GameText.WARN_DESCRIPTION_CLAN_OWNER_TRANSFER, "Do you want to promote this clan member to be clan leader?");
+        Texts.Add(GameText.WARN_TITLE_CLAN_SET_ROLE_TO_MEMBER, "Demote");
+        Texts.Add(GameText.WARN_DESCRIPTION_CLAN_SET_ROLE_TO_MEMBER, "Do you want to demote this clan member?");
+        Texts.Add(GameText.WARN_TITLE_CLAN_SET_ROLE_TO_MANAGER, "Promote");
+        Texts.Add(GameText.WARN_DESCRIPTION_CLAN_SET_ROLE_TO_MANAGER, "Do you want to promote this clan member to be clan manager?");
+        Texts.Add(GameText.WARN_TITLE_DELETE_CLAN_JOIN_REQUEST, "Delete Join Request");
+        Texts.Add(GameText.WARN_DESCRIPTION_DELETE_CLAN_JOIN_REQUEST, "Do you want to delete this clan join request?");
+        Texts.Add(GameText.WARN_TITLE_CLAN_TERMINATE, "Terminate");
+        Texts.Add(GameText.WARN_DESCRIPTION_CLAN_TERMINATE, "Do you want to terminate the clan?");
+        Texts.Add(GameText.WARN_TITLE_CLAN_EXIT, "Leave");
+        Texts.Add(GameText.WARN_DESCRIPTION_CLAN_EXIT, "Do you want to leave the clan?");
         // Format
         Texts.Add(GameText.FORMAT_INFO, "{0}{1}");
         Texts.Add(GameText.FORMAT_ATTRIBUTE, "{0}: {1}{2}");
@@ -171,3 +209,4 @@ public struct LanguageData
     [TextArea(1, 30)]
     public string value;
 }
+ 
