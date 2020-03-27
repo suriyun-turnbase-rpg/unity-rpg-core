@@ -47,7 +47,7 @@ public class UIStamina : UIDataItem<PlayerStamina>
         {
             tempMaxStamina = 0;
             Stamina staminaTable = null;
-            if (gameDatabase != null && gameDatabase.Staminas.TryGetValue(data.dataId, out staminaTable))
+            if (gameDatabase != null && data != null && gameDatabase.Staminas.TryGetValue(data.dataId, out staminaTable))
             {
                 tempMaxStamina = staminaTable.maxAmountTable.Calculate(Player.CurrentPlayer.Level, gameDatabase.playerMaxLevel);
                 if (data.Amount < tempMaxStamina)
