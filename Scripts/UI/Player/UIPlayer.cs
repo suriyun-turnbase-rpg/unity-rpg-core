@@ -58,23 +58,6 @@ public class UIPlayer : UIDataItem<Player>
     public GameObject[] managerObjects;
     public GameObject[] ownerObjects;
 
-    protected override void Update()
-    {
-        base.Update();
-        foreach (var memberObject in memberObjects)
-        {
-            memberObject.SetActive(!string.IsNullOrEmpty(data.ClanId) && data.ClanRole == 0);
-        }
-        foreach (var managerObject in managerObjects)
-        {
-            managerObject.SetActive(!string.IsNullOrEmpty(data.ClanId) && data.ClanRole == 1);
-        }
-        foreach (var ownerObject in ownerObjects)
-        {
-            ownerObject.SetActive(!string.IsNullOrEmpty(data.ClanId) && data.ClanRole == 2);
-        }
-    }
-
     public override void UpdateData()
     {
         SetupInfo(data);
@@ -133,6 +116,52 @@ public class UIPlayer : UIDataItem<Player>
             buttonClanOwnerTransfer.onClick.RemoveListener(OnClickClanOwnerTransfer);
             buttonClanOwnerTransfer.onClick.AddListener(OnClickClanOwnerTransfer);
             buttonClanOwnerTransfer.gameObject.SetActive(!IsEmpty());
+        }
+        if (buttonClanSetRoleToMember != null)
+        {
+            buttonClanSetRoleToMember.onClick.RemoveListener(OnClickClanSetRoleToMember);
+            buttonClanSetRoleToMember.onClick.AddListener(OnClickClanSetRoleToMember);
+            buttonClanSetRoleToMember.gameObject.SetActive(!IsEmpty());
+        }
+        if (buttonClanSetRoleToManager != null)
+        {
+            buttonClanSetRoleToManager.onClick.RemoveListener(OnClickClanSetRoleToManager);
+            buttonClanSetRoleToManager.onClick.AddListener(OnClickClanSetRoleToManager);
+            buttonClanSetRoleToManager.gameObject.SetActive(!IsEmpty());
+        }
+        // Update state
+        foreach (var memberObject in memberObjects)
+        {
+            memberObject.SetActive(false);
+        }
+        foreach (var managerObject in managerObjects)
+        {
+            managerObject.SetActive(false);
+        }
+        foreach (var ownerObject in ownerObjects)
+        {
+            ownerObject.SetActive(false);
+        }
+        switch (data.ClanRole)
+        {
+            case 0:
+                foreach (var memberObject in memberObjects)
+                {
+                    memberObject.SetActive(true);
+                }
+                break;
+            case 1:
+                foreach (var managerObject in managerObjects)
+                {
+                    managerObject.SetActive(true);
+                }
+                break;
+            case 2:
+                foreach (var ownerObject in ownerObjects)
+                {
+                    ownerObject.SetActive(true);
+                }
+                break;
         }
     }
 
@@ -359,5 +388,45 @@ public class UIPlayer : UIDataItem<Player>
         GameInstance.Singleton.OnGameServiceError(error);
         if (eventClanOwnerTransferFail != null)
             eventClanOwnerTransferFail.Invoke();
+    }
+
+    public void OnClickClanSetRoleToMember()
+    {
+        GameInstance.GameService.ClanSetRole(data.Id, 0, ClanSetRoleToMemberSuccess, ClanSetRoleToMemberFail);
+    }
+
+    private void ClanSetRoleToMemberSuccess(GameServiceResult result)
+    {
+        data.ClanRole = 0;
+        UpdateData();
+        if (eventClanSetRoleToMemberSuccess != null)
+            eventClanSetRoleToMemberSuccess.Invoke();
+    }
+
+    private void ClanSetRoleToMemberFail(string error)
+    {
+        GameInstance.Singleton.OnGameServiceError(error);
+        if (eventClanSetRoleToMemberFail != null)
+            eventClanSetRoleToMemberFail.Invoke();
+    }
+
+    public void OnClickClanSetRoleToManager()
+    {
+        GameInstance.GameService.ClanSetRole(data.Id, 1, ClanSetRoleToManagerSuccess, ClanSetRoleToManagerFail);
+    }
+
+    private void ClanSetRoleToManagerSuccess(GameServiceResult result)
+    {
+        data.ClanRole = 1;
+        UpdateData();
+        if (eventClanSetRoleToManagerSuccess != null)
+            eventClanSetRoleToManagerSuccess.Invoke();
+    }
+
+    private void ClanSetRoleToManagerFail(string error)
+    {
+        GameInstance.Singleton.OnGameServiceError(error);
+        if (eventClanSetRoleToManagerFail != null)
+            eventClanSetRoleToManagerFail.Invoke();
     }
 }

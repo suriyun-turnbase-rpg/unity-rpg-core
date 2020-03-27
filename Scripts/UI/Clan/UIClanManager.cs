@@ -18,9 +18,10 @@ public class UIClanManager : UIClan
         RefreshData();
     }
 
-    protected override void Update()
+    public override void UpdateData()
     {
-        base.Update();
+        base.UpdateData();
+        // Update state
         foreach (var notJoinedClanObject in notJoinedClanObjects)
         {
             notJoinedClanObject.SetActive(IsEmpty());
@@ -31,15 +32,36 @@ public class UIClanManager : UIClan
         }
         foreach (var memberObject in memberObjects)
         {
-            memberObject.SetActive(!IsEmpty() && !IsManager && !IsOwner);
+            memberObject.SetActive(false);
         }
         foreach (var managerObject in managerObjects)
         {
-            managerObject.SetActive(!IsEmpty() && IsManager);
+            managerObject.SetActive(false);
         }
         foreach (var ownerObject in ownerObjects)
         {
-            ownerObject.SetActive(!IsEmpty() && IsOwner);
+            ownerObject.SetActive(false);
+        }
+        switch (Player.CurrentPlayer.ClanRole)
+        {
+            case 0:
+                foreach (var memberObject in memberObjects)
+                {
+                    memberObject.SetActive(true);
+                }
+                break;
+            case 1:
+                foreach (var managerObject in managerObjects)
+                {
+                    managerObject.SetActive(true);
+                }
+                break;
+            case 2:
+                foreach (var ownerObject in ownerObjects)
+                {
+                    ownerObject.SetActive(true);
+                }
+                break;
         }
     }
 
