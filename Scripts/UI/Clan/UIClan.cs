@@ -97,15 +97,12 @@ public class UIClan : UIDataItem<Clan>
 
     public void OnClickJoinRequestDelete()
     {
-        GameInstance.Singleton.ShowMessageDialog(
+        GameInstance.Singleton.ShowConfirmDialog(
             LanguageManager.GetText(GameText.WARN_TITLE_DELETE_CLAN_JOIN_REQUEST),
             LanguageManager.GetText(GameText.WARN_DESCRIPTION_DELETE_CLAN_JOIN_REQUEST),
             () =>
             {
                 GameInstance.GameService.ClanJoinRequestDelete(data.Id, OnJoinRequestDeleteSuccess, OnJoinRequestDeleteFail);
-            }, () =>
-            {
-                // Click No
             });
     }
 
@@ -126,15 +123,12 @@ public class UIClan : UIDataItem<Clan>
 
     public void OnClickTerminate()
     {
-        GameInstance.Singleton.ShowMessageDialog(
+        GameInstance.Singleton.ShowConfirmDialog(
             LanguageManager.GetText(GameText.WARN_TITLE_CLAN_TERMINATE),
             LanguageManager.GetText(GameText.WARN_DESCRIPTION_CLAN_TERMINATE),
             () =>
             {
                 GameInstance.GameService.ClanTerminate(OnTerminateSuccess, OnTerminateFail);
-            }, () =>
-            {
-                // Click No
             });
     }
 
@@ -153,15 +147,12 @@ public class UIClan : UIDataItem<Clan>
 
     public void OnClickExit()
     {
-        GameInstance.Singleton.ShowMessageDialog(
+        GameInstance.Singleton.ShowConfirmDialog(
             LanguageManager.GetText(GameText.WARN_TITLE_CLAN_EXIT),
             LanguageManager.GetText(GameText.WARN_DESCRIPTION_CLAN_EXIT),
             () =>
             {
                 GameInstance.GameService.ClanExit(OnExitSuccess, OnExitFail);
-            }, () =>
-            {
-                // Click No
             });
     }
 

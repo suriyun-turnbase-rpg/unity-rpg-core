@@ -275,15 +275,12 @@ public class UIPlayer : UIDataItem<Player>
 
     public void OnClickFriendDelete()
     {
-        GameInstance.Singleton.ShowMessageDialog(
+        GameInstance.Singleton.ShowConfirmDialog(
             LanguageManager.GetText(GameText.WARN_TITLE_DELETE_FRIEND),
             LanguageManager.GetText(GameText.WARN_DESCRIPTION_DELETE_FRIEND),
             () =>
             {
                 GameInstance.GameService.FriendDelete(data.Id, OnFriendDeleteSuccess, OnFriendDeleteFail);
-            }, () =>
-            {
-                // Click No
             });
     }
 
@@ -304,15 +301,12 @@ public class UIPlayer : UIDataItem<Player>
 
     public void OnClickRequestDelete()
     {
-        GameInstance.Singleton.ShowMessageDialog(
+        GameInstance.Singleton.ShowConfirmDialog(
             LanguageManager.GetText(GameText.WARN_TITLE_DELETE_REQUEST),
             LanguageManager.GetText(GameText.WARN_DESCRIPTION_DELETE_REQUEST),
             () =>
             {
                 GameInstance.GameService.FriendRequestDelete(data.Id, OnRequestDeleteSuccess, OnRequestDeleteFail);
-            }, () =>
-            {
-                // Click No
             });
     }
 
@@ -372,15 +366,12 @@ public class UIPlayer : UIDataItem<Player>
 
     public void OnClickClanMemberDelete()
     {
-        GameInstance.Singleton.ShowMessageDialog(
+        GameInstance.Singleton.ShowConfirmDialog(
             LanguageManager.GetText(GameText.WARN_TITLE_DELETE_REQUEST),
             LanguageManager.GetText(GameText.WARN_DESCRIPTION_DELETE_REQUEST),
             () =>
             {
                 GameInstance.GameService.ClanMemberDelete(data.Id, ClanMemberDeleteSuccess, ClanMemberDeleteFail);
-            }, () =>
-            {
-                // Click No
             });
     }
 
@@ -401,15 +392,12 @@ public class UIPlayer : UIDataItem<Player>
 
     public void OnClickClanOwnerTransfer()
     {
-        GameInstance.Singleton.ShowMessageDialog(
+        GameInstance.Singleton.ShowConfirmDialog(
             LanguageManager.GetText(GameText.WARN_TITLE_CLAN_OWNER_TRANSFER),
             LanguageManager.GetText(GameText.WARN_DESCRIPTION_CLAN_OWNER_TRANSFER),
             () =>
             {
                 GameInstance.GameService.ClanOwnerTransfer(data.Id, ClanOwnerTransferSuccess, ClanOwnerTransferFail);
-            }, () =>
-            {
-                // Click No
             });
     }
 
@@ -428,15 +416,12 @@ public class UIPlayer : UIDataItem<Player>
 
     public void OnClickClanSetRoleToMember()
     {
-        GameInstance.Singleton.ShowMessageDialog(
+        GameInstance.Singleton.ShowConfirmDialog(
             LanguageManager.GetText(GameText.WARN_TITLE_CLAN_SET_ROLE_TO_MEMBER),
             LanguageManager.GetText(GameText.WARN_DESCRIPTION_CLAN_SET_ROLE_TO_MEMBER),
             () =>
             {
                 GameInstance.GameService.ClanSetRole(data.Id, 0, ClanSetRoleToMemberSuccess, ClanSetRoleToMemberFail);
-            }, () =>
-            {
-                // Click No
             });
     }
 
@@ -457,15 +442,12 @@ public class UIPlayer : UIDataItem<Player>
 
     public void OnClickClanSetRoleToManager()
     {
-        GameInstance.Singleton.ShowMessageDialog(
+        GameInstance.Singleton.ShowConfirmDialog(
             LanguageManager.GetText(GameText.WARN_TITLE_CLAN_SET_ROLE_TO_MANAGER),
             LanguageManager.GetText(GameText.WARN_DESCRIPTION_CLAN_SET_ROLE_TO_MANAGER),
             () =>
             {
                 GameInstance.GameService.ClanSetRole(data.Id, 1, ClanSetRoleToManagerSuccess, ClanSetRoleToManagerFail);
-            }, () =>
-            {
-                // Click No
             });
     }
 

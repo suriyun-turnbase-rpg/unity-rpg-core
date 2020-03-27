@@ -21,6 +21,7 @@ public partial class GameInstance : MonoBehaviour
     public GameDatabase gameDatabase;
     public BaseGameplayRule gameplayRule;
     public UIMessageDialog messageDialog;
+    public UIMessageDialog confirmDialog;
     public UIInputDialog inputDialog;
     public UIItemList rewardItemsDialog;
     public GameObject loadingObject;
@@ -561,6 +562,8 @@ public partial class GameInstance : MonoBehaviour
         if (messageDialog == null)
         {
             Debug.LogWarning("`Message Dialog` has not been set");
+            if (actionYes != null)
+                actionYes.Invoke();
             return;
         }
         if (!messageDialog.IsVisible())
@@ -582,6 +585,40 @@ public partial class GameInstance : MonoBehaviour
             return;
         }
         messageDialog.Hide();
+    }
+
+    public void ShowConfirmDialog(string title,
+        string content,
+        UnityAction actionYes = null,
+        UnityAction actionNo = null,
+        UnityAction actionCancel = null)
+    {
+        if (confirmDialog == null)
+        {
+            Debug.LogWarning("`Confirm Dialog` has not been set");
+            if (actionYes != null)
+                actionYes.Invoke();
+            return;
+        }
+        if (!confirmDialog.IsVisible())
+        {
+            confirmDialog.Title = title;
+            confirmDialog.Content = content;
+            confirmDialog.actionYes = actionYes;
+            confirmDialog.actionNo = actionNo;
+            confirmDialog.actionCancel = actionCancel;
+            confirmDialog.Show();
+        }
+    }
+
+    public void HideConfirmDialog()
+    {
+        if (confirmDialog == null)
+        {
+            Debug.LogWarning("`Confirm Dialog` has not been set");
+            return;
+        }
+        confirmDialog.Hide();
     }
 
     private void ShowProfileNameInputDialog(UnityAction<PlayerResult> onSuccess, UnityAction<string> onError)
