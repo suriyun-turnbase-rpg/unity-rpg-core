@@ -23,6 +23,8 @@ public class UIPlayer : UIDataItem<Player>
     public Button buttonClanJoinDecline;
     public Button buttonClanMemberDelete;
     public Button buttonClanOwnerTransfer;
+    public Button buttonClanSetRoleToMember;
+    public Button buttonClanSetRoleToManager;
     [Header("Arena UIs")]
     public Text textArenaScore;
     public UIArenaRank uiArenaRank;
@@ -47,6 +49,31 @@ public class UIPlayer : UIDataItem<Player>
     public UnityEvent eventClanMemberDeleteFail;
     public UnityEvent eventClanOwnerTransferSuccess;
     public UnityEvent eventClanOwnerTransferFail;
+    public UnityEvent eventClanSetRoleToMemberSuccess;
+    public UnityEvent eventClanSetRoleToMemberFail;
+    public UnityEvent eventClanSetRoleToManagerSuccess;
+    public UnityEvent eventClanSetRoleToManagerFail;
+    [Header("State UIs")]
+    public GameObject[] memberObjects;
+    public GameObject[] managerObjects;
+    public GameObject[] ownerObjects;
+
+    protected override void Update()
+    {
+        base.Update();
+        foreach (var memberObject in memberObjects)
+        {
+            memberObject.SetActive(!string.IsNullOrEmpty(data.ClanId) && data.ClanRole == 0);
+        }
+        foreach (var managerObject in managerObjects)
+        {
+            managerObject.SetActive(!string.IsNullOrEmpty(data.ClanId) && data.ClanRole == 1);
+        }
+        foreach (var ownerObject in ownerObjects)
+        {
+            ownerObject.SetActive(!string.IsNullOrEmpty(data.ClanId) && data.ClanRole == 2);
+        }
+    }
 
     public override void UpdateData()
     {
