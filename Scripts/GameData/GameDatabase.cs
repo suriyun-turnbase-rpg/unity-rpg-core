@@ -94,6 +94,10 @@ public class GameDatabase : ScriptableObject
     public int arenaLoseScoreDecrease;
     public BaseEnvironmentData arenaEnvironment;
 
+    [Header("Clan")]
+    public CreateClanRequirementType createClanCurrencyType;
+    public int createClanCurrencyAmount;
+
     public readonly Dictionary<string, BaseItem> Items = new Dictionary<string, BaseItem>();
     public readonly Dictionary<string, Currency> Currencies = new Dictionary<string, Currency>();
     public readonly Dictionary<string, Stamina> Staminas = new Dictionary<string, Stamina>();
