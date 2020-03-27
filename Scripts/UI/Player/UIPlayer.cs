@@ -142,26 +142,29 @@ public class UIPlayer : UIDataItem<Player>
         {
             ownerObject.SetActive(false);
         }
-        switch (data.ClanRole)
+        if (!IsEmpty())
         {
-            case 0:
-                foreach (var memberObject in memberObjects)
-                {
-                    memberObject.SetActive(true);
-                }
-                break;
-            case 1:
-                foreach (var managerObject in managerObjects)
-                {
-                    managerObject.SetActive(true);
-                }
-                break;
-            case 2:
-                foreach (var ownerObject in ownerObjects)
-                {
-                    ownerObject.SetActive(true);
-                }
-                break;
+            switch (data.ClanRole)
+            {
+                case 0:
+                    foreach (var memberObject in memberObjects)
+                    {
+                        memberObject.SetActive(true);
+                    }
+                    break;
+                case 1:
+                    foreach (var managerObject in managerObjects)
+                    {
+                        managerObject.SetActive(true);
+                    }
+                    break;
+                case 2:
+                    foreach (var ownerObject in ownerObjects)
+                    {
+                        ownerObject.SetActive(true);
+                    }
+                    break;
+            }
         }
     }
 
