@@ -305,6 +305,14 @@ public partial class GameInstance : MonoBehaviour
         AvailableInGamePackages.AddRange(result.list);
     }
 
+    public void OnGameServiceCreateClanResult(CreateClanResult result)
+    {
+        if (!result.Success)
+            return;
+        
+        PlayerCurrency.SetDataRange(result.updateCurrencies);
+    }
+
     #region Current Player Data Validation
     /// <summary>
     /// Set profile name first time, when it's not already set.

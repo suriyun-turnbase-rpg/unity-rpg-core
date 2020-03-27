@@ -32,6 +32,7 @@ public class UICreateClan : UIBase
 
     private void OnCreateClanSuccess(CreateClanResult result)
     {
+        GameInstance.Singleton.OnGameServiceCreateClanResult(result);
         manager.RefreshData();
     }
 
