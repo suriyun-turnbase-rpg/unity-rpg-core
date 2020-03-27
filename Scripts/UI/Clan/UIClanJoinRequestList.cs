@@ -5,7 +5,8 @@ using UnityEngine;
 public class UIClanJoinRequestList : UIPlayerList
 {
     public UIPlayer ownerPrefab;
-    public UIPlayer nonOwnerPrefab;
+    public UIPlayer managerPrefab;
+    public UIPlayer memberPrefab;
     public UIClanManager manager;
 
     private void OnEnable()
@@ -20,7 +21,7 @@ public class UIClanJoinRequestList : UIPlayerList
 
     private void OnRefreshListSuccess(PlayerListResult result)
     {
-        itemPrefab = manager.IsOwner ? ownerPrefab : nonOwnerPrefab;
+        itemPrefab = manager.IsOwner ? ownerPrefab : manager.IsManager ? managerPrefab : memberPrefab;
         SetListItems(result.list);
     }
 
