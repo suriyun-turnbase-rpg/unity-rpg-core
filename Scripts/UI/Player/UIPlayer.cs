@@ -370,8 +370,8 @@ public class UIPlayer : UIDataItem<Player>
     public void OnClickClanMemberDelete()
     {
         GameInstance.Singleton.ShowConfirmDialog(
-            LanguageManager.GetText(GameText.WARN_TITLE_DELETE_REQUEST),
-            LanguageManager.GetText(GameText.WARN_DESCRIPTION_DELETE_REQUEST),
+            LanguageManager.GetText(GameText.WARN_TITLE_DELETE_CLAN_MEMBER),
+            LanguageManager.GetText(GameText.WARN_DESCRIPTION_DELETE_CLAN_MEMBER),
             () =>
             {
                 GameInstance.GameService.ClanMemberDelete(data.Id, ClanMemberDeleteSuccess, ClanMemberDeleteFail);
@@ -406,6 +406,9 @@ public class UIPlayer : UIDataItem<Player>
 
     private void ClanOwnerTransferSuccess(GameServiceResult result)
     {
+        data.ClanRole = 2;
+        Player.CurrentPlayer.ClanRole = 0;
+        UpdateData();
         if (eventClanOwnerTransferSuccess != null)
             eventClanOwnerTransferSuccess.Invoke();
     }
