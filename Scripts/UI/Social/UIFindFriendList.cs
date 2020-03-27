@@ -9,7 +9,7 @@ public class UIFindFriendList : UIPlayerList
     private void OnEnable()
     {
         inputDisplayName.text = "";
-        ClearListItems();
+        OnClickFind();
     }
 
     public void OnClickFind()

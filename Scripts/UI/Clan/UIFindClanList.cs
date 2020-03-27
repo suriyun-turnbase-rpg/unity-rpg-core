@@ -9,7 +9,7 @@ public class UIFindClanList : UIClanList
     private void OnEnable()
     {
         inputClanName.text = "";
-        ClearListItems();
+        OnClickFind();
     }
 
     public void OnClickFind()
