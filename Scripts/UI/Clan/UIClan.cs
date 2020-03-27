@@ -21,6 +21,32 @@ public class UIClan : UIDataItem<Clan>
     public UnityEvent eventTerminateFail;
     public UnityEvent eventExitSuccess;
     public UnityEvent eventExitFail;
+    public GameObject[] joinedObjects;
+    public GameObject[] notJoinedObjects;
+    public GameObject[] ownerObjects;
+    public GameObject[] notOwnerObjects;
+    public bool IsOwner { get { return !IsEmpty() && Player.CurrentPlayerId.Equals(data.OwnerId); } }
+
+    protected override void Update()
+    {
+        base.Update();
+        foreach (var joinedObject in joinedObjects)
+        {
+            joinedObject.SetActive(!IsEmpty());
+        }
+        foreach (var notJoinedObject in notJoinedObjects)
+        {
+            notJoinedObject.SetActive(IsEmpty());
+        }
+        foreach (var ownerObject in ownerObjects)
+        {
+            ownerObject.SetActive(!IsEmpty() && IsOwner);
+        }
+        foreach (var notOwnerObject in notOwnerObjects)
+        {
+            notOwnerObject.SetActive(!IsEmpty() && !IsOwner);
+        }
+    }
 
     public override void Clear()
     {
@@ -63,6 +89,9 @@ public class UIClan : UIDataItem<Clan>
 
     private void SetupInfo(Clan data)
     {
+        if (data == null)
+            data = new Clan();
+
         if (textName != null)
             textName.text = data.Name;
 
