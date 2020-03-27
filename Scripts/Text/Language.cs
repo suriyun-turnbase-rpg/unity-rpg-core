@@ -140,6 +140,9 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.ACHIEVEMENT_EARNED, "Achievement's rewards earned");
         Texts.Add(GameServiceErrorCode.CANNOT_EVOLVE, "Cannot evolve");
         Texts.Add(GameServiceErrorCode.NOT_AVAILABLE, "Services not available");
+        Texts.Add(GameServiceErrorCode.JOINED_CLAN, "Already joined clan, cannot create or join other clan");
+        Texts.Add(GameServiceErrorCode.NOT_HAVE_PERMISSION, "You don't have permission to do it");
+        Texts.Add(GameServiceErrorCode.CLAN_OWNER_CANNOT_EXIT, "Clan owner cannot exit from clan");
         Texts.Add(GameServiceErrorCode.UNKNOW, "Unknow Error");
     }
 }

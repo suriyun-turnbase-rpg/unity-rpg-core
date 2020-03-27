@@ -31,6 +31,9 @@ public class GameServiceErrorCode
     public const string ACHIEVEMENT_UNDONE = ERROR_PREFIX + "ACHIEVEMENT_UNDONE";
     public const string ACHIEVEMENT_EARNED = ERROR_PREFIX + "ACHIEVEMENT_EARNED";
     public const string CANNOT_EVOLVE = ERROR_PREFIX + "CANNOT_EVOLVE";
+    public const string JOINED_CLAN = ERROR_PREFIX + "JOINED_CLAN";
+    public const string NOT_HAVE_PERMISSION = ERROR_PREFIX + "NOT_HAVE_PERMISSION";
+    public const string CLAN_OWNER_CANNOT_EXIT = ERROR_PREFIX + "CLAN_OWNER_CANNOT_EXIT";
     public const string NOT_AVAILABLE = ERROR_PREFIX + "NOT_AVAILABLE";
 }
 
