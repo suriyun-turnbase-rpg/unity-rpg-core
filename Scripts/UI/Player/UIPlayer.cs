@@ -60,38 +60,56 @@ public class UIPlayer : UIDataItem<Player>
 
     private void UpdateState()
     {
-        foreach (var memberObject in memberObjects)
+        if (memberObjects != null)
         {
-            memberObject.SetActive(false);
+            foreach (var memberObject in memberObjects)
+            {
+                memberObject.SetActive(false);
+            }
         }
-        foreach (var managerObject in managerObjects)
+        if (managerObjects != null)
         {
-            managerObject.SetActive(false);
+            foreach (var managerObject in managerObjects)
+            {
+                managerObject.SetActive(false);
+            }
         }
-        foreach (var ownerObject in ownerObjects)
+        if (ownerObjects != null)
         {
-            ownerObject.SetActive(false);
+            foreach (var ownerObject in ownerObjects)
+            {
+                ownerObject.SetActive(false);
+            }
         }
         if (!IsEmpty())
         {
             switch (data.ClanRole)
             {
                 case 0:
-                    foreach (var memberObject in memberObjects)
+                    if (memberObjects != null)
                     {
-                        memberObject.SetActive(true);
+                        foreach (var memberObject in memberObjects)
+                        {
+                            memberObject.SetActive(true);
+                        }
                     }
                     break;
                 case 1:
-                    foreach (var managerObject in managerObjects)
+                    if (managerObjects != null)
                     {
-                        managerObject.SetActive(true);
+                        foreach (var managerObject in managerObjects)
+                        {
+                            managerObject.SetActive(true);
+                        }
                     }
                     break;
                 case 2:
-                    foreach (var ownerObject in ownerObjects)
+                    if (ownerObjects != null)
                     {
-                        ownerObject.SetActive(true);
+                        foreach (var ownerObject in ownerObjects)
+                        {
+                            ownerObject.SetActive(true);
+                        }
                     }
                     break;
             }
