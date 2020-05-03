@@ -9,8 +9,9 @@ public abstract partial class BaseGameService : MonoBehaviour
     public const string AUTH_GUEST = "GUEST";
     public UnityEvent onServiceStart;
     public UnityEvent onServiceFinish;
+    public long RTT { get; private set; }
     public long ServiceTimeOffset { get; private set; }
-    public long Timestamp { get { return (long)System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1)).TotalSeconds; } }
+    public long Timestamp { get { return System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); } }
     private float updateTimeCounter;
 
     private void Update()
@@ -18,8 +19,8 @@ public abstract partial class BaseGameService : MonoBehaviour
         updateTimeCounter -= Time.unscaledDeltaTime;
         if (updateTimeCounter <= 0f)
         {
-            // Update time offset every five seconds
-            updateTimeCounter = 5f;
+            // Update time offset every 30 seconds
+            updateTimeCounter = 30f;
             GetServiceTime();
         }
     }
@@ -641,11 +642,17 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoFriendRequestDelete(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    private long? requestServiceTime;
     public void GetServiceTime()
     {
+        if (requestServiceTime.HasValue)
+            return;
+        requestServiceTime = Timestamp;
         DoGetServiceTime((finishResult) =>
         {
-            ServiceTimeOffset = finishResult.serviceTime - Timestamp;
+            RTT = Timestamp - requestServiceTime.Value;
+            ServiceTimeOffset = finishResult.serviceTime - Timestamp - RTT;
+            requestServiceTime = null;
         });
     }
 
