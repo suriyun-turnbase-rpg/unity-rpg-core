@@ -11,7 +11,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     public UnityEvent onServiceFinish;
     public long RTT { get; private set; }
     public long ServiceTimeOffset { get; private set; }
-    public long Timestamp { get { return System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); } }
+    public long Timestamp { get { return (long)System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1)).TotalSeconds; } }
     private float updateTimeCounter;
 
     private void Update()
@@ -648,10 +648,10 @@ public abstract partial class BaseGameService : MonoBehaviour
         if (requestServiceTime.HasValue)
             return;
         requestServiceTime = Timestamp;
-        DoGetServiceTime((finishResult) =>
+        DoGetServiceTime((result) =>
         {
             RTT = Timestamp - requestServiceTime.Value;
-            ServiceTimeOffset = finishResult.serviceTime - Timestamp - RTT;
+            ServiceTimeOffset = result.serviceTime - Timestamp - RTT;
             requestServiceTime = null;
         });
     }
