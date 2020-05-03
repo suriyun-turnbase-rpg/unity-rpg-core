@@ -287,8 +287,8 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         int fixDamage = 0)
     {
         var stealHp = 0f;
-        var attackerElemental = Item.CharacterData.elemental;
-        var attackerAttributes = GetTotalAttributes();
+        var attackerElemental = attacker.Item.CharacterData.elemental;
+        var attackerAttributes = attacker.GetTotalAttributes();
         var defenderElemental = Item.CharacterData.elemental;
         var defenderAttributes = GetTotalAttributes();
         var totalDmg = GameInstance.GameplayRule.GetDamage(
