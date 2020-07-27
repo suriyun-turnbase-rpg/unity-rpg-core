@@ -1,7 +1,15 @@
 ﻿using UnityEngine;
 
+public enum CraftRequirementType : byte
+{
+    RequireSoftCurrency = 0,
+    RequireHardCurrency = 1,
+}
+
 public class ItemCraftFormula : BaseGameData
 {
+    public CraftRequirementType requirementType;
+    public int price = 0;
     [Tooltip("Amount must > 0")]
     public ItemAmount resultItem;
     public ItemAmount[] materials;
@@ -21,6 +29,8 @@ public class ItemCraftFormula : BaseGameData
         }
         materialsJson = "[" + materialsJson + "]";
         return "{\"id\":\"" + Id + "\"," +
+            "\"requirementType\":" + (byte)requirementType + "," +
+            "\"price\":" + price + "," +
             "\"resultItem\":" + resultItem.ToJson() + "," +
             "\"materials\":" + materialsJson + "}";
     }
