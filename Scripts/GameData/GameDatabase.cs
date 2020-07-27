@@ -49,6 +49,10 @@ public class GameDatabase : ScriptableObject
     [Tooltip("List of achievements, place all achievements here")]
     public List<Achievement> achievements;
 
+    [Header("Item Craft Formula database")]
+    [Tooltip("List of item craft formula, place all item craft formula here")]
+    public List<ItemCraftFormula> itemCrafts;
+
     [Header("Loot Box database")]
     [Tooltip("List of game loot boxes, place all loot boxes here")]
     public List<LootBox> lootBoxes;
@@ -104,6 +108,7 @@ public class GameDatabase : ScriptableObject
     public readonly Dictionary<string, Formation> Formations = new Dictionary<string, Formation>();
     public readonly Dictionary<string, BaseStage> Stages = new Dictionary<string, BaseStage>();
     public readonly Dictionary<string, Achievement> Achievements = new Dictionary<string, Achievement>();
+    public readonly Dictionary<string, ItemCraftFormula> ItemCrafts = new Dictionary<string, ItemCraftFormula>();
     public readonly Dictionary<string, LootBox> LootBoxes = new Dictionary<string, LootBox>();
     public readonly Dictionary<string, InGamePackage> InGamePackages = new Dictionary<string, InGamePackage>();
     public readonly Dictionary<string, IapPackage> IapPackages = new Dictionary<string, IapPackage>();
@@ -117,6 +122,7 @@ public class GameDatabase : ScriptableObject
         Formations.Clear();
         Stages.Clear();
         Achievements.Clear();
+        ItemCrafts.Clear();
         LootBoxes.Clear();
         InGamePackages.Clear();
         IapPackages.Clear();
@@ -146,6 +152,7 @@ public class GameDatabase : ScriptableObject
         AddStagesToDatabase(stages);
         AddStagesToDatabase(unlockStages);
         AddAchievementsToDatabase(achievements);
+        AddItemCraftsToDatabase(itemCrafts);
         AddLootBoxesToDatabase(lootBoxes);
         AddInGamePackagesToDatabase(inGamePackages);
         AddIapPackagesToDatabase(iapPackages);
@@ -204,6 +211,20 @@ public class GameDatabase : ScriptableObject
             if (!string.IsNullOrEmpty(dataId) && !Achievements.ContainsKey(dataId))
             {
                 Achievements[dataId] = achievement;
+            }
+        }
+    }
+
+    private void AddItemCraftsToDatabase(IEnumerable<ItemCraftFormula> itemCrafts)
+    {
+        foreach (var itemCraft in itemCrafts)
+        {
+            if (itemCraft == null)
+                continue;
+            var dataId = itemCraft.Id;
+            if (!string.IsNullOrEmpty(dataId) && !ItemCrafts.ContainsKey(dataId))
+            {
+                ItemCrafts[dataId] = itemCraft;
             }
         }
     }
