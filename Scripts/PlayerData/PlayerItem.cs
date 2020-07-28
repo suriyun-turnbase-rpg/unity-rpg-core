@@ -450,4 +450,21 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         result.Exp = sumExp;
         return result;
     }
+
+    public static int CountItem(string playerId, BaseItem item)
+    {
+        return CountItem(playerId, item.Id);
+    }
+
+    public static int CountItem(string playerId, string dataId)
+    {
+        var count = 0;
+        var values = DataMap.Values;
+        foreach (var value in values)
+        {
+            if (value.PlayerId == playerId && value.DataId == dataId)
+                count += value.Amount;
+        }
+        return count;
+    }
 }
