@@ -44,7 +44,8 @@ public class UIItemCraft : UIDataItem<ItemCraftFormula>
                 if (value.PlayerId == Player.CurrentPlayerId && value.DataId == material.Id)
                 {
                     count += value.Amount;
-                    selectedMaterials[value.Id] = value.Amount;
+                    if (count < material.amount)
+                        selectedMaterials[value.Id] = value.Amount;
                 }
             }
             if (haveEnoughMaterials)
