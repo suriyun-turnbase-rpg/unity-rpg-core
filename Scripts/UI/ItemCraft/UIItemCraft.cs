@@ -33,24 +33,28 @@ public class UIItemCraft : UIDataItem<ItemCraftFormula>
         countMaterials.Clear();
         selectedMaterials.Clear();
 
-        bool haveEnoughMaterials = true;
-        for (var i = 0; i < data.materials.Length; ++i)
+        bool haveEnoughMaterials = false;
+        if (data != null && data.materials != null && data.materials.Length > 0)
         {
-            var material = data.materials[i];
-            var count = 0;
-            var values = PlayerItem.DataMap.Values;
-            foreach (var value in values)
+            haveEnoughMaterials = true;
+            for (var i = 0; i < data.materials.Length; ++i)
             {
-                if (value.PlayerId == Player.CurrentPlayerId && value.DataId == material.Id)
+                var material = data.materials[i];
+                var count = 0;
+                var values = PlayerItem.DataMap.Values;
+                foreach (var value in values)
                 {
-                    count += value.Amount;
-                    if (count < material.amount)
-                        selectedMaterials[value.Id] = value.Amount;
+                    if (value.PlayerId == Player.CurrentPlayerId && value.DataId == material.Id)
+                    {
+                        if (count < material.amount)
+                            selectedMaterials[value.Id] = value.Amount;
+                        count += value.Amount;
+                    }
                 }
+                if (haveEnoughMaterials)
+                    haveEnoughMaterials = count >= material.amount;
+                countMaterials[material.Id] = count;
             }
-            if (haveEnoughMaterials)
-                haveEnoughMaterials = count >= material.amount;
-            countMaterials[material.Id] = count;
         }
 
         if (textTitle != null)
@@ -75,14 +79,17 @@ public class UIItemCraft : UIDataItem<ItemCraftFormula>
         {
             uiPrice.Clear();
             PlayerCurrency currencyData = null;
-            switch (data.requirementType)
+            if (data != null)
             {
-                case CraftRequirementType.RequireSoftCurrency:
-                    currencyData = PlayerCurrency.SoftCurrency.Clone().SetAmount(data.price, 0);
-                    break;
-                case CraftRequirementType.RequireHardCurrency:
-                    currencyData = PlayerCurrency.HardCurrency.Clone().SetAmount(data.price, 0);
-                    break;
+                switch (data.requirementType)
+                {
+                    case CraftRequirementType.RequireSoftCurrency:
+                        currencyData = PlayerCurrency.SoftCurrency.Clone().SetAmount(data.price, 0);
+                        break;
+                    case CraftRequirementType.RequireHardCurrency:
+                        currencyData = PlayerCurrency.HardCurrency.Clone().SetAmount(data.price, 0);
+                        break;
+                }
             }
             uiPrice.SetData(currencyData);
         }
@@ -124,6 +131,14 @@ public class UIItemCraft : UIDataItem<ItemCraftFormula>
     private void OnClickCraftSuccess(ItemResult result)
     {
         GameInstance.Singleton.OnGameServiceItemResult(result);
+        if (result.rewardItems.Count > 0)
+        {
+            var itemCraftList = list as UIItemCraftList;
+            if (itemCraftList != null && itemCraftList.animItemsRewarding != null)
+                itemCraftList.animItemsRewarding.Play(result.rewardItems);
+            else
+                GameInstance.Singleton.ShowRewardItemsDialog(result.rewardItems);
+        }
         uiItemCraftManager.ReloadList();
     }
 

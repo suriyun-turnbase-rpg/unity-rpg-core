@@ -501,17 +501,15 @@ public partial class LiteDbGameService
         updateItems = new List<PlayerItem>();
         deleteItemIds = new List<string>();
         var enoughMaterials = true;
-        var materialItemIds = selectedMaterials.Keys;
+        var selectedMaterialIds = selectedMaterials.Keys;
         var materialItems = new List<PlayerItem>();
-        foreach (var materialItemId in materialItemIds)
+        foreach (var materialItemId in selectedMaterialIds)
         {
             var foundMaterial = colPlayerItem.FindOne(a => a.Id == materialItemId && a.PlayerId == playerId);
             if (foundMaterial == null)
                 continue;
-
             var resultItem = PlayerItem.CloneTo(foundMaterial, new PlayerItem());
-            if (resultItem.CanBeMaterial)
-                materialItems.Add(resultItem);
+            materialItems.Add(resultItem);
         }
         foreach (var requiredMaterial in requiredMaterials)
         {
@@ -537,6 +535,7 @@ public partial class LiteDbGameService
             }
             if (amount > 0)
             {
+                Debug.LogError(requiredMaterial.Key + " " + amount + " vs " + requiredMaterial.Value);
                 enoughMaterials = false;
                 break;
             }

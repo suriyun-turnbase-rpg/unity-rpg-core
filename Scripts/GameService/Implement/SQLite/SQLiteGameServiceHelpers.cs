@@ -557,9 +557,7 @@ public partial class SQLiteGameService
             var foundMaterial = GetPlayerItemById(materialItemId);
             if (foundMaterial == null || foundMaterial.PlayerId != playerId)
                 continue;
-
-            if (foundMaterial.CanBeMaterial)
-                materialItems.Add(foundMaterial);
+            materialItems.Add(foundMaterial);
         }
         foreach (var requiredMaterial in requiredMaterials)
         {

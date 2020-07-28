@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class UIItemCraftList : UIDataItemList<UIItemCraft, ItemCraftFormula>
 {
+    public AnimItemsRewarding animItemsRewarding;
+
     public void SetListItems(List<ItemCraftFormula> list, UnityAction<UIItemCraft> onSetListItem = null)
     {
         ClearListItems();
