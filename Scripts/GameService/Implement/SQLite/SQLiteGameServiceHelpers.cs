@@ -569,7 +569,7 @@ public partial class SQLiteGameService
             {
                 if (materialItem.DataId != dataId)
                     continue;
-                var usingAmount = materials[materialItem.Id];
+                var usingAmount = selectedMaterials[materialItem.Id];
                 if (usingAmount > materialItem.Amount)
                     usingAmount = materialItem.Amount;
                 if (usingAmount > amount)
