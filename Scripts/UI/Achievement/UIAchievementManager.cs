@@ -74,7 +74,6 @@ public class UIAchievementManager : UIBase
     public override void Hide()
     {
         base.Hide();
-
         if (uiAchievementList != null)
             uiAchievementList.ClearListItems();
     }
