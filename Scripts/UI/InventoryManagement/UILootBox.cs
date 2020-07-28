@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UILootBox : UIDataItem<LootBox>
@@ -9,7 +10,8 @@ public class UILootBox : UIDataItem<LootBox>
     public Text textDescription;
     public Image imageIcon;
 	public Image imageHighlight;
-    public UICurrency[] uiCurrencies;
+    [FormerlySerializedAs("uiCurrencies")]
+    public UICurrency[] uiPrices;
 
     public override void Clear()
     {
@@ -35,12 +37,12 @@ public class UILootBox : UIDataItem<LootBox>
 		if (imageHighlight != null)
 			imageHighlight.sprite = data.highlight;
 
-        if (uiCurrencies != null && uiCurrencies.Length > 0)
+        if (uiPrices != null && uiPrices.Length > 0)
         {
-            for (var i = 0; i < uiCurrencies.Length; ++i)
+            for (var i = 0; i < uiPrices.Length; ++i)
             {
-                var uiCurrency = uiCurrencies[i];
-                uiCurrency.Clear();
+                var uiPrice = uiPrices[i];
+                uiPrice.Clear();
                 if (data != null)
                 {
                     var packIndex = i;
@@ -57,7 +59,7 @@ public class UILootBox : UIDataItem<LootBox>
                             currencyData = PlayerCurrency.HardCurrency.Clone().SetAmount(price, 0);
                             break;
                     }
-                    uiCurrency.SetData(currencyData);
+                    uiPrice.SetData(currencyData);
                 }
             }
         }
