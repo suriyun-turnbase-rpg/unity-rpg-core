@@ -114,50 +114,9 @@ public partial class LiteDbGameService
                 var requireCurrency = 0;
                 var itemData = item.ItemData;
                 requireCurrency = item.EvolvePrice;
-                var enoughMaterials = true;
-                var updateItems = new List<PlayerItem>();
-                var deleteItemIds = new List<string>();
-                var requiredMaterials = item.EvolveMaterials;   // This is Key-Value Pair for `playerItem.DataId`, `Required Amount`
-                var materialItemIds = materials.Keys;
-                var materialItems = new List<PlayerItem>();
-                foreach (var materialItemId in materialItemIds)
-                {
-                    var foundMaterial = colPlayerItem.FindOne(a => a.Id == materialItemId && a.PlayerId == playerId);
-                    if (foundMaterial == null)
-                        continue;
-
-                    var resultItem = PlayerItem.CloneTo(foundMaterial, new PlayerItem());
-                    if (resultItem.CanBeMaterial)
-                        materialItems.Add(resultItem);
-                }
-                foreach (var requiredMaterial in requiredMaterials)
-                {
-                    var dataId = requiredMaterial.Key;
-                    var amount = requiredMaterial.Value;
-                    foreach (var materialItem in materialItems)
-                    {
-                        if (materialItem.DataId != dataId)
-                            continue;
-                        var usingAmount = materials[materialItem.Id];
-                        if (usingAmount > materialItem.Amount)
-                            usingAmount = materialItem.Amount;
-                        if (usingAmount > amount)
-                            usingAmount = amount;
-                        materialItem.Amount -= usingAmount;
-                        amount -= usingAmount;
-                        if (materialItem.Amount > 0)
-                            updateItems.Add(materialItem);
-                        else
-                            deleteItemIds.Add(materialItem.Id);
-                        if (amount == 0)
-                            break;
-                    }
-                    if (amount > 0)
-                    {
-                        enoughMaterials = false;
-                        break;
-                    }
-                }
+                List<PlayerItem> updateItems;
+                List<string> deleteItemIds;
+                var enoughMaterials = HaveEnoughMaterials(playerId, materials, item.EvolveMaterials, out updateItems, out deleteItemIds);
                 if (requireCurrency > softCurrency.Amount)
                     result.error = GameServiceErrorCode.NOT_ENOUGH_SOFT_CURRENCY;
                 else if (!enoughMaterials)
@@ -409,7 +368,7 @@ public partial class LiteDbGameService
                             createEntry.Id = System.Guid.NewGuid().ToString();
                             colPlayerItem.Insert(createEntry);
                             result.createItems.Add(PlayerItem.CloneTo(createEntry, new PlayerItem()));
-                            HelperUnlockItem(player.Id, rewardItem.Id);
+                            HelperUnlockItem(player.Id, createEntry.DataId);
                         }
                         foreach (var updateEntry in updateItems)
                         {
@@ -477,7 +436,7 @@ public partial class LiteDbGameService
                         createEntry.Id = System.Guid.NewGuid().ToString();
                         colPlayerItem.Insert(createEntry);
                         result.createItems.Add(PlayerItem.CloneTo(createEntry, new PlayerItem()));
-                        HelperUnlockItem(player.Id, rewardItem.Id);
+                        HelperUnlockItem(player.Id, createEntry.DataId);
                     }
                     foreach (var updateEntry in updateItems)
                     {
@@ -549,7 +508,7 @@ public partial class LiteDbGameService
                             colPlayerItem.Insert(createEntry);
                             var resultItem = PlayerItem.CloneTo(createEntry, new PlayerItem());
                             result.createItems.Add(resultItem);
-                            HelperUnlockItem(player.Id, rewardItem.Id);
+                            HelperUnlockItem(player.Id, createEntry.DataId);
                         }
                         foreach (var updateEntry in updateItems)
                         {
@@ -640,8 +599,8 @@ public partial class LiteDbGameService
                 for (var i = 0; i < inGamePackage.rewardItems.Length; ++i)
                 {
                     var rewardItem = inGamePackage.rewardItems[i];
-                    var createItems = new List<DbPlayerItem>();
-                    var updateItems = new List<DbPlayerItem>();
+                    List<DbPlayerItem> createItems;
+                    List<DbPlayerItem> updateItems;
                     if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
                     {
                         result.rewardItems.Add(new PlayerItem()
@@ -656,7 +615,7 @@ public partial class LiteDbGameService
                             createEntry.Id = System.Guid.NewGuid().ToString();
                             colPlayerItem.Insert(createEntry);
                             result.createItems.Add(PlayerItem.CloneTo(createEntry, new PlayerItem()));
-                            HelperUnlockItem(player.Id, rewardItem.Id);
+                            HelperUnlockItem(player.Id, createEntry.DataId);
                         }
                         foreach (var updateEntry in updateItems)
                         {
@@ -668,5 +627,89 @@ public partial class LiteDbGameService
             }
             onFinish(result);
         }
+    }
+
+    protected override void DoCraftItem(string playerId, string loginToken, string itemCraftId, Dictionary<string, int> materials, UnityAction<ItemResult> onFinish)
+    {
+        var result = new ItemResult();
+        var gameDb = GameInstance.GameDatabase;
+        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        ItemCraftFormula itemCraft;
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!gameDb.ItemCrafts.TryGetValue(itemCraftId, out itemCraft))
+            result.error = GameServiceErrorCode.INVALID_ITEM_CRAFT_FORMULA_DATA;
+        else
+        {
+            var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+            var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+            var requirementType = itemCraft.requirementType;
+            var price = itemCraft.price;
+            List<PlayerItem> queryUpdateItems;
+            List<string> queryDeleteItemIds;
+            var enoughMaterials = HaveEnoughMaterials(playerId, materials, itemCraft.CacheMaterials, out queryUpdateItems, out queryDeleteItemIds);
+            if (requirementType == CraftRequirementType.RequireSoftCurrency && price > softCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_SOFT_CURRENCY;
+            else if (requirementType == CraftRequirementType.RequireHardCurrency && price > hardCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
+            else if (!enoughMaterials)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_ITEMS;
+            else
+            {
+                // Query items
+                result.updateItems = queryUpdateItems;
+                result.deleteItemIds = queryDeleteItemIds;
+                foreach (var updateItem in queryUpdateItems)
+                {
+                    colPlayerItem.Update(PlayerItem.CloneTo(updateItem, new DbPlayerItem()));
+                }
+                foreach (var deleteItemId in queryDeleteItemIds)
+                {
+                    colPlayerItem.Delete(deleteItemId);
+                }
+                // Update currencies
+                switch (requirementType)
+                {
+                    case CraftRequirementType.RequireSoftCurrency:
+                        softCurrency.Amount -= price;
+                        break;
+                    case CraftRequirementType.RequireHardCurrency:
+                        hardCurrency.Amount -= price;
+                        break;
+                }
+                // Update soft currency
+                colPlayerCurrency.Update(softCurrency);
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
+                // Update hard currency
+                colPlayerCurrency.Update(hardCurrency);
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency()));
+                // Add items
+                var createItems = new List<DbPlayerItem>();
+                var updateItems = new List<DbPlayerItem>();
+                if (AddItems(playerId, itemCraft.resultItem.Id, itemCraft.resultItem.amount, out createItems, out updateItems))
+                {
+                    result.rewardItems.Add(new PlayerItem()
+                    {
+                        Id = "Result",
+                        PlayerId = player.Id,
+                        DataId = itemCraft.resultItem.Id,
+                        Amount = itemCraft.resultItem.amount
+                    });
+                    foreach (var createEntry in createItems)
+                    {
+                        createEntry.Id = System.Guid.NewGuid().ToString();
+                        colPlayerItem.Insert(createEntry);
+                        result.createItems.Add(PlayerItem.CloneTo(createEntry, new PlayerItem()));
+                        HelperUnlockItem(player.Id, createEntry.DataId);
+                    }
+                    foreach (var updateEntry in updateItems)
+                    {
+                        colPlayerItem.Update(updateEntry);
+                        result.updateItems.Add(PlayerItem.CloneTo(updateEntry, new PlayerItem()));
+                    }
+                }
+            }
+        }
+        onFinish(result);
     }
 }

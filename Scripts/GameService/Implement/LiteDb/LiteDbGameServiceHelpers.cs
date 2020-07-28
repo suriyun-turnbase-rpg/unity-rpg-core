@@ -495,4 +495,52 @@ public partial class LiteDbGameService
         }
         return result;
     }
+
+    private bool HaveEnoughMaterials(string playerId, Dictionary<string, int> selectedMaterials, Dictionary<string, int> requiredMaterials, out List<PlayerItem> updateItems, out List<string> deleteItemIds)
+    {
+        updateItems = new List<PlayerItem>();
+        deleteItemIds = new List<string>();
+        var enoughMaterials = true;
+        var materialItemIds = selectedMaterials.Keys;
+        var materialItems = new List<PlayerItem>();
+        foreach (var materialItemId in materialItemIds)
+        {
+            var foundMaterial = colPlayerItem.FindOne(a => a.Id == materialItemId && a.PlayerId == playerId);
+            if (foundMaterial == null)
+                continue;
+
+            var resultItem = PlayerItem.CloneTo(foundMaterial, new PlayerItem());
+            if (resultItem.CanBeMaterial)
+                materialItems.Add(resultItem);
+        }
+        foreach (var requiredMaterial in requiredMaterials)
+        {
+            var dataId = requiredMaterial.Key;
+            var amount = requiredMaterial.Value;
+            foreach (var materialItem in materialItems)
+            {
+                if (materialItem.DataId != dataId)
+                    continue;
+                var usingAmount = selectedMaterials[materialItem.Id];
+                if (usingAmount > materialItem.Amount)
+                    usingAmount = materialItem.Amount;
+                if (usingAmount > amount)
+                    usingAmount = amount;
+                materialItem.Amount -= usingAmount;
+                amount -= usingAmount;
+                if (materialItem.Amount > 0)
+                    updateItems.Add(materialItem);
+                else
+                    deleteItemIds.Add(materialItem.Id);
+                if (amount == 0)
+                    break;
+            }
+            if (amount > 0)
+            {
+                enoughMaterials = false;
+                break;
+            }
+        }
+        return enoughMaterials;
+    }
 }

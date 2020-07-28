@@ -112,49 +112,9 @@ public partial class SQLiteGameService
                 var requireCurrency = 0;
                 var itemData = foundItem.ItemData;
                 requireCurrency = foundItem.EvolvePrice;
-                var enoughMaterials = true;
-                var updateItems = new List<PlayerItem>();
-                var deleteItemIds = new List<string>();
-                var requiredMaterials = foundItem.EvolveMaterials;   // This is Key-Value Pair for `playerItem.DataId`, `Required Amount`
-                var materialItemIds = materials.Keys;
-                var materialItems = new List<PlayerItem>();
-                foreach (var materialItemId in materialItemIds)
-                {
-                    var foundMaterial = GetPlayerItemById(materialItemId);
-                    if (foundMaterial == null || foundMaterial.PlayerId != playerId)
-                        continue;
-                    
-                    if (foundMaterial.CanBeMaterial)
-                        materialItems.Add(foundMaterial);
-                }
-                foreach (var requiredMaterial in requiredMaterials)
-                {
-                    var dataId = requiredMaterial.Key;
-                    var amount = requiredMaterial.Value;
-                    foreach (var materialItem in materialItems)
-                    {
-                        if (materialItem.DataId != dataId)
-                            continue;
-                        var usingAmount = materials[materialItem.Id];
-                        if (usingAmount > materialItem.Amount)
-                            usingAmount = materialItem.Amount;
-                        if (usingAmount > amount)
-                            usingAmount = amount;
-                        materialItem.Amount -= usingAmount;
-                        amount -= usingAmount;
-                        if (materialItem.Amount > 0)
-                            updateItems.Add(materialItem);
-                        else
-                            deleteItemIds.Add(materialItem.Id);
-                        if (amount == 0)
-                            break;
-                    }
-                    if (amount > 0)
-                    {
-                        enoughMaterials = false;
-                        break;
-                    }
-                }
+                List<PlayerItem> updateItems;
+                List<string> deleteItemIds;
+                var enoughMaterials = HaveEnoughMaterials(playerId, materials, foundItem.EvolveMaterials, out updateItems, out deleteItemIds);
                 if (requireCurrency > softCurrency.Amount)
                     result.error = GameServiceErrorCode.NOT_ENOUGH_SOFT_CURRENCY;
                 else if (!enoughMaterials)
@@ -419,7 +379,7 @@ public partial class SQLiteGameService
                         {
                             QueryCreatePlayerItem(createEntry);
                             result.createItems.Add(createEntry);
-                            HelperUnlockItem(player.Id, rewardItem.Id);
+                            HelperUnlockItem(player.Id, createEntry.DataId);
                         }
                         foreach (var updateEntry in updateItems)
                         {
@@ -490,7 +450,7 @@ public partial class SQLiteGameService
                     {
                         QueryCreatePlayerItem(createEntry);
                         result.createItems.Add(createEntry);
-                        HelperUnlockItem(player.Id, rewardItem.Id);
+                        HelperUnlockItem(player.Id, createEntry.DataId);
                     }
                     foreach (var updateEntry in updateItems)
                     {
@@ -566,7 +526,7 @@ public partial class SQLiteGameService
                         {
                             QueryCreatePlayerItem(createEntry);
                             result.createItems.Add(createEntry);
-                            HelperUnlockItem(player.Id, rewardItem.Id);
+                            HelperUnlockItem(player.Id, createEntry.DataId);
                         }
                         foreach (var updateEntry in updateItems)
                         {
@@ -664,8 +624,8 @@ public partial class SQLiteGameService
                 for (var i = 0; i < inGamePackage.rewardItems.Length; ++i)
                 {
                     var rewardItem = inGamePackage.rewardItems[i];
-                    var createItems = new List<PlayerItem>();
-                    var updateItems = new List<PlayerItem>();
+                    List<PlayerItem> createItems;
+                    List<PlayerItem> updateItems;
                     if (AddItems(playerId, rewardItem.Id, rewardItem.amount, out createItems, out updateItems))
                     {
                         result.rewardItems.Add(new PlayerItem()
@@ -679,13 +639,100 @@ public partial class SQLiteGameService
                         {
                             QueryCreatePlayerItem(createEntry);
                             result.createItems.Add(createEntry);
-                            HelperUnlockItem(player.Id, rewardItem.Id);
+                            HelperUnlockItem(player.Id, createEntry.DataId);
                         }
                         foreach (var updateEntry in updateItems)
                         {
                             QueryUpdatePlayerItem(updateEntry);
                             result.updateItems.Add(updateEntry);
                         }
+                    }
+                }
+            }
+        }
+        onFinish(result);
+    }
+
+    protected override void DoCraftItem(string playerId, string loginToken, string itemCraftId, Dictionary<string, int> materials, UnityAction<ItemResult> onFinish)
+    {
+        var result = new ItemResult();
+        var gameDb = GameInstance.GameDatabase;
+        var player = GetPlayerByLoginToken(playerId, loginToken);
+        ItemCraftFormula itemCraft;
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!gameDb.ItemCrafts.TryGetValue(itemCraftId, out itemCraft))
+            result.error = GameServiceErrorCode.INVALID_ITEM_CRAFT_FORMULA_DATA;
+        else
+        {
+            var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+            var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+            var requirementType = itemCraft.requirementType;
+            var price = itemCraft.price;
+            List<PlayerItem> queryUpdateItems;
+            List<string> queryDeleteItemIds;
+            var enoughMaterials = HaveEnoughMaterials(playerId, materials, itemCraft.CacheMaterials, out queryUpdateItems, out queryDeleteItemIds);
+            if (requirementType == CraftRequirementType.RequireSoftCurrency && price > softCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_SOFT_CURRENCY;
+            else if (requirementType == CraftRequirementType.RequireHardCurrency && price > hardCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
+            else if (!enoughMaterials)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_ITEMS;
+            else
+            {
+                // Query items
+                result.updateItems = queryUpdateItems;
+                result.deleteItemIds = queryDeleteItemIds;
+                foreach (var updateItem in queryUpdateItems)
+                {
+                    QueryUpdatePlayerItem(updateItem);
+                }
+                foreach (var deleteItemId in queryDeleteItemIds)
+                {
+                    ExecuteNonQuery(@"DELETE FROM playerItem WHERE id=@id", new SqliteParameter("@id", deleteItemId));
+                }
+                // Update currencies
+                switch (requirementType)
+                {
+                    case CraftRequirementType.RequireSoftCurrency:
+                        softCurrency.Amount -= price;
+                        break;
+                    case CraftRequirementType.RequireHardCurrency:
+                        hardCurrency.Amount -= price;
+                        break;
+                }
+                // Update soft currency
+                ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                    new SqliteParameter("@amount", softCurrency.Amount),
+                    new SqliteParameter("@id", softCurrency.Id));
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
+                // Update hard currency
+                ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                    new SqliteParameter("@amount", hardCurrency.Amount),
+                    new SqliteParameter("@id", hardCurrency.Id));
+                result.updateCurrencies.Add(PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency()));
+                // Add items
+                List<PlayerItem> createItems;
+                List<PlayerItem> updateItems;
+                if (AddItems(playerId, itemCraft.resultItem.Id, itemCraft.resultItem.amount, out createItems, out updateItems))
+                {
+                    result.rewardItems.Add(new PlayerItem()
+                    {
+                        Id = "Result",
+                        PlayerId = player.Id,
+                        DataId = itemCraft.resultItem.Id,
+                        Amount = itemCraft.resultItem.amount
+                    });
+                    foreach (var createEntry in createItems)
+                    {
+                        QueryCreatePlayerItem(createEntry);
+                        result.createItems.Add(createEntry);
+                        HelperUnlockItem(player.Id, createEntry.DataId);
+                    }
+                    foreach (var updateEntry in updateItems)
+                    {
+                        QueryUpdatePlayerItem(updateEntry);
+                        result.updateItems.Add(updateEntry);
                     }
                 }
             }

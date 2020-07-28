@@ -866,14 +866,14 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoClanSetRole(playerId, loginToken, targetPlayerId, clanRole, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void CraftItem(string itemCraftId, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
+    public void CraftItem(string itemCraftId, Dictionary<string, int> materials, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: CraftItem");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
         HandleServiceCall();
-        DoCraftItem(playerId, loginToken, itemCraftId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+        DoCraftItem(playerId, loginToken, itemCraftId, materials, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -938,5 +938,5 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoGetClanJoinPendingRequestList(string playerId, string loginToken, UnityAction<ClanListResult> onFinish);
     protected abstract void DoClanExit(string playerId, string loginToken, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoClanSetRole(string playerId, string loginToken, string targetPlayerId, byte clanRole, UnityAction<GameServiceResult> onFinish);
-    protected abstract void DoCraftItem(string playerId, string loginToken, string itemCraftId, UnityAction<ItemResult> onFinish);
+    protected abstract void DoCraftItem(string playerId, string loginToken, string itemCraftId, Dictionary<string, int> materials, UnityAction<ItemResult> onFinish);
 }

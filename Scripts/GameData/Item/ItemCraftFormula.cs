@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public enum CraftRequirementType : byte
 {
@@ -13,6 +14,32 @@ public class ItemCraftFormula : BaseGameData
     [Tooltip("Amount must > 0")]
     public ItemAmount resultItem;
     public ItemAmount[] materials;
+
+    private Dictionary<string, int> cacheMaterials = null;
+    public Dictionary<string, int> CacheMaterials
+    {
+        get
+        {
+            if (cacheMaterials == null)
+                MakeCacheMaterials();
+            return cacheMaterials;
+        }
+    }
+
+    private void MakeCacheMaterials()
+    {
+        cacheMaterials = new Dictionary<string, int>();
+        foreach (var material in materials)
+        {
+            if (material.item == null || string.IsNullOrEmpty(material.item.name))
+                continue;
+            var dataId = material.item.name;
+            if (!cacheMaterials.ContainsKey(dataId))
+                cacheMaterials.Add(dataId, material.amount);
+            else
+                cacheMaterials[dataId] += material.amount;
+        }
+    }
 
     public string ToJson()
     {

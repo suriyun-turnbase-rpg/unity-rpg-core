@@ -545,6 +545,52 @@ public partial class SQLiteGameService
                 new SqliteParameter("@amount", unlockItem.Amount));
         }
     }
+    private bool HaveEnoughMaterials(string playerId, Dictionary<string, int> selectedMaterials, Dictionary<string, int> requiredMaterials, out List<PlayerItem> updateItems, out List<string> deleteItemIds)
+    {
+        updateItems = new List<PlayerItem>();
+        deleteItemIds = new List<string>();
+        var enoughMaterials = true;
+        var materialItemIds = selectedMaterials.Keys;
+        var materialItems = new List<PlayerItem>();
+        foreach (var materialItemId in materialItemIds)
+        {
+            var foundMaterial = GetPlayerItemById(materialItemId);
+            if (foundMaterial == null || foundMaterial.PlayerId != playerId)
+                continue;
+
+            if (foundMaterial.CanBeMaterial)
+                materialItems.Add(foundMaterial);
+        }
+        foreach (var requiredMaterial in requiredMaterials)
+        {
+            var dataId = requiredMaterial.Key;
+            var amount = requiredMaterial.Value;
+            foreach (var materialItem in materialItems)
+            {
+                if (materialItem.DataId != dataId)
+                    continue;
+                var usingAmount = materials[materialItem.Id];
+                if (usingAmount > materialItem.Amount)
+                    usingAmount = materialItem.Amount;
+                if (usingAmount > amount)
+                    usingAmount = amount;
+                materialItem.Amount -= usingAmount;
+                amount -= usingAmount;
+                if (materialItem.Amount > 0)
+                    updateItems.Add(materialItem);
+                else
+                    deleteItemIds.Add(materialItem.Id);
+                if (amount == 0)
+                    break;
+            }
+            if (amount > 0)
+            {
+                enoughMaterials = false;
+                break;
+            }
+        }
+        return enoughMaterials;
+    }
 
     private FinishStageResult HelperClearStage(FinishStageResult result, Player player, BaseStage stage, int grade)
     {

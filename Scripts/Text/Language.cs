@@ -155,6 +155,7 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.EMPTY_USERNAME_OR_PASSWORD, "Username or password is empty");
         Texts.Add(GameServiceErrorCode.EXISTED_USERNAME, "Username is already used");
         Texts.Add(GameServiceErrorCode.EMPTY_PROFILE_NAME, "Name is empty");
+        Texts.Add(GameServiceErrorCode.EMPTY_CLAN_NAME, "Name is empty");
         Texts.Add(GameServiceErrorCode.EXISTED_PROFILE_NAME, "Name is already used");
         Texts.Add(GameServiceErrorCode.INVALID_USERNAME_OR_PASSWORD, "Username or password is invalid");
         Texts.Add(GameServiceErrorCode.INVALID_LOGIN_TOKEN, "Invalid login token");
@@ -167,6 +168,7 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.INVALID_IAP_PACKAGE_DATA, "Invalid IAP package data");
         Texts.Add(GameServiceErrorCode.INVALID_IN_GAME_PACKAGE_DATA, "Invalid In-game package data");
         Texts.Add(GameServiceErrorCode.INVALID_ACHIEVEMENT_DATA, "Invalid achievement data");
+        Texts.Add(GameServiceErrorCode.INVALID_ITEM_CRAFT_FORMULA_DATA, "Invalid item craft formula data");
         Texts.Add(GameServiceErrorCode.INVALID_EQUIP_POSITION, "Invalid equip position");
         Texts.Add(GameServiceErrorCode.INVALID_BATTLE_SESSION, "Invalid battle session");
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_SOFT_CURRENCY, "Not enough " + Texts[GameText.TITLE_SOFT_CURRENCY]);
