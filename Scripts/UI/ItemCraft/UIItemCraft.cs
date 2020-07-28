@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,9 @@ public class UIItemCraft : UIDataItem<ItemCraftFormula>
     public UIItemList uiMaterials;
     public Button buttonCraft;
     public UIItemCraftManager uiItemCraftManager;
+    // Private
+    private readonly Dictionary<string, int> countMaterials = new Dictionary<string, int>();
+    private readonly Dictionary<string, int> selectedMaterials = new Dictionary<string, int>();
 
     public override void Clear()
     {
@@ -26,6 +30,28 @@ public class UIItemCraft : UIDataItem<ItemCraftFormula>
 
     private void SetupInfo(ItemCraftFormula data)
     {
+        countMaterials.Clear();
+        selectedMaterials.Clear();
+
+        bool haveEnoughMaterials = true;
+        for (var i = 0; i < data.materials.Length; ++i)
+        {
+            var material = data.materials[i];
+            var count = 0;
+            var values = PlayerItem.DataMap.Values;
+            foreach (var value in values)
+            {
+                if (value.PlayerId == Player.CurrentPlayerId && value.DataId == material.Id)
+                {
+                    count += value.Amount;
+                    selectedMaterials[value.Id] = value.Amount;
+                }
+            }
+            if (haveEnoughMaterials)
+                haveEnoughMaterials = count >= material.amount;
+            countMaterials[material.Id] = count;
+        }
+
         if (textTitle != null)
             textTitle.text = data == null ? "" : data.title;
 
@@ -65,27 +91,23 @@ public class UIItemCraft : UIDataItem<ItemCraftFormula>
             uiMaterials.ClearListItems();
             if (data != null && data.materials != null && data.materials.Length > 0)
             {
-                var items = new List<PlayerItem>();
                 for (var i = 0; i < data.materials.Length; ++i)
                 {
                     var material = data.materials[i];
-                    items.Add(new PlayerItem()
+                    var item = new PlayerItem()
                     {
                         Id = i.ToString("N0"),
                         DataId = material.Id,
-                        Amount = 0,
-                    });
-                }
-                uiMaterials.SetListItems(items);
-                for (var i = 0; i < data.materials.Length; ++i)
-                {
-                    var material = data.materials[i];
-                    var ui = uiMaterials.GetListItem(i.ToString("N0"));
-                    ui.SelectedAmount = PlayerItem.CountItem(Player.CurrentPlayerId, material.Id);
-                    ui.RequiredAmount = material.amount;
+                    };
+                    var newUIMaterial = uiMaterials.SetListItem(item);
+                    newUIMaterial.ForceUpdate();
+                    newUIMaterial.SetupSelectedAmount(countMaterials[material.Id], material.amount);
                 }
             }
         }
+
+        if (buttonCraft != null)
+            buttonCraft.interactable = haveEnoughMaterials;
     }
 
     public override bool IsEmpty()
@@ -95,7 +117,7 @@ public class UIItemCraft : UIDataItem<ItemCraftFormula>
 
     public void OnClickCraft()
     {
-        GameInstance.GameService.CraftItem(data.Id, OnClickCraftSuccess, OnClickCraftFail);
+        GameInstance.GameService.CraftItem(data.Id, selectedMaterials, OnClickCraftSuccess, OnClickCraftFail);
     }
 
     private void OnClickCraftSuccess(ItemResult result)
