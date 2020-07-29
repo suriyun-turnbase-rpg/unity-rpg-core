@@ -16,10 +16,8 @@ public class ChatMessage : IChatMessage
     public string ClanName { get => clanName; set => clanName = value; }
     public string message;
     public string Message { get => message; set => message = value; }
-    public long createdAt;
-    public long CreatedAt { get => createdAt; set => createdAt = value; }
-    public long updatedAt;
-    public long UpdatedAt { get => updatedAt; set => updatedAt = value; }
+    public long timestamp;
+    public long Timestamp { get => timestamp; set => timestamp = value; }
 
     public ChatMessage Clone()
     {
@@ -34,8 +32,7 @@ public class ChatMessage : IChatMessage
         to.ProfileName = from.ProfileName;
         to.ClanName = from.ClanName;
         to.Message = from.Message;
-        to.CreatedAt = from.CreatedAt;
-        to.UpdatedAt = from.UpdatedAt;
+        to.Timestamp = from.Timestamp;
         return to;
     }
 }
