@@ -234,3 +234,9 @@ public class CreateClanResult : GameServiceResult
     public Clan clan;
     public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
 }
+
+[System.Serializable]
+public class ChatMessageListResult : GameServiceResult
+{
+    public List<ChatMessage> list = new List<ChatMessage>();
+}

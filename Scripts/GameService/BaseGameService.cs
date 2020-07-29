@@ -876,6 +876,26 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoCraftItem(playerId, loginToken, itemCraftId, materials, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void GetChatMessages(long lastTime, UnityAction<ChatMessageListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetChatMessages");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetChatMessages(playerId, loginToken, lastTime, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void EnterChatMessage(bool isClanChat, string message, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: EnterChatMessage");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoEnterChatMessage(playerId, loginToken, isClanChat, message, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -939,4 +959,6 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoClanExit(string playerId, string loginToken, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoClanSetRole(string playerId, string loginToken, string targetPlayerId, byte clanRole, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoCraftItem(string playerId, string loginToken, string itemCraftId, Dictionary<string, int> materials, UnityAction<ItemResult> onFinish);
+    protected abstract void DoGetChatMessages(string playerId, string loginToken, long lastTime, UnityAction<ChatMessageListResult> onFinish);
+    protected abstract void DoEnterChatMessage(string playerId, string loginToken, bool isClanChat, string message, UnityAction<GameServiceResult> onFinish);
 }
