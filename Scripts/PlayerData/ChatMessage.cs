@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 [System.Serializable]
-public class ChatMessage : IChatMessage
+public class ChatMessage : IChatMessage, IComparable<ChatMessage>
 {
     public string id;
     public string Id { get => id; set => id = value; }
@@ -16,10 +17,8 @@ public class ChatMessage : IChatMessage
     public string ClanName { get => clanName; set => clanName = value; }
     public string message;
     public string Message { get => message; set => message = value; }
-    public long createdAt;
-    public long CreatedAt { get => createdAt; set => createdAt = value; }
-    public long updatedAt;
-    public long UpdatedAt { get => updatedAt; set => updatedAt = value; }
+    public long chatTime;
+    public long ChatTime { get => chatTime; set => chatTime = value; }
 
     public ChatMessage Clone()
     {
@@ -34,8 +33,11 @@ public class ChatMessage : IChatMessage
         to.ProfileName = from.ProfileName;
         to.ClanName = from.ClanName;
         to.Message = from.Message;
-        to.CreatedAt = from.CreatedAt;
-        to.UpdatedAt = from.UpdatedAt;
         return to;
+    }
+
+    public int CompareTo(ChatMessage other)
+    {
+        return ChatTime.CompareTo(other.ChatTime);
     }
 }

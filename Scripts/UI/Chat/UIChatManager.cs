@@ -10,16 +10,13 @@ public class UIChatManager : UIBase
     public bool isClanChat;
     public UIChatList uiChatList;
     public InputField messageInput;
+    public ScrollRect scrollRect;
     public KeyCode enterKey = KeyCode.Return;
     private float reloadCountDown = 0f;
-    private long lastTime;
+    private long? lastTime;
+    private Dictionary<string, ChatMessage> allChats = new Dictionary<string, ChatMessage>();
 
     public string Message { get => messageInput.text; set => messageInput.text = value; }
-
-    private void Start()
-    {
-        lastTime = GameInstance.GameService.Timestamp;
-    }
 
     public override void Show()
     {
@@ -36,19 +33,35 @@ public class UIChatManager : UIBase
 
     public void Reload()
     {
-        GameInstance.GameService.GetChatMessages(lastTime, (result) =>
+        if (!lastTime.HasValue)
+            lastTime = GameInstance.GameService.Timestamp;
+        GameInstance.GameService.GetChatMessages(lastTime.Value, (result) =>
         {
+            foreach (var chat in result.list)
+            {
+                allChats[chat.Id] = chat;
+            }
+            var sortedChats = new List<ChatMessage>(allChats.Values);
+            sortedChats.Sort();
             if (uiChatList != null)
             {
                 uiChatList.selectable = false;
                 uiChatList.multipleSelection = false;
-                uiChatList.ClearListItems();
-                uiChatList.SetListItems(result.list, (ui) =>
+                foreach (var chat in sortedChats)
                 {
+                    var ui = uiChatList.SetListItem(chat);
                     ui.uiChatManager = this;
-                });
+                }
             }
-            lastTime = result.list.Last().createdAt;
+            if (sortedChats.Count > 0)
+            {
+                var newLastTime = sortedChats.Last().ChatTime;
+                if (lastTime.Value < newLastTime)
+                {
+                    lastTime = newLastTime;
+                    StartCoroutine(VerticalScroll(0f));
+                }
+            }
         });
     }
 
@@ -81,5 +94,16 @@ public class UIChatManager : UIBase
             messageInput.interactable = true;
             Debug.LogError("[EnterChatMessage] " + error);
         });
+    }
+
+    IEnumerator VerticalScroll(float normalize)
+    {
+        if (scrollRect != null)
+        {
+            Canvas.ForceUpdateCanvases();
+            yield return new WaitForSeconds(1f);
+            scrollRect.verticalScrollbar.value = normalize;
+            Canvas.ForceUpdateCanvases();
+        }
     }
 }

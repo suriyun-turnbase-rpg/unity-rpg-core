@@ -6,6 +6,5 @@
     string ProfileName { get; set; }
     string ClanName { get; set; }
     string Message { get; set; }
-    long CreatedAt { get; set; }
-    long UpdatedAt { get; set; }
+    long ChatTime { get; set; }
 }
