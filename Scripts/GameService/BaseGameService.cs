@@ -882,7 +882,6 @@ public abstract partial class BaseGameService : MonoBehaviour
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
-        HandleServiceCall();
         DoGetChatMessages(playerId, loginToken, lastTime, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
@@ -892,7 +891,6 @@ public abstract partial class BaseGameService : MonoBehaviour
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
-        HandleServiceCall();
         DoEnterChatMessage(playerId, loginToken, isClanChat, message, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
