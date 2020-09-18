@@ -235,6 +235,7 @@ public partial class SQLiteGameService : BaseGameService
 
         // open connection
         connection = new SqliteConnection("URI=file:" + dbPath);
+        connection.Open();
 
         ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS player (
             id TEXT NOT NULL PRIMARY KEY,
@@ -332,31 +333,29 @@ public partial class SQLiteGameService : BaseGameService
             ExecuteNonQuery("ALTER TABLE playerItem ADD randomedAttributes TEXT NOT NULL DEFAULT '{}';");
     }
 
+    private void OnDestroy()
+    {
+        if (connection != null)
+            connection.Close();
+    }
+
     private bool IsColumnExist(string tableName, string findingColumn)
     {
         using (SqliteCommand cmd = new SqliteCommand("PRAGMA table_info(" + tableName + ");", connection))
         {
-            DataTable table = new DataTable();
-
-            SqliteDataAdapter adp = null;
-            try
+            SqliteDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
             {
-                adp = new SqliteDataAdapter(cmd);
-                adp.Fill(table);
-                for (int i = 0; i < table.Rows.Count; ++i)
-                {
-                    if (table.Rows[i]["name"].ToString().Equals(findingColumn))
-                        return true;
-                }
+                if (reader.GetString(1).Equals(findingColumn))
+                    return true;
             }
-            catch { }
+            reader.Close();
         }
         return false;
     }
 
     public void ExecuteNonQuery(string sql, params SqliteParameter[] args)
     {
-        connection.Open();
         using (var cmd = new SqliteCommand(sql, connection))
         {
             foreach (var arg in args)
@@ -365,13 +364,11 @@ public partial class SQLiteGameService : BaseGameService
             }
             cmd.ExecuteNonQuery();
         }
-        connection.Close();
     }
 
     public object ExecuteScalar(string sql, params SqliteParameter[] args)
     {
         object result;
-        connection.Open();
         using (var cmd = new SqliteCommand(sql, connection))
         {
             foreach (var arg in args)
@@ -380,14 +377,12 @@ public partial class SQLiteGameService : BaseGameService
             }
             result = cmd.ExecuteScalar();
         }
-        connection.Close();
         return result;
     }
 
     public DbRowsReader ExecuteReader(string sql, params SqliteParameter[] args)
     {
         DbRowsReader result = new DbRowsReader();
-        connection.Open();
         using (var cmd = new SqliteCommand(sql, connection))
         {
             foreach (var arg in args)
@@ -396,7 +391,6 @@ public partial class SQLiteGameService : BaseGameService
             }
             result.Init(cmd.ExecuteReader());
         }
-        connection.Close();
         return result;
     }
 
