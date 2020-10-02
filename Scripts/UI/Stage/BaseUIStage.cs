@@ -13,6 +13,7 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
     public Text textDescription;
     public Text textStageNumber;
     public Image imageIcon;
+    public Text textRecommendBattlePoint;
     public UIStamina uiRequireStamina;
     public Text textRewardPlayerExp;
     public Text textRewardCharacterExp;
@@ -52,6 +53,9 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
 
         if (imageIcon != null)
             imageIcon.sprite = data.icon;
+
+        if (textRecommendBattlePoint != null)
+            textRecommendBattlePoint.text = data.recommendBattlePoint.ToString("N0");
 
         if (uiRequireStamina != null)
         {

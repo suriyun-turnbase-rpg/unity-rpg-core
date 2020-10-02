@@ -27,6 +27,7 @@ public class GameText
     public const string TITLE_REQUIRE_EXP = TEXT_PREFIX + "TITLE_REQUIRE_EXP";
     public const string TITLE_PRICE = TEXT_PREFIX + "TITLE_PRICE";
     public const string TITLE_REWARD_EXP = TEXT_PREFIX + "TITLE_REWARD_EXP";
+    public const string TITLE_BATTLE_POINT = TEXT_PREFIX + "TITLE_BATTLE_POINT";
     public const string TITLE_LEVEL_UP_PRICE = TEXT_PREFIX + "TITLE_LEVEL_UP_PRICE";
     // Attribute titles
     public const string TITLE_EXP_MAX = TEXT_PREFIX + "TITLE_EXP_MAX";
@@ -102,6 +103,7 @@ public static class DefaultLocale
         Texts.Add(GameText.TITLE_REQUIRE_EXP, "Require Exp");
         Texts.Add(GameText.TITLE_PRICE, "Price");
         Texts.Add(GameText.TITLE_REWARD_EXP, "Reward Exp");
+        Texts.Add(GameText.TITLE_BATTLE_POINT, "Battle Point");
         Texts.Add(GameText.TITLE_LEVEL_UP_PRICE, "Level Up Price");
         // Attributes
         Texts.Add(GameText.TITLE_EXP_MAX, "Max");

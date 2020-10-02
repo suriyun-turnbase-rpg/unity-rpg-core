@@ -6,4 +6,9 @@ public abstract class BasePlayerData
     {
         get { return GameInstance.GameDatabase; }
     }
+
+    public static BaseGameplayRule GameplayRule
+    {
+        get { return GameInstance.GameplayRule; }
+    }
 }

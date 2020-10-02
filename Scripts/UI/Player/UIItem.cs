@@ -81,6 +81,7 @@ public class UIItem : UIDataItem<PlayerItem>
     public UICurrency uiEvolvePrice;
     public UICurrency uiSellPrice;
     public Text textRewardExp;
+    public Text textBattlePoint;
     [Header("Character")]
     public Transform characterModelContainer;
     public int characterModelLayer;
@@ -414,6 +415,9 @@ public class UIItem : UIDataItem<PlayerItem>
 
         if (textRewardExp != null)
             textRewardExp.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_REWARD_EXP, data.RewardExp) : data.RewardExp.ToString("N0");
+
+        if (textBattlePoint != null)
+            textBattlePoint.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_BATTLE_POINT, data.BattlePoint) : data.BattlePoint.ToString("N0");
 
         if (characterModelContainer != null)
         {

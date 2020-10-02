@@ -1,15 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIFormation : UIBase
 {
     public string formationName;
     public Transform[] uiContainers;
     public GameObject guideObject;
+    public Text textTeamBattlePoint;
     private UIFormationManager manager;
     private UIItem slotPrefab;
     private readonly List<UIItem> UIFormationSlots = new List<UIItem>();
+
+    public int TeamBattlePoint { get; private set; }
 
     public void SetFormationData(UIFormationManager manager)
     {
@@ -45,6 +49,7 @@ public class UIFormation : UIBase
                 UIFormationSlots.Add(newItem);
             }
         }
+        TeamBattlePoint = 0;
         var i = 0;
         foreach (var uiItem in UIFormationSlots)
         {
@@ -57,6 +62,7 @@ public class UIFormation : UIBase
                 {
                     uiItem.SetData(item);
                     uiItem.SetGraphicsAlpha(1);
+                    TeamBattlePoint += item.BattlePoint;
                 }
                 else
                 {
@@ -71,6 +77,8 @@ public class UIFormation : UIBase
             }
             ++i;
         }
+        if (textTeamBattlePoint != null)
+            textTeamBattlePoint.text = TeamBattlePoint.ToString("N0");
     }
 
     private void OnClickUITeamMember(UIDataItem ui)

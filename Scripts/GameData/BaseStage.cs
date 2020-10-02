@@ -6,6 +6,7 @@ public abstract class BaseStage : BaseGameData
 {
     public string stageNumber;
     public Sprite icon;
+    public int recommendBattlePoint;
     [Header("Stamina")]
     public int requireStamina;
     [Header("Rewards")]
@@ -72,6 +73,7 @@ public abstract class BaseStage : BaseGameData
         }
         jsonUnlockStages = "[" + jsonUnlockStages + "]";
         return "{\"id\":\"" + Id + "\"," +
+            "\"recommendBattlePoint\":" + recommendBattlePoint + "," +
             "\"requireStamina\":" + requireStamina + "," +
             "\"randomSoftCurrencyMinAmount\":" + randomSoftCurrencyMinAmount + "," +
             "\"randomSoftCurrencyMaxAmount\":" + randomSoftCurrencyMaxAmount + "," +

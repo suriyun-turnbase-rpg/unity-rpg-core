@@ -78,4 +78,22 @@ public class BaseGameplayRule : ScriptableObject
         return true;
 #endif
     }
+
+    public virtual int GetBattlePoint(PlayerItem item)
+    {
+        float battlePoint = 0;
+        battlePoint += item.Attributes.hp / 25f;
+        battlePoint += item.Attributes.pAtk;
+        battlePoint += item.Attributes.pDef;
+#if !NO_MAGIC_STATS
+        battlePoint += item.Attributes.mAtk;
+        battlePoint += item.Attributes.mDef;
+#endif
+        battlePoint += item.Attributes.spd;
+#if !NO_EVADE_STATS
+        battlePoint += item.Attributes.acc;
+        battlePoint += item.Attributes.eva;
+#endif
+        return (int)battlePoint;
+    }
 }

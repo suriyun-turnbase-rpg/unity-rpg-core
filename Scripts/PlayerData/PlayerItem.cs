@@ -256,6 +256,25 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         }
     }
 
+    public int BattlePoint
+    {
+        get
+        {
+            if (CharacterData != null)
+            {
+                // Character BP + Equipments BP
+                int bp = GameplayRule.GetBattlePoint(this);
+                var equippedItems = EquippedItems.Values;
+                foreach (var equippedItem in equippedItems)
+                    bp += GameplayRule.GetBattlePoint(equippedItem);
+                return bp;
+            }
+            if (EquipmentData != null)
+                return GameplayRule.GetBattlePoint(this);
+            return 0;
+        }
+    }
+
     public List<PlayerFormation> InTeamFormations
     {
         get
