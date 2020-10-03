@@ -9,6 +9,8 @@ public abstract class BaseStage : BaseGameData
     public int recommendBattlePoint;
     [Header("Stamina")]
     public int requireStamina;
+    [Tooltip("If this is not empty it will use stamina which its ID is this value")]
+    public string requireCustomStamina;
     [Header("Rewards")]
     public int randomSoftCurrencyMinAmount;
     public int randomSoftCurrencyMaxAmount;
@@ -75,6 +77,7 @@ public abstract class BaseStage : BaseGameData
         return "{\"id\":\"" + Id + "\"," +
             "\"recommendBattlePoint\":" + recommendBattlePoint + "," +
             "\"requireStamina\":" + requireStamina + "," +
+            "\"requireCustomStamina\":\"" + requireCustomStamina + "\"," +
             "\"randomSoftCurrencyMinAmount\":" + randomSoftCurrencyMinAmount + "," +
             "\"randomSoftCurrencyMaxAmount\":" + randomSoftCurrencyMaxAmount + "," +
             "\"rewardPlayerExp\":" + rewardPlayerExp + "," +
