@@ -1,11 +1,11 @@
-﻿
-using System;
+﻿using System;
 using UnityEngine;
 
-[System.Serializable]
-public struct EventAvailability
+[Serializable]
+public struct StageAvailability
 {
-    public EventAvailabilityDay day;
+    [Range(0, 6)]
+    public DayOfWeek day;
     [Range(0, 23)]
     public int startTimeHour;
     [Range(0, 59)]
@@ -19,7 +19,7 @@ public struct EventAvailability
     /// This function to adjust event duration to not over 1 day
     /// </summary>
     /// <returns></returns>
-    public EventAvailability ValidateSetting(out bool hasChanges)
+    public StageAvailability ValidateSetting(out bool hasChanges)
     {
         hasChanges = false;
         TimeSpan time = new TimeSpan(startTimeHour, startTimeMinute, 0);
@@ -47,15 +47,4 @@ public struct EventAvailability
             "\"durationHour\":" + durationHour + "," +
             "\"durationMinute\":" + durationMinute + "}";
     }
-}
-
-public enum EventAvailabilityDay
-{
-    Sunday,
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
 }

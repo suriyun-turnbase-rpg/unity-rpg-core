@@ -28,18 +28,30 @@ public abstract class BaseStage : BaseGameData
     [Header("Unlock")]
     public BaseStage[] unlockStages;
     [Header("Event")]
-    public bool isEvent;
-    public EventAvailability[] eventAvailabilities;
+    public StageAvailability[] availabilities;
+    public bool hasAvailableDate;
+    [Range(1, 9999)]
+    public int startYear = 1;
+    public Month startMonth = Month.January;
+    [Range(1, 31)]
+    public int startDay = 1;
+    public int durationDays;
 
     protected override void OnValidate()
     {
         base.OnValidate();
         bool hasChanges = false;
         bool entryHasChanges = false;
-        for (int i = 0; i < eventAvailabilities.Length; ++i)
+        for (int i = 0; i < availabilities.Length; ++i)
         {
-            eventAvailabilities[i] = eventAvailabilities[i].ValidateSetting(out entryHasChanges);
+            availabilities[i] = availabilities[i].ValidateSetting(out entryHasChanges);
             hasChanges = hasChanges || entryHasChanges;
+        }
+        int daysInMonth = System.DateTime.DaysInMonth(startYear, (int)startMonth);
+        if (startDay > daysInMonth)
+        {
+            startDay = daysInMonth;
+            hasChanges = true;
         }
 #if UNITY_EDITOR
         if (hasChanges)
@@ -70,14 +82,14 @@ public abstract class BaseStage : BaseGameData
     public virtual string ToJson()
     {
         // Event Availibilities
-        var jsonEventAvailabilities = "";
-        foreach (var entry in eventAvailabilities)
+        var jsonAvailabilities = "";
+        foreach (var entry in availabilities)
         {
-            if (!string.IsNullOrEmpty(jsonEventAvailabilities))
-                jsonEventAvailabilities += ",";
-            jsonEventAvailabilities += entry.ToJson();
+            if (!string.IsNullOrEmpty(jsonAvailabilities))
+                jsonAvailabilities += ",";
+            jsonAvailabilities += entry.ToJson();
         }
-        jsonEventAvailabilities = "[" + jsonEventAvailabilities + "]";
+        jsonAvailabilities = "[" + jsonAvailabilities + "]";
         // Reward Items
         var jsonRewardItems = "";
         foreach (var entry in rewardItems)
@@ -113,7 +125,12 @@ public abstract class BaseStage : BaseGameData
             "\"randomSoftCurrencyMaxAmount\":" + randomSoftCurrencyMaxAmount + "," +
             "\"rewardPlayerExp\":" + rewardPlayerExp + "," +
             "\"rewardCharacterExp\":" + rewardCharacterExp + "," +
-            "\"eventAvailabilities\":" + jsonEventAvailabilities + "," +
+            "\"availabilities\":" + jsonAvailabilities + "," +
+            "\"hasAvailableDate\":" + hasAvailableDate + "," +
+            "\"startYear\":" + startYear + "," +
+            "\"startMonth\":" + (byte)startMonth + "," +
+            "\"startDay\":" + startDay + "," +
+            "\"durationDays\":" + durationDays + "," +
             "\"rewardItems\":" + jsonRewardItems + "," +
             "\"firstClearRewardSoftCurrency\":" + firstClearRewardSoftCurrency + "," +
             "\"firstClearRewardHardCurrency\":" + firstClearRewardHardCurrency + "," +
