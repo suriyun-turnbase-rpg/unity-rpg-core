@@ -8,5 +8,8 @@ public abstract class BaseGameData : ScriptableObject
     [Multiline]
     public string description;
 
+    public string tag;
+
     public virtual string Id { get { return name; } }
+    protected virtual void OnValidate() { }
 }
