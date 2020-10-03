@@ -16,8 +16,12 @@ public class GameDatabase : ScriptableObject
     public Currency softCurrency = new Currency() { id = "GOLD", startAmount = 0 };
     [Tooltip("`Hard Currency`, `Start Amount` is start amount when create new player")]
     public Currency hardCurrency = new Currency() { id = "GEM", startAmount = 0 };
+    public List<Currency> customCurrencies;
+    [Tooltip("Stamina which will be used to enter stage")]
     public Stamina stageStamina = new Stamina() { id = "STAGE_STAMINA", maxAmountTable = new Int32Attribute() };
+    [Tooltip("Stamina which will be used to enter arena")]
     public Stamina arenaStamina = new Stamina() { id = "ARENA_STAMINA", maxAmountTable = new Int32Attribute() };
+    public List<Stamina> customStaminas;
     public List<Formation> formations = new List<Formation>() {
         new Formation() { id = "STAGE_FORMATION_A", formationType = EFormationType.Stage },
         new Formation() { id = "STAGE_FORMATION_B", formationType = EFormationType.Stage },
@@ -131,23 +135,45 @@ public class GameDatabase : ScriptableObject
         AddItemsToDatabase(items);
 
         var startItemList = new List<BaseItem>();
-        foreach (var startItem in startItems)
+        if (startItems != null && startItems.Count > 0)
         {
-            startItemList.Add(startItem.item);
+            foreach (var startItem in startItems)
+            {
+                startItemList.Add(startItem.item);
+            }
         }
         AddItemsToDatabase(startItemList);
 
         var startCharacterList = new List<BaseItem>();
-        foreach (var startCharacter in startCharacters)
+        if (startCharacters != null && startCharacters.Count > 0)
         {
-            startCharacterList.Add(startCharacter);
+            foreach (var startCharacter in startCharacters)
+            {
+                startCharacterList.Add(startCharacter);
+            }
         }
         AddItemsToDatabase(startCharacterList);
 
         Currencies[softCurrency.id] = softCurrency;
         Currencies[hardCurrency.id] = hardCurrency;
+        if (customCurrencies != null && customCurrencies.Count > 0)
+        {
+            foreach (var currency in customCurrencies)
+            {
+                Currencies[currency.id] = currency;
+            }
+        }
+
         Staminas[stageStamina.id] = stageStamina;
         Staminas[arenaStamina.id] = arenaStamina;
+        if (customStaminas != null && customStaminas.Count > 0)
+        {
+            foreach (var stamina in customStaminas)
+            {
+                Staminas[stamina.id] = stamina;
+            }
+        }
+
         AddFormationsToDatabase(formations);
         AddStagesToDatabase(stages);
         AddStagesToDatabase(unlockStages);
@@ -327,8 +353,21 @@ public class GameDatabase : ScriptableObject
         }
         itemsJson = "{" + itemsJson + "}";
 
-        currenciesJson = "{\"SOFT_CURRENCY\":" + gameDatabase.softCurrency.ToJson() + ", \"HARD_CURRENCY\":" + gameDatabase.hardCurrency.ToJson() + "}";
-        staminasJson = "{\"STAGE\":" + gameDatabase.stageStamina.ToJson() + ", \"ARENA\":" + gameDatabase.arenaStamina.ToJson() + "}";
+        foreach (var currency in gameDatabase.Currencies)
+        {
+            if (!string.IsNullOrEmpty(currenciesJson))
+                currenciesJson += ",";
+            currenciesJson += "\"" + currency.Key + "\":" + currency.Value.ToJson();
+        }
+        currenciesJson = "{" + currenciesJson + "}";
+
+        foreach (var stamina in gameDatabase.Staminas)
+        {
+            if (!string.IsNullOrEmpty(staminasJson))
+                staminasJson += ",";
+            staminasJson += "\"" + stamina.Key + "\":" + stamina.Value.ToJson();
+        }
+        staminasJson = "{" + staminasJson + "}";
 
         foreach (var entry in gameDatabase.Formations)
         {
@@ -411,6 +450,10 @@ public class GameDatabase : ScriptableObject
         arenaRanksJson = "[" + arenaRanksJson + "]";
 
         return "{" +
+            "\"softCurrencyId\":\"" + softCurrency.id + "\"," +
+            "\"hardCurrencyId\":\"" + hardCurrency.id + "\"," +
+            "\"stageStaminaId\":\"" + stageStamina.id + "\"," +
+            "\"arenaStaminaId\":\"" + arenaStamina.id + "\"," +
             "\"achievements\":" + achievementsJson + "," +
             "\"itemCrafts\":" + itemCraftsJson + "," +
             "\"items\":" + itemsJson + "," +
