@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public abstract class BaseStage : BaseGameData
 {
@@ -24,6 +27,25 @@ public abstract class BaseStage : BaseGameData
     public ItemAmount[] firstClearRewardItems;
     [Header("Unlock")]
     public BaseStage[] unlockStages;
+    [Header("Event")]
+    public bool isEvent;
+    public EventAvailability[] eventAvailabilities;
+
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        bool hasChanges = false;
+        bool entryHasChanges = false;
+        for (int i = 0; i < eventAvailabilities.Length; ++i)
+        {
+            eventAvailabilities[i] = eventAvailabilities[i].ValidateSetting(out entryHasChanges);
+            hasChanges = hasChanges || entryHasChanges;
+        }
+#if UNITY_EDITOR
+        if (hasChanges)
+            EditorUtility.SetDirty(this);
+#endif
+    }
 
     public virtual List<PlayerItem> GetCharacters()
     {

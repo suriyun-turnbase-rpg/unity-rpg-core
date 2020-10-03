@@ -1,0 +1,51 @@
+﻿
+using System;
+using UnityEngine;
+
+[System.Serializable]
+public struct EventAvailability
+{
+    public EventAvailabilityDay day;
+    [Range(0, 23)]
+    public int startTimeHour;
+    [Range(0, 59)]
+    public int startTimeMinute;
+    [Range(0, 23)]
+    public int durationHour;
+    [Range(0, 59)]
+    public int durationMinute;
+
+    /// <summary>
+    /// This function to adjust event duration to not over 1 day
+    /// </summary>
+    /// <returns></returns>
+    public EventAvailability ValidateSetting(out bool hasChanges)
+    {
+        hasChanges = false;
+        TimeSpan time = new TimeSpan(startTimeHour, startTimeMinute, 0);
+        time = time.Add(new TimeSpan(durationHour, durationMinute, 0));
+        if (time.TotalHours - 24 > 0)
+        {
+            durationHour -= (int)time.TotalHours - 24;
+            time = time.Subtract(TimeSpan.FromHours((int)time.TotalHours - 24));
+            hasChanges = true;
+        }
+        if (time.TotalMinutes - (60 * 24) > 0)
+        {
+            durationMinute -= (int)(time.TotalMinutes - (60 * 24));
+            hasChanges = true;
+        }
+        return this;
+    }
+}
+
+public enum EventAvailabilityDay
+{
+    Sunday,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+}
