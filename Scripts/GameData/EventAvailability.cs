@@ -37,6 +37,16 @@ public struct EventAvailability
         }
         return this;
     }
+
+    public string ToJson()
+    {
+        return "{" +
+            "\"day\":" + (byte)day + "," +
+            "\"startTimeHour\":" + startTimeHour + "," +
+            "\"startTimeMinute\":" + startTimeMinute + "," +
+            "\"durationHour\":" + durationHour + "," +
+            "\"durationMinute\":" + durationMinute + "}";
+    }
 }
 
 public enum EventAvailabilityDay

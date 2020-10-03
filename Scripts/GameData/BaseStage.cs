@@ -69,6 +69,15 @@ public abstract class BaseStage : BaseGameData
 
     public virtual string ToJson()
     {
+        // Event Availibilities
+        var jsonEventAvailabilities = "";
+        foreach (var entry in eventAvailabilities)
+        {
+            if (!string.IsNullOrEmpty(jsonEventAvailabilities))
+                jsonEventAvailabilities += ",";
+            jsonEventAvailabilities += entry.ToJson();
+        }
+        jsonEventAvailabilities = "[" + jsonEventAvailabilities + "]";
         // Reward Items
         var jsonRewardItems = "";
         foreach (var entry in rewardItems)
@@ -104,6 +113,7 @@ public abstract class BaseStage : BaseGameData
             "\"randomSoftCurrencyMaxAmount\":" + randomSoftCurrencyMaxAmount + "," +
             "\"rewardPlayerExp\":" + rewardPlayerExp + "," +
             "\"rewardCharacterExp\":" + rewardCharacterExp + "," +
+            "\"eventAvailabilities\":" + jsonEventAvailabilities + "," +
             "\"rewardItems\":" + jsonRewardItems + "," +
             "\"firstClearRewardSoftCurrency\":" + firstClearRewardSoftCurrency + "," +
             "\"firstClearRewardHardCurrency\":" + firstClearRewardHardCurrency + "," +
