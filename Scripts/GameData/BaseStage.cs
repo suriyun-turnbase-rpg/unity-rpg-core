@@ -42,10 +42,13 @@ public abstract class BaseStage : BaseGameData
         base.OnValidate();
         bool hasChanges = false;
         bool entryHasChanges = false;
-        for (int i = 0; i < availabilities.Length; ++i)
+        if (availabilities != null)
         {
-            availabilities[i] = availabilities[i].ValidateSetting(out entryHasChanges);
-            hasChanges = hasChanges || entryHasChanges;
+            for (int i = 0; i < availabilities.Length; ++i)
+            {
+                availabilities[i] = availabilities[i].ValidateSetting(out entryHasChanges);
+                hasChanges = hasChanges || entryHasChanges;
+            }
         }
         int daysInMonth = System.DateTime.DaysInMonth(startYear, (int)startMonth);
         if (startDay > daysInMonth)
