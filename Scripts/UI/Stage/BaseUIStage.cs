@@ -90,7 +90,7 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
 
     public void UpdateElementsWhenUnlocked()
     {
-        var isUnlocked = PlayerClearStage.IsUnlock(data) && GameInstance.AvailableStages.Contains(data.Id);
+        var isUnlocked = (PlayerClearStage.IsUnlock(data) || data.unlocked) && GameInstance.AvailableStages.Contains(data.Id);
         foreach (var button in interactableButtonsWhenUnlocked)
         {
             button.interactable = isUnlocked;

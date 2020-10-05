@@ -26,6 +26,7 @@ public abstract class BaseStage : BaseGameData
     public int firstClearRewardPlayerExp;
     public ItemAmount[] firstClearRewardItems;
     [Header("Unlock")]
+    public bool unlocked;
     public BaseStage[] unlockStages;
     [Header("Event")]
     public StageAvailability[] availabilities;
