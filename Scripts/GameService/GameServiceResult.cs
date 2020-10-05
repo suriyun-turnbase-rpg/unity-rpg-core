@@ -24,6 +24,8 @@ public class GameServiceErrorCode
     public const string INVALID_IN_GAME_PACKAGE_DATA = ERROR_PREFIX + "INVALID_IN_GAME_PACKAGE_DATA";
     public const string INVALID_ACHIEVEMENT_DATA = ERROR_PREFIX + "INVALID_ACHIEVEMENT_DATA";
     public const string INVALID_ITEM_CRAFT_FORMULA_DATA = ERROR_PREFIX + "INVALID_ITEM_CRAFT_FORMULA_DATA";
+    public const string INVALID_CURRENCY_DATA = ERROR_PREFIX + "INVALID_CURRENCY_DATA";
+    public const string INVALID_STAMINA_DATA = ERROR_PREFIX + "INVALID_STAMINA_DATA";
     public const string INVALID_EQUIP_POSITION = ERROR_PREFIX + "INVALID_EQUIP_POSITION";
     public const string INVALID_BATTLE_SESSION = ERROR_PREFIX + "INVALID_BATTLE_SESSION";
     public const string NOT_ENOUGH_SOFT_CURRENCY = ERROR_PREFIX + "NOT_ENOUGH_SOFT_CURRENCY";
@@ -34,6 +36,7 @@ public class GameServiceErrorCode
     public const string ACHIEVEMENT_UNDONE = ERROR_PREFIX + "ACHIEVEMENT_UNDONE";
     public const string ACHIEVEMENT_EARNED = ERROR_PREFIX + "ACHIEVEMENT_EARNED";
     public const string CANNOT_EVOLVE = ERROR_PREFIX + "CANNOT_EVOLVE";
+    public const string CANNOT_REFILL_STAMINA = ERROR_PREFIX + "CANNOT_REFILL_STAMINA";
     public const string JOINED_CLAN = ERROR_PREFIX + "JOINED_CLAN";
     public const string NOT_HAVE_PERMISSION = ERROR_PREFIX + "NOT_HAVE_PERMISSION";
     public const string CLAN_OWNER_CANNOT_EXIT = ERROR_PREFIX + "CLAN_OWNER_CANNOT_EXIT";
@@ -246,4 +249,11 @@ public class CreateClanResult : GameServiceResult
 public class ChatMessageListResult : GameServiceResult
 {
     public List<ChatMessage> list = new List<ChatMessage>();
+}
+
+[System.Serializable]
+public class RefillStaminaResult : GameServiceResult
+{
+    public PlayerStamina stamina;
+    public PlayerCurrency currency;
 }

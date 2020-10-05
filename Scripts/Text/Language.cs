@@ -172,6 +172,8 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.INVALID_IN_GAME_PACKAGE_DATA, "Invalid In-game package data");
         Texts.Add(GameServiceErrorCode.INVALID_ACHIEVEMENT_DATA, "Invalid achievement data");
         Texts.Add(GameServiceErrorCode.INVALID_ITEM_CRAFT_FORMULA_DATA, "Invalid item craft formula data");
+        Texts.Add(GameServiceErrorCode.INVALID_CURRENCY_DATA, "Invalid currency data");
+        Texts.Add(GameServiceErrorCode.INVALID_STAMINA_DATA, "Invalid stamina data");
         Texts.Add(GameServiceErrorCode.INVALID_EQUIP_POSITION, "Invalid equip position");
         Texts.Add(GameServiceErrorCode.INVALID_BATTLE_SESSION, "Invalid battle session");
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_SOFT_CURRENCY, "Not enough " + Texts[GameText.TITLE_SOFT_CURRENCY]);
@@ -182,6 +184,7 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.ACHIEVEMENT_UNDONE, "Achievement's task isn't done");
         Texts.Add(GameServiceErrorCode.ACHIEVEMENT_EARNED, "Achievement's rewards earned");
         Texts.Add(GameServiceErrorCode.CANNOT_EVOLVE, "Cannot evolve");
+        Texts.Add(GameServiceErrorCode.CANNOT_REFILL_STAMINA, "Cannot refill stamina");
         Texts.Add(GameServiceErrorCode.NOT_AVAILABLE, "Services not available");
         Texts.Add(GameServiceErrorCode.JOINED_CLAN, "Already joined clan, cannot create or join other clan");
         Texts.Add(GameServiceErrorCode.NOT_HAVE_PERMISSION, "You don't have permission to do it");

@@ -4,7 +4,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using Mono.Data.Sqlite;
-using System.Data;
 using Newtonsoft.Json;
 
 public class DbRowsReader
@@ -283,8 +282,10 @@ public partial class SQLiteGameService : BaseGameService
             id TEXT NOT NULL PRIMARY KEY,
             playerId TEXT NOT NULL,
             dataId TEXT NOT NULL,
-            amount INTEGER NOT NULL,
-            recoveredTime INTEGER NOT NULL)");
+            amount INTEGER NOT NULL DEFAULT 0,
+            recoveredTime INTEGER NOT NULL DEFAULT 0,
+            refillCount INTEGER NOT NULL DEFAULT 0,
+            lastRefillTime INTEGER NOT NULL DEFAULT 0)");
 
         ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerFormation (
             id TEXT NOT NULL PRIMARY KEY,
@@ -331,6 +332,12 @@ public partial class SQLiteGameService : BaseGameService
 
         if (!IsColumnExist("playerItem", "randomedAttributes"))
             ExecuteNonQuery("ALTER TABLE playerItem ADD randomedAttributes TEXT NOT NULL DEFAULT '{}';");
+
+        if (!IsColumnExist("playerStamina", "refillCount"))
+            ExecuteNonQuery("ALTER TABLE playerStamina ADD refillCount INTEGER NOT NULL DEFAULT 0;");
+
+        if (!IsColumnExist("playerStamina", "lastRefillTime"))
+            ExecuteNonQuery("ALTER TABLE playerStamina ADD lastRefillTime INTEGER NOT NULL DEFAULT 0;");
     }
 
     private void OnDestroy()
@@ -662,6 +669,55 @@ public partial class SQLiteGameService : BaseGameService
     {
         var result = new GameServiceResult();
         result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoRefillStamina(string playerId, string loginToken, string staminaId, UnityAction<RefillStaminaResult> onFinish)
+    {
+        var result = new RefillStaminaResult();
+        var foundPlayer = GetPlayerByLoginToken(playerId, loginToken);
+        if (foundPlayer == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!GameInstance.GameDatabase.Staminas.ContainsKey(staminaId))
+            result.error = GameServiceErrorCode.INVALID_STAMINA_DATA;
+        else if (GameInstance.GameDatabase.Staminas[staminaId].refillPrices.Length == 0)
+            result.error = GameServiceErrorCode.CANNOT_REFILL_STAMINA;
+        else
+        {
+            var playerStamina = GetStamina(playerId, staminaId);
+            var hardCurrency = GetCurrency(playerId, GameInstance.GameDatabase.hardCurrency.id);
+            var stamina = GameInstance.GameDatabase.Staminas[staminaId];
+            var currentDateTicks = new System.DateTime(Timestamp * System.TimeSpan.TicksPerSecond).Date.Ticks;
+            var lastRefillDateTicks = new System.DateTime(playerStamina.LastRefillTime * System.TimeSpan.TicksPerSecond).Date.Ticks;
+            if (currentDateTicks > lastRefillDateTicks)
+                playerStamina.RefillCount = 0;
+            var indexOfPrice = playerStamina.RefillCount;
+            if (indexOfPrice >= stamina.refillPrices.Length)
+                indexOfPrice = stamina.refillPrices.Length - 1;
+            var price = stamina.refillPrices[indexOfPrice];
+            if (price > hardCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
+            else
+            {
+                hardCurrency.Amount -= price;
+                ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                    new SqliteParameter("@amount", hardCurrency.Amount),
+                    new SqliteParameter("@id", hardCurrency.Id));
+                var refillAmount = stamina.maxAmountTable.Calculate(foundPlayer.Level, foundPlayer.MaxLevel);
+                playerStamina.Amount += refillAmount;
+                playerStamina.RecoveredTime = Timestamp;
+                playerStamina.LastRefillTime = Timestamp;
+                playerStamina.RefillCount++;
+                ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime WHERE id=@id",
+                    new SqliteParameter("@amount", playerStamina.Amount),
+                    new SqliteParameter("@recoveredTime", playerStamina.RecoveredTime),
+                    new SqliteParameter("@refillCount", playerStamina.RefillCount),
+                    new SqliteParameter("@lastRefillTime", playerStamina.LastRefillTime),
+                    new SqliteParameter("@id", staminaId));
+                result.currency = hardCurrency;
+                result.stamina = playerStamina;
+            }
+        }
         onFinish(result);
     }
 

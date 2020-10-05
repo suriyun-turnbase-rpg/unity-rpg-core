@@ -175,4 +175,47 @@ public partial class LiteDbGameService : BaseGameService
         result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }
+
+    protected override void DoRefillStamina(string playerId, string loginToken, string staminaId, UnityAction<RefillStaminaResult> onFinish)
+    {
+        var result = new RefillStaminaResult();
+        var foundPlayer = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        if (foundPlayer == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!GameInstance.GameDatabase.Staminas.ContainsKey(staminaId))
+            result.error = GameServiceErrorCode.INVALID_STAMINA_DATA;
+        else if (GameInstance.GameDatabase.Staminas[staminaId].refillPrices.Length == 0)
+            result.error = GameServiceErrorCode.CANNOT_REFILL_STAMINA;
+        else
+        {
+            var playerStamina = GetStamina(playerId, staminaId);
+            var hardCurrency = GetCurrency(playerId, GameInstance.GameDatabase.hardCurrency.id);
+            var stamina = GameInstance.GameDatabase.Staminas[staminaId];
+            var currentDateTicks = new System.DateTime(Timestamp * System.TimeSpan.TicksPerSecond).Date.Ticks;
+            var lastRefillDateTicks = new System.DateTime(playerStamina.LastRefillTime * System.TimeSpan.TicksPerSecond).Date.Ticks;
+            if (currentDateTicks > lastRefillDateTicks)
+                playerStamina.RefillCount = 0;
+            var indexOfPrice = playerStamina.RefillCount;
+            if (indexOfPrice >= stamina.refillPrices.Length)
+                indexOfPrice = stamina.refillPrices.Length - 1;
+            var price = stamina.refillPrices[indexOfPrice];
+            if (price > hardCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
+            else
+            {
+                var clonedPlayer = Player.CloneTo(foundPlayer, new Player());
+                hardCurrency.Amount -= price;
+                colPlayerCurrency.Update(hardCurrency);
+                var refillAmount = stamina.maxAmountTable.Calculate(clonedPlayer.Level, clonedPlayer.MaxLevel);
+                playerStamina.Amount += refillAmount;
+                playerStamina.RecoveredTime = Timestamp;
+                playerStamina.LastRefillTime = Timestamp;
+                playerStamina.RefillCount++;
+                colPlayerStamina.Update(playerStamina);
+                result.currency = PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency());
+                result.stamina = PlayerStamina.CloneTo(playerStamina, new PlayerStamina());
+            }
+        }
+        onFinish(result);
+    }
 }

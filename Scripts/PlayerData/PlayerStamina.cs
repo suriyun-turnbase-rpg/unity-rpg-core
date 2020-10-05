@@ -44,6 +44,10 @@ public class PlayerStamina : BasePlayerData, IPlayerStamina
     public int Amount { get { return amount; } set { amount = value; } }
     public long recoveredTime;
     public long RecoveredTime { get { return recoveredTime; } set { recoveredTime = value; } }
+    public int refillCount;
+    public int RefillCount { get { return refillCount; } set { refillCount = value; } }
+    public long lastRefillTime;
+    public long LastRefillTime { get { return lastRefillTime; } set { lastRefillTime = value; } }
 
     public PlayerStamina Clone()
     {
@@ -57,6 +61,8 @@ public class PlayerStamina : BasePlayerData, IPlayerStamina
         to.DataId = from.DataId;
         to.Amount = from.Amount;
         to.RecoveredTime = from.RecoveredTime;
+        to.RefillCount = from.RefillCount;
+        to.LastRefillTime = from.LastRefillTime;
         return to;
     }
 
