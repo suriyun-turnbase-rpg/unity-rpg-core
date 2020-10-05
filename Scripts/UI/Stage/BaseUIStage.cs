@@ -118,7 +118,11 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
     {
         if (StagePreparation != null)
         {
-            StagePreparation.Show();
+            var historyManager = FindObjectOfType<UIHistoryManager>();
+            if (historyManager)
+                historyManager.Next(StagePreparation);
+            else
+                StagePreparation.Show();
         }
     }
 
