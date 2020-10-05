@@ -309,6 +309,8 @@ public partial class SQLiteGameService
             stamina.DataId = staminas.GetString("dataId");
             stamina.Amount = staminas.GetInt32("amount");
             stamina.RecoveredTime = staminas.GetInt64("recoveredTime");
+            stamina.LastRefillTime = staminas.GetInt64("lastRefillTime");
+            stamina.RefillCount = staminas.GetInt32("refillCount");
         }
         return stamina;
     }

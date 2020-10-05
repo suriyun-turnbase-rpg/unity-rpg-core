@@ -708,12 +708,12 @@ public partial class SQLiteGameService : BaseGameService
                 playerStamina.RecoveredTime = Timestamp;
                 playerStamina.LastRefillTime = Timestamp;
                 playerStamina.RefillCount++;
-                ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime WHERE id=@id",
+                ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime, refillCount=@refillCount, lastRefillTime=@lastRefillTime WHERE id=@id",
                     new SqliteParameter("@amount", playerStamina.Amount),
                     new SqliteParameter("@recoveredTime", playerStamina.RecoveredTime),
                     new SqliteParameter("@refillCount", playerStamina.RefillCount),
                     new SqliteParameter("@lastRefillTime", playerStamina.LastRefillTime),
-                    new SqliteParameter("@id", staminaDataId));
+                    new SqliteParameter("@id", playerStamina.Id));
                 result.currency = hardCurrency;
                 result.stamina = playerStamina;
             }
