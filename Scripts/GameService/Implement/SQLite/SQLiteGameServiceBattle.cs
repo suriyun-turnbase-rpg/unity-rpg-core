@@ -6,6 +6,17 @@ using Mono.Data.Sqlite;
 
 public partial class SQLiteGameService
 {
+    protected override void DoGetAvailableStageList(UnityAction<AvailableStageListResult> onFinish)
+    {
+        var result = new AvailableStageListResult();
+        foreach (var key in GameInstance.GameDatabase.Stages.Keys)
+        {
+            if (IsStageAvailable(GameInstance.GameDatabase.Stages[key]))
+                result.list.Add(key);
+        }
+        onFinish(result);
+    }
+
     protected override void DoStartStage(string playerId, string loginToken, string stageDataId, string helperPlayerId, UnityAction<StartStageResult> onFinish)
     {
         var result = new StartStageResult();
