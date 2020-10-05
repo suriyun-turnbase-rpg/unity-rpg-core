@@ -555,9 +555,9 @@ public partial class LiteDbGameService
                 System.DateTime fromTime = currentTime.Date
                     .AddHours(availability.startTimeHour)
                     .AddMinutes(availability.startTimeMinute);
-                System.DateTime toTime = currentTime.Date
-                    .AddHours(availability.startTimeHour + availability.durationHour)
-                    .AddMinutes(availability.startTimeMinute + availability.durationMinute);
+                System.DateTime toTime = fromTime
+                    .AddHours(availability.durationHour)
+                    .AddMinutes(availability.durationMinute);
                 if (currentTime.DayOfWeek == availability.day ||
                     currentTime.Ticks >= fromTime.Ticks ||
                     currentTime.Ticks < toTime.Ticks)
