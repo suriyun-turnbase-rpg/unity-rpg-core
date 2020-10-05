@@ -906,7 +906,7 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoEnterChatMessage(playerId, loginToken, isClanChat, message, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void RefillStamina(string staminaDataId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    public void RefillStamina(string staminaDataId, UnityAction<RefillStaminaResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: RefillStamina");
         var player = Player.CurrentPlayer;

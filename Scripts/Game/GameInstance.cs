@@ -325,6 +325,15 @@ public partial class GameInstance : MonoBehaviour
         PlayerCurrency.SetDataRange(result.updateCurrencies);
     }
 
+    public void OnGameServiceRefillStaminaResult(RefillStaminaResult result)
+    {
+        if (!result.Success)
+            return;
+
+        PlayerStamina.SetData(result.stamina);
+        PlayerCurrency.SetData(result.currency);
+    }
+
     #region Current Player Data Validation
     /// <summary>
     /// Set profile name first time, when it's not already set.

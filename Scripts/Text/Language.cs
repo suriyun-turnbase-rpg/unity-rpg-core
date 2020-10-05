@@ -73,6 +73,8 @@ public class GameText
     public const string WARN_DESCRIPTION_CLAN_TERMINATE = TEXT_PREFIX + "WARN_DESCRIPTION_CLAN_TERMINATE";
     public const string WARN_TITLE_CLAN_EXIT = TEXT_PREFIX + "WARN_TITLE_CLAN_EXIT";
     public const string WARN_DESCRIPTION_CLAN_EXIT = TEXT_PREFIX + "WARN_DESCRIPTION_CLAN_EXIT";
+    public const string WARN_TITLE_REFILL_STAMINA = TEXT_PREFIX + "WARN_TITLE_REFILL_STAMINA";
+    public const string WARN_DESCRIPTION_REFILL_STAMINA = TEXT_PREFIX + "WARN_DESCRIPTION_REFILL_STAMINA";
     // Formats
     public const string FORMAT_INFO = FORMAT_PREFIX + "FORMAT_INFO";
     public const string FORMAT_ATTRIBUTE = FORMAT_PREFIX + "FORMAT_ATTRIBUTE";
@@ -149,6 +151,8 @@ public static class DefaultLocale
         Texts.Add(GameText.WARN_DESCRIPTION_CLAN_TERMINATE, "Do you want to terminate the clan?");
         Texts.Add(GameText.WARN_TITLE_CLAN_EXIT, "Leave");
         Texts.Add(GameText.WARN_DESCRIPTION_CLAN_EXIT, "Do you want to leave the clan?");
+        Texts.Add(GameText.WARN_TITLE_REFILL_STAMINA, "Refilling stamina");
+        Texts.Add(GameText.WARN_DESCRIPTION_REFILL_STAMINA, "Do you want to refill the stamina?");
         // Format
         Texts.Add(GameText.FORMAT_INFO, "{0}{1}");
         Texts.Add(GameText.FORMAT_ATTRIBUTE, "{0}: {1}{2}");
