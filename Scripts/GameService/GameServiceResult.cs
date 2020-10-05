@@ -169,6 +169,12 @@ public class AvailableInGamePackageListResult : GameServiceResult
 }
 
 [System.Serializable]
+public class AvailableStageListResult : GameServiceResult
+{
+    public List<string> list = new List<string>();
+}
+
+[System.Serializable]
 public class PlayerListResult : GameServiceResult
 {
     public List<Player> list = new List<Player>();

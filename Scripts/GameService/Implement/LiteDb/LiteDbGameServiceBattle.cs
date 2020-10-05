@@ -21,8 +21,16 @@ public partial class LiteDbGameService
             colPlayerBattle.Delete(a => a.PlayerId == playerId && a.BattleResult == (byte)EBattleResult.None && a.BattleType == (byte)EBattleType.Stage);
             var stage = gameDb.Stages[stageDataId];
             var stageStaminaTable = gameDb.stageStamina;
+            if (string.IsNullOrEmpty(stage.requireCustomStamina) &&
+                gameDb.Staminas.ContainsKey(stage.requireCustomStamina))
+            {
+                // Use custom stamina if `requireCustomStamina` not empty
+                stageStaminaTable = gameDb.Staminas[stage.requireCustomStamina];
+            }
             if (!DecreasePlayerStamina(player, stageStaminaTable, stage.requireStamina))
+            {
                 result.error = GameServiceErrorCode.NOT_ENOUGH_STAGE_STAMINA;
+            }
             else
             {
                 var playerBattle = new DbPlayerBattle();

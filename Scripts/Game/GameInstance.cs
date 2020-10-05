@@ -37,6 +37,7 @@ public partial class GameInstance : MonoBehaviour
     public static readonly List<string> AvailableLootBoxes = new List<string>();
     public static readonly List<string> AvailableIapPackages = new List<string>();
     public static readonly List<string> AvailableInGamePackages = new List<string>();
+    public static readonly List<string> AvailableStages = new List<string>();
 
     private readonly Queue<UIMessageDialog.Data> messageDialogData = new Queue<UIMessageDialog.Data>();
     private LoadAllPlayerDataState loadAllPlayerDataState;
@@ -50,6 +51,7 @@ public partial class GameInstance : MonoBehaviour
     private static bool isAvailableLootBoxListLoaded;
     private static bool isAvailableIapPackageListLoaded;
     private static bool isAvailableInGamePackageListLoaded;
+    private static bool isAvailableStageListLoaded;
     private static int countLoading = 0;
 
     private void Awake()
@@ -306,6 +308,15 @@ public partial class GameInstance : MonoBehaviour
         AvailableInGamePackages.AddRange(result.list);
     }
 
+    public void OnGameServiceAvailableStageListResult(AvailableStageListResult result)
+    {
+        if (!result.Success)
+            return;
+
+        AvailableStages.Clear();
+        AvailableStages.AddRange(result.list);
+    }
+
     public void OnGameServiceCreateClanResult(CreateClanResult result)
     {
         if (!result.Success)
@@ -345,6 +356,7 @@ public partial class GameInstance : MonoBehaviour
         GetAvailableLootBoxList();
         GetAvailableIAPPackageList();
         GetAvailableInGamePackageList();
+        GetAvailableStageList();
     }
 
     /// <summary>
@@ -508,6 +520,22 @@ public partial class GameInstance : MonoBehaviour
     }
 
     /// <summary>
+    /// Get list of available to enter stages
+    /// </summary>
+    private void GetAvailableStageList()
+    {
+        isAvailableStageListLoaded = false;
+        GameService.GetAvailableStageList(OnGetAvailableStageListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
+    }
+
+    private void OnGetAvailableStageListSuccess(AvailableStageListResult result)
+    {
+        OnGameServiceAvailableStageListResult(result);
+        isAvailableStageListLoaded = true;
+        ValidatePlayerData();
+    }
+
+    /// <summary>
     /// When receive all current player data, load manage scene
     /// </summary>
     private void ValidatePlayerData()
@@ -521,7 +549,8 @@ public partial class GameInstance : MonoBehaviour
             isPlayerClearStageListLoaded &&
             isAvailableLootBoxListLoaded &&
             isAvailableIapPackageListLoaded &&
-            isAvailableInGamePackageListLoaded)
+            isAvailableInGamePackageListLoaded &&
+            isAvailableStageListLoaded)
         {
             // Setup purchasing when all data loaded
             SetupPurchasing();

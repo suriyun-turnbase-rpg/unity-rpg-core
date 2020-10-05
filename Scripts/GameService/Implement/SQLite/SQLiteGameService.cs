@@ -658,6 +658,17 @@ public partial class SQLiteGameService : BaseGameService
         return list;
     }
 
+    protected override void DoGetAvailableStageList(UnityAction<AvailableStageListResult> onFinish)
+    {
+        var result = new AvailableStageListResult();
+        foreach (var key in GameInstance.GameDatabase.Stages.Keys)
+        {
+            if (IsStageAvailable(GameInstance.GameDatabase.Stages[key]))
+                result.list.Add(key);
+        }
+        onFinish(result);
+    }
+
     protected override void DoGetServiceTime(UnityAction<ServiceTimeResult> onFinish)
     {
         var result = new ServiceTimeResult();

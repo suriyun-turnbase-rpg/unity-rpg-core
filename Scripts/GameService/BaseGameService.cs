@@ -542,6 +542,18 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetAvailableInGamePackageList((finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    /// <summary>
+    /// GetAvailableStageList
+    /// </summary>
+    /// <param name="onSuccess"></param>
+    /// <param name="onError"></param>
+    public void GetAvailableStageList(UnityAction<AvailableStageListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetAvailableStageList");
+        HandleServiceCall();
+        DoGetAvailableStageList((finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     public void GetHelperList(UnityAction<PlayerListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetRandomPlayerList");
@@ -920,6 +932,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoGetAvailableLootBoxList(UnityAction<AvailableLootBoxListResult> onFinish);
     protected abstract void DoGetAvailableIapPackageList(UnityAction<AvailableIapPackageListResult> onFinish);
     protected abstract void DoGetAvailableInGamePackageList(UnityAction<AvailableInGamePackageListResult> onFinish);
+    protected abstract void DoGetAvailableStageList(UnityAction<AvailableStageListResult> onFinish);
     protected abstract void DoSetFormation(string playerId, string loginToken, string characterId, string formationName, int position, UnityAction<FormationListResult> onFinish);
     protected abstract void DoOpenLootBox(string playerId, string loginToken, string lootBoxDataId, int packIndex, UnityAction<ItemResult> onFinish);
     protected abstract void DoOpenIapPackage_iOS(string playerId, string loginToken, string iapPackageDataId, string receipt, UnityAction<ItemResult> onFinish);

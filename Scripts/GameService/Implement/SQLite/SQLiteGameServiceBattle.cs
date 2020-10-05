@@ -25,8 +25,16 @@ public partial class SQLiteGameService
                 new SqliteParameter("@battleType", (byte)EBattleType.Stage));
             var stage = gameDb.Stages[stageDataId];
             var stageStaminaTable = gameDb.stageStamina;
+            if (string.IsNullOrEmpty(stage.requireCustomStamina) &&
+                gameDb.Staminas.ContainsKey(stage.requireCustomStamina))
+            {
+                // Use custom stamina if `requireCustomStamina` not empty
+                stageStaminaTable = gameDb.Staminas[stage.requireCustomStamina];
+            }
             if (!DecreasePlayerStamina(player, stageStaminaTable, stage.requireStamina))
+            {
                 result.error = GameServiceErrorCode.NOT_ENOUGH_STAGE_STAMINA;
+            }
             else
             {
                 var playerBattle = new PlayerBattle();
