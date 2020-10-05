@@ -15,6 +15,8 @@ public partial class SQLiteGameService
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else if (!gameDb.Stages.ContainsKey(stageDataId))
             result.error = GameServiceErrorCode.INVALID_STAGE_DATA;
+        else if (!IsStageAvailable(gameDb.Stages[stageDataId]))
+            result.error = GameServiceErrorCode.INVALID_STAGE_NOT_AVAILABLE;
         else
         {
             ExecuteNonQuery(@"DELETE FROM playerBattle WHERE playerId=@playerId AND battleResult=@battleResult AND battleType=@battleType",

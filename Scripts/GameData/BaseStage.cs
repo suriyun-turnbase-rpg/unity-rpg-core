@@ -131,7 +131,7 @@ public abstract class BaseStage : BaseGameData
             "\"availabilities\":" + jsonAvailabilities + "," +
             "\"hasAvailableDate\":" + hasAvailableDate + "," +
             "\"startYear\":" + startYear + "," +
-            "\"startMonth\":" + (byte)startMonth + "," +
+            "\"startMonth\":" + (int)startMonth + "," +
             "\"startDay\":" + startDay + "," +
             "\"durationDays\":" + durationDays + "," +
             "\"rewardItems\":" + jsonRewardItems + "," +

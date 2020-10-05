@@ -542,4 +542,40 @@ public partial class LiteDbGameService
         }
         return enoughMaterials;
     }
+
+    private bool IsStageAvailable(BaseStage stage)
+    {
+        var available = true;
+        var currentTime = System.DateTime.Now;
+        if (stage.availabilities != null && stage.availabilities.Length > 0)
+        {
+            available = false;
+            foreach (var availability in stage.availabilities)
+            {
+                System.DateTime fromTime = currentTime.Date
+                    .AddHours(availability.startTimeHour)
+                    .AddMinutes(availability.startTimeMinute);
+                System.DateTime toTime = currentTime.Date
+                    .AddHours(availability.startTimeHour + availability.durationHour)
+                    .AddMinutes(availability.startTimeMinute + availability.durationMinute);
+                if (currentTime.DayOfWeek == availability.day ||
+                    currentTime.Ticks >= fromTime.Ticks ||
+                    currentTime.Ticks < toTime.Ticks)
+                {
+                    available = true;
+                    break;
+                }
+            }
+        }
+        if (available)
+        {
+            if (!stage.hasAvailableDate)
+                return true;
+            var currentDate = currentTime.Date;
+            var startDate = new System.DateTime(stage.startYear, (int)stage.startMonth, stage.startDay);
+            var endDate = startDate.AddDays(stage.durationDays);
+            return currentDate.Ticks >= startDate.Ticks && currentDate.Ticks < endDate.Ticks;
+        }
+        return false;
+    }
 }

@@ -166,6 +166,7 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.INVALID_ITEM_DATA, "Invalid item data");
         Texts.Add(GameServiceErrorCode.INVALID_FORMATION_DATA, "Invalid formation data");
         Texts.Add(GameServiceErrorCode.INVALID_STAGE_DATA, "Invalid stage data");
+        Texts.Add(GameServiceErrorCode.INVALID_STAGE_NOT_AVAILABLE, "Stage not available to enter");
         Texts.Add(GameServiceErrorCode.INVALID_LOOT_BOX_DATA, "Invalid loot box data");
         Texts.Add(GameServiceErrorCode.INVALID_IAP_PACKAGE_DATA, "Invalid IAP package data");
         Texts.Add(GameServiceErrorCode.INVALID_IN_GAME_PACKAGE_DATA, "Invalid In-game package data");

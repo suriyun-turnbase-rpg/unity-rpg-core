@@ -4,7 +4,6 @@ using UnityEngine;
 [Serializable]
 public struct StageAvailability
 {
-    [Range(0, 6)]
     public DayOfWeek day;
     [Range(0, 23)]
     public int startTimeHour;

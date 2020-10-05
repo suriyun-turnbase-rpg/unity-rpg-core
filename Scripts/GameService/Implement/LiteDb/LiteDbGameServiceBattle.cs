@@ -14,6 +14,8 @@ public partial class LiteDbGameService
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else if (!gameDb.Stages.ContainsKey(stageDataId))
             result.error = GameServiceErrorCode.INVALID_STAGE_DATA;
+        else if (!IsStageAvailable(gameDb.Stages[stageDataId]))
+            result.error = GameServiceErrorCode.INVALID_STAGE_NOT_AVAILABLE;
         else
         {
             colPlayerBattle.Delete(a => a.PlayerId == playerId && a.BattleResult == (byte)EBattleResult.None && a.BattleType == (byte)EBattleType.Stage);
