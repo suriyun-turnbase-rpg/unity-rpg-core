@@ -87,8 +87,18 @@ public partial class LiteDbGameService : BaseGameService
         if (player == null)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else
-            result.list.AddRange(DbPlayerCurrency.CloneList(colPlayerCurrency.Find(a => a.PlayerId == playerId)));
+            result.list.AddRange(DbPlayerCurrency.CloneList(GetPlayerCurrencies(playerId)));
         onFinish(result);
+    }
+
+    protected List<DbPlayerCurrency> GetPlayerCurrencies(string playerId)
+    {
+        List<DbPlayerCurrency> result = new List<DbPlayerCurrency>();
+        foreach (var id in GameInstance.GameDatabase.Currencies.Keys)
+        {
+            result.Add(GetCurrency(playerId, id));
+        }
+        return result;
     }
 
     protected override void DoGetStaminaList(string playerId, string loginToken, UnityAction<StaminaListResult> onFinish)
@@ -98,8 +108,18 @@ public partial class LiteDbGameService : BaseGameService
         if (player == null)
             result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
         else
-            result.list.AddRange(DbPlayerStamina.CloneList(colPlayerStamina.Find(a => a.PlayerId == playerId)));
+            result.list.AddRange(DbPlayerStamina.CloneList(GetPlayerStaminas(playerId)));
         onFinish(result);
+    }
+
+    protected List<DbPlayerStamina> GetPlayerStaminas(string playerId)
+    {
+        List<DbPlayerStamina> result = new List<DbPlayerStamina>();
+        foreach (var id in GameInstance.GameDatabase.Staminas.Keys)
+        {
+            result.Add(GetStamina(playerId, id));
+        }
+        return result;
     }
 
     protected override void DoGetFormationList(string playerId, string loginToken, UnityAction<FormationListResult> onFinish)

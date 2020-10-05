@@ -525,19 +525,12 @@ public partial class SQLiteGameService : BaseGameService
 
     protected List<PlayerCurrency> GetPlayerCurrencies(string playerId)
     {
-        var reader = ExecuteReader(@"SELECT * FROM playerCurrency WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
-        var list = new List<PlayerCurrency>();
-        while (reader.Read())
+        List<PlayerCurrency> result = new List<PlayerCurrency>();
+        foreach (var id in GameInstance.GameDatabase.Currencies.Keys)
         {
-            var entry = new PlayerCurrency();
-            entry.Id = reader.GetString("id");
-            entry.PlayerId = reader.GetString("playerId");
-            entry.DataId = reader.GetString("dataId");
-            entry.Amount = reader.GetInt32("amount");
-            entry.PurchasedAmount = reader.GetInt32("purchasedAmount");
-            list.Add(entry);
+            result.Add(GetCurrency(playerId, id));
         }
-        return list;
+        return result;
     }
 
     protected override void DoGetStaminaList(string playerId, string loginToken, UnityAction<StaminaListResult> onFinish)
@@ -555,19 +548,12 @@ public partial class SQLiteGameService : BaseGameService
 
     protected List<PlayerStamina> GetPlayerStaminas(string playerId)
     {
-        var reader = ExecuteReader(@"SELECT * FROM playerStamina WHERE playerId=@playerId", new SqliteParameter("@playerId", playerId));
-        var list = new List<PlayerStamina>();
-        while (reader.Read())
+        List<PlayerStamina> result = new List<PlayerStamina>();
+        foreach (var id in GameInstance.GameDatabase.Staminas.Keys)
         {
-            var entry = new PlayerStamina();
-            entry.Id = reader.GetString("id");
-            entry.PlayerId = reader.GetString("playerId");
-            entry.DataId = reader.GetString("dataId");
-            entry.Amount = reader.GetInt32("amount");
-            entry.RecoveredTime = reader.GetInt64("recoveredTime");
-            list.Add(entry);
+            result.Add(GetStamina(playerId, id));
         }
-        return list;
+        return result;
     }
 
     protected override void DoGetFormationList(string playerId, string loginToken, UnityAction<FormationListResult> onFinish)

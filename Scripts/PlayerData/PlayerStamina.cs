@@ -10,9 +10,8 @@ public class PlayerStamina : BasePlayerData, IPlayerStamina
     {
         get
         {
-            PlayerStamina result = null;
-            if (GameDatabase != null)
-                TryGetData(GameDatabase.stageStamina.id, out result);
+            PlayerStamina result;
+            TryGetData(GameDatabase.stageStamina.id, out result);
             return result;
         }
     }
@@ -20,11 +19,21 @@ public class PlayerStamina : BasePlayerData, IPlayerStamina
     {
         get
         {
-            PlayerStamina result = null;
-            if (GameDatabase != null)
-                TryGetData(GameDatabase.arenaStamina.id, out result);
+            PlayerStamina result;
+            TryGetData(GameDatabase.arenaStamina.id, out result);
             return result;
         }
+    }
+    public static PlayerStamina GetStamina(string id)
+    {
+        PlayerStamina result;
+        TryGetData(id, out result);
+        return result;
+    }
+    public static bool HasStamina(string id)
+    {
+        PlayerStamina result;
+        return TryGetData(id, out result);
     }
     public string Id { get { return GetId(PlayerId, DataId); } set { } }
     public string playerId;
@@ -69,7 +78,7 @@ public class PlayerStamina : BasePlayerData, IPlayerStamina
             return null;
         }
     }
-    
+
     public long RecoveryingTime
     {
         get { return 0; }

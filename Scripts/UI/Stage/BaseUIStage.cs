@@ -59,7 +59,10 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
 
         if (uiRequireStamina != null)
         {
-            var staminaData = PlayerStamina.StageStamina.Clone().SetAmount(data.requireStamina, 0);
+            var staminaData = PlayerStamina.StageStamina.Clone();
+            if (!string.IsNullOrEmpty(data.requireCustomStamina) && PlayerStamina.HasStamina(data.requireCustomStamina))
+                staminaData = PlayerStamina.GetStamina(data.requireCustomStamina).Clone();
+            staminaData.SetAmount(data.requireStamina, 0);
             uiRequireStamina.SetData(staminaData);
         }
 
@@ -87,7 +90,7 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
 
     public void UpdateElementsWhenUnlocked()
     {
-        var isUnlocked = PlayerClearStage.IsUnlock(data);
+        var isUnlocked = PlayerClearStage.IsUnlock(data) && GameInstance.AvailableStages.Contains(data.Id);
         foreach (var button in interactableButtonsWhenUnlocked)
         {
             button.interactable = isUnlocked;
