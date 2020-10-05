@@ -114,5 +114,18 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
         }
     }
 
-    public abstract TPreparation StagePreparation { get; }
+    public void ShowStagePreparation()
+    {
+        if (StagePreparation != null)
+        {
+            StagePreparation.Show();
+        }
+    }
+
+
+    public TPreparation uiStagePreparation;
+    public TPreparation StagePreparation
+    {
+        get { return uiStagePreparation; }
+    }
 }
