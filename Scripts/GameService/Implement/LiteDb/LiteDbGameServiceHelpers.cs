@@ -16,8 +16,6 @@ public partial class LiteDbGameService
         player.Exp = 0;
 
         var gameDb = GameInstance.GameDatabase;
-        var softCurrencyTable = gameDb.softCurrency;
-        var hardCurrencyTable = gameDb.hardCurrency;
 
         string stageFormationName = string.Empty;
         string arenaFormationName = string.Empty;
@@ -37,12 +35,12 @@ public partial class LiteDbGameService
             }
         }
 
-        var softCurrency = GetCurrency(player.Id, softCurrencyTable.id);
-        var hardCurrency = GetCurrency(player.Id, hardCurrencyTable.id);
-        softCurrency.Amount = softCurrencyTable.startAmount + softCurrency.PurchasedAmount;
-        hardCurrency.Amount = hardCurrencyTable.startAmount + hardCurrency.PurchasedAmount;
-        colPlayerCurrency.Update(softCurrency);
-        colPlayerCurrency.Update(hardCurrency);
+        foreach (var currency in GameInstance.GameDatabase.Currencies.Values)
+        {
+            var playerCurrency = GetCurrency(player.Id, currency.id);
+            playerCurrency.Amount = currency.startAmount + playerCurrency.PurchasedAmount;
+            colPlayerCurrency.Update(playerCurrency);
+        }
 
         colPlayerClearStage.Delete(a => a.PlayerId == player.Id);
         colPlayerFormation.Delete(a => a.PlayerId == player.Id);
@@ -183,9 +181,12 @@ public partial class LiteDbGameService
             var recoveryAmount = (int)(diffTimeInSeconds / devideAmount) / staminaTable.recoverDuration;
             if (recoveryAmount > 0)
             {
-                stamina.Amount += recoveryAmount;
-                if (stamina.Amount > maxStamina)
-                    stamina.Amount = maxStamina;
+                if (stamina.Amount < maxStamina)
+                {
+                    stamina.Amount += recoveryAmount;
+                    if (stamina.Amount >= maxStamina)
+                        stamina.Amount = maxStamina;
+                }
                 stamina.RecoveredTime = currentTimeInSeconds;
                 colPlayerStamina.Update(stamina);
             }
@@ -194,11 +195,10 @@ public partial class LiteDbGameService
 
     private void UpdatePlayerStamina(DbPlayer player)
     {
-        var gameDb = GameInstance.GameDatabase;
-        var stageStaminaTable = gameDb.stageStamina;
-        UpdatePlayerStamina(player, stageStaminaTable);
-        var arenaStaminaTable = gameDb.arenaStamina;
-        UpdatePlayerStamina(player, arenaStaminaTable);
+        foreach (var stamina in GameInstance.GameDatabase.Staminas.Values)
+        {
+            UpdatePlayerStamina(player, stamina);
+        }
     }
 
     private DbPlayerCurrency GetCurrency(string playerId, string dataId)

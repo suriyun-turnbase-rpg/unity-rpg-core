@@ -19,8 +19,6 @@ public partial class SQLiteGameService
         player.Exp = 0;
 
         var gameDb = GameInstance.GameDatabase;
-        var softCurrencyTable = gameDb.softCurrency;
-        var hardCurrencyTable = gameDb.hardCurrency;
 
         string stageFormationName = string.Empty;
         string arenaFormationName = string.Empty;
@@ -40,17 +38,14 @@ public partial class SQLiteGameService
             }
         }
 
-        var softCurrency = GetCurrency(player.Id, softCurrencyTable.id);
-        var hardCurrency = GetCurrency(player.Id, hardCurrencyTable.id);
-        softCurrency.Amount = softCurrencyTable.startAmount + softCurrency.PurchasedAmount;
-        hardCurrency.Amount = hardCurrencyTable.startAmount + hardCurrency.PurchasedAmount;
-
-        ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
-            new SqliteParameter("@amount", softCurrency.Amount),
-            new SqliteParameter("@id", softCurrency.Id));
-        ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
-            new SqliteParameter("@amount", hardCurrency.Amount),
-            new SqliteParameter("@id", hardCurrency.Id));
+        foreach (var currency in GameInstance.GameDatabase.Currencies.Values)
+        {
+            var playerCurrency = GetCurrency(player.Id, currency.id);
+            playerCurrency.Amount = currency.startAmount + playerCurrency.PurchasedAmount;
+            ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                new SqliteParameter("@amount", playerCurrency.Amount),
+                new SqliteParameter("@id", playerCurrency.Id));
+        }
 
         ExecuteNonQuery(@"DELETE FROM playerClearStage WHERE playerId=@playerId",
             new SqliteParameter("@playerId", player.Id));
@@ -236,9 +231,12 @@ public partial class SQLiteGameService
             var recoveryAmount = (int)(diffTimeInSeconds / devideAmount) / staminaTable.recoverDuration;
             if (recoveryAmount > 0)
             {
-                stamina.Amount += recoveryAmount;
-                if (stamina.Amount > maxStamina)
-                    stamina.Amount = maxStamina;
+                if (stamina.Amount < maxStamina)
+                {
+                    stamina.Amount += recoveryAmount;
+                    if (stamina.Amount >= maxStamina)
+                        stamina.Amount = maxStamina;
+                }
                 stamina.RecoveredTime = currentTimeInSeconds;
                 ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime WHERE id=@id",
                     new SqliteParameter("@amount", stamina.Amount),
@@ -250,11 +248,10 @@ public partial class SQLiteGameService
 
     private void UpdatePlayerStamina(Player player)
     {
-        var gameDb = GameInstance.GameDatabase;
-        var stageStaminaTable = gameDb.stageStamina;
-        UpdatePlayerStamina(player, stageStaminaTable);
-        var arenaStaminaTable = gameDb.arenaStamina;
-        UpdatePlayerStamina(player, arenaStaminaTable);
+        foreach (var stamina in GameInstance.GameDatabase.Staminas.Values)
+        {
+            UpdatePlayerStamina(player, stamina);
+        }
     }
 
     private PlayerCurrency GetCurrency(string playerId, string dataId)
