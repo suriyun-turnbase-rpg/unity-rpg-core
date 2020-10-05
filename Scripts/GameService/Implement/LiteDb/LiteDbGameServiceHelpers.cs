@@ -179,16 +179,13 @@ public partial class LiteDbGameService
                     break;
             }
             var recoveryAmount = (int)(diffTimeInSeconds / devideAmount) / staminaTable.recoverDuration;
-            if (recoveryAmount > 0)
+            if (recoveryAmount > 0 && stamina.Amount < maxStamina)
             {
-                if (stamina.Amount < maxStamina)
-                {
-                    stamina.Amount += recoveryAmount;
-                    if (stamina.Amount > maxStamina)
-                        stamina.Amount = maxStamina;
-                    stamina.RecoveredTime = currentTimeInSeconds;
-                    colPlayerStamina.Update(stamina);
-                }
+                stamina.Amount += recoveryAmount;
+                if (stamina.Amount > maxStamina)
+                    stamina.Amount = maxStamina;
+                stamina.RecoveredTime = currentTimeInSeconds;
+                colPlayerStamina.Update(stamina);
             }
         }
     }

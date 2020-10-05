@@ -229,19 +229,16 @@ public partial class SQLiteGameService
                     break;
             }
             var recoveryAmount = (int)(diffTimeInSeconds / devideAmount) / staminaTable.recoverDuration;
-            if (recoveryAmount > 0)
+            if (recoveryAmount > 0 && stamina.Amount < maxStamina)
             {
-                if (stamina.Amount < maxStamina)
-                {
-                    stamina.Amount += recoveryAmount;
-                    if (stamina.Amount > maxStamina)
-                        stamina.Amount = maxStamina;
-                    stamina.RecoveredTime = currentTimeInSeconds;
-                    ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime WHERE id=@id",
-                        new SqliteParameter("@amount", stamina.Amount),
-                        new SqliteParameter("@recoveredTime", stamina.RecoveredTime),
-                        new SqliteParameter("@id", stamina.Id));
-                }
+                stamina.Amount += recoveryAmount;
+                if (stamina.Amount > maxStamina)
+                    stamina.Amount = maxStamina;
+                stamina.RecoveredTime = currentTimeInSeconds;
+                ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime WHERE id=@id",
+                    new SqliteParameter("@amount", stamina.Amount),
+                    new SqliteParameter("@recoveredTime", stamina.RecoveredTime),
+                    new SqliteParameter("@id", stamina.Id));
             }
         }
     }
