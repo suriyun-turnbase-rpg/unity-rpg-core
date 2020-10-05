@@ -234,14 +234,14 @@ public partial class SQLiteGameService
                 if (stamina.Amount < maxStamina)
                 {
                     stamina.Amount += recoveryAmount;
-                    if (stamina.Amount >= maxStamina)
+                    if (stamina.Amount > maxStamina)
                         stamina.Amount = maxStamina;
+                    stamina.RecoveredTime = currentTimeInSeconds;
+                    ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime WHERE id=@id",
+                        new SqliteParameter("@amount", stamina.Amount),
+                        new SqliteParameter("@recoveredTime", stamina.RecoveredTime),
+                        new SqliteParameter("@id", stamina.Id));
                 }
-                stamina.RecoveredTime = currentTimeInSeconds;
-                ExecuteNonQuery(@"UPDATE playerStamina SET amount=@amount, recoveredTime=@recoveredTime WHERE id=@id",
-                    new SqliteParameter("@amount", stamina.Amount),
-                    new SqliteParameter("@recoveredTime", stamina.RecoveredTime),
-                    new SqliteParameter("@id", stamina.Id));
             }
         }
     }

@@ -184,11 +184,11 @@ public partial class LiteDbGameService
                 if (stamina.Amount < maxStamina)
                 {
                     stamina.Amount += recoveryAmount;
-                    if (stamina.Amount >= maxStamina)
+                    if (stamina.Amount > maxStamina)
                         stamina.Amount = maxStamina;
+                    stamina.RecoveredTime = currentTimeInSeconds;
+                    colPlayerStamina.Update(stamina);
                 }
-                stamina.RecoveredTime = currentTimeInSeconds;
-                colPlayerStamina.Update(stamina);
             }
         }
     }
