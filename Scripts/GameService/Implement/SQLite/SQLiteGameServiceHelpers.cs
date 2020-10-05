@@ -605,8 +605,8 @@ public partial class SQLiteGameService
                 System.DateTime toTime = fromTime
                     .AddHours(availability.durationHour)
                     .AddMinutes(availability.durationMinute);
-                if (currentTime.DayOfWeek == availability.day ||
-                    currentTime.Ticks >= fromTime.Ticks ||
+                if (currentTime.DayOfWeek == availability.day &&
+                    currentTime.Ticks >= fromTime.Ticks &&
                     currentTime.Ticks < toTime.Ticks)
                 {
                     available = true;
