@@ -8,6 +8,7 @@ public class EquipmentItem : BaseActorItem
     public CalculatedAttributes extraAttributes;
     public List<string> equippablePositions;
     public EquipmentItemEvolve evolveInfo;
+    public EquipItemModelPrefab[] equipModelPrefabs;
 
     public override SpecificItemEvolve GetSpecificItemEvolve()
     {
@@ -65,4 +66,11 @@ public class EquipmentItemEvolve : SpecificItemEvolve<EquipmentItem>
     {
         return new EquipmentItemEvolve();
     }
+}
+
+[System.Serializable]
+public struct EquipItemModelPrefab
+{
+    public string slotId;
+    public GameObject modelPrefab;
 }

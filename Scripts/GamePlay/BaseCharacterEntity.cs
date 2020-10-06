@@ -21,33 +21,13 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     public Transform bodyEffectContainer;
     [Tooltip("The transform where we're going to spawn floor effects")]
     public Transform floorEffectContainer;
-    [Tooltip("The transform where we're going to spawn damage")]
+    [Tooltip("The transform where we're going to spawn damage (bullet, slash force and so on)")]
     public Transform damageContainer;
+    public EquipItemModelContainer[] equipModelContainers;
 
-    private Animator cacheAnimator;
-    public Animator CacheAnimator
-    {
-        get
-        {
-            if (cacheAnimator == null)
-            {
-                cacheAnimator = GetComponent<Animator>();
-                cacheAnimator.runtimeAnimatorController = CacheAnimatorController;
-            }
-            return cacheAnimator;
-        }
-    }
+    public AnimatorOverrideController CacheAnimatorController { get; private set; }
 
-    private AnimatorOverrideController cacheAnimatorController;
-    public AnimatorOverrideController CacheAnimatorController
-    {
-        get
-        {
-            if (cacheAnimatorController == null)
-                cacheAnimatorController = new AnimatorOverrideController(animatorController);
-            return cacheAnimatorController;
-        }
-    }
+    public Animator CacheAnimator { get; private set; }
 
     private PlayerItem item;
     public PlayerItem Item
@@ -68,6 +48,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
                     Skills.Add(NewSkill(1, skill));
                 }
             }
+            UpdateEquipModels();
             Revive();
         }
     }
@@ -115,34 +96,29 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         set
         {
             container = value;
-            TempTransform.SetParent(container);
-            TempTransform.localPosition = Vector3.zero;
-            TempTransform.localEulerAngles = Vector3.zero;
+            CacheTransform.SetParent(container);
+            CacheTransform.localPosition = Vector3.zero;
+            CacheTransform.localEulerAngles = Vector3.zero;
             gameObject.SetActive(true);
         }
     }
 
-    private Transform tempTransform;
-    public Transform TempTransform
-    {
-        get
-        {
-            if (tempTransform == null)
-                tempTransform = GetComponent<Transform>();
-            return tempTransform;
-        }
-    }
+    public Transform CacheTransform { get; private set; }
 
     protected virtual void Awake()
     {
+        CacheTransform = transform;
         if (uiContainer == null)
-            uiContainer = TempTransform;
+            uiContainer = CacheTransform;
         if (bodyEffectContainer == null)
-            bodyEffectContainer = TempTransform;
+            bodyEffectContainer = CacheTransform;
         if (floorEffectContainer == null)
-            floorEffectContainer = TempTransform;
+            floorEffectContainer = CacheTransform;
         if (damageContainer == null)
-            damageContainer = TempTransform;
+            damageContainer = CacheTransform;
+        CacheAnimatorController = new AnimatorOverrideController(animatorController);
+        CacheAnimator = GetComponent<Animator>();
+        CacheAnimator.runtimeAnimatorController = CacheAnimatorController;
     }
 
 #if UNITY_EDITOR
@@ -413,6 +389,40 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         CacheAnimatorController[ANIM_ACTION_STATE] = clip;
     }
 
+    protected virtual void UpdateEquipModels()
+    {
+        // Destroy children from containers
+        Dictionary<string, Transform> containers = new Dictionary<string, Transform>();
+        foreach (var container in equipModelContainers)
+        {
+            if (container.transform == null) continue;
+            for (int i = container.transform.childCount; i >= 0; --i)
+            {
+                Destroy(container.transform.GetChild(i).gameObject);
+            }
+            containers[container.slotId] = container.transform;
+        }
+        foreach (var equippedItem in Item.EquippedItems.Values)
+        {
+            if (equippedItem.EquipmentData == null) continue;
+            foreach (var modelPrefab in equippedItem.EquipmentData.equipModelPrefabs)
+            {
+                if (!containers.ContainsKey(modelPrefab.slotId)) continue;
+                var model = Instantiate(modelPrefab.modelPrefab, containers[modelPrefab.slotId]);
+                model.transform.localPosition = Vector3.zero;
+                model.transform.localRotation = Quaternion.identity;
+                model.transform.localScale = Vector3.one;
+            }
+        }
+    }
+
     public abstract BaseCharacterSkill NewSkill(int level, BaseSkill skill);
     public abstract BaseCharacterBuff NewBuff(int level, BaseSkill skill, int buffIndex, BaseCharacterEntity giver, BaseCharacterEntity receiver);
+}
+
+[System.Serializable]
+public struct EquipItemModelContainer
+{
+    public string slotId;
+    public Transform transform;
 }
