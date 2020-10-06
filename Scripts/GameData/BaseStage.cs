@@ -130,7 +130,7 @@ public abstract class BaseStage : BaseGameData
             "\"rewardPlayerExp\":" + rewardPlayerExp + "," +
             "\"rewardCharacterExp\":" + rewardCharacterExp + "," +
             "\"availabilities\":" + jsonAvailabilities + "," +
-            "\"hasAvailableDate\":" + hasAvailableDate + "," +
+            "\"hasAvailableDate\":" + (hasAvailableDate ? 1 : 0) + "," +
             "\"startYear\":" + startYear + "," +
             "\"startMonth\":" + (int)startMonth + "," +
             "\"startDay\":" + startDay + "," +
