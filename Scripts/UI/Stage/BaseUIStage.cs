@@ -52,7 +52,7 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
             textStageNumber.text = data.stageNumber;
 
         if (imageIcon != null)
-            imageIcon.sprite = data.icon;
+            imageIcon.sprite = data == null ? null : data.icon;
 
         if (textRecommendBattlePoint != null)
             textRecommendBattlePoint.text = data.recommendBattlePoint.ToString("N0");

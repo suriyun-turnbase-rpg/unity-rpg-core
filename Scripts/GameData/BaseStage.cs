@@ -140,6 +140,7 @@ public abstract class BaseStage : BaseGameData
             "\"firstClearRewardHardCurrency\":" + firstClearRewardHardCurrency + "," +
             "\"firstClearRewardPlayerExp\":" + firstClearRewardPlayerExp + "," +
             "\"firstClearRewardItems\":" + jsonFirstClearRewardItems + "," +
+            "\"unlocked\":" + (unlocked ? 1 : 0) + "," +
             "\"unlockStages\":" + jsonUnlockStages + "}";
     }
 }
