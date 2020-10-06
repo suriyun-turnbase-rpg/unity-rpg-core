@@ -8,6 +8,7 @@ public class UICharacterStatsGeneric : UIBase
 {
     public Text textTitle;
     public Image imageIcon;
+    public GameObject characterStatsRoot;
     public Text textHpPerMaxHp;
     public Text textHpPercent;
     public Image imageHpGage;
@@ -35,6 +36,8 @@ public class UICharacterStatsGeneric : UIBase
             TempObjectFollower.enabled = false;
             TempObjectFollower.TempPositionFollower.enabled = false;
         }
+        if (!characterStatsRoot)
+            characterStatsRoot = root;
     }
 
     protected virtual void Update()
@@ -78,7 +81,7 @@ public class UICharacterStatsGeneric : UIBase
             if (i >= uiBuffs.Length)
                 break;
             var ui = uiBuffs[i];
-            ui.buff = character.Buffs[buffKey] as BaseCharacterBuff;
+            ui.buff = character.Buffs[buffKey];
             ui.Show();
             ++i;
         }
@@ -87,5 +90,15 @@ public class UICharacterStatsGeneric : UIBase
             var ui = uiBuffs[i];
             ui.Hide();
         }
+    }
+
+    public void ShowCharacterStats()
+    {
+        characterStatsRoot.SetActive(true);
+    }
+
+    public void HideCharacterStats()
+    {
+        characterStatsRoot.SetActive(false);
     }
 }
