@@ -218,4 +218,32 @@ public partial class LiteDbGameService : BaseGameService
         }
         onFinish(result);
     }
+
+    protected override void DoGetRefillStaminaInfo(string playerId, string loginToken, string staminaDataId, UnityAction<RefillStaminaInfoResult> onFinish)
+    {
+        var result = new RefillStaminaInfoResult();
+        var foundPlayer = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        if (foundPlayer == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!GameInstance.GameDatabase.Staminas.ContainsKey(staminaDataId))
+            result.error = GameServiceErrorCode.INVALID_STAMINA_DATA;
+        else if (GameInstance.GameDatabase.Staminas[staminaDataId].refillPrices.Length == 0)
+            result.error = GameServiceErrorCode.CANNOT_REFILL_STAMINA;
+        else
+        {
+            var clonedPlayer = Player.CloneTo(foundPlayer, new Player());
+            var playerStamina = GetStamina(playerId, staminaDataId);
+            var stamina = GameInstance.GameDatabase.Staminas[staminaDataId];
+            var currentDateTicks = new System.DateTime(Timestamp * System.TimeSpan.TicksPerSecond).Date.Ticks;
+            var lastRefillDateTicks = new System.DateTime(playerStamina.LastRefillTime * System.TimeSpan.TicksPerSecond).Date.Ticks;
+            if (currentDateTicks > lastRefillDateTicks)
+                playerStamina.RefillCount = 0;
+            var indexOfPrice = playerStamina.RefillCount;
+            if (indexOfPrice >= stamina.refillPrices.Length)
+                indexOfPrice = stamina.refillPrices.Length - 1;
+            result.requireHardCurrency = stamina.refillPrices[indexOfPrice];
+            result.refillAmount = stamina.maxAmountTable.Calculate(clonedPlayer.Level, clonedPlayer.MaxLevel);
+        }
+        onFinish(result);
+    }
 }

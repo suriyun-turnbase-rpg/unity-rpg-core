@@ -915,6 +915,15 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoRefillStamina(playerId, loginToken, staminaDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void GetRefillStaminaInfo(string staminaDataId, UnityAction<RefillStaminaInfoResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetRefillStaminaInfo");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        DoGetRefillStaminaInfo(playerId, loginToken, staminaDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -982,4 +991,5 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoGetChatMessages(string playerId, string loginToken, long lastTime, UnityAction<ChatMessageListResult> onFinish);
     protected abstract void DoEnterChatMessage(string playerId, string loginToken, bool isClanChat, string message, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoRefillStamina(string playerId, string loginToken, string staminaDataId, UnityAction<RefillStaminaResult> onFinish);
+    protected abstract void DoGetRefillStaminaInfo(string playerId, string loginToken, string staminaDataId, UnityAction<RefillStaminaInfoResult> onFinish);
 }

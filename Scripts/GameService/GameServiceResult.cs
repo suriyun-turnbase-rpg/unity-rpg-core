@@ -257,3 +257,10 @@ public class RefillStaminaResult : GameServiceResult
     public PlayerStamina stamina;
     public PlayerCurrency currency;
 }
+
+[System.Serializable]
+public class RefillStaminaInfoResult : GameServiceResult
+{
+    public int requireHardCurrency;
+    public int refillAmount;
+}
