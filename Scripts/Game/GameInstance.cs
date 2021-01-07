@@ -28,6 +28,9 @@ public partial class GameInstance : MonoBehaviour
     public string loginScene;
     public string manageScene;
     public string battleScene;
+    public LoadSceneEvent onLoadSceneStart;
+    public LoadSceneEvent onLoadSceneProgress;
+    public LoadSceneEvent onLoadSceneFinish;
     public bool isRememberLogin = true;
 
     public static GameInstance Singleton { get; private set; }
@@ -321,7 +324,7 @@ public partial class GameInstance : MonoBehaviour
     {
         if (!result.Success)
             return;
-        
+
         PlayerCurrency.SetDataRange(result.updateCurrencies);
     }
 
@@ -841,7 +844,22 @@ public partial class GameInstance : MonoBehaviour
     public void LoadSceneIfNotLoaded(string sceneName, bool loadIfNotLoaded = false)
     {
         if (SceneManager.GetActiveScene().name != sceneName || !loadIfNotLoaded)
-            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+            StartCoroutine(LoadSceneRoutine(sceneName));
+    }
+
+    IEnumerator LoadSceneRoutine(string sceneName)
+    {
+        AsyncOperation loadSceneAsyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        if (onLoadSceneStart != null)
+            onLoadSceneStart.Invoke(sceneName, loadSceneAsyncOperation.progress);
+        while (!loadSceneAsyncOperation.isDone)
+        {
+            if (onLoadSceneProgress != null)
+                onLoadSceneProgress.Invoke(sceneName, loadSceneAsyncOperation.progress);
+            yield return null;
+        }
+        if (onLoadSceneFinish != null)
+            onLoadSceneFinish.Invoke(sceneName, loadSceneAsyncOperation.progress);
     }
     #endregion
 }
