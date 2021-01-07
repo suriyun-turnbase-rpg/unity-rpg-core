@@ -396,7 +396,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         foreach (var container in equipModelContainers)
         {
             if (container.transform == null) continue;
-            for (int i = container.transform.childCount; i >= 0; --i)
+            for (int i = container.transform.childCount - 1; i >= 0; --i)
             {
                 Destroy(container.transform.GetChild(i).gameObject);
             }
