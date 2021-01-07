@@ -4,51 +4,48 @@ using UnityEngine;
 
 public class LanguageManager : MonoBehaviour
 {
-    public static readonly Dictionary<string, string> Texts = new Dictionary<string, string>();
-    public static string CurrentLanguageKey { get; private set; }
+    public static Dictionary<string, Dictionary<string, string>> Languages { get; protected set; } = new Dictionary<string, Dictionary<string, string>>();
+    public static Dictionary<string, string> Texts { get; protected set; } = new Dictionary<string, string>();
+    public static string CurrentLanguageKey { get; protected set; }
+    private static string currentPlayerPrefsKey = string.Empty;
+
+    [Header("Language Manager Configs")]
     public string defaultLanguageKey = "ENG";
-    [Header("Editor")]
+    public string playerPrefsKey = "USER_LANG";
+    public List<Language> languageList = new List<Language>();
+
+    [Header("Add New Language")]
     [Tooltip("You can add new language by `Add New Language` context menu")]
     public string newLanguageKey;
-    [Header("Language List")]
-    public List<Language> languageList = new List<Language>();
-    public readonly Dictionary<string, Language> LanguageMap = new Dictionary<string, Language>();
+    [InspectorButton(nameof(AddNewLanguage))]
+    public bool addNewLanguage;
+
     private void Awake()
     {
-        SetupDefaultTexts();
-        foreach (var language in languageList)
+        currentPlayerPrefsKey = playerPrefsKey;
+        CurrentLanguageKey = PlayerPrefs.GetString(currentPlayerPrefsKey, defaultLanguageKey);
+        Languages.Clear();
+        Dictionary<string, string> tempNewData;
+        foreach (Language language in languageList)
         {
-            LanguageMap[language.languageKey] = language;
+            tempNewData = new Dictionary<string, string>();
+            foreach (LanguageData data in language.dataList)
+            {
+                if (tempNewData.ContainsKey(data.key))
+                {
+                    Debug.LogWarning("[LanguageManager] Language " + language.languageKey + " already contains " + data.key);
+                    continue;
+                }
+                tempNewData.Add(data.key, data.value);
+            }
+            Languages[language.languageKey] = tempNewData;
         }
-        ChangeLanguage(defaultLanguageKey);
-    }
-
-    private void SetupDefaultTexts()
-    {
-        Texts.Clear();
-        foreach (var pair in DefaultLocale.Texts)
-        {
-            Texts.Add(pair.Key, pair.Value);
-        }
-    }
-
-    private void ChangeLanguage(string languageKey)
-    {
-        if (!LanguageMap.ContainsKey(languageKey))
-            return;
-
-        CurrentLanguageKey = languageKey;
-        var languageDataList = LanguageMap[languageKey].dataList;
-        foreach (var data in languageDataList)
-        {
-            if (Texts.ContainsKey(data.key))
-                Texts[data.key] = data.value;
-        }
+        ChangeLanguage(CurrentLanguageKey);
     }
 
     public Language GetLanguageFromList(string languageKey)
     {
-        foreach (var language in languageList)
+        foreach (Language language in languageList)
         {
             if (language.languageKey == languageKey)
                 return language;
@@ -64,7 +61,8 @@ public class LanguageManager : MonoBehaviour
             Debug.LogWarning("`New Language Key` is null or empty");
             return;
         }
-        var newLang = GetLanguageFromList(newLanguageKey);
+
+        Language newLang = GetLanguageFromList(newLanguageKey);
         if (newLang == null)
         {
             newLang = new Language();
@@ -72,7 +70,7 @@ public class LanguageManager : MonoBehaviour
             languageList.Add(newLang);
         }
 
-        foreach (var pair in DefaultLocale.Texts)
+        foreach (KeyValuePair<string, string> pair in DefaultLocale.Texts)
         {
             if (newLang.ContainKey(pair.Key))
                 continue;
@@ -85,11 +83,27 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
-    public static string GetText(string key)
+    public static void ChangeLanguage(string languageKey)
     {
-        if (Texts.ContainsKey(key))
-            return Texts[key];
-        return "";
+        if (!Languages.ContainsKey(languageKey))
+            return;
+
+        CurrentLanguageKey = languageKey;
+        Texts = Languages[languageKey];
+        PlayerPrefs.SetString(currentPlayerPrefsKey, CurrentLanguageKey);
+        PlayerPrefs.Save();
+    }
+
+    public static string GetText(string key, string defaultValue = "")
+    {
+        if (!string.IsNullOrEmpty(key))
+        {
+            if (Texts.ContainsKey(key))
+                return Texts[key];
+            if (DefaultLocale.Texts.ContainsKey(key))
+                return DefaultLocale.Texts[key];
+        }
+        return defaultValue;
     }
 
     public static string ReplaceFormat(string key, string replacingText)
@@ -124,12 +138,12 @@ public class LanguageManager : MonoBehaviour
 
     public static string FormatAttribute(string key, int value, int bonusValue, bool asPercent = false)
     {
-        return string.Format(Texts[GameText.FORMAT_ATTRIBUTE], Texts[key], FormatNumber(value, asPercent), FormatBonus(value, asPercent));
+        return string.Format(Texts[GameText.FORMAT_ATTRIBUTE], Texts[key], FormatNumber(value, asPercent), FormatBonus(bonusValue, asPercent));
     }
 
     public static string FormatAttribute(string key, float value, float bonusValue, bool asPercent = false)
     {
-        return string.Format(Texts[GameText.FORMAT_ATTRIBUTE], Texts[key], FormatNumber(value, asPercent), FormatBonus(value, asPercent));
+        return string.Format(Texts[GameText.FORMAT_ATTRIBUTE], Texts[key], FormatNumber(value, asPercent), FormatBonus(bonusValue, asPercent));
     }
 
     public static string FormatBonus(int value, bool asPercent = false)

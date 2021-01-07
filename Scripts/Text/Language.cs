@@ -205,12 +205,29 @@ public class Language
 
     public bool ContainKey(string key)
     {
-        foreach (var entry in dataList)
+        foreach (LanguageData entry in dataList)
         {
-            if (entry.key == key)
+            if (string.IsNullOrEmpty(entry.key))
+                continue;
+            if (entry.key.Equals(key))
                 return true;
         }
         return false;
+    }
+
+    public static string GetText(IEnumerable<LanguageData> langs, string defaultValue)
+    {
+        if (langs != null)
+        {
+            foreach (LanguageData entry in langs)
+            {
+                if (string.IsNullOrEmpty(entry.key))
+                    continue;
+                if (entry.key.Equals(LanguageManager.CurrentLanguageKey))
+                    return entry.value;
+            }
+        }
+        return defaultValue;
     }
 }
 
@@ -218,7 +235,7 @@ public class Language
 public struct LanguageData
 {
     public string key;
-    [TextArea(1, 30)]
+    [TextArea]
     public string value;
 }
  
