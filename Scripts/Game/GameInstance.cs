@@ -105,8 +105,7 @@ public partial class GameInstance : MonoBehaviour
     public void OnGameServiceError(string error, UnityAction errorAction)
     {
         Debug.LogError("OnGameServiceError: " + error);
-        var errorText = string.IsNullOrEmpty(error) || !LanguageManager.Texts.ContainsKey(error) ? "" : LanguageManager.Texts[error];
-        messageDialogData.Enqueue(new UIMessageDialog.Data(LanguageManager.Texts[GameText.TITLE_ERROR_DIALOG], errorText, errorAction));
+        messageDialogData.Enqueue(new UIMessageDialog.Data(LanguageManager.GetText(GameText.TITLE_ERROR_DIALOG), LanguageManager.GetText(error), errorAction));
         ShowError();
     }
 
@@ -669,14 +668,14 @@ public partial class GameInstance : MonoBehaviour
             Debug.LogWarning("`Input Dialog` has not been set");
             return;
         }
-        ShowInputDialog(LanguageManager.Texts[GameText.TITLE_PROFILE_NAME_DIALOG],
-            LanguageManager.Texts[GameText.CONTENT_PROFILE_NAME_DIALOG],
+        ShowInputDialog(LanguageManager.GetText(GameText.TITLE_PROFILE_NAME_DIALOG),
+            LanguageManager.GetText(GameText.CONTENT_PROFILE_NAME_DIALOG),
             () =>
             {
                 var input = inputDialog.InputContent;
                 GameService.SetProfileName(input, onSuccess, onError);
             });
-        inputDialog.InputPlaceHolder = LanguageManager.Texts[GameText.PLACE_HOLDER_PROFILE_NAME];
+        inputDialog.InputPlaceHolder = LanguageManager.GetText(GameText.PLACE_HOLDER_PROFILE_NAME);
     }
 
     public void ShowInputDialog(string title,

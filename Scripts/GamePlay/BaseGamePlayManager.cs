@@ -100,7 +100,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         combatText.transform.localScale = Vector3.one;
         combatText.TempObjectFollower.targetObject = character.bodyEffectContainer;
         combatText.Amount = 0;
-        combatText.TempText.text = LanguageManager.Texts[GameText.COMBAT_MISS];
+        combatText.TempText.text = LanguageManager.GetText(GameText.COMBAT_MISS);
     }
 
     public void SpawnResistText(BaseCharacterEntity character)
@@ -109,7 +109,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         resistText.transform.localScale = Vector3.one;
         resistText.TempObjectFollower.targetObject = character.bodyEffectContainer;
         resistText.Amount = 0;
-        resistText.TempText.text = LanguageManager.Texts[GameText.COMBAT_MISS];
+        resistText.TempText.text = LanguageManager.GetText(GameText.COMBAT_MISS);
     }
 
     public void SpawnCombatText(UICombatText prefab, int amount, BaseCharacterEntity character)

@@ -108,7 +108,7 @@ public class LanguageManager : MonoBehaviour
 
     public static string ReplaceFormat(string key, string replacingText)
     {
-        return ReplaceFormat("{" + key + "}", Texts[key], replacingText);
+        return ReplaceFormat("{" + key + "}", GetText(key), replacingText);
     }
 
     public static string ReplaceFormat(string key, string value, string replacingText)
@@ -128,30 +128,30 @@ public class LanguageManager : MonoBehaviour
 
     public static string FormatInfo(string key, int value, bool asPercent = false)
     {
-        return string.Format(Texts[GameText.FORMAT_INFO], Texts[key], FormatNumber(value, asPercent));
+        return string.Format(GetText(GameText.FORMAT_INFO), GetText(key), FormatNumber(value, asPercent));
     }
 
     public static string FormatInfo(string key, float value, bool asPercent = false)
     {
-        return string.Format(Texts[GameText.FORMAT_INFO], Texts[key], FormatNumber(value, asPercent));
+        return string.Format(GetText(GameText.FORMAT_INFO), GetText(key), FormatNumber(value, asPercent));
     }
 
     public static string FormatAttribute(string key, int value, int bonusValue, bool asPercent = false)
     {
-        return string.Format(Texts[GameText.FORMAT_ATTRIBUTE], Texts[key], FormatNumber(value, asPercent), FormatBonus(bonusValue, asPercent));
+        return string.Format(GetText(GameText.FORMAT_ATTRIBUTE), GetText(key), FormatNumber(value, asPercent), FormatBonus(bonusValue, asPercent));
     }
 
     public static string FormatAttribute(string key, float value, float bonusValue, bool asPercent = false)
     {
-        return string.Format(Texts[GameText.FORMAT_ATTRIBUTE], Texts[key], FormatNumber(value, asPercent), FormatBonus(bonusValue, asPercent));
+        return string.Format(GetText(GameText.FORMAT_ATTRIBUTE), GetText(key), FormatNumber(value, asPercent), FormatBonus(bonusValue, asPercent));
     }
 
     public static string FormatBonus(int value, bool asPercent = false)
     {
         if (value > 0)
-            return string.Format(Texts[GameText.FORMAT_BONUS], "+", FormatNumber(value, asPercent));
+            return string.Format(GetText(GameText.FORMAT_BONUS), "+", FormatNumber(value, asPercent));
         else if (value < 0)
-            return string.Format(Texts[GameText.FORMAT_BONUS], "-", FormatNumber(value, asPercent));
+            return string.Format(GetText(GameText.FORMAT_BONUS), "-", FormatNumber(value, asPercent));
         else
             return "";
     }
@@ -159,9 +159,9 @@ public class LanguageManager : MonoBehaviour
     public static string FormatBonus(float value, bool asPercent = false)
     {
         if (value > 0)
-            return string.Format(Texts[GameText.FORMAT_BONUS], "+", FormatNumber(value, asPercent));
+            return string.Format(GetText(GameText.FORMAT_BONUS), "+", FormatNumber(value, asPercent));
         else if (value < 0)
-            return string.Format(Texts[GameText.FORMAT_BONUS], "-", FormatNumber(value, asPercent));
+            return string.Format(GetText(GameText.FORMAT_BONUS), "-", FormatNumber(value, asPercent));
         else
             return "";
     }
