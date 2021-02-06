@@ -169,7 +169,21 @@ public partial class LiteDbGameService : BaseGameService
         onFinish(result);
     }
 
-    protected override void DoEnterChatMessage(string playerId, string loginToken, bool isClanChat, string message, UnityAction<GameServiceResult> onFinish)
+    protected override void DoGetClanChatMessages(string playerId, string loginToken, long lastTime, UnityAction<ChatMessageListResult> onFinish)
+    {
+        var result = new ChatMessageListResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoEnterChatMessage(string playerId, string loginToken, string message, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoEnterClanChatMessage(string playerId, string loginToken, string message, UnityAction<GameServiceResult> onFinish)
     {
         var result = new GameServiceResult();
         result.error = GameServiceErrorCode.NOT_AVAILABLE;

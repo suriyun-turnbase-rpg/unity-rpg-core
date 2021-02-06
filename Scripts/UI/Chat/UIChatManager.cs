@@ -35,34 +35,39 @@ public class UIChatManager : UIBase
     {
         if (!lastTime.HasValue)
             lastTime = GameInstance.GameService.Timestamp;
-        GameInstance.GameService.GetChatMessages(lastTime.Value, (result) =>
+        if (isClanChat)
+            GameInstance.GameService.GetClanChatMessages(lastTime.Value, OnGetChatMessages);
+        else
+            GameInstance.GameService.GetChatMessages(lastTime.Value, OnGetChatMessages);
+    }
+
+    private void OnGetChatMessages(ChatMessageListResult result)
+    {
+        foreach (var chat in result.list)
         {
-            foreach (var chat in result.list)
+            allChats[chat.Id] = chat;
+        }
+        var sortedChats = new List<ChatMessage>(allChats.Values);
+        sortedChats.Sort();
+        if (uiChatList != null)
+        {
+            uiChatList.selectable = false;
+            uiChatList.multipleSelection = false;
+            foreach (var chat in sortedChats)
             {
-                allChats[chat.Id] = chat;
+                var ui = uiChatList.SetListItem(chat);
+                ui.uiChatManager = this;
             }
-            var sortedChats = new List<ChatMessage>(allChats.Values);
-            sortedChats.Sort();
-            if (uiChatList != null)
+        }
+        if (sortedChats.Count > 0)
+        {
+            var newLastTime = sortedChats.Last().ChatTime;
+            if (lastTime.Value < newLastTime)
             {
-                uiChatList.selectable = false;
-                uiChatList.multipleSelection = false;
-                foreach (var chat in sortedChats)
-                {
-                    var ui = uiChatList.SetListItem(chat);
-                    ui.uiChatManager = this;
-                }
+                lastTime = newLastTime;
+                StartCoroutine(VerticalScroll(0f));
             }
-            if (sortedChats.Count > 0)
-            {
-                var newLastTime = sortedChats.Last().ChatTime;
-                if (lastTime.Value < newLastTime)
-                {
-                    lastTime = newLastTime;
-                    StartCoroutine(VerticalScroll(0f));
-                }
-            }
-        });
+        }
     }
 
     private void Update()
@@ -84,16 +89,32 @@ public class UIChatManager : UIBase
         if (string.IsNullOrEmpty(Message))
             return;
         messageInput.interactable = false;
-        GameInstance.GameService.EnterChatMessage(isClanChat, Message, (result) =>
+        if (isClanChat)
         {
-            Message = string.Empty;
-            messageInput.interactable = true;
-        }, (error) =>
+            GameInstance.GameService.EnterClanChatMessage(Message, (result) =>
+            {
+                Message = string.Empty;
+                messageInput.interactable = true;
+            }, (error) =>
+            {
+                Message = string.Empty;
+                messageInput.interactable = true;
+                Debug.LogError("[EnterClanChatMessage] " + error);
+            });
+        }
+        else
         {
-            Message = string.Empty;
-            messageInput.interactable = true;
-            Debug.LogError("[EnterChatMessage] " + error);
-        });
+            GameInstance.GameService.EnterChatMessage(Message, (result) =>
+            {
+                Message = string.Empty;
+                messageInput.interactable = true;
+            }, (error) =>
+            {
+                Message = string.Empty;
+                messageInput.interactable = true;
+                Debug.LogError("[EnterChatMessage] " + error);
+            });
+        }
     }
 
     IEnumerator VerticalScroll(float normalize)

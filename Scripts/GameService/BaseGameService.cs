@@ -897,13 +897,31 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetChatMessages(playerId, loginToken, lastTime, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void EnterChatMessage(bool isClanChat, string message, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    public void GetClanChatMessages(long lastTime, UnityAction<ChatMessageListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetClanChatMessages");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        DoGetClanChatMessages(playerId, loginToken, lastTime, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void EnterChatMessage(string message, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: EnterChatMessage");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
-        DoEnterChatMessage(playerId, loginToken, isClanChat, message, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+        DoEnterChatMessage(playerId, loginToken, message, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void EnterClanChatMessage(string message, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: EnterClanChatMessage");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        DoEnterClanChatMessage(playerId, loginToken, message, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     public void RefillStamina(string staminaDataId, UnityAction<RefillStaminaResult> onSuccess = null, UnityAction<string> onError = null)
@@ -989,7 +1007,9 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoClanSetRole(string playerId, string loginToken, string targetPlayerId, byte clanRole, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoCraftItem(string playerId, string loginToken, string itemCraftId, Dictionary<string, int> materials, UnityAction<ItemResult> onFinish);
     protected abstract void DoGetChatMessages(string playerId, string loginToken, long lastTime, UnityAction<ChatMessageListResult> onFinish);
-    protected abstract void DoEnterChatMessage(string playerId, string loginToken, bool isClanChat, string message, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoGetClanChatMessages(string playerId, string loginToken, long lastTime, UnityAction<ChatMessageListResult> onFinish);
+    protected abstract void DoEnterChatMessage(string playerId, string loginToken, string message, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoEnterClanChatMessage(string playerId, string loginToken, string message, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoRefillStamina(string playerId, string loginToken, string staminaDataId, UnityAction<RefillStaminaResult> onFinish);
     protected abstract void DoGetRefillStaminaInfo(string playerId, string loginToken, string staminaDataId, UnityAction<RefillStaminaInfoResult> onFinish);
 }
