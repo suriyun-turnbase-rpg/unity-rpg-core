@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UIClan : UIDataItem<Clan>
 {
     public Text textName;
+    public UILevel uiLevel;
     public UIPlayer uiOwner;
     public UIClanList uiClanList;
     [Header("Buttons")]
@@ -70,6 +71,14 @@ public class UIClan : UIDataItem<Clan>
 
         if (textName != null)
             textName.text = data.Name;
+
+        if (uiLevel != null)
+        {
+            uiLevel.level = data.Level;
+            uiLevel.maxLevel = data.MaxLevel;
+            uiLevel.collectExp = data.CollectExp;
+            uiLevel.nextExp = data.NextExp;
+        }
 
         if (uiOwner != null)
             uiOwner.data = data.Owner;
