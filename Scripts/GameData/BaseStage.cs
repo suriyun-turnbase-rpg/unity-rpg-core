@@ -7,6 +7,7 @@ using UnityEditor;
 
 public abstract class BaseStage : BaseGameData
 {
+    public StageType stageType;
     public string stageNumber;
     public Sprite icon;
     public int recommendBattlePoint;
@@ -18,6 +19,7 @@ public abstract class BaseStage : BaseGameData
     public int randomSoftCurrencyMinAmount;
     public int randomSoftCurrencyMaxAmount;
     public int rewardPlayerExp;
+    public int rewardClanExp;
     public int rewardCharacterExp;
     public ItemDrop[] rewardItems;
     [Header("First Clear Rewards")]
@@ -122,12 +124,14 @@ public abstract class BaseStage : BaseGameData
         }
         jsonUnlockStages = "[" + jsonUnlockStages + "]";
         return "{\"id\":\"" + Id + "\"," +
+            "\"stageType\":" + (int)stageType + "," +
             "\"recommendBattlePoint\":" + recommendBattlePoint + "," +
             "\"requireStamina\":" + requireStamina + "," +
             "\"requireCustomStamina\":\"" + requireCustomStamina + "\"," +
             "\"randomSoftCurrencyMinAmount\":" + randomSoftCurrencyMinAmount + "," +
             "\"randomSoftCurrencyMaxAmount\":" + randomSoftCurrencyMaxAmount + "," +
             "\"rewardPlayerExp\":" + rewardPlayerExp + "," +
+            "\"rewardClanExp\":" + rewardClanExp + "," +
             "\"rewardCharacterExp\":" + rewardCharacterExp + "," +
             "\"availabilities\":" + jsonAvailabilities + "," +
             "\"hasAvailableDate\":" + (hasAvailableDate ? 1 : 0) + "," +
