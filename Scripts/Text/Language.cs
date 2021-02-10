@@ -170,6 +170,7 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.INVALID_ITEM_DATA, "Invalid item data");
         Texts.Add(GameServiceErrorCode.INVALID_FORMATION_DATA, "Invalid formation data");
         Texts.Add(GameServiceErrorCode.INVALID_STAGE_DATA, "Invalid stage data");
+        Texts.Add(GameServiceErrorCode.INVALID_CLAN_DONATION_DATA, "Invalid clan donation data");
         Texts.Add(GameServiceErrorCode.INVALID_STAGE_NOT_AVAILABLE, "Stage not available to enter");
         Texts.Add(GameServiceErrorCode.INVALID_LOOT_BOX_DATA, "Invalid loot box data");
         Texts.Add(GameServiceErrorCode.INVALID_IAP_PACKAGE_DATA, "Invalid IAP package data");
@@ -190,7 +191,7 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.CANNOT_EVOLVE, "Cannot evolve");
         Texts.Add(GameServiceErrorCode.CANNOT_REFILL_STAMINA, "Cannot refill stamina");
         Texts.Add(GameServiceErrorCode.NOT_AVAILABLE, "Services not available");
-        Texts.Add(GameServiceErrorCode.JOINED_CLAN, "Already joined clan, cannot create or join other clan");
+        Texts.Add(GameServiceErrorCode.JOINED_CLAN, "Already joined clan");
         Texts.Add(GameServiceErrorCode.NOT_JOINED_CLAN, "Not joined clan");
         Texts.Add(GameServiceErrorCode.NOT_HAVE_PERMISSION, "You don't have permission to do it");
         Texts.Add(GameServiceErrorCode.CLAN_OWNER_CANNOT_EXIT, "Clan owner cannot exit from clan");

@@ -109,8 +109,11 @@ public class GameDatabase : ScriptableObject
     [Header("Clan")]
     public CreateClanRequirementType createClanCurrencyType;
     public int createClanCurrencyAmount;
+    public int clanCheckinRewardClanExp;
+    public List<ClanDonation> clanDonations;
 
     public readonly Dictionary<string, BaseItem> Items = new Dictionary<string, BaseItem>();
+    public readonly Dictionary<string, ClanDonation> ClanDonations = new Dictionary<string, ClanDonation>();
     public readonly Dictionary<string, Currency> Currencies = new Dictionary<string, Currency>();
     public readonly Dictionary<string, Stamina> Staminas = new Dictionary<string, Stamina>();
     public readonly Dictionary<string, Formation> Formations = new Dictionary<string, Formation>();
@@ -125,6 +128,7 @@ public class GameDatabase : ScriptableObject
     public void Setup()
     {
         Items.Clear();
+        ClanDonations.Clear();
         Currencies.Clear();
         Staminas.Clear();
         Formations.Clear();
@@ -157,6 +161,14 @@ public class GameDatabase : ScriptableObject
             }
         }
         AddItemsToDatabase(startCharacterList);
+
+        if (clanDonations != null && clanDonations.Count > 0)
+        {
+            foreach (var clanDonation in clanDonations)
+            {
+                ClanDonations[clanDonation.id] = clanDonation;
+            }
+        }
 
         Currencies[softCurrency.id] = softCurrency;
         Currencies[hardCurrency.id] = hardCurrency;
@@ -321,6 +333,7 @@ public class GameDatabase : ScriptableObject
         var achievementsJson = "";
         var itemCraftsJson = "";
         var itemsJson = "";
+        var clanDonationsJson = "";
         var currenciesJson = "";
         var staminasJson = "";
         var formationsJson = "";
@@ -356,6 +369,14 @@ public class GameDatabase : ScriptableObject
             itemsJson += "\"" + item.Key + "\":" + item.Value.ToJson();
         }
         itemsJson = "{" + itemsJson + "}";
+
+        foreach (var clanDonation in gameDatabase.ClanDonations)
+        {
+            if (!string.IsNullOrEmpty(clanDonationsJson))
+                clanDonationsJson += ",";
+            clanDonationsJson += "\"" + clanDonation.Key + "\":" + clanDonation.Value.ToJson();
+        }
+        clanDonationsJson = "{" + clanDonationsJson + "}";
 
         foreach (var currency in gameDatabase.Currencies)
         {
@@ -461,6 +482,7 @@ public class GameDatabase : ScriptableObject
             "\"achievements\":" + achievementsJson + "," +
             "\"itemCrafts\":" + itemCraftsJson + "," +
             "\"items\":" + itemsJson + "," +
+            "\"clanDonations\":" + clanDonationsJson + "," +
             "\"currencies\":" + currenciesJson + "," +
             "\"staminas\":" + staminasJson + "," +
             "\"formations\":" + formationsJson + "," +
@@ -481,6 +503,7 @@ public class GameDatabase : ScriptableObject
             "\"revivePrice\":" + gameDatabase.revivePrice + "," +
             "\"resetItemLevelAfterEvolve\":" + (gameDatabase.resetItemLevelAfterEvolve ? 1 : 0) + "," +
             "\"createClanCurrencyType\":" + (byte)gameDatabase.createClanCurrencyType + "," +
-            "\"createClanCurrencyAmount\":" + gameDatabase.createClanCurrencyAmount + "}";
+            "\"createClanCurrencyAmount\":" + gameDatabase.createClanCurrencyAmount + "," +
+            "\"clanCheckinRewardClanExp\":" + gameDatabase.clanCheckinRewardClanExp + "}";
     }
 }
