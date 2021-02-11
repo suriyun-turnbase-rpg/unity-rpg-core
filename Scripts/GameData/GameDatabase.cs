@@ -12,10 +12,6 @@ public class GameDatabase : ScriptableObject
     public int playerMaxLevel;
     [Tooltip("Requires Exp to levelup for each level")]
     public Int32Attribute playerExpTable;
-    [Range(1, 1000)]
-    public int clanMaxLevel;
-    [Tooltip("Requires Exp to levelup for each level")]
-    public Int32Attribute clanExpTable;
     [Tooltip("`Soft Currency`, `Start Amount` is start amount when create new player")]
     public Currency softCurrency = new Currency() { id = "GOLD", startAmount = 0 };
     [Tooltip("`Hard Currency`, `Start Amount` is start amount when create new player")]
@@ -107,6 +103,10 @@ public class GameDatabase : ScriptableObject
     public BaseEnvironmentData arenaEnvironment;
 
     [Header("Clan")]
+    [Range(1, 1000)]
+    public int clanMaxLevel;
+    [Tooltip("Requires Exp to levelup for each level")]
+    public Int32Attribute clanExpTable;
     public CreateClanRequirementType createClanCurrencyType;
     public int createClanCurrencyAmount;
     public int clanCheckinRewardClanExp;

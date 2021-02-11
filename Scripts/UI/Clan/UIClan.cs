@@ -15,6 +15,7 @@ public class UIClan : UIDataItem<Clan>
     public Button buttonJoinRequestDelete;
     public Button buttonTerminate;
     public Button buttonExit;
+    public Button buttonCheckin;
     [Header("Events")]
     public UnityEvent eventJoinRequestSuccess;
     public UnityEvent eventJoinRequestFail;
@@ -24,6 +25,11 @@ public class UIClan : UIDataItem<Clan>
     public UnityEvent eventTerminateFail;
     public UnityEvent eventExitSuccess;
     public UnityEvent eventExitFail;
+    public UnityEvent eventCheckinSuccess;
+    public UnityEvent eventCheckinFail;
+
+    public bool CheckedIn { get; protected set; }
+    public bool Donated { get; protected set; }
 
     public override void Clear()
     {
@@ -42,25 +48,31 @@ public class UIClan : UIDataItem<Clan>
         {
             buttonJoinRequest.onClick.RemoveListener(OnClickJoinRequest);
             buttonJoinRequest.onClick.AddListener(OnClickJoinRequest);
-            buttonJoinRequest.gameObject.SetActive(!IsEmpty());
+            buttonJoinRequest.interactable = !IsEmpty() && Player.CurrentPlayer.JoinedClan;
         }
         if (buttonJoinRequestDelete != null)
         {
             buttonJoinRequestDelete.onClick.RemoveListener(OnClickJoinRequestDelete);
             buttonJoinRequestDelete.onClick.AddListener(OnClickJoinRequestDelete);
-            buttonJoinRequestDelete.gameObject.SetActive(!IsEmpty());
+            buttonJoinRequestDelete.interactable = !IsEmpty() && Player.CurrentPlayer.JoinedClan;
         }
         if (buttonTerminate != null)
         {
             buttonTerminate.onClick.RemoveListener(OnClickTerminate);
             buttonTerminate.onClick.AddListener(OnClickTerminate);
-            buttonTerminate.gameObject.SetActive(!IsEmpty());
+            buttonTerminate.interactable = !IsEmpty() && Player.CurrentPlayer.IsClanLeader && Player.CurrentPlayer.ClanId.Equals(data.Id);
         }
         if (buttonExit != null)
         {
             buttonExit.onClick.RemoveListener(OnClickExit);
             buttonExit.onClick.AddListener(OnClickExit);
-            buttonExit.gameObject.SetActive(!IsEmpty());
+            buttonExit.interactable = !IsEmpty() && !Player.CurrentPlayer.IsClanLeader && Player.CurrentPlayer.ClanId.Equals(data.Id);
+        }
+        if (buttonCheckin != null)
+        {
+            buttonCheckin.onClick.RemoveListener(OnClickCheckin);
+            buttonCheckin.onClick.AddListener(OnClickCheckin);
+            buttonCheckin.interactable = !IsEmpty() && Player.CurrentPlayer.ClanId.Equals(data.Id) && !CheckedIn;
         }
     }
 
@@ -176,5 +188,25 @@ public class UIClan : UIDataItem<Clan>
         GameInstance.Singleton.OnGameServiceError(error);
         if (eventExitFail != null)
             eventExitFail.Invoke();
+    }
+
+    public void OnClickCheckin()
+    {
+        GameInstance.GameService.ClanCheckin(OnCheckinSuccess, OnCheckinFail);
+    }
+
+    private void OnCheckinSuccess(ClanResult result)
+    {
+        if (eventCheckinSuccess != null)
+            eventCheckinSuccess.Invoke();
+        CheckedIn = true;
+        SetData(result.clan);
+    }
+
+    private void OnCheckinFail(string error)
+    {
+        GameInstance.Singleton.OnGameServiceError(error);
+        if (eventCheckinFail != null)
+            eventCheckinFail.Invoke();
     }
 }

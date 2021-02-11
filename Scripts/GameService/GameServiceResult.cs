@@ -241,10 +241,29 @@ public class ClanListResult : GameServiceResult
 }
 
 [System.Serializable]
+public class ClanDonationResult : GameServiceResult
+{
+    public Clan clan;
+    public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
+}
+
+[System.Serializable]
 public class CreateClanResult : GameServiceResult
 {
     public Clan clan;
     public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
+}
+
+[System.Serializable]
+public class ClanCheckinStatusResult : GameServiceResult
+{
+    public bool alreadyCheckin;
+}
+
+[System.Serializable]
+public class ClanDonationStatusResult : GameServiceResult
+{
+    public bool alreadyDonate;
 }
 
 [System.Serializable]

@@ -5,11 +5,16 @@ using UnityEngine;
 public class UIClanManager : UIClan
 {
     [Header("Manager settings")]
+    public UIClanDonationList uiUIClanDonationList;
     public GameObject[] notJoinedClanObjects;
     public GameObject[] joinedClanObjects;
     public GameObject[] memberObjects;
     public GameObject[] managerObjects;
     public GameObject[] ownerObjects;
+    public GameObject[] notCheckedInObjects;
+    public GameObject[] checkedInObjects;
+    public GameObject[] notDonatedObjects;
+    public GameObject[] donatedObjects;
     public bool IsManager { get { return !IsEmpty() && Player.CurrentPlayer.ClanId.Equals(data.Id) && Player.CurrentPlayer.ClanRole == 1; } }
     public bool IsOwner { get { return !IsEmpty() && Player.CurrentPlayer.ClanId.Equals(data.Id) && Player.CurrentPlayer.ClanRole == 2; } }
 
@@ -17,7 +22,14 @@ public class UIClanManager : UIClan
 
     private void OnEnable()
     {
+        if (uiUIClanDonationList != null)
+        {
+            uiUIClanDonationList.uiClanManager = this;
+            uiUIClanDonationList.SetListItems(GameInstance.GameDatabase.clanDonations);
+        }
         RefreshData();
+        RefreshCheckinStatus();
+        RefreshDonationStatus();
     }
 
     protected override void Update()
@@ -97,6 +109,34 @@ public class UIClanManager : UIClan
                 }
                 break;
         }
+        if (notCheckedInObjects != null)
+        {
+            foreach (var notCheckedInObject in notCheckedInObjects)
+            {
+                notCheckedInObject.SetActive(IsEmpty() || !CheckedIn);
+            }
+        }
+        if (checkedInObjects != null)
+        {
+            foreach (var checkedInObject in checkedInObjects)
+            {
+                checkedInObject.SetActive(!IsEmpty() && CheckedIn);
+            }
+        }
+        if (notDonatedObjects != null)
+        {
+            foreach (var notDonatedObject in notDonatedObjects)
+            {
+                notDonatedObject.SetActive(IsEmpty() || !Donated);
+            }
+        }
+        if (donatedObjects != null)
+        {
+            foreach (var donatedObject in donatedObjects)
+            {
+                donatedObject.SetActive(!IsEmpty() && Donated);
+            }
+        }
     }
 
     public override void UpdateData()
@@ -118,5 +158,34 @@ public class UIClanManager : UIClan
     private void OnRefreshFail(string error)
     {
         SetData(null);
+    }
+
+    public void RefreshCheckinStatus()
+    {
+        GameInstance.GameService.GetClanCheckinStatus(OnRefreshCheckinStatusSuccess);
+    }
+
+    private void OnRefreshCheckinStatusSuccess(ClanCheckinStatusResult result)
+    {
+        CheckedIn = result.alreadyCheckin;
+        UpdateState();
+        ForceUpdate();
+    }
+
+    public void RefreshDonationStatus()
+    {
+        GameInstance.GameService.GetClanDonationStatus(OnRefreshDonationStatusSuccess);
+    }
+
+    private void OnRefreshDonationStatusSuccess(ClanDonationStatusResult result)
+    {
+        Donated = result.alreadyDonate;
+        UpdateState();
+        ForceUpdate();
+        if (uiUIClanDonationList != null)
+        {
+            uiUIClanDonationList.ClearListItems();
+            uiUIClanDonationList.SetListItems(GameInstance.GameDatabase.clanDonations);
+        }
     }
 }

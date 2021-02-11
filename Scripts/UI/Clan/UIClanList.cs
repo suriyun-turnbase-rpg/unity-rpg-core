@@ -9,7 +9,7 @@ public class UIClanList : UIDataItemList<UIClan, Clan>
         ClearListItems();
         foreach (var entry in list)
         {
-            var ui = SetListItem(entry as Clan);
+            var ui = SetListItem(entry);
             if (ui != null && onSetListItem != null)
                 onSetListItem(ui);
         }

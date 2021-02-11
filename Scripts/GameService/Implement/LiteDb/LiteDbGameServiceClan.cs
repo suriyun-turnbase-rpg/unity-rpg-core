@@ -108,4 +108,32 @@ public partial class LiteDbGameService
         result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }
+
+    protected override void DoClanCheckin(string playerId, string loginToken, UnityAction<ClanResult> onFinish)
+    {
+        var result = new ClanResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoGetClanCheckinStatus(string playerId, string loginToken, UnityAction<ClanCheckinStatusResult> onFinish)
+    {
+        var result = new ClanCheckinStatusResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoClanDonation(string clanDonationDataId, string playerId, string loginToken, UnityAction<ClanDonationResult> onFinish)
+    {
+        var result = new ClanDonationResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoGetClanDonationStatus(string playerId, string loginToken, UnityAction<ClanDonationStatusResult> onFinish)
+    {
+        var result = new ClanDonationStatusResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
 }

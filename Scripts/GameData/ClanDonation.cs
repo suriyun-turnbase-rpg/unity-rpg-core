@@ -12,7 +12,7 @@ public struct ClanDonation
     public string ToJson()
     {
         return "{\"id\":\"" + id + "\"," +
-            "\"requireCurrencyId\":" + requireCurrencyId + "," +
+            "\"requireCurrencyId\":\"" + requireCurrencyId + "\"," +
             "\"requireCurrencyAmount\":" + requireCurrencyAmount + "," +
             "\"rewardClanExp\":" + rewardClanExp + "}";
     }

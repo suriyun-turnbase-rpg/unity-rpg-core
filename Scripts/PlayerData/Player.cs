@@ -52,6 +52,35 @@ public partial class Player : BasePlayerData, ILevel, IPlayer
     public byte ClanRole { get { return clanRole; } set { clanRole = value; } }
     public bool isFriend;
 
+    public bool JoinedClan
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(ClanId))
+                return false;
+            int intId;
+            if (int.TryParse(clanId, out intId) && intId <= 0)
+                return false;
+            return true;
+        }
+    }
+
+    public bool IsClanManager
+    {
+        get
+        {
+            return JoinedClan && ClanRole == 1;
+        }
+    }
+
+    public bool IsClanLeader
+    {
+        get
+        {
+            return JoinedClan && ClanRole == 2;
+        }
+    }
+
     private int level = -1;
     private int collectExp = -1;
     private int dirtyExp = -1;  // Exp for dirty check to calculate `Level` and `CollectExp` fields
