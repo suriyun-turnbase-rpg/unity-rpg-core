@@ -363,7 +363,7 @@ public struct RandomAttributes
             "\"minBlockDamageRate\":" + minBlockDamageRate.ToString(new CultureInfo("en-US", false)) + "," +
             "\"maxBlockDamageRate\":" + maxBlockDamageRate.ToString(new CultureInfo("en-US", false)) + "," +
             "\"minResistanceChance\":" + minResistanceChance.ToString(new CultureInfo("en-US", false)) + "," +
-            "\"minResistanceChance\":" + maxResistanceChance.ToString(new CultureInfo("en-US", false)) + "," +
+            "\"maxResistanceChance\":" + maxResistanceChance.ToString(new CultureInfo("en-US", false)) + "," +
             "\"minBloodStealRateByPAtk\":" + minBloodStealRateByPAtk.ToString(new CultureInfo("en-US", false)) + "," +
             "\"maxBloodStealRateByPAtk\":" + maxBloodStealRateByPAtk.ToString(new CultureInfo("en-US", false)) + "," +
 #if !NO_MAGIC_STATS
