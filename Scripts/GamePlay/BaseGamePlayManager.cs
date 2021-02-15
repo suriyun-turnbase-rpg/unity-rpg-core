@@ -134,7 +134,6 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     {
         if (BattleType == EBattleType.Stage)
         {
-            Debug.LogError("End with session " + BattleSession);
             GameInstance.GameService.FinishStage(BattleSession, EBattleResult.Win, TotalDamage, CountDeadCharacters(), (result) =>
             {
                 isEnding = true;
@@ -265,7 +264,6 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         {
             GameInstance.Singleton.OnGameServiceStartStageResult(result);
             BattleSession = result.session;
-            Debug.LogError("Battle session set to " + BattleSession);
             TotalDamage = 0;
             GameInstance.Singleton.LoadBattleScene();
         }, (error) =>
