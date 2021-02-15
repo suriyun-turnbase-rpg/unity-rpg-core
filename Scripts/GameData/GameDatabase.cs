@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
-public class GameDatabase : ScriptableObject
+public partial class GameDatabase : ScriptableObject
 {
     [Header("Player database")]
     [Range(1, 1000)]
@@ -474,36 +470,54 @@ public class GameDatabase : ScriptableObject
         }
         arenaRanksJson = "[" + arenaRanksJson + "]";
 
-        return "{" +
-            "\"softCurrencyId\":\"" + softCurrency.id + "\"," +
-            "\"hardCurrencyId\":\"" + hardCurrency.id + "\"," +
-            "\"stageStaminaId\":\"" + stageStamina.id + "\"," +
-            "\"arenaStaminaId\":\"" + arenaStamina.id + "\"," +
-            "\"achievements\":" + achievementsJson + "," +
-            "\"itemCrafts\":" + itemCraftsJson + "," +
-            "\"items\":" + itemsJson + "," +
-            "\"clanDonations\":" + clanDonationsJson + "," +
-            "\"currencies\":" + currenciesJson + "," +
-            "\"staminas\":" + staminasJson + "," +
-            "\"formations\":" + formationsJson + "," +
-            "\"stages\":" + stagesJson + "," +
-            "\"lootBoxes\":" + lootBoxesJson + "," +
-            "\"iapPackages\":" + iapPackagesJson + "," +
-            "\"inGamePackages\":" + inGamePackagesJson + "," +
-            "\"hardToSoftCurrencyConversion\":" + gameDatabase.hardToSoftCurrencyConversion + "," +
-            "\"startItems\":" + startItemsJson + "," +
-            "\"startCharacters\":" + startCharactersJson + "," +
-            "\"unlockStages\":" + unlockStagesJson + "," +
-            "\"arenaRanks\":" + arenaRanksJson + "," +
-            "\"arenaWinScoreIncrease\":" + gameDatabase.arenaWinScoreIncrease + "," +
-            "\"arenaLoseScoreDecrease\":" + gameDatabase.arenaLoseScoreDecrease + "," +
-            "\"playerMaxLevel\":" + gameDatabase.playerMaxLevel + "," +
-            "\"playerExpTable\":" + gameDatabase.playerExpTable.ToJson() + "," +
-            "\"clanExpTable\":" + gameDatabase.clanExpTable.ToJson() + "," +
-            "\"revivePrice\":" + gameDatabase.revivePrice + "," +
-            "\"resetItemLevelAfterEvolve\":" + (gameDatabase.resetItemLevelAfterEvolve ? 1 : 0) + "," +
-            "\"createClanCurrencyType\":" + (byte)gameDatabase.createClanCurrencyType + "," +
-            "\"createClanCurrencyAmount\":" + gameDatabase.createClanCurrencyAmount + "," +
-            "\"clanCheckinRewardClanExp\":" + gameDatabase.clanCheckinRewardClanExp + "}";
+        Dictionary<string, string> keyValues = new Dictionary<string, string>();
+        keyValues["softCurrencyId"] = $"\"{softCurrency.id}\"";
+        keyValues["hardCurrencyId"] = $"\"{hardCurrency.id}\"";
+        keyValues["stageStaminaId"] = $"\"{stageStamina.id}\"";
+        keyValues["arenaStaminaId"] = $"\"{arenaStamina.id}\"";
+        keyValues["achievements"] = achievementsJson;
+        keyValues["itemCrafts"] = itemCraftsJson;
+        keyValues["items"] = itemsJson;
+        keyValues["clanDonations"] = clanDonationsJson;
+        keyValues["currencies"] = currenciesJson;
+        keyValues["staminas"] = staminasJson;
+        keyValues["formations"] = formationsJson;
+        keyValues["stages"] = stagesJson;
+        keyValues["lootBoxes"] = lootBoxesJson;
+        keyValues["iapPackages"] = iapPackagesJson;
+        keyValues["inGamePackages"] = inGamePackagesJson;
+        keyValues["hardToSoftCurrencyConversion"] = gameDatabase.hardToSoftCurrencyConversion.ToString();
+        keyValues["startItems"] = startItemsJson;
+        keyValues["startCharacters"] = startCharactersJson;
+        keyValues["unlockStages"] = unlockStagesJson;
+        keyValues["arenaRanks"] = arenaRanksJson;
+        keyValues["arenaWinScoreIncrease"] = gameDatabase.arenaWinScoreIncrease.ToString();
+        keyValues["arenaLoseScoreDecrease"] = gameDatabase.arenaLoseScoreDecrease.ToString();
+        keyValues["playerMaxLevel"] = gameDatabase.playerMaxLevel.ToString();
+        keyValues["playerExpTable"] = gameDatabase.playerExpTable.ToJson();
+        keyValues["clanExpTable"] = gameDatabase.clanExpTable.ToJson();
+        keyValues["revivePrice"] = gameDatabase.revivePrice.ToString();
+        keyValues["resetItemLevelAfterEvolve"] = (gameDatabase.resetItemLevelAfterEvolve ? 1 : 0).ToString();
+        keyValues["createClanCurrencyType"] = ((byte)gameDatabase.createClanCurrencyType).ToString();
+        keyValues["createClanCurrencyAmount"] = gameDatabase.createClanCurrencyAmount.ToString();
+        keyValues["clanCheckinRewardClanExp"] = gameDatabase.clanCheckinRewardClanExp.ToString();
+
+        DevExtUtils.InvokeInstanceDevExtMethods(this, "AddExportingData", keyValues);
+
+        int keyValuesCount = keyValues.Count;
+        int count = 0;
+        string json = string.Empty;
+        foreach (var keyValue in keyValues)
+        {
+            if (count == 0)
+                json += "{";
+            if (count > 0)
+                json += ",";
+            json += $"\"{keyValue.Key}\":{keyValue.Value}";
+            if (count == keyValuesCount - 1)
+                json += "}";
+            count++;
+        }
+        return json;
     }
 }

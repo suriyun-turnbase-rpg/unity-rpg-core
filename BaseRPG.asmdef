@@ -4,9 +4,9 @@
         "CameraAndInput",
         "UIUtilities",
         "UnityEditorUtilsEditor",
-        "UnityEditorUtils"
+        "UnityEditorUtils",
+        "DevExtension"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -14,5 +14,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }
