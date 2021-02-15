@@ -19,23 +19,29 @@ public class UILevel : MonoBehaviour, ILevel
 
     public int level;
     public int maxLevel;
-    public int collectExp;
+    public int currentExp;
     public int increasingExp;
-    public int nextExp;
+    public int requiredExp;
 
     public int Level { get { return level; } }
     public int MaxLevel { get { return maxLevel; } }
-    public int CollectExp { get { return collectExp; } }
+
+    // Example situation: If current item's exp is 15 and it's required 20 to levelup 
+    // and it's increasing 3 exp by consuming item then:
+    // Current Exp = 18 = (15 + 3)
+    // Increasing Exp = 3
+    // Required Exp = 20
+    public int CurrentExp { get { return currentExp; } }
     public int IncreasingExp { get { return increasingExp; } }
-    public int NextExp { get { return nextExp; } }
+    public int RequiredExp { get { return requiredExp; } }
 
     // Options
     public bool useFormatForInfo;
 
     void Update()
     {
-        var rate = (float)(CollectExp - IncreasingExp) / (float)NextExp;
-        var rateWithIncreasingExp = (float)CollectExp / (float)NextExp;
+        var rate = (float)(CurrentExp - IncreasingExp) / (float)RequiredExp;
+        var rateWithIncreasingExp = (float)CurrentExp / (float)RequiredExp;
         var isReachMaxLevel = false;
         if (Level == MaxLevel)
         {
@@ -53,21 +59,21 @@ public class UILevel : MonoBehaviour, ILevel
 
         if (textCollectExp != null)
         {
-            textCollectExp.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_COLLECT_EXP, (CollectExp - IncreasingExp)) : (CollectExp - IncreasingExp).ToString("N0");
+            textCollectExp.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_COLLECT_EXP, (CurrentExp - IncreasingExp)) : (CurrentExp - IncreasingExp).ToString("N0");
             if (isReachMaxLevel)
                 textCollectExp.text = "0";
         }
 
         if (textNextExp != null)
         {
-            textNextExp.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_NEXT_EXP, NextExp) : NextExp.ToString("N0");
+            textNextExp.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_NEXT_EXP, RequiredExp) : RequiredExp.ToString("N0");
             if (isReachMaxLevel)
                 textNextExp.text = "0";
         }
 
         if (textCollectPerNextExp != null)
         {
-            textCollectPerNextExp.text = (CollectExp - IncreasingExp).ToString("N0") + "/" + NextExp.ToString("N0");
+            textCollectPerNextExp.text = (CurrentExp - IncreasingExp).ToString("N0") + "/" + RequiredExp.ToString("N0");
             if (isReachMaxLevel)
                 textCollectPerNextExp.text = LanguageManager.GetText(GameText.TITLE_EXP_MAX);
         }

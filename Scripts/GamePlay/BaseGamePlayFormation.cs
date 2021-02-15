@@ -17,11 +17,11 @@ public class BaseGamePlayFormation : MonoBehaviour
         ClearCharacters();
         for (var i = 0; i < containers.Length; ++i)
         {
-            PlayerFormation playerFormation = null;
+            PlayerFormation playerFormation;
             if (PlayerFormation.TryGetData(formationName, i, out playerFormation))
             {
                 var itemId = playerFormation.ItemId;
-                PlayerItem item = null;
+                PlayerItem item;
                 if (!string.IsNullOrEmpty(itemId) && PlayerItem.DataMap.TryGetValue(itemId, out item))
                     SetCharacter(i, item);
             }

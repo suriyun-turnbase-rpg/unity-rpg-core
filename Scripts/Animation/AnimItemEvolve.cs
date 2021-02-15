@@ -44,8 +44,8 @@ public class AnimItemEvolve : MonoBehaviour
         uiLevel.gameObject.SetActive(oldItem.ActorItemData != null);
         uiLevel.level = oldItem.Level;
         uiLevel.maxLevel = oldItem.MaxLevel;
-        uiLevel.collectExp = oldItem.CollectExp;
-        uiLevel.nextExp = oldItem.NextExp;
+        uiLevel.currentExp = oldItem.CurrentExp;
+        uiLevel.requiredExp = oldItem.RequiredExp;
 
         gameObject.SetActive(true);
 
@@ -61,8 +61,8 @@ public class AnimItemEvolve : MonoBehaviour
         uiEvolveItem.SetData(newItem);
         uiLevel.level = newItem.Level;
         uiLevel.maxLevel = newItem.MaxLevel;
-        uiLevel.collectExp = newItem.CollectExp;
-        uiLevel.nextExp = newItem.NextExp;
+        uiLevel.currentExp = newItem.CurrentExp;
+        uiLevel.requiredExp = newItem.RequiredExp;
         onEvolve.Invoke();
         yield return null;
         onEnd.Invoke();

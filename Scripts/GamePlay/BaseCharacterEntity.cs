@@ -89,6 +89,9 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         }
     }
 
+    public virtual bool IsActiveCharacter { get { return false; } }
+    public virtual bool IsPlayerCharacter { get { return false; } }
+
     private Transform container;
     public Transform Container
     {
@@ -308,6 +311,8 @@ public abstract class BaseCharacterEntity : MonoBehaviour
                 Manager.SpawnDamageText((int)totalDmg, this);
 
             Hp -= (int)totalDmg;
+            if (!IsPlayerCharacter)
+                BaseGamePlayManager.IncreaseTotalDamage((int)totalDmg);
 
             if (stealHp > 0f)
             {

@@ -59,21 +59,21 @@ public class AnimItemLevelUp : MonoBehaviour
         uiLevel.gameObject.SetActive(oldItem.ActorItemData != null);
         uiLevel.level = oldItem.Level;
         uiLevel.maxLevel = oldItem.MaxLevel;
-        uiLevel.collectExp = oldItem.CollectExp;
-        uiLevel.nextExp = oldItem.NextExp;
+        uiLevel.currentExp = oldItem.CurrentExp;
+        uiLevel.requiredExp = oldItem.RequiredExp;
         // Setup data to play animation
-        collectExp = oldItem.CollectExp;
-        targetExp = oldItem.CollectExp + (newItem.Exp - oldItem.Exp);
-        nextExp = oldItem.NextExp;
+        collectExp = oldItem.CurrentExp;
+        targetExp = oldItem.CurrentExp + (newItem.Exp - oldItem.Exp);
+        nextExp = oldItem.RequiredExp;
         // Level up, prepare data for next level
         isLevelUp = newItem.Level > oldItem.Level;
         if (isLevelUp)
-            targetExp = oldItem.NextExp;
+            targetExp = oldItem.RequiredExp;
         increaseExpPerFrame = (targetExp - collectExp) / gageDuration;
         afterLevelUpLevel = newItem.Level;
         afterLevelUpCollectExp = 0;
-        afterLevelUpTargetExp = newItem.CollectExp;
-        afterLevelUpNextExp = newItem.NextExp;
+        afterLevelUpTargetExp = newItem.CurrentExp;
+        afterLevelUpNextExp = newItem.RequiredExp;
         isPlayedLevelUp = false;
         isPlaying = false;
         isEnd = false;
@@ -120,8 +120,8 @@ public class AnimItemLevelUp : MonoBehaviour
                 onEnd.Invoke();
             }
         }
-        uiLevel.collectExp = (int)collectExp;
-        uiLevel.nextExp = (int)nextExp;
+        uiLevel.currentExp = (int)collectExp;
+        uiLevel.requiredExp = (int)nextExp;
     }
 
     public void Skip()

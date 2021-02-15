@@ -70,8 +70,8 @@ public class UICharacterStatsGeneric : UIBase
         {
             uiLevel.level = character.Item.Level;
             uiLevel.maxLevel = character.Item.MaxLevel;
-            uiLevel.collectExp = character.Item.CollectExp;
-            uiLevel.nextExp = character.Item.NextExp;
+            uiLevel.currentExp = character.Item.CurrentExp;
+            uiLevel.requiredExp = character.Item.RequiredExp;
         }
 
         var i = 0;

@@ -33,7 +33,7 @@ public partial class Clan : ILevel, IClan
         }
     }
 
-    public int CollectExp
+    public int CurrentExp
     {
         get
         {
@@ -47,7 +47,7 @@ public partial class Clan : ILevel, IClan
         get { return GameDatabase == null ? 1 : GameDatabase.clanMaxLevel; }
     }
 
-    public int NextExp
+    public int RequiredExp
     {
         get { return GameDatabase == null ? 0 : GameDatabase.clanExpTable.Calculate(Level, GameDatabase.clanMaxLevel); }
     }

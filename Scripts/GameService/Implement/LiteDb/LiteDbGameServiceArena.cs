@@ -61,7 +61,7 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish)
+    protected override void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishDuelResult> onFinish)
     {
         var result = new FinishDuelResult();
         var gameDb = GameInstance.GameDatabase;

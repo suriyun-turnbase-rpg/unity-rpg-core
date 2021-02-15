@@ -133,7 +133,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         }
     }
 
-    public int CollectExp
+    public int CurrentExp
     {
         get
         {
@@ -162,7 +162,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         get { return Tier == null ? 0 : Tier.evolvePrice; }
     }
 
-    public int NextExp
+    public int RequiredExp
     {
         get { return Tier == null ? 0 : Tier.expTable.Calculate(Level, Tier.maxLevel); }
     }

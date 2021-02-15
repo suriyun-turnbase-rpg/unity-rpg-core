@@ -395,8 +395,8 @@ public class UIItem : UIDataItem<PlayerItem>
             uiLevel.gameObject.SetActive(data.ActorItemData != null);
             uiLevel.level = data.Level;
             uiLevel.maxLevel = data.MaxLevel;
-            uiLevel.collectExp = data.CollectExp;
-            uiLevel.nextExp = data.NextExp;
+            uiLevel.currentExp = data.CurrentExp;
+            uiLevel.requiredExp = data.RequiredExp;
         }
 
         if (uiEvolvePrice != null)

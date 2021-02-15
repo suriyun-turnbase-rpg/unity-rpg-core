@@ -11,6 +11,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public static BaseStage PlayingStage { get; protected set; }
     public static Player Helper { get; protected set; }
     public static EBattleType BattleType { get; protected set; }
+    public static int TotalDamage { get; protected set; }
     public static List<PlayerItem> ArenaOpponentCharacters { get; protected set; }
     [Header("Combat Texts")]
     public Transform combatTextContainer;
@@ -31,7 +32,8 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public float loseGameDelay = 2f;
 
     private bool? isAutoPlay;
-    public bool IsAutoPlay {
+    public bool IsAutoPlay
+    {
         get
         {
             if (!isAutoPlay.HasValue)
@@ -132,7 +134,8 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     {
         if (BattleType == EBattleType.Stage)
         {
-            GameInstance.GameService.FinishStage(BattleSession, EBattleResult.Win, CountDeadCharacters(), (result) =>
+            Debug.LogError("End with session " + BattleSession);
+            GameInstance.GameService.FinishStage(BattleSession, EBattleResult.Win, TotalDamage, CountDeadCharacters(), (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
@@ -162,7 +165,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         }
         else if (BattleType == EBattleType.Arena)
         {
-            GameInstance.GameService.FinishDuel(BattleSession, EBattleResult.Win, CountDeadCharacters(), (result) =>
+            GameInstance.GameService.FinishDuel(BattleSession, EBattleResult.Win, TotalDamage, CountDeadCharacters(), (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
@@ -186,7 +189,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         }
         else if (BattleType == EBattleType.Arena)
         {
-            GameInstance.GameService.FinishDuel(BattleSession, EBattleResult.Lose, CountDeadCharacters(), (result) =>
+            GameInstance.GameService.FinishDuel(BattleSession, EBattleResult.Lose, TotalDamage, CountDeadCharacters(), (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
@@ -216,10 +219,9 @@ public abstract class BaseGamePlayManager : MonoBehaviour
 
     public void Giveup(UnityAction onError)
     {
-        var deadCharacters = CountDeadCharacters();
         if (BattleType == EBattleType.Stage)
         {
-            GameInstance.GameService.FinishStage(BattleSession, EBattleResult.Lose, deadCharacters, (result) =>
+            GameInstance.GameService.FinishStage(BattleSession, EBattleResult.Lose, TotalDamage, CountDeadCharacters(), (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
@@ -231,7 +233,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         }
         else if (BattleType == EBattleType.Arena)
         {
-            GameInstance.GameService.FinishDuel(BattleSession, EBattleResult.Lose, deadCharacters, (result) =>
+            GameInstance.GameService.FinishDuel(BattleSession, EBattleResult.Lose, TotalDamage, CountDeadCharacters(), (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
@@ -263,6 +265,8 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         {
             GameInstance.Singleton.OnGameServiceStartStageResult(result);
             BattleSession = result.session;
+            Debug.LogError("Battle session set to " + BattleSession);
+            TotalDamage = 0;
             GameInstance.Singleton.LoadBattleScene();
         }, (error) =>
         {
@@ -281,12 +285,18 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         {
             GameInstance.Singleton.OnGameServiceStartDuelResult(result);
             BattleSession = result.session;
+            TotalDamage = 0;
             ArenaOpponentCharacters = result.opponentCharacters;
             GameInstance.Singleton.LoadBattleScene();
         }, (error) =>
         {
             GameInstance.Singleton.OnGameServiceError(error);
         });
+    }
+
+    public static void IncreaseTotalDamage(int damage)
+    {
+        TotalDamage += damage;
     }
 
     public virtual void OnRevive()

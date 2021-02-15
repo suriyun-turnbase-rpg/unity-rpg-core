@@ -244,14 +244,14 @@ public abstract partial class BaseGameService : MonoBehaviour
     /// <param name="battleResult"></param>
     /// <param name="onSuccess"></param>
     /// <param name="onError"></param>
-    public void FinishStage(string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishStageResult> onSuccess = null, UnityAction<string> onError = null)
+    public void FinishStage(string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishStageResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: FinishStage");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
         HandleServiceCall();
-        DoFinishStage(playerId, loginToken, session, battleResult, deadCharacters, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+        DoFinishStage(playerId, loginToken, session, battleResult, totalDamage, deadCharacters, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     /// <summary>
@@ -688,14 +688,14 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoStartDuel(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void FinishDuel(string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onSuccess = null, UnityAction<string> onError = null)
+    public void FinishDuel(string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishDuelResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: FinishDuel");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
         HandleServiceCall();
-        DoFinishDuel(playerId, loginToken, session, battleResult, deadCharacters, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+        DoFinishDuel(playerId, loginToken, session, battleResult, totalDamage, deadCharacters, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     public void EarnAchievementReward(string achievementId, UnityAction<EarnAchievementResult> onSuccess = null, UnityAction<string> onError = null)
@@ -992,7 +992,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoEvolveItem(string playerId, string loginToken, string itemId, Dictionary<string, int> materials, UnityAction<ItemResult> onFinish);
     protected abstract void DoSellItems(string playerId, string loginToken, Dictionary<string, int> items, UnityAction<ItemResult> onFinish);
     protected abstract void DoStartStage(string playerId, string loginToken, string stageDataId, string helperPlayerId, UnityAction<StartStageResult> onFinish);
-    protected abstract void DoFinishStage(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishStageResult> onFinish);
+    protected abstract void DoFinishStage(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishStageResult> onFinish);
     protected abstract void DoReviveCharacters(string playerId, string loginToken, UnityAction<CurrencyResult> onFinish);
     protected abstract void DoSelectFormation(string playerId, string loginToken, string formationName, EFormationType formationType, UnityAction<PlayerResult> onFinish);
     protected abstract void DoEquipItem(string playerId, string loginToken, string characterId, string equipmentId, string equipPosition, UnityAction<ItemResult> onFinish);
@@ -1026,7 +1026,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoGetServiceTime(UnityAction<ServiceTimeResult> onFinish);
     protected abstract void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);
     protected abstract void DoStartDuel(string playerId, string loginToken, string targetPlayerId, UnityAction<StartDuelResult> onFinish);
-    protected abstract void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish);
+    protected abstract void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishDuelResult> onFinish);
     protected abstract void DoEarnAchievementReward(string playerId, string loginToken, string achievementId, UnityAction<EarnAchievementResult> onFinish);
     protected abstract void DoConvertHardCurrency(string playerId, string loginToken, int requireHardCurrency, UnityAction<HardCurrencyConversionResult> onFinish);
     protected abstract void DoOpenInGamePackage(string playerId, string loginToken, string inGamePackageDataId, UnityAction<ItemResult> onFinish);

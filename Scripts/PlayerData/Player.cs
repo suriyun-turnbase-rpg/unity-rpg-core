@@ -126,7 +126,7 @@ public partial class Player : BasePlayerData, ILevel, IPlayer
         }
     }
     
-    public int CollectExp
+    public int CurrentExp
     {
         get
         {
@@ -140,7 +140,7 @@ public partial class Player : BasePlayerData, ILevel, IPlayer
         get { return GameDatabase == null ? 1 : GameDatabase.playerMaxLevel; }
     }
     
-    public int NextExp
+    public int RequiredExp
     {
         get { return GameDatabase == null ? 0 : GameDatabase.playerExpTable.Calculate(Level, GameDatabase.playerMaxLevel); }
     }

@@ -88,7 +88,7 @@ public partial class SQLiteGameService
         onFinish(result);
     }
 
-    protected override void DoFinishStage(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishStageResult> onFinish)
+    protected override void DoFinishStage(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishStageResult> onFinish)
     {
         var result = new FinishStageResult();
         var gameDb = GameInstance.GameDatabase;

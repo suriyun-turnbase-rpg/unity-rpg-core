@@ -2,4 +2,5 @@
 {
 	Stage,
 	Arena,
+	RaidBoss,
 }
