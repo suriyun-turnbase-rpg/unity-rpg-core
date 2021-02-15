@@ -48,13 +48,13 @@ public class UIClan : UIDataItem<Clan>
         {
             buttonJoinRequest.onClick.RemoveListener(OnClickJoinRequest);
             buttonJoinRequest.onClick.AddListener(OnClickJoinRequest);
-            buttonJoinRequest.interactable = !IsEmpty() && Player.CurrentPlayer.JoinedClan;
+            buttonJoinRequest.interactable = !IsEmpty() && !Player.CurrentPlayer.JoinedClan;
         }
         if (buttonJoinRequestDelete != null)
         {
             buttonJoinRequestDelete.onClick.RemoveListener(OnClickJoinRequestDelete);
             buttonJoinRequestDelete.onClick.AddListener(OnClickJoinRequestDelete);
-            buttonJoinRequestDelete.interactable = !IsEmpty() && Player.CurrentPlayer.JoinedClan;
+            buttonJoinRequestDelete.interactable = !IsEmpty() && !Player.CurrentPlayer.JoinedClan;
         }
         if (buttonTerminate != null)
         {
