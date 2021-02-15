@@ -64,12 +64,12 @@ public abstract partial class BaseGameService : MonoBehaviour
         onLogout();
     }
 
-    protected void HandleServiceCall()
+    public void HandleServiceCall()
     {
         onServiceStart.Invoke();
     }
 
-    protected void HandleResult<T>(T result, UnityAction<T> onSuccess, UnityAction<string> onError) where T : GameServiceResult
+    public void HandleResult<T>(T result, UnityAction<T> onSuccess, UnityAction<string> onError) where T : GameServiceResult
     {
         onServiceFinish.Invoke();
         if (result.Success)
