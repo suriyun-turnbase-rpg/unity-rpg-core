@@ -54,7 +54,7 @@ public class UIClanDonation : UIDataItem<ClanDonation>
         {
             buttonDonate.onClick.RemoveListener(OnClickDonation);
             buttonDonate.onClick.AddListener(OnClickDonation);
-            buttonDonate.interactable = !IsEmpty() && uiClanManager != null && !uiClanManager.Donated;
+            buttonDonate.interactable = !IsEmpty() && uiClanManager != null && !uiClanManager.DonatedReachedLimit;
         }
     }
 

@@ -106,6 +106,7 @@ public abstract class BaseStage : BaseGameData
                 jsonRandomCustomCurrencies += ",";
             jsonRandomCustomCurrencies += entry.ToJson();
         }
+        jsonRandomCustomCurrencies = "[" + jsonRandomCustomCurrencies + "]";
         // Reward Items
         var jsonRewardItems = "";
         foreach (var entry in rewardItems)
@@ -123,6 +124,7 @@ public abstract class BaseStage : BaseGameData
                 jsonFirstClearRewardCustomCurrencies += ",";
             jsonFirstClearRewardCustomCurrencies += entry.ToJson();
         }
+        jsonFirstClearRewardCustomCurrencies = "[" + jsonFirstClearRewardCustomCurrencies + "]";
         // First Clear Reward Items
         var jsonFirstClearRewardItems = "";
         foreach (var entry in firstClearRewardItems)
@@ -145,7 +147,7 @@ public abstract class BaseStage : BaseGameData
             "\"stageType\":" + (int)stageType + "," +
             "\"recommendBattlePoint\":" + recommendBattlePoint + "," +
             "\"requireStamina\":" + requireStamina + "," +
-            "\"requireCustomStamina\":" + requireCustomStamina + "," +
+            "\"requireCustomStamina\":\"" + requireCustomStamina + "\"," +
             "\"randomCustomCurrencies\":" + jsonRandomCustomCurrencies + "," +
             "\"randomSoftCurrencyMinAmount\":" + randomSoftCurrencyMinAmount + "," +
             "\"randomSoftCurrencyMaxAmount\":" + randomSoftCurrencyMaxAmount + "," +

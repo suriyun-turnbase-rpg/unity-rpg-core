@@ -181,6 +181,7 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.INVALID_STAMINA_DATA, "Invalid stamina data");
         Texts.Add(GameServiceErrorCode.INVALID_EQUIP_POSITION, "Invalid equip position");
         Texts.Add(GameServiceErrorCode.INVALID_BATTLE_SESSION, "Invalid battle session");
+        Texts.Add(GameServiceErrorCode.NOT_ENOUGH_CURRENCY, "Not enough currency");
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_SOFT_CURRENCY, "Not enough " + Texts[GameText.TITLE_SOFT_CURRENCY]);
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY, "Not enough " + Texts[GameText.TITLE_HARD_CURRENCY]);
         Texts.Add(GameServiceErrorCode.NOT_ENOUGH_STAGE_STAMINA, "Not enough " + Texts[GameText.TITLE_STAGE_STAMINA]);

@@ -127,14 +127,14 @@ public class UIClanManager : UIClan
         {
             foreach (var notDonatedObject in notDonatedObjects)
             {
-                notDonatedObject.SetActive(IsEmpty() || !Donated);
+                notDonatedObject.SetActive(IsEmpty() || !DonatedReachedLimit);
             }
         }
         if (donatedObjects != null)
         {
             foreach (var donatedObject in donatedObjects)
             {
-                donatedObject.SetActive(!IsEmpty() && Donated);
+                donatedObject.SetActive(!IsEmpty() && DonatedReachedLimit);
             }
         }
     }
@@ -179,7 +179,8 @@ public class UIClanManager : UIClan
 
     private void OnRefreshDonationStatusSuccess(ClanDonationStatusResult result)
     {
-        Donated = result.alreadyDonate;
+        ClanDonateCount = result.clanDonateCount;
+        MaxClanDonation = result.maxClanDonation;
         UpdateState();
         ForceUpdate();
         if (uiUIClanDonationList != null)

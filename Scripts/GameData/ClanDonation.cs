@@ -14,16 +14,20 @@ public struct ClanDonation
     {
         // Reward Custom Currencies
         var jsonRewardCurrencies = "";
-        foreach (var entry in rewardCurrencies)
+        if (rewardCurrencies != null)
         {
-            if (!string.IsNullOrEmpty(jsonRewardCurrencies))
-                jsonRewardCurrencies += ",";
-            jsonRewardCurrencies += entry.ToJson();
+            foreach (var entry in rewardCurrencies)
+            {
+                if (!string.IsNullOrEmpty(jsonRewardCurrencies))
+                    jsonRewardCurrencies += ",";
+                jsonRewardCurrencies += entry.ToJson();
+            }
         }
+        jsonRewardCurrencies = "[" + jsonRewardCurrencies + "]";
         return "{\"id\":\"" + id + "\"," +
             "\"requireCurrencyId\":\"" + requireCurrencyId + "\"," +
             "\"requireCurrencyAmount\":" + requireCurrencyAmount + "," +
-            "\"rewardCurrencies\":" + rewardCurrencies + "," +
+            "\"rewardCurrencies\":" + jsonRewardCurrencies + "," +
             "\"rewardClanExp\":" + rewardClanExp + "}";
     }
 }

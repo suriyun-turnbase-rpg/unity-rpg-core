@@ -29,6 +29,7 @@ public class GameServiceErrorCode
     public const string INVALID_STAMINA_DATA = ERROR_PREFIX + "INVALID_STAMINA_DATA";
     public const string INVALID_EQUIP_POSITION = ERROR_PREFIX + "INVALID_EQUIP_POSITION";
     public const string INVALID_BATTLE_SESSION = ERROR_PREFIX + "INVALID_BATTLE_SESSION";
+    public const string NOT_ENOUGH_CURRENCY = ERROR_PREFIX + "NOT_ENOUGH_CURRENCY";
     public const string NOT_ENOUGH_SOFT_CURRENCY = ERROR_PREFIX + "NOT_ENOUGH_SOFT_CURRENCY";
     public const string NOT_ENOUGH_HARD_CURRENCY = ERROR_PREFIX + "NOT_ENOUGH_HARD_CURRENCY";
     public const string NOT_ENOUGH_STAGE_STAMINA = ERROR_PREFIX + "NOT_ENOUGH_STAGE_STAMINA";
@@ -270,7 +271,8 @@ public class ClanCheckinStatusResult : GameServiceResult
 [System.Serializable]
 public class ClanDonationStatusResult : GameServiceResult
 {
-    public bool alreadyDonate;
+    public int clanDonateCount;
+    public int maxClanDonation;
 }
 
 [System.Serializable]

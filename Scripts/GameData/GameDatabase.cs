@@ -108,6 +108,7 @@ public partial class GameDatabase : ScriptableObject
     public int clanCheckinRewardClanExp;
     public CurrencyAmount[] clanCheckinRewardCurrencies;
     public List<ClanDonation> clanDonations;
+    public byte maxClanDonation = 5;
 
     public readonly Dictionary<string, BaseItem> Items = new Dictionary<string, BaseItem>();
     public readonly Dictionary<string, ClanDonation> ClanDonations = new Dictionary<string, ClanDonation>();
@@ -512,6 +513,7 @@ public partial class GameDatabase : ScriptableObject
         keyValues["createClanCurrencyAmount"] = gameDatabase.createClanCurrencyAmount.ToString();
         keyValues["clanCheckinRewardClanExp"] = gameDatabase.clanCheckinRewardClanExp.ToString();
         keyValues["clanCheckinRewardCurrencies"] = clanCheckinRewardCurrenciesJson;
+        keyValues["maxClanDonation"] = maxClanDonation.ToString();
 
         DevExtUtils.InvokeInstanceDevExtMethods(this, "AddExportingData", keyValues);
 

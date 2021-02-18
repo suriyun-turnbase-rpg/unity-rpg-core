@@ -10,6 +10,8 @@ public class UIClan : UIDataItem<Clan>
     public UILevel uiLevel;
     public UIPlayer uiOwner;
     public UIClanList uiClanList;
+    public Text textClanDonateCount;
+    public Text textMaxClanDonation;
     [Header("Buttons")]
     public Button buttonJoinRequest;
     public Button buttonJoinRequestDelete;
@@ -29,7 +31,9 @@ public class UIClan : UIDataItem<Clan>
     public UnityEvent eventCheckinFail;
 
     public bool CheckedIn { get; protected set; }
-    public bool Donated { get; protected set; }
+    public int ClanDonateCount { get; protected set; }
+    public int MaxClanDonation { get; protected set; }
+    public bool DonatedReachedLimit { get { return ClanDonateCount >= MaxClanDonation; } }
 
     public override void Clear()
     {
@@ -74,6 +78,10 @@ public class UIClan : UIDataItem<Clan>
             buttonCheckin.onClick.AddListener(OnClickCheckin);
             buttonCheckin.interactable = !IsEmpty() && Player.CurrentPlayer.ClanId.Equals(data.Id) && !CheckedIn;
         }
+        if (textClanDonateCount != null)
+            textClanDonateCount.text = ClanDonateCount.ToString("N0");
+        if (textMaxClanDonation != null)
+            textMaxClanDonation.text = MaxClanDonation > 0 ? MaxClanDonation.ToString("N0") : GameInstance.GameDatabase.maxClanDonation.ToString("N0");
     }
 
     private void SetupInfo(Clan data)
