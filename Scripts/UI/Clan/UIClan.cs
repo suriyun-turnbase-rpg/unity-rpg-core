@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIClan : UIDataItem<Clan>
@@ -9,7 +10,8 @@ public class UIClan : UIDataItem<Clan>
     public Text textName;
     public UILevel uiLevel;
     public UIPlayer uiOwner;
-    public UIClanList uiClanList;
+    [FormerlySerializedAs("uiClanList")]
+    public UIClanList uiClanJoinRequestList;
     [Header("Buttons")]
     public Button buttonJoinRequest;
     public Button buttonJoinRequestDelete;
@@ -73,8 +75,8 @@ public class UIClan : UIDataItem<Clan>
 
     private void OnJoinRequestSuccess(GameServiceResult result)
     {
-        if (uiClanList != null)
-            uiClanList.RemoveListItem(data.Id);
+        if (uiClanJoinRequestList != null)
+            uiClanJoinRequestList.RemoveListItem(data.Id);
         if (eventJoinRequestSuccess != null)
             eventJoinRequestSuccess.Invoke();
     }
@@ -99,8 +101,8 @@ public class UIClan : UIDataItem<Clan>
 
     private void OnJoinRequestDeleteSuccess(GameServiceResult result)
     {
-        if (uiClanList != null)
-            uiClanList.RemoveListItem(data.Id);
+        if (uiClanJoinRequestList != null)
+            uiClanJoinRequestList.RemoveListItem(data.Id);
         if (eventJoinRequestDeleteSuccess != null)
             eventJoinRequestDeleteSuccess.Invoke();
     }
