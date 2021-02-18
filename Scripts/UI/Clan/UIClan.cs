@@ -195,12 +195,13 @@ public class UIClan : UIDataItem<Clan>
         GameInstance.GameService.ClanCheckin(OnCheckinSuccess, OnCheckinFail);
     }
 
-    private void OnCheckinSuccess(ClanResult result)
+    private void OnCheckinSuccess(ClanCheckinResult result)
     {
         if (eventCheckinSuccess != null)
             eventCheckinSuccess.Invoke();
         CheckedIn = true;
         SetData(result.clan);
+        PlayerCurrency.SetDataRange(result.updateCurrencies);
     }
 
     private void OnCheckinFail(string error)

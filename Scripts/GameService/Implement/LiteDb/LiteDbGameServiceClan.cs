@@ -109,9 +109,9 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoClanCheckin(string playerId, string loginToken, UnityAction<ClanResult> onFinish)
+    protected override void DoClanCheckin(string playerId, string loginToken, UnityAction<ClanCheckinResult> onFinish)
     {
-        var result = new ClanResult();
+        var result = new ClanCheckinResult();
         result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }

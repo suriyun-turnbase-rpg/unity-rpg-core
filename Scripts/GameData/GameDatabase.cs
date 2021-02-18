@@ -106,6 +106,7 @@ public partial class GameDatabase : ScriptableObject
     public CreateClanRequirementType createClanCurrencyType;
     public int createClanCurrencyAmount;
     public int clanCheckinRewardClanExp;
+    public CurrencyAmount[] clanCheckinRewardCurrencies;
     public List<ClanDonation> clanDonations;
 
     public readonly Dictionary<string, BaseItem> Items = new Dictionary<string, BaseItem>();
@@ -326,21 +327,22 @@ public partial class GameDatabase : ScriptableObject
     public string ToJson()
     {
         var gameDatabase = this;
-        var achievementsJson = "";
-        var itemCraftsJson = "";
-        var itemsJson = "";
-        var clanDonationsJson = "";
-        var currenciesJson = "";
-        var staminasJson = "";
-        var formationsJson = "";
-        var stagesJson = "";
-        var lootBoxesJson = "";
-        var iapPackagesJson = "";
-        var inGamePackagesJson = "";
-        var startItemsJson = "";
-        var startCharactersJson = "";
-        var unlockStagesJson = "";
-        var arenaRanksJson = "";
+        var achievementsJson = string.Empty;
+        var itemCraftsJson =string.Empty;
+        var itemsJson =string.Empty;
+        var clanDonationsJson =string.Empty;
+        var currenciesJson =string.Empty;
+        var staminasJson =string.Empty;
+        var formationsJson =string.Empty;
+        var stagesJson =string.Empty;
+        var lootBoxesJson =string.Empty;
+        var iapPackagesJson =string.Empty;
+        var inGamePackagesJson =string.Empty;
+        var startItemsJson =string.Empty;
+        var startCharactersJson =string.Empty;
+        var unlockStagesJson =string.Empty;
+        var arenaRanksJson =string.Empty;
+        var clanCheckinRewardCurrenciesJson =string.Empty;
 
         foreach (var achievement in gameDatabase.Achievements)
         {
@@ -470,6 +472,14 @@ public partial class GameDatabase : ScriptableObject
         }
         arenaRanksJson = "[" + arenaRanksJson + "]";
 
+        foreach (var entry in gameDatabase.clanCheckinRewardCurrencies)
+        {
+            if (!string.IsNullOrEmpty(clanCheckinRewardCurrenciesJson))
+                clanCheckinRewardCurrenciesJson += ",";
+            clanCheckinRewardCurrenciesJson += entry.ToJson();
+        }
+        clanCheckinRewardCurrenciesJson = "[" + clanCheckinRewardCurrenciesJson + "]";
+
         Dictionary<string, string> keyValues = new Dictionary<string, string>();
         keyValues["softCurrencyId"] = $"\"{softCurrency.id}\"";
         keyValues["hardCurrencyId"] = $"\"{hardCurrency.id}\"";
@@ -501,6 +511,7 @@ public partial class GameDatabase : ScriptableObject
         keyValues["createClanCurrencyType"] = ((byte)gameDatabase.createClanCurrencyType).ToString();
         keyValues["createClanCurrencyAmount"] = gameDatabase.createClanCurrencyAmount.ToString();
         keyValues["clanCheckinRewardClanExp"] = gameDatabase.clanCheckinRewardClanExp.ToString();
+        keyValues["clanCheckinRewardCurrencies"] = clanCheckinRewardCurrenciesJson;
 
         DevExtUtils.InvokeInstanceDevExtMethods(this, "AddExportingData", keyValues);
 

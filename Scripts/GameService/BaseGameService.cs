@@ -848,7 +848,7 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetClanCheckinStatus(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void ClanCheckin(UnityAction<ClanResult> onSuccess = null, UnityAction<string> onError = null)
+    public void ClanCheckin(UnityAction<ClanCheckinResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: ClanCheckin");
         var player = Player.CurrentPlayer;
@@ -1042,7 +1042,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoClanTerminate(string playerId, string loginToken, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoGetClan(string playerId, string loginToken, UnityAction<ClanResult> onFinish);
     protected abstract void DoGetClanCheckinStatus(string playerId, string loginToken, UnityAction<ClanCheckinStatusResult> onFinish);
-    protected abstract void DoClanCheckin(string playerId, string loginToken, UnityAction<ClanResult> onFinish);
+    protected abstract void DoClanCheckin(string playerId, string loginToken, UnityAction<ClanCheckinResult> onFinish);
     protected abstract void DoGetClanDonationStatus(string playerId, string loginToken, UnityAction<ClanDonationStatusResult> onFinish);
     protected abstract void DoClanDonation(string clanDonationDataId, string playerId, string loginToken, UnityAction<ClanDonationResult> onFinish);
     protected abstract void DoGetClanJoinRequestList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);

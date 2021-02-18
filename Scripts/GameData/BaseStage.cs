@@ -16,6 +16,7 @@ public abstract class BaseStage : BaseGameData
     [Tooltip("If this is not empty it will use stamina which its ID is this value")]
     public string requireCustomStamina;
     [Header("Rewards")]
+    public CurrencyRandomAmount[] randomCustomCurrencies;
     public int randomSoftCurrencyMinAmount;
     public int randomSoftCurrencyMaxAmount;
     public int rewardPlayerExp;
@@ -23,6 +24,7 @@ public abstract class BaseStage : BaseGameData
     public int rewardCharacterExp;
     public ItemDrop[] rewardItems;
     [Header("First Clear Rewards")]
+    public CurrencyAmount[] firstClearRewardCustomCurrencies;
     public int firstClearRewardSoftCurrency;
     public int firstClearRewardHardCurrency;
     public int firstClearRewardPlayerExp;
@@ -96,6 +98,14 @@ public abstract class BaseStage : BaseGameData
             jsonAvailabilities += entry.ToJson();
         }
         jsonAvailabilities = "[" + jsonAvailabilities + "]";
+        // Reward Custom Currencies
+        var jsonRandomCustomCurrencies = "";
+        foreach (var entry in randomCustomCurrencies)
+        {
+            if (!string.IsNullOrEmpty(jsonRandomCustomCurrencies))
+                jsonRandomCustomCurrencies += ",";
+            jsonRandomCustomCurrencies += entry.ToJson();
+        }
         // Reward Items
         var jsonRewardItems = "";
         foreach (var entry in rewardItems)
@@ -105,6 +115,14 @@ public abstract class BaseStage : BaseGameData
             jsonRewardItems += entry.ToJson();
         }
         jsonRewardItems = "[" + jsonRewardItems + "]";
+        // First Clear Custom Currencies
+        var jsonFirstClearRewardCustomCurrencies = "";
+        foreach (var entry in firstClearRewardCustomCurrencies)
+        {
+            if (!string.IsNullOrEmpty(jsonFirstClearRewardCustomCurrencies))
+                jsonFirstClearRewardCustomCurrencies += ",";
+            jsonFirstClearRewardCustomCurrencies += entry.ToJson();
+        }
         // First Clear Reward Items
         var jsonFirstClearRewardItems = "";
         foreach (var entry in firstClearRewardItems)
@@ -127,7 +145,8 @@ public abstract class BaseStage : BaseGameData
             "\"stageType\":" + (int)stageType + "," +
             "\"recommendBattlePoint\":" + recommendBattlePoint + "," +
             "\"requireStamina\":" + requireStamina + "," +
-            "\"requireCustomStamina\":\"" + requireCustomStamina + "\"," +
+            "\"requireCustomStamina\":" + requireCustomStamina + "," +
+            "\"randomCustomCurrencies\":" + jsonRandomCustomCurrencies + "," +
             "\"randomSoftCurrencyMinAmount\":" + randomSoftCurrencyMinAmount + "," +
             "\"randomSoftCurrencyMaxAmount\":" + randomSoftCurrencyMaxAmount + "," +
             "\"rewardPlayerExp\":" + rewardPlayerExp + "," +
@@ -140,6 +159,7 @@ public abstract class BaseStage : BaseGameData
             "\"startDay\":" + startDay + "," +
             "\"durationDays\":" + durationDays + "," +
             "\"rewardItems\":" + jsonRewardItems + "," +
+            "\"firstClearRewardCustomCurrencies\":" + jsonFirstClearRewardCustomCurrencies + "," +
             "\"firstClearRewardSoftCurrency\":" + firstClearRewardSoftCurrency + "," +
             "\"firstClearRewardHardCurrency\":" + firstClearRewardHardCurrency + "," +
             "\"firstClearRewardPlayerExp\":" + firstClearRewardPlayerExp + "," +
