@@ -20,7 +20,7 @@ public class UIClanList : UIDataItemList<UIClan, Clan>
         if (data == null || string.IsNullOrEmpty(data.Id))
             return null;
         var item = SetListItem(data.Id);
-        item.uiClanList = this;
+        item.uiClanJoinRequestList = this;
         item.SetData(data);
         return item;
     }
