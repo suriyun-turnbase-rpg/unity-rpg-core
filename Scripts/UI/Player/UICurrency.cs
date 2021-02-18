@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 public class UICurrency : UIDataItem<PlayerCurrency>
 {
@@ -35,4 +32,11 @@ public class UICurrency : UIDataItem<PlayerCurrency>
     {
         return data == null || string.IsNullOrEmpty(data.DataId);
     }
+}
+
+[System.Serializable]
+public struct UICurrencyPairing
+{
+    public string id;
+    public UICurrency ui;
 }

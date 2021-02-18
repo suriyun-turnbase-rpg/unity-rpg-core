@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 public class UIStamina : UIDataItem<PlayerStamina>
 {
@@ -109,4 +106,11 @@ public class UIStamina : UIDataItem<PlayerStamina>
     {
         return data == null || string.IsNullOrEmpty(data.DataId);
     }
+}
+
+[System.Serializable]
+public struct UIStaninaPairing
+{
+    public string id;
+    public UIStamina ui;
 }
