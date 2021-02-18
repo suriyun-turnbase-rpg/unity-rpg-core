@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -18,12 +17,38 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
     public Text textRewardPlayerExp;
     public Text textRewardCharacterExp;
     public UIItemList uiRewardsItemList;
+    public UICurrencyPairing[] uiFirstClearRewardCustomCurrencies;
+    public Text textFirstClearRewardSoftCurrency;
+    public Text textFirstClearRewardHardCurrency;
+    public Text textFirstClearRewardPlayerExp;
+    public UIItemList uiFirstClearRewardsItemList;
     public UIItemList uiEnemyItemList;
     [Header("Relates Elements")]
     public Button[] interactableButtonsWhenUnlocked;
     public GameObject[] activeObjectsWhenUnlocked;
     public GameObject[] inactiveObjectsWhenUnlocked;
     public UnityEvent eventSetStagePreparation;
+
+
+    private Dictionary<string, UICurrency> cacheUiFirstClearRewardCustomCurrencies;
+    public Dictionary<string, UICurrency> CacheUiFirstClearRewardCustomCurrencies
+    {
+        get
+        {
+            if (cacheUiFirstClearRewardCustomCurrencies == null)
+            {
+                cacheUiFirstClearRewardCustomCurrencies = new Dictionary<string, UICurrency>();
+                if (uiFirstClearRewardCustomCurrencies != null)
+                {
+                    foreach (var uiRewardCurrency in uiFirstClearRewardCustomCurrencies)
+                    {
+                        cacheUiFirstClearRewardCustomCurrencies[uiRewardCurrency.id] = uiRewardCurrency.ui;
+                    }
+                }
+            }
+            return cacheUiFirstClearRewardCustomCurrencies;
+        }
+    }
 
     public override void Clear()
     {
@@ -76,6 +101,45 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
         {
             var list = data.GetRewardItems();
             uiRewardsItemList.SetListItems(list, (ui) => ui.displayStats = UIItem.DisplayStats.Hidden);
+        }
+
+        foreach (var kv in CacheUiFirstClearRewardCustomCurrencies)
+        {
+            kv.Value.data = new PlayerCurrency()
+            {
+                DataId = kv.Key,
+                Amount = 0,
+            };
+        }
+
+        if (data.firstClearRewardCustomCurrencies != null)
+        {
+            foreach (var rewardCurrency in data.firstClearRewardCustomCurrencies)
+            {
+                if (CacheUiFirstClearRewardCustomCurrencies.ContainsKey(rewardCurrency.Id))
+                {
+                    CacheUiFirstClearRewardCustomCurrencies[rewardCurrency.Id].data = new PlayerCurrency()
+                    {
+                        DataId = rewardCurrency.Id,
+                        Amount = rewardCurrency.Amount,
+                    };
+                }
+            }
+        }
+
+        if (textFirstClearRewardSoftCurrency != null)
+            textFirstClearRewardSoftCurrency.text = data.firstClearRewardSoftCurrency.ToString("N0");
+
+        if (textFirstClearRewardHardCurrency != null)
+            textFirstClearRewardHardCurrency.text = data.firstClearRewardHardCurrency.ToString("N0");
+
+        if (textFirstClearRewardPlayerExp != null)
+            textFirstClearRewardPlayerExp.text = data.firstClearRewardPlayerExp.ToString("N0");
+
+        if (uiFirstClearRewardsItemList != null)
+        {
+            var list = data.GetFirstClearRewardItems();
+            uiFirstClearRewardsItemList.SetListItems(list, (ui) => ui.displayStats = UIItem.DisplayStats.Hidden);
         }
 
         if (uiEnemyItemList != null)

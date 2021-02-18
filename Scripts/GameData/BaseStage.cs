@@ -87,6 +87,21 @@ public abstract class BaseStage : BaseGameData
         return new List<PlayerItem>(dict.Values);
     }
 
+    public virtual List<PlayerItem> GetFirstClearRewardItems()
+    {
+        var dict = new Dictionary<string, PlayerItem>();
+        foreach (var rewardItem in firstClearRewardItems)
+        {
+            var item = rewardItem.item;
+            var newEntry = new PlayerItem();
+            newEntry.Id = item.Id;
+            newEntry.DataId = item.Id;
+            newEntry.Amount = 1;
+            dict[item.Id] = newEntry;
+        }
+        return new List<PlayerItem>(dict.Values);
+    }
+
     public virtual string ToJson()
     {
         // Event Availibilities
