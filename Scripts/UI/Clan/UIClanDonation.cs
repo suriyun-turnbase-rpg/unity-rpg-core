@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -8,6 +7,7 @@ public class UIClanDonation : UIDataItem<ClanDonation>
 {
     public Image imageIcon;
     public UICurrency uiCurrency;
+    public UICurrencyPairing[] uiRewardCurrencies;
     public Text textRewardClanExp;
     public UIClanManager uiClanManager;
     [Header("Buttons")]
@@ -16,16 +16,45 @@ public class UIClanDonation : UIDataItem<ClanDonation>
     public UnityEvent eventDonationSuccess;
     public UnityEvent eventDonationFail;
 
+    private Dictionary<string, UICurrency> cacheUiRewardCurrencies;
+    public Dictionary<string, UICurrency> CacheUiRewardCurrencies
+    {
+        get
+        {
+            if (cacheUiRewardCurrencies == null)
+            {
+                cacheUiRewardCurrencies = new Dictionary<string, UICurrency>();
+                if (uiRewardCurrencies != null)
+                {
+                    foreach (var uiRewardCurrency in uiRewardCurrencies)
+                    {
+                        cacheUiRewardCurrencies[uiRewardCurrency.id] = uiRewardCurrency.ui;
+                    }
+                }
+            }
+            return cacheUiRewardCurrencies;
+        }
+    }
+
     public override void Clear()
     {
         if (imageIcon != null)
             imageIcon.sprite = null;
 
         if (uiCurrency != null)
-            uiCurrency.SetData(new PlayerCurrency());
+            uiCurrency.data = new PlayerCurrency();
 
         if (textRewardClanExp != null)
             textRewardClanExp.text = "0";
+
+        foreach (var kv in CacheUiRewardCurrencies)
+        {
+            kv.Value.data = new PlayerCurrency()
+            {
+                DataId = kv.Key,
+                Amount = 0,
+            };
+        }
     }
 
     public override bool IsEmpty()
@@ -49,6 +78,30 @@ public class UIClanDonation : UIDataItem<ClanDonation>
 
         if (textRewardClanExp != null)
             textRewardClanExp.text = data.rewardClanExp.ToString("N0");
+
+        foreach (var kv in CacheUiRewardCurrencies)
+        {
+            kv.Value.data = new PlayerCurrency()
+            {
+                DataId = kv.Key,
+                Amount = 0,
+            };
+        }
+
+        if (data.rewardCurrencies != null)
+        {
+            foreach (var rewardCurrency in data.rewardCurrencies)
+            {
+                if (CacheUiRewardCurrencies.ContainsKey(rewardCurrency.Id))
+                {
+                    CacheUiRewardCurrencies[rewardCurrency.Id].data = new PlayerCurrency()
+                    {
+                        DataId = rewardCurrency.Id,
+                        Amount = rewardCurrency.Amount,
+                    };
+                }
+            }
+        }
 
         if (buttonDonate != null)
         {

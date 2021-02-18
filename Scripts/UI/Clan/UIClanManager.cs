@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class UIClanManager : UIClan
 {
-    [Header("Manager settings")]
+    [Header("Manager UIs")]
+    public UICurrencyPairing[] uiCheckinRewardCurrencies;
+    public Text textClanDonateCount;
+    public Text textMaxClanDonation;
     public UIClanDonationList uiUIClanDonationList;
     public GameObject[] notJoinedClanObjects;
     public GameObject[] joinedClanObjects;
@@ -15,10 +20,48 @@ public class UIClanManager : UIClan
     public GameObject[] checkedInObjects;
     public GameObject[] notDonatedObjects;
     public GameObject[] donatedObjects;
+    public Button buttonTerminate;
+    public Button buttonExit;
+    public Button buttonCheckin;
+
+    [Header("Manager Events")]
+    public UnityEvent eventTerminateSuccess;
+    public UnityEvent eventTerminateFail;
+    public UnityEvent eventExitSuccess;
+    public UnityEvent eventExitFail;
+    public UnityEvent eventCheckinSuccess;
+    public UnityEvent eventCheckinFail;
+
     public bool IsManager { get { return !IsEmpty() && Player.CurrentPlayer.ClanId.Equals(data.Id) && Player.CurrentPlayer.ClanRole == 1; } }
     public bool IsOwner { get { return !IsEmpty() && Player.CurrentPlayer.ClanId.Equals(data.Id) && Player.CurrentPlayer.ClanRole == 2; } }
 
     private byte? previousClanRole;
+
+
+    private Dictionary<string, UICurrency> cacheUiCheckinRewardCurrencies;
+    public Dictionary<string, UICurrency> CacheUiCheckinRewardCurrencies
+    {
+        get
+        {
+            if (cacheUiCheckinRewardCurrencies == null)
+            {
+                cacheUiCheckinRewardCurrencies = new Dictionary<string, UICurrency>();
+                if (uiCheckinRewardCurrencies != null)
+                {
+                    foreach (var uiRewardCurrency in uiCheckinRewardCurrencies)
+                    {
+                        cacheUiCheckinRewardCurrencies[uiRewardCurrency.id] = uiRewardCurrency.ui;
+                    }
+                }
+            }
+            return cacheUiCheckinRewardCurrencies;
+        }
+    }
+
+    public bool CheckedIn { get; protected set; }
+    public int ClanDonateCount { get; protected set; }
+    public int MaxClanDonation { get; protected set; }
+    public bool DonatedReachedLimit { get { return ClanDonateCount >= MaxClanDonation; } }
 
     private void OnEnable()
     {
@@ -142,6 +185,53 @@ public class UIClanManager : UIClan
     public override void UpdateData()
     {
         base.UpdateData();
+
+        foreach (var kv in CacheUiCheckinRewardCurrencies)
+        {
+            kv.Value.data = new PlayerCurrency()
+            {
+                DataId = kv.Key,
+                Amount = 0,
+            };
+        }
+
+        if (GameInstance.GameDatabase.clanCheckinRewardCurrencies != null)
+        {
+            foreach (var rewardCurrency in GameInstance.GameDatabase.clanCheckinRewardCurrencies)
+            {
+                if (CacheUiCheckinRewardCurrencies.ContainsKey(rewardCurrency.Id))
+                {
+                    CacheUiCheckinRewardCurrencies[rewardCurrency.Id].data = new PlayerCurrency()
+                    {
+                        DataId = rewardCurrency.Id,
+                        Amount = rewardCurrency.Amount,
+                    };
+                }
+            }
+        }
+
+        if (buttonTerminate != null)
+        {
+            buttonTerminate.onClick.RemoveListener(OnClickTerminate);
+            buttonTerminate.onClick.AddListener(OnClickTerminate);
+            buttonTerminate.interactable = !IsEmpty() && Player.CurrentPlayer.IsClanLeader && Player.CurrentPlayer.ClanId.Equals(data.Id);
+        }
+        if (buttonExit != null)
+        {
+            buttonExit.onClick.RemoveListener(OnClickExit);
+            buttonExit.onClick.AddListener(OnClickExit);
+            buttonExit.interactable = !IsEmpty() && !Player.CurrentPlayer.IsClanLeader && Player.CurrentPlayer.ClanId.Equals(data.Id);
+        }
+        if (buttonCheckin != null)
+        {
+            buttonCheckin.onClick.RemoveListener(OnClickCheckin);
+            buttonCheckin.onClick.AddListener(OnClickCheckin);
+            buttonCheckin.interactable = !IsEmpty() && Player.CurrentPlayer.ClanId.Equals(data.Id) && !CheckedIn;
+        }
+        if (textClanDonateCount != null)
+            textClanDonateCount.text = ClanDonateCount.ToString("N0");
+        if (textMaxClanDonation != null)
+            textMaxClanDonation.text = MaxClanDonation > 0 ? MaxClanDonation.ToString("N0") : GameInstance.GameDatabase.maxClanDonation.ToString("N0");
         UpdateState();
     }
 
@@ -188,5 +278,74 @@ public class UIClanManager : UIClan
             uiUIClanDonationList.ClearListItems();
             uiUIClanDonationList.SetListItems(GameInstance.GameDatabase.clanDonations);
         }
+    }
+
+    public void OnClickTerminate()
+    {
+        GameInstance.Singleton.ShowConfirmDialog(
+            LanguageManager.GetText(GameText.WARN_TITLE_CLAN_TERMINATE),
+            LanguageManager.GetText(GameText.WARN_DESCRIPTION_CLAN_TERMINATE),
+            () =>
+            {
+                GameInstance.GameService.ClanTerminate(OnTerminateSuccess, OnTerminateFail);
+            });
+    }
+
+    private void OnTerminateSuccess(GameServiceResult result)
+    {
+        if (eventTerminateSuccess != null)
+            eventTerminateSuccess.Invoke();
+    }
+
+    private void OnTerminateFail(string error)
+    {
+        GameInstance.Singleton.OnGameServiceError(error);
+        if (eventTerminateFail != null)
+            eventTerminateFail.Invoke();
+    }
+
+    public void OnClickExit()
+    {
+        GameInstance.Singleton.ShowConfirmDialog(
+            LanguageManager.GetText(GameText.WARN_TITLE_CLAN_EXIT),
+            LanguageManager.GetText(GameText.WARN_DESCRIPTION_CLAN_EXIT),
+            () =>
+            {
+                GameInstance.GameService.ClanExit(OnExitSuccess, OnExitFail);
+            });
+    }
+
+    private void OnExitSuccess(GameServiceResult result)
+    {
+        if (eventExitSuccess != null)
+            eventExitSuccess.Invoke();
+    }
+
+    private void OnExitFail(string error)
+    {
+        GameInstance.Singleton.OnGameServiceError(error);
+        if (eventExitFail != null)
+            eventExitFail.Invoke();
+    }
+
+    public void OnClickCheckin()
+    {
+        GameInstance.GameService.ClanCheckin(OnCheckinSuccess, OnCheckinFail);
+    }
+
+    private void OnCheckinSuccess(ClanCheckinResult result)
+    {
+        if (eventCheckinSuccess != null)
+            eventCheckinSuccess.Invoke();
+        CheckedIn = true;
+        SetData(result.clan);
+        PlayerCurrency.SetDataRange(result.updateCurrencies);
+    }
+
+    private void OnCheckinFail(string error)
+    {
+        GameInstance.Singleton.OnGameServiceError(error);
+        if (eventCheckinFail != null)
+            eventCheckinFail.Invoke();
     }
 }
