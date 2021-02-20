@@ -114,11 +114,15 @@ public class IapPackage : BaseGameData
         }
         jsonRewardItems = "[" + jsonRewardItems + "]";
         // Combine
-        var googlePlayId = string.Empty;
-        var appleAppstoreId = string.Empty;
+        var googlePlayId = Id;
+        var appleAppstoreId = Id;
 #if ENABLE_PURCHASING && UNITY_PURCHASING && (UNITY_IOS || UNITY_ANDROID)
         googlePlayId = ProductCatalogItem.GetStoreID(GooglePlay.Name);
+        if (string.IsNullOrEmpty(googlePlayId))
+            googlePlayId = Id;
         appleAppstoreId = ProductCatalogItem.GetStoreID(AppleAppStore.Name);
+        if (string.IsNullOrEmpty(appleAppstoreId))
+            appleAppstoreId = Id;
 #endif
         return "{\"id\":\"" + Id + "\"," +
             "\"rewardSoftCurrency\":" + rewardSoftCurrency + "," +
