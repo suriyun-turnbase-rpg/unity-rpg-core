@@ -11,14 +11,15 @@ public enum AnimationDataType
 public class AnimationData : ScriptableObject
 {
     public AnimationDataType type;
+    [StringShowConditional(conditionFieldName: nameof(type), conditionValue: "ChangeAnimationByState")]
     [Tooltip("0 = No animation")]
     [Range(0, 1000)]
-    [StringShowConditional(conditionFieldName: "type", conditionValue: "ChangeAnimationByState")]
     public int animationActionState = 0;
-    [StringShowConditional(conditionFieldName: "type", conditionValue: "ChangeAnimationByState")]
+
+    [StringShowConditional(conditionFieldName: nameof(type), conditionValue: "ChangeAnimationByState")]
     public float animationDuration = 0;
 
-    [StringShowConditional(conditionFieldName: "type", conditionValue: "ChangeAnimationByClip")]
+    [StringShowConditional(conditionFieldName: nameof(type), conditionValue: "ChangeAnimationByClip")]
     public AnimationClip animationClip;
 
     public float AnimationDuration
