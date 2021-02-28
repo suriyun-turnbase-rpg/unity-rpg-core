@@ -42,6 +42,8 @@ public class UIItem : UIDataItem<PlayerItem>
     public Text textTitle;
     public Text textDescription;
     public Image imageIcon;
+    public Image imageIcon2;
+    public Image imageIcon3;
     public Text textAmount;
     public Text textSelectedAmount;
     [Header("Tier")]
@@ -54,6 +56,8 @@ public class UIItem : UIDataItem<PlayerItem>
     public Text textElementalTitle;
     public Text textElementalDescription;
     public Image imageElementalIcon;
+    public Image imageElementalIcon2;
+    public Image imageElementalIcon3;
     [Header("Relates Level Up UIs")]
     public Button buttonLevelUp;
     public UIItemLevelUp uiLevelUp;
@@ -357,6 +361,18 @@ public class UIItem : UIDataItem<PlayerItem>
             imageIcon.sprite = itemData == null ? null : itemData.icon;
         }
 
+        if (imageIcon2 != null)
+        {
+            imageIcon2.gameObject.SetActive(itemData != null);
+            imageIcon2.sprite = itemData == null ? null : itemData.icon2;
+        }
+
+        if (imageIcon3 != null)
+        {
+            imageIcon3.gameObject.SetActive(itemData != null);
+            imageIcon3.sprite = itemData == null ? null : itemData.icon3;
+        }
+
         if (textAmount != null)
             textAmount.text = data.Amount.ToString("N0") + "/" + data.ItemData.MaxStack.ToString("N0");
 
@@ -403,6 +419,20 @@ public class UIItem : UIDataItem<PlayerItem>
             if (data.CharacterData != null && data.CharacterData.elemental != null)
                 imageElementalIcon.sprite = data.CharacterData.elemental.icon;
             imageElementalIcon.gameObject.SetActive(data.CharacterData != null && data.CharacterData.elemental != null);
+        }
+
+        if (imageElementalIcon2 != null)
+        {
+            if (data.CharacterData != null && data.CharacterData.elemental != null)
+                imageElementalIcon2.sprite = data.CharacterData.elemental.icon2;
+            imageElementalIcon2.gameObject.SetActive(data.CharacterData != null && data.CharacterData.elemental != null);
+        }
+
+        if (imageElementalIcon3 != null)
+        {
+            if (data.CharacterData != null && data.CharacterData.elemental != null)
+                imageElementalIcon3.sprite = data.CharacterData.elemental.icon3;
+            imageElementalIcon3.gameObject.SetActive(data.CharacterData != null && data.CharacterData.elemental != null);
         }
 
         if (textAttributes != null)

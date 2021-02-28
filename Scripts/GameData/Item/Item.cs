@@ -143,6 +143,8 @@ public abstract class BaseItem : BaseGameData
 {
     [Header("General information")]
     public Sprite icon;
+    public Sprite icon2;
+    public Sprite icon3;
     public string category;
 
     [Tooltip("This data MUST be set")]

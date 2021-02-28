@@ -5,6 +5,8 @@ using UnityEngine;
 public class Elemental : BaseGameData
 {
     public Sprite icon;
+    public Sprite icon2;
+    public Sprite icon3;
     public ElementalEffectiveness[] elementalEffectivenesses;
 
     private Dictionary<Elemental, float> cacheElementEffectiveness;
