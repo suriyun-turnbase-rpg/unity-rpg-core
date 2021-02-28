@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseEnvironmentData : ScriptableObject
+public abstract class BaseEnvironmentData : ScriptableObject
 {
 }

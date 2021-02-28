@@ -11,7 +11,7 @@ public struct RaidBossReward
     public ItemAmount[] rewardItems;
 }
 
-public class BaseRaidBossStage : BaseGameData
+public abstract class BaseRaidBossStage : BaseGameData
 {
     public StageType stageType;
     public Sprite icon;
