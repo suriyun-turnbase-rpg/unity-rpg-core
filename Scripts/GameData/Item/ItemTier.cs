@@ -5,6 +5,8 @@ using UnityEngine;
 public class ItemTier : BaseGameData
 {
     public Sprite icon;
+    public Sprite icon2;
+    public Sprite icon3;
     [Range(1, 1000)]
     public int maxLevel;
     [Tooltip("Requires Exp to levelup for each level")]

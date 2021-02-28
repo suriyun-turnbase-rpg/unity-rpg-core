@@ -44,6 +44,12 @@ public class UIItem : UIDataItem<PlayerItem>
     public Image imageIcon;
     public Text textAmount;
     public Text textSelectedAmount;
+    [Header("Tier")]
+    public Text textTierTitle;
+    public Text textTierDescription;
+    public Image imageTierIcon;
+    public Image imageTierIcon2;
+    public Image imageTierIcon3;
     [Header("Elemental (For Character Only)")]
     public Text textElementalTitle;
     public Text textElementalDescription;
@@ -346,10 +352,37 @@ public class UIItem : UIDataItem<PlayerItem>
             textDescription.text = itemData == null ? "" : itemData.description;
 
         if (imageIcon != null)
+        {
+            imageIcon.gameObject.SetActive(itemData != null);
             imageIcon.sprite = itemData == null ? null : itemData.icon;
+        }
 
         if (textAmount != null)
             textAmount.text = data.Amount.ToString("N0") + "/" + data.ItemData.MaxStack.ToString("N0");
+
+        if (textTierTitle)
+            textTierTitle.text = data.Tier == null ? "" : data.Tier.title;
+
+        if (textTierDescription)
+            textTierDescription.text = data.Tier == null ? "" : data.Tier.description;
+
+        if (imageTierIcon != null)
+        {
+            imageTierIcon.gameObject.SetActive(data.Tier != null);
+            imageTierIcon.sprite = data.Tier == null ? null : data.Tier.icon;
+        }
+
+        if (imageTierIcon2 != null)
+        {
+            imageTierIcon2.gameObject.SetActive(data.Tier != null);
+            imageTierIcon2.sprite = data.Tier == null ? null : data.Tier.icon2;
+        }
+
+        if (imageTierIcon3 != null)
+        {
+            imageTierIcon3.gameObject.SetActive(data.Tier != null);
+            imageTierIcon3.sprite = data.Tier == null ? null : data.Tier.icon3;
+        }
 
         if (textElementalTitle != null)
         {
