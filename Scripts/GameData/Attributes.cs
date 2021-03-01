@@ -563,7 +563,9 @@ public struct Attributes
         result.blockDamageRate = a.blockDamageRate * b;
         result.resistanceChance = a.resistanceChance * b;
         result.bloodStealRateByPAtk = a.bloodStealRateByPAtk * b;
+#if !NO_MAGIC_STATS
         result.bloodStealRateByMAtk = a.bloodStealRateByMAtk * b;
+#endif
         return result;
     }
 }
