@@ -119,7 +119,10 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             floorEffectContainer = CacheTransform;
         if (damageContainer == null)
             damageContainer = CacheTransform;
-        CacheAnimatorController = new AnimatorOverrideController(animatorController);
+        if (animatorController is AnimatorOverrideController)
+            CacheAnimatorController = animatorController as AnimatorOverrideController;
+        else
+            CacheAnimatorController = new AnimatorOverrideController(animatorController);
         CacheAnimator = GetComponent<Animator>();
         CacheAnimator.runtimeAnimatorController = CacheAnimatorController;
     }
