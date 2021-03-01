@@ -356,22 +356,13 @@ public class UIItem : UIDataItem<PlayerItem>
             textDescription.text = itemData == null ? "" : itemData.description;
 
         if (imageIcon != null)
-        {
-            imageIcon.gameObject.SetActive(itemData != null);
             imageIcon.sprite = itemData == null ? null : itemData.icon;
-        }
 
         if (imageIcon2 != null)
-        {
-            imageIcon2.gameObject.SetActive(itemData != null);
             imageIcon2.sprite = itemData == null ? null : itemData.icon2;
-        }
 
         if (imageIcon3 != null)
-        {
-            imageIcon3.gameObject.SetActive(itemData != null);
             imageIcon3.sprite = itemData == null ? null : itemData.icon3;
-        }
 
         if (textAmount != null)
             textAmount.text = data.Amount.ToString("N0") + "/" + data.ItemData.MaxStack.ToString("N0");
@@ -383,22 +374,13 @@ public class UIItem : UIDataItem<PlayerItem>
             textTierDescription.text = data.Tier == null ? "" : data.Tier.description;
 
         if (imageTierIcon != null)
-        {
-            imageTierIcon.gameObject.SetActive(data.Tier != null);
             imageTierIcon.sprite = data.Tier == null ? null : data.Tier.icon;
-        }
 
         if (imageTierIcon2 != null)
-        {
-            imageTierIcon2.gameObject.SetActive(data.Tier != null);
             imageTierIcon2.sprite = data.Tier == null ? null : data.Tier.icon2;
-        }
 
         if (imageTierIcon3 != null)
-        {
-            imageTierIcon3.gameObject.SetActive(data.Tier != null);
             imageTierIcon3.sprite = data.Tier == null ? null : data.Tier.icon3;
-        }
 
         if (textElementalTitle != null)
         {
@@ -418,21 +400,18 @@ public class UIItem : UIDataItem<PlayerItem>
         {
             if (data.CharacterData != null && data.CharacterData.elemental != null)
                 imageElementalIcon.sprite = data.CharacterData.elemental.icon;
-            imageElementalIcon.gameObject.SetActive(data.CharacterData != null && data.CharacterData.elemental != null);
         }
 
         if (imageElementalIcon2 != null)
         {
             if (data.CharacterData != null && data.CharacterData.elemental != null)
                 imageElementalIcon2.sprite = data.CharacterData.elemental.icon2;
-            imageElementalIcon2.gameObject.SetActive(data.CharacterData != null && data.CharacterData.elemental != null);
         }
 
         if (imageElementalIcon3 != null)
         {
             if (data.CharacterData != null && data.CharacterData.elemental != null)
                 imageElementalIcon3.sprite = data.CharacterData.elemental.icon3;
-            imageElementalIcon3.gameObject.SetActive(data.CharacterData != null && data.CharacterData.elemental != null);
         }
 
         if (textAttributes != null)
