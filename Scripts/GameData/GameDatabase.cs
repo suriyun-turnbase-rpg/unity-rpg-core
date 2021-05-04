@@ -45,6 +45,10 @@ public partial class GameDatabase : ScriptableObject
     [Tooltip("List of game stages, place all stages here")]
     public List<BaseStage> stages;
 
+    [Header("Raid Boss Stage database")]
+    [Tooltip("List of game stages, place all stages here")]
+    public List<BaseRaidBossStage> raidBossStages;
+
     [Header("Achievement database")]
     [Tooltip("List of achievements, place all achievements here")]
     public List<Achievement> achievements;
@@ -116,6 +120,7 @@ public partial class GameDatabase : ScriptableObject
     public readonly Dictionary<string, Stamina> Staminas = new Dictionary<string, Stamina>();
     public readonly Dictionary<string, Formation> Formations = new Dictionary<string, Formation>();
     public readonly Dictionary<string, BaseStage> Stages = new Dictionary<string, BaseStage>();
+    public readonly Dictionary<string, BaseRaidBossStage> RaidBossStages = new Dictionary<string, BaseRaidBossStage>();
     public readonly Dictionary<string, Achievement> Achievements = new Dictionary<string, Achievement>();
     public readonly Dictionary<string, ItemCraftFormula> ItemCrafts = new Dictionary<string, ItemCraftFormula>();
     public readonly Dictionary<string, LootBox> LootBoxes = new Dictionary<string, LootBox>();
@@ -131,6 +136,7 @@ public partial class GameDatabase : ScriptableObject
         Staminas.Clear();
         Formations.Clear();
         Stages.Clear();
+        RaidBossStages.Clear();
         Achievements.Clear();
         ItemCrafts.Clear();
         LootBoxes.Clear();
@@ -190,6 +196,7 @@ public partial class GameDatabase : ScriptableObject
 
         AddFormationsToDatabase(formations);
         AddStagesToDatabase(stages);
+        AddRaidBossStagesToDatabase(raidBossStages);
         AddStagesToDatabase(unlockStages);
         AddAchievementsToDatabase(achievements);
         AddItemCraftsToDatabase(itemCrafts);
@@ -237,6 +244,20 @@ public partial class GameDatabase : ScriptableObject
             if (!string.IsNullOrEmpty(dataId) && !Stages.ContainsKey(dataId))
             {
                 Stages[dataId] = stage;
+            }
+        }
+    }
+
+    private void AddRaidBossStagesToDatabase(IEnumerable<BaseRaidBossStage> raidBossStages)
+    {
+        foreach (var raidBossStage in raidBossStages)
+        {
+            if (raidBossStage == null)
+                continue;
+            var dataId = raidBossStage.Id;
+            if (!string.IsNullOrEmpty(dataId) && !RaidBossStages.ContainsKey(dataId))
+            {
+                RaidBossStages[dataId] = raidBossStage;
             }
         }
     }
@@ -329,21 +350,22 @@ public partial class GameDatabase : ScriptableObject
     {
         var gameDatabase = this;
         var achievementsJson = string.Empty;
-        var itemCraftsJson =string.Empty;
-        var itemsJson =string.Empty;
-        var clanDonationsJson =string.Empty;
-        var currenciesJson =string.Empty;
-        var staminasJson =string.Empty;
-        var formationsJson =string.Empty;
-        var stagesJson =string.Empty;
-        var lootBoxesJson =string.Empty;
-        var iapPackagesJson =string.Empty;
-        var inGamePackagesJson =string.Empty;
-        var startItemsJson =string.Empty;
-        var startCharactersJson =string.Empty;
-        var unlockStagesJson =string.Empty;
-        var arenaRanksJson =string.Empty;
-        var clanCheckinRewardCurrenciesJson =string.Empty;
+        var itemCraftsJson = string.Empty;
+        var itemsJson = string.Empty;
+        var clanDonationsJson = string.Empty;
+        var currenciesJson = string.Empty;
+        var staminasJson = string.Empty;
+        var formationsJson = string.Empty;
+        var stagesJson = string.Empty;
+        var raidBossStagesJson = string.Empty;
+        var lootBoxesJson = string.Empty;
+        var iapPackagesJson = string.Empty;
+        var inGamePackagesJson = string.Empty;
+        var startItemsJson = string.Empty;
+        var startCharactersJson = string.Empty;
+        var unlockStagesJson = string.Empty;
+        var arenaRanksJson = string.Empty;
+        var clanCheckinRewardCurrenciesJson = string.Empty;
 
         foreach (var achievement in gameDatabase.Achievements)
         {
@@ -408,6 +430,14 @@ public partial class GameDatabase : ScriptableObject
             stagesJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
         }
         stagesJson = "{" + stagesJson + "}";
+
+        foreach (var entry in gameDatabase.RaidBossStages)
+        {
+            if (!string.IsNullOrEmpty(raidBossStagesJson))
+                raidBossStagesJson += ",";
+            raidBossStagesJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        raidBossStagesJson = "{" + raidBossStagesJson + "}";
 
         foreach (var entry in gameDatabase.LootBoxes)
         {
@@ -494,6 +524,7 @@ public partial class GameDatabase : ScriptableObject
         keyValues["staminas"] = staminasJson;
         keyValues["formations"] = formationsJson;
         keyValues["stages"] = stagesJson;
+        keyValues["raidBossStages"] = raidBossStagesJson;
         keyValues["lootBoxes"] = lootBoxesJson;
         keyValues["iapPackages"] = iapPackagesJson;
         keyValues["inGamePackages"] = inGamePackagesJson;
