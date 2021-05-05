@@ -670,12 +670,12 @@ public abstract partial class BaseGameService : MonoBehaviour
 
     public void GetArenaOpponentList(UnityAction<PlayerListResult> onSuccess = null, UnityAction<string> onError = null)
     {
-        Debug.Log("Call Service: FindUser");
+        Debug.Log("Call Service: GetArenaOpponentList");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
         HandleServiceCall();
-        DoArenaGetOpponentList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+        DoGetArenaOpponentList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     public void StartDuel(string targetPlayerId, UnityAction<StartDuelResult> onSuccess = null, UnityAction<string> onError = null)
@@ -982,6 +982,36 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetRefillStaminaInfo(playerId, loginToken, staminaDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void GetRaidEventList(UnityAction<RaidEventListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetRaidEventList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetRaidEventList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void StartRaidBossBattle(string targetPlayerId, UnityAction<StartRaidBossBattleResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: StartRaidBossBattle");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoStartRaidBossBattle(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void FinishRaidBossBattle(string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishRaidBossBattleResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: FinishRaidBossBattle");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoFinishRaidBossBattle(playerId, loginToken, session, battleResult, totalDamage, deadCharacters, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -1024,7 +1054,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoFriendDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoFriendRequestDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoGetServiceTime(UnityAction<ServiceTimeResult> onFinish);
-    protected abstract void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);
+    protected abstract void DoGetArenaOpponentList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);
     protected abstract void DoStartDuel(string playerId, string loginToken, string targetPlayerId, UnityAction<StartDuelResult> onFinish);
     protected abstract void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishDuelResult> onFinish);
     protected abstract void DoEarnAchievementReward(string playerId, string loginToken, string achievementId, UnityAction<EarnAchievementResult> onFinish);
@@ -1056,4 +1086,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoEnterClanChatMessage(string playerId, string loginToken, string message, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoRefillStamina(string playerId, string loginToken, string staminaDataId, UnityAction<RefillStaminaResult> onFinish);
     protected abstract void DoGetRefillStaminaInfo(string playerId, string loginToken, string staminaDataId, UnityAction<RefillStaminaInfoResult> onFinish);
+    protected abstract void DoGetRaidEventList(string playerId, string loginToken, UnityAction<RaidEventListResult> onFinish);
+    protected abstract void DoStartRaidBossBattle(string playerId, string loginToken, string eventId, UnityAction<StartRaidBossBattleResult> onFinish);
+    protected abstract void DoFinishRaidBossBattle(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishRaidBossBattleResult> onFinish);
 }

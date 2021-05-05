@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using UnityEngine.Events;
 
 public partial class LiteDbGameService
 {
-    protected override void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
+    protected override void DoGetArenaOpponentList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
         var result = new PlayerListResult();
         var gameDb = GameInstance.GameDatabase;

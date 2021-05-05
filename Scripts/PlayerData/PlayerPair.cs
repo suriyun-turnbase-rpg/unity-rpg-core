@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PlayerPair : BasePlayerData, IPlayerPair
+﻿public class PlayerPair : BasePlayerData, IPlayerPair
 {
     public string Id { get { return GetId(PlayerId, PairPlayerId); } set { } }
     public string playerId;

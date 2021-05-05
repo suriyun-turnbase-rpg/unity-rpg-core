@@ -209,6 +209,27 @@ public class FinishDuelResult : PlayerResult
 }
 
 [System.Serializable]
+public class RaidEventListResult : GameServiceResult
+{
+    public List<RaidEvent> list = new List<RaidEvent>();
+}
+
+[System.Serializable]
+public class StartRaidBossBattleResult : GameServiceResult
+{
+    public PlayerStamina stamina;
+    public string session;
+    public int remainingHp;
+}
+
+[System.Serializable]
+public class FinishRaidBossBattleResult : PlayerResult
+{
+    public int totalDamage;
+    public int rating;
+}
+
+[System.Serializable]
 public class EarnAchievementResult : PlayerResult
 {
     public int rewardPlayerExp;

@@ -1,6 +1,4 @@
-﻿using LiteDB;
-
-public abstract class BasePlayerData
+﻿public abstract class BasePlayerData
 {
     public static GameDatabase GameDatabase
     {

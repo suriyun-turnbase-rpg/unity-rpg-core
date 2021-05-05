@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-[System.Serializable]
+﻿[System.Serializable]
 public partial class Clan : ILevel, IClan
 {
     public string id;

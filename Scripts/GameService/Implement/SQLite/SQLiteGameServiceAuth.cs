@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
 using Mono.Data.Sqlite;
 
 public partial class SQLiteGameService
