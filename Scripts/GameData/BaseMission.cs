@@ -14,20 +14,6 @@ public abstract class BaseMission : BaseGameData
     public int requireStamina;
     [Tooltip("If this is not empty it will use stamina which its ID is this value")]
     public string requireCustomStamina;
-    [Header("Rewards")]
-    public CurrencyRandomAmount[] randomCustomCurrencies;
-    public int randomSoftCurrencyMinAmount;
-    public int randomSoftCurrencyMaxAmount;
-    public int rewardPlayerExp;
-    public int rewardClanExp;
-    public int rewardCharacterExp;
-    public ItemDrop[] rewardItems;
-    [Header("First Clear Rewards")]
-    public CurrencyAmount[] firstClearRewardCustomCurrencies;
-    public int firstClearRewardSoftCurrency;
-    public int firstClearRewardHardCurrency;
-    public int firstClearRewardPlayerExp;
-    public ItemAmount[] firstClearRewardItems;
     [Header("Event")]
     public StageAvailability[] availabilities;
     public bool hasAvailableDate;
@@ -61,35 +47,5 @@ public abstract class BaseMission : BaseGameData
         if (hasChanges)
             EditorUtility.SetDirty(this);
 #endif
-    }
-
-    public virtual List<PlayerItem> GetRewardItems()
-    {
-        var dict = new Dictionary<string, PlayerItem>();
-        foreach (var rewardItem in rewardItems)
-        {
-            var item = rewardItem.item;
-            var newEntry = new PlayerItem();
-            newEntry.Id = item.Id;
-            newEntry.DataId = item.Id;
-            newEntry.Amount = 1;
-            dict[item.Id] = newEntry;
-        }
-        return new List<PlayerItem>(dict.Values);
-    }
-
-    public virtual List<PlayerItem> GetFirstClearRewardItems()
-    {
-        var dict = new Dictionary<string, PlayerItem>();
-        foreach (var rewardItem in firstClearRewardItems)
-        {
-            var item = rewardItem.item;
-            var newEntry = new PlayerItem();
-            newEntry.Id = item.Id;
-            newEntry.DataId = item.Id;
-            newEntry.Amount = 1;
-            dict[item.Id] = newEntry;
-        }
-        return new List<PlayerItem>(dict.Values);
     }
 }

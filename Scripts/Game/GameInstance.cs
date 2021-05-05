@@ -67,16 +67,35 @@ public partial class GameInstance : MonoBehaviour
         Singleton = this;
         DontDestroyOnLoad(gameObject);
 
+        SetupGameDatabase();
+        SetupGameplayRule();
+        SetupGameService();
+
+        HideMessageDialog();
+        HideInputDialog();
+        HideRewardItemsDialog();
+        HideLoading();
+        LoadLoginScene();
+    }
+
+    public void SetupGameDatabase()
+    {
         GameDatabase = gameDatabase;
         if (GameDatabase == null)
             Debug.LogError("`Game Database` has not been set");
         else
             GameDatabase.Setup();
+    }
 
+    public void SetupGameplayRule()
+    {
         GameplayRule = gameplayRule;
         if (GameplayRule == null)
             GameplayRule = ScriptableObject.CreateInstance<BaseGameplayRule>();
+    }
 
+    public void SetupGameService()
+    {
         GameService = GetComponent<BaseGameService>();
         if (GameService == null)
             Debug.LogError("`Game Service` component has not been attacted");
@@ -84,12 +103,6 @@ public partial class GameInstance : MonoBehaviour
         GameService.onServiceStart.AddListener(OnGameServiceStart);
         GameService.onServiceFinish.RemoveListener(OnGameServiceFinish);
         GameService.onServiceFinish.AddListener(OnGameServiceFinish);
-
-        HideMessageDialog();
-        HideInputDialog();
-        HideRewardItemsDialog();
-        HideLoading();
-        LoadLoginScene();
     }
 
     private void OnGameServiceStart()

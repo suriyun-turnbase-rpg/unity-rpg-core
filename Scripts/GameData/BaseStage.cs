@@ -8,6 +8,20 @@ public abstract class BaseStage : BaseMission
 {
     [Header("Stage Info")]
     public string stageNumber;
+    [Header("Rewards")]
+    public CurrencyRandomAmount[] randomCustomCurrencies;
+    public int randomSoftCurrencyMinAmount;
+    public int randomSoftCurrencyMaxAmount;
+    public int rewardPlayerExp;
+    public int rewardClanExp;
+    public int rewardCharacterExp;
+    public ItemDrop[] rewardItems;
+    [Header("First Clear Rewards")]
+    public CurrencyAmount[] firstClearRewardCustomCurrencies;
+    public int firstClearRewardSoftCurrency;
+    public int firstClearRewardHardCurrency;
+    public int firstClearRewardPlayerExp;
+    public ItemAmount[] firstClearRewardItems;
     [Header("Unlock")]
     public bool unlocked;
     public BaseStage[] unlockStages;
@@ -39,60 +53,108 @@ public abstract class BaseStage : BaseMission
 
     public abstract List<PlayerItem> GetCharacters();
 
+    public virtual List<PlayerItem> GetRewardItems()
+    {
+        var dict = new Dictionary<string, PlayerItem>();
+        foreach (var rewardItem in rewardItems)
+        {
+            var item = rewardItem.item;
+            var newEntry = new PlayerItem();
+            newEntry.Id = item.Id;
+            newEntry.DataId = item.Id;
+            newEntry.Amount = 1;
+            dict[item.Id] = newEntry;
+        }
+        return new List<PlayerItem>(dict.Values);
+    }
+
+    public virtual List<PlayerItem> GetFirstClearRewardItems()
+    {
+        var dict = new Dictionary<string, PlayerItem>();
+        foreach (var rewardItem in firstClearRewardItems)
+        {
+            var item = rewardItem.item;
+            var newEntry = new PlayerItem();
+            newEntry.Id = item.Id;
+            newEntry.DataId = item.Id;
+            newEntry.Amount = 1;
+            dict[item.Id] = newEntry;
+        }
+        return new List<PlayerItem>(dict.Values);
+    }
+
     public virtual string ToJson()
     {
         // Event Availibilities
         var jsonAvailabilities = "";
-        foreach (var entry in availabilities)
+        if (availabilities != null)
         {
-            if (!string.IsNullOrEmpty(jsonAvailabilities))
-                jsonAvailabilities += ",";
-            jsonAvailabilities += entry.ToJson();
+            foreach (var entry in availabilities)
+            {
+                if (!string.IsNullOrEmpty(jsonAvailabilities))
+                    jsonAvailabilities += ",";
+                jsonAvailabilities += entry.ToJson();
+            }
         }
         jsonAvailabilities = "[" + jsonAvailabilities + "]";
         // Reward Custom Currencies
         var jsonRandomCustomCurrencies = "";
-        foreach (var entry in randomCustomCurrencies)
+        if (randomCustomCurrencies != null)
         {
-            if (!string.IsNullOrEmpty(jsonRandomCustomCurrencies))
-                jsonRandomCustomCurrencies += ",";
-            jsonRandomCustomCurrencies += entry.ToJson();
+            foreach (var entry in randomCustomCurrencies)
+            {
+                if (!string.IsNullOrEmpty(jsonRandomCustomCurrencies))
+                    jsonRandomCustomCurrencies += ",";
+                jsonRandomCustomCurrencies += entry.ToJson();
+            }
         }
         jsonRandomCustomCurrencies = "[" + jsonRandomCustomCurrencies + "]";
         // Reward Items
         var jsonRewardItems = "";
-        foreach (var entry in rewardItems)
+        if (rewardItems != null)
         {
-            if (!string.IsNullOrEmpty(jsonRewardItems))
-                jsonRewardItems += ",";
-            jsonRewardItems += entry.ToJson();
+            foreach (var entry in rewardItems)
+            {
+                if (!string.IsNullOrEmpty(jsonRewardItems))
+                    jsonRewardItems += ",";
+                jsonRewardItems += entry.ToJson();
+            }
         }
         jsonRewardItems = "[" + jsonRewardItems + "]";
         // First Clear Custom Currencies
         var jsonFirstClearRewardCustomCurrencies = "";
-        foreach (var entry in firstClearRewardCustomCurrencies)
+        if (firstClearRewardCustomCurrencies != null)
         {
-            if (!string.IsNullOrEmpty(jsonFirstClearRewardCustomCurrencies))
-                jsonFirstClearRewardCustomCurrencies += ",";
-            jsonFirstClearRewardCustomCurrencies += entry.ToJson();
+            foreach (var entry in firstClearRewardCustomCurrencies)
+            {
+                if (!string.IsNullOrEmpty(jsonFirstClearRewardCustomCurrencies))
+                    jsonFirstClearRewardCustomCurrencies += ",";
+                jsonFirstClearRewardCustomCurrencies += entry.ToJson();
+            }
         }
         jsonFirstClearRewardCustomCurrencies = "[" + jsonFirstClearRewardCustomCurrencies + "]";
         // First Clear Reward Items
         var jsonFirstClearRewardItems = "";
-        foreach (var entry in firstClearRewardItems)
+        if (firstClearRewardItems != null)
         {
-            if (!string.IsNullOrEmpty(jsonFirstClearRewardItems))
-                jsonFirstClearRewardItems += ",";
-            jsonFirstClearRewardItems += entry.ToJson();
+            foreach (var entry in firstClearRewardItems)
+            {
+                if (!string.IsNullOrEmpty(jsonFirstClearRewardItems))
+                    jsonFirstClearRewardItems += ",";
+                jsonFirstClearRewardItems += entry.ToJson();
+            }
         }
         jsonFirstClearRewardItems = "[" + jsonFirstClearRewardItems + "]";
         // Unlock Stages
         var jsonUnlockStages = "";
-        foreach (var entry in unlockStages)
+        if (unlockStages != null)
         {
-            if (!string.IsNullOrEmpty(jsonUnlockStages))
-                jsonUnlockStages += ",";
-            jsonUnlockStages += "\"" + entry.Id + "\"";
+            foreach (var entry in unlockStages)
+            {
+                if (!string.IsNullOrEmpty(jsonUnlockStages))
+                    jsonUnlockStages += ",";
+                jsonUnlockStages += "\"" + entry.Id + "\"";
+            }
         }
         jsonUnlockStages = "[" + jsonUnlockStages + "]";
         return "{\"id\":\"" + Id + "\"," +
