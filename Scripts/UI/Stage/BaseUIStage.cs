@@ -190,7 +190,6 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
         }
     }
 
-
     public TPreparation uiStagePreparation;
     public TPreparation StagePreparation
     {
