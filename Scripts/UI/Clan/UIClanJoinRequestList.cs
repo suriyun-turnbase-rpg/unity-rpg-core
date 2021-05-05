@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class UIClanJoinRequestList : UIPlayerList
+﻿public class UIClanJoinRequestList : UIPlayerList
 {
     public UIPlayer ownerPrefab;
     public UIPlayer managerPrefab;

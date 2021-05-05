@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class UIClanJoinPendingRequestList : UIClanList
+﻿public class UIClanJoinPendingRequestList : UIClanList
 {
     private void OnEnable()
     {
