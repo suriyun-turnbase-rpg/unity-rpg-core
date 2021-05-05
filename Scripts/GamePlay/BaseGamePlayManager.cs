@@ -292,6 +292,11 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         });
     }
 
+    public static void StartRaidBossBattle(RaidEvent raidEvent)
+    {
+
+    }
+
     public static void IncreaseTotalDamage(int damage)
     {
         TotalDamage += damage;

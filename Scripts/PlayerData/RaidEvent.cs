@@ -17,7 +17,7 @@ public partial class RaidEvent : IRaidEvent
         get { return GameInstance.GameDatabase; }
     }
 
-    public BaseRaidBossStage StageData
+    public BaseRaidBossStage RaidBossStage
     {
         get
         {

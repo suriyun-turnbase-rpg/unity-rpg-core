@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UIRaidEvent : UIDataItem<RaidEvent>
@@ -34,27 +33,27 @@ public class UIRaidEvent : UIDataItem<RaidEvent>
     private void SetupInfo(RaidEvent data)
     {
         if (textTitle != null)
-            textTitle.text = data.StageData.Title;
+            textTitle.text = data.RaidBossStage.Title;
 
         if (textDescription != null)
-            textDescription.text = data.StageData.Description;
+            textDescription.text = data.RaidBossStage.Description;
 
         if (imageIcon != null)
-            imageIcon.sprite = data == null ? null : data.StageData.icon;
+            imageIcon.sprite = data == null ? null : data.RaidBossStage.icon;
 
         if (textRecommendBattlePoint != null)
-            textRecommendBattlePoint.text = data.StageData.recommendBattlePoint.ToString("N0");
+            textRecommendBattlePoint.text = data.RaidBossStage.recommendBattlePoint.ToString("N0");
 
         if (uiRequireStamina != null)
         {
             var staminaData = PlayerStamina.StageStamina.Clone();
-            if (!string.IsNullOrEmpty(data.StageData.requireCustomStamina) && PlayerStamina.HasStamina(data.StageData.requireCustomStamina))
-                staminaData = PlayerStamina.GetStamina(data.StageData.requireCustomStamina).Clone();
-            staminaData.SetAmount(data.StageData.requireStamina, 0);
+            if (!string.IsNullOrEmpty(data.RaidBossStage.requireCustomStamina) && PlayerStamina.HasStamina(data.RaidBossStage.requireCustomStamina))
+                staminaData = PlayerStamina.GetStamina(data.RaidBossStage.requireCustomStamina).Clone();
+            staminaData.SetAmount(data.RaidBossStage.requireStamina, 0);
             uiRequireStamina.SetData(staminaData);
         }
 
-        var maxHp = data.StageData.GetCharacter().Attributes.hp;
+        var maxHp = data.RaidBossStage.GetCharacter().Attributes.hp;
         var rate = (float)data.RemainingHp / (float)maxHp;
 
         if (textHpPerMaxHp != null)
@@ -79,5 +78,11 @@ public class UIRaidEvent : UIDataItem<RaidEvent>
             d = d.AddSeconds(data.endTime);
             textEndTime.text = d.GetPrettyDate();
         }
+    }
+
+    public UIRaidEventPreparation uiRaidEventPreparation;
+    public UIRaidEventPreparation RaidEventPreparation
+    {
+        get { return uiRaidEventPreparation; }
     }
 }

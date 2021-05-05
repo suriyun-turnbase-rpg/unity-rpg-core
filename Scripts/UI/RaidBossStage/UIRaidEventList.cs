@@ -1,5 +1,7 @@
 ﻿public class UIRaidEventList : UIDataItemList<UIRaidEvent, RaidEvent>
 {
+    public UIRaidEventPreparation uiRaidEventPreparation;
+
     public override void Show()
     {
         base.Show();
@@ -20,6 +22,7 @@
                 continue;
             var ui = SetListItem(entry.Id);
             ui.data = entry;
+            ui.uiRaidEventPreparation = uiRaidEventPreparation;
             ui.Show();
         }
     }
