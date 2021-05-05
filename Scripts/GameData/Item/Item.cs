@@ -322,8 +322,8 @@ public abstract class BaseActorItem : MaterialItem
 
     public virtual void SetEvolveItemData(CreateEvolveItemData createEvolveItemData, BaseActorItem newItem)
     {
-        newItem.title = string.IsNullOrEmpty(createEvolveItemData.title) ? title : createEvolveItemData.title;
-        newItem.description = string.IsNullOrEmpty(createEvolveItemData.description) ? description : createEvolveItemData.description;
+        newItem.Title = string.IsNullOrEmpty(createEvolveItemData.title) ? Title : createEvolveItemData.title;
+        newItem.Description = string.IsNullOrEmpty(createEvolveItemData.description) ? Description : createEvolveItemData.description;
         newItem.icon = createEvolveItemData.icon == null ? icon : createEvolveItemData.icon;
 
         newItem.category = category;

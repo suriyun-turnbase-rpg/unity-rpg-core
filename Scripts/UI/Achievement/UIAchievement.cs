@@ -47,10 +47,10 @@ public class UIAchievement : UIDataItem<PlayerAchievement>
     public override void UpdateData()
     {
         if (textTitle != null)
-            textTitle.text = data == null ? "" : data.Achievement.title;
+            textTitle.text = data == null ? "" : data.Achievement.Title;
 
         if (textDescription != null)
-            textDescription.text = data == null ? "" : data.Achievement.description;
+            textDescription.text = data == null ? "" : data.Achievement.Description;
 
         if (imageIcon != null)
             imageIcon.sprite = data == null ? null : data.Achievement.icon;

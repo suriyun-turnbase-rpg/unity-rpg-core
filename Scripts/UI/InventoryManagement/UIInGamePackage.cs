@@ -24,10 +24,10 @@ public class UIInGamePackage : UIDataItem<InGamePackage>
     private void SetupInfo(InGamePackage data)
     {
         if (textTitle != null)
-            textTitle.text = data == null ? "" : data.title;
+            textTitle.text = data == null ? "" : data.Title;
 
         if (textDescription != null)
-            textDescription.text = data == null ? "" : data.description;
+            textDescription.text = data == null ? "" : data.Description;
 
         if (imageIcon != null)
             imageIcon.sprite = data == null ? null : data.icon;

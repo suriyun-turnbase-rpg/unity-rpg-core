@@ -61,7 +61,7 @@ public class UICharacterStatsGeneric : UIBase
             imageHpGage.fillAmount = rate;
 
         if (textTitle != null)
-            textTitle.text = itemData.title;
+            textTitle.text = itemData.Title;
 
         if (imageIcon != null)
             imageIcon.sprite = itemData.icon;

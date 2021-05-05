@@ -17,6 +17,16 @@ public partial class RaidEvent : IRaidEvent
         get { return GameInstance.GameDatabase; }
     }
 
+    public BaseRaidBossStage StageData
+    {
+        get
+        {
+            if (GameDatabase != null && GameDatabase.RaidBossStages.ContainsKey(DataId))
+                return GameDatabase.RaidBossStages[DataId];
+            return null;
+        }
+    }
+
     public RaidEvent Clone()
     {
         return CloneTo(this, new RaidEvent());

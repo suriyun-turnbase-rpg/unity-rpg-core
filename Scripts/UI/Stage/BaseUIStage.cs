@@ -68,10 +68,10 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
     private void SetupInfo(TStage data)
     {
         if (textTitle != null)
-            textTitle.text = data.title;
+            textTitle.text = data.Title;
 
         if (textDescription != null)
-            textDescription.text = data.description;
+            textDescription.text = data.Description;
 
         if (textStageNumber != null)
             textStageNumber.text = data.stageNumber;

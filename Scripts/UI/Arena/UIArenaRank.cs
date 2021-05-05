@@ -21,10 +21,10 @@ public class UIArenaRank : UIDataItem<ArenaRank>
             return;
 
         if (textTitle != null)
-            textTitle.text = data.title;
+            textTitle.text = data.Title;
 
         if (textDescription != null)
-            textDescription.text = data.description;
+            textDescription.text = data.Description;
 
 		if (imageIcon != null)
 			imageIcon.sprite = data.icon;

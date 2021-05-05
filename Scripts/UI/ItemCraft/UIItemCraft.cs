@@ -58,10 +58,10 @@ public class UIItemCraft : UIDataItem<ItemCraftFormula>
         }
 
         if (textTitle != null)
-            textTitle.text = data == null ? "" : data.title;
+            textTitle.text = data == null ? "" : data.Title;
 
         if (textDescription != null)
-            textDescription.text = data == null ? "" : data.description;
+            textDescription.text = data == null ? "" : data.Description;
 
         if (uiResultItem != null)
         {

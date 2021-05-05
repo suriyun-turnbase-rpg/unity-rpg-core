@@ -350,10 +350,10 @@ public class UIItem : UIDataItem<PlayerItem>
         var itemData = data.ItemData;
 
         if (textTitle != null)
-            textTitle.text = itemData == null ? "" : itemData.title;
+            textTitle.text = itemData == null ? "" : itemData.Title;
 
         if (textDescription != null)
-            textDescription.text = itemData == null ? "" : itemData.description;
+            textDescription.text = itemData == null ? "" : itemData.Description;
 
         if (imageIcon != null)
             imageIcon.sprite = itemData == null ? null : itemData.icon;
@@ -368,10 +368,10 @@ public class UIItem : UIDataItem<PlayerItem>
             textAmount.text = data.Amount.ToString("N0") + "/" + data.ItemData.MaxStack.ToString("N0");
 
         if (textTierTitle)
-            textTierTitle.text = data.Tier == null ? "" : data.Tier.title;
+            textTierTitle.text = data.Tier == null ? "" : data.Tier.Title;
 
         if (textTierDescription)
-            textTierDescription.text = data.Tier == null ? "" : data.Tier.description;
+            textTierDescription.text = data.Tier == null ? "" : data.Tier.Description;
 
         if (imageTierIcon != null)
             imageTierIcon.sprite = data.Tier == null ? null : data.Tier.icon;
@@ -385,14 +385,14 @@ public class UIItem : UIDataItem<PlayerItem>
         if (textElementalTitle != null)
         {
             if (data.CharacterData != null && data.CharacterData.elemental != null)
-                textElementalTitle.text = data.CharacterData.elemental.title;
+                textElementalTitle.text = data.CharacterData.elemental.Title;
             textElementalTitle.gameObject.SetActive(data.CharacterData != null && data.CharacterData.elemental != null);
         }
 
         if (textElementalDescription != null)
         {
             if (data.CharacterData != null && data.CharacterData.elemental != null)
-                textElementalDescription.text = data.CharacterData.elemental.description;
+                textElementalDescription.text = data.CharacterData.elemental.Description;
             textElementalTitle.gameObject.SetActive(data.CharacterData != null && data.CharacterData.elemental != null);
         }
 

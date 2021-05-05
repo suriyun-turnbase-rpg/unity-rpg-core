@@ -22,10 +22,10 @@ public abstract class BaseUISkill<TSkill> : UIDataItem<TSkill>
     private void SetupInfo(TSkill data)
     {
         if (textTitle != null)
-            textTitle.text = data == null ? "" : data.title;
+            textTitle.text = data == null ? "" : data.Title;
 
         if (textDescription != null)
-            textDescription.text = data == null ? "" : data.description;
+            textDescription.text = data == null ? "" : data.Description;
 
         if (imageIcon != null)
             imageIcon.sprite = data == null ? null : data.icon;
@@ -38,6 +38,6 @@ public abstract class BaseUISkill<TSkill> : UIDataItem<TSkill>
 
     public void ShowDataOnMessageDialog()
     {
-        GameInstance.Singleton.ShowMessageDialog(data.title, data.description);
+        GameInstance.Singleton.ShowMessageDialog(data.Title, data.Description);
     }
 }
