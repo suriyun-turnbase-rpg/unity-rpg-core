@@ -9,7 +9,6 @@ public class UIRaidEventPreparation : UIDataItem<RaidEvent>
     public Color colorEnoughBattlePoint = Color.white;
     public Color colorNotEnoughBattlePoint = Color.red;
     public UIRaidEvent uiRaidEvent;
-    public UIHelperList uiHelperList;
 
     public override void Clear()
     {

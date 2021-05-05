@@ -9,6 +9,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public static BaseGamePlayManager Singleton { get; private set; }
     public static string BattleSession { get; private set; }
     public static BaseStage PlayingStage { get; protected set; }
+    public static BaseRaidBossStage PlayingRaidBossStage { get; protected set; }
     public static Player Helper { get; protected set; }
     public static EBattleType BattleType { get; protected set; }
     public static int TotalDamage { get; protected set; }
@@ -278,6 +279,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         if (PlayerFormation.DataMap.Values.Where(a => a.DataId == formationName && !string.IsNullOrEmpty(a.ItemId)).Count() == 0)
             return;
 
+        Helper = null;
         BattleType = EBattleType.Arena;
         GameInstance.GameService.StartDuel(opponentId, (result) =>
         {
@@ -292,9 +294,25 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         });
     }
 
-    public static void StartRaidBossBattle(RaidEvent raidEvent)
+    public static void StartRaidBossBattle(RaidEvent data)
     {
+        var formationName = Player.CurrentPlayer.SelectedFormation;
+        if (PlayerFormation.DataMap.Values.Where(a => a.DataId == formationName && !string.IsNullOrEmpty(a.ItemId)).Count() == 0)
+            return;
 
+        PlayingRaidBossStage = data.RaidBossStage;
+        Helper = null;
+        BattleType = EBattleType.RaidBoss;
+        GameInstance.GameService.StartRaidBossBattle(data.Id, (result) =>
+        {
+            GameInstance.Singleton.OnGameServiceStartRaidBossBattleResult(result);
+            BattleSession = result.session;
+            TotalDamage = 0;
+            GameInstance.Singleton.LoadBattleScene();
+        }, (error) =>
+        {
+            GameInstance.Singleton.OnGameServiceError(error);
+        });
     }
 
     public static void IncreaseTotalDamage(int damage)

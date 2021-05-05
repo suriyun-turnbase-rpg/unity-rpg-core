@@ -992,14 +992,14 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetRaidEventList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void StartRaidBossBattle(string targetPlayerId, UnityAction<StartRaidBossBattleResult> onSuccess = null, UnityAction<string> onError = null)
+    public void StartRaidBossBattle(string eventId, UnityAction<StartRaidBossBattleResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: StartRaidBossBattle");
         var player = Player.CurrentPlayer;
         var playerId = player.Id;
         var loginToken = player.LoginToken;
         HandleServiceCall();
-        DoStartRaidBossBattle(playerId, loginToken, targetPlayerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+        DoStartRaidBossBattle(playerId, loginToken, eventId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     public void FinishRaidBossBattle(string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishRaidBossBattleResult> onSuccess = null, UnityAction<string> onError = null)
