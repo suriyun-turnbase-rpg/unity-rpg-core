@@ -7,10 +7,10 @@ public partial class RaidEvent : IRaidEvent
     public string DataId { get { return dataId; } set { dataId = value; } }
     public int remainingHp;
     public int RemainingHp { get { return remainingHp; } set { remainingHp = value; } }
-    public int startTime;
-    public int StartTime { get { return startTime; } set { startTime = value; } }
-    public int endTime;
-    public int EndTime { get { return endTime; } set { endTime = value; } }
+    public long startTime;
+    public long StartTime { get { return startTime; } set { startTime = value; } }
+    public long endTime;
+    public long EndTime { get { return endTime; } set { endTime = value; } }
 
     public static GameDatabase GameDatabase
     {
