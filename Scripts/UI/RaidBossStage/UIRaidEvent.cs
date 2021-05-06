@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UIRaidEvent : UIDataItem<RaidEvent>
@@ -14,6 +15,7 @@ public class UIRaidEvent : UIDataItem<RaidEvent>
     public Image imageHpGage;
     public Text textStartTime;
     public Text textEndTime;
+    public UnityEvent eventSetRaidEventPreparation;
 
     public override void Clear()
     {
@@ -69,14 +71,35 @@ public class UIRaidEvent : UIDataItem<RaidEvent>
         {
             var d = new System.DateTime(1970, 1, 1);
             d = d.AddSeconds(data.startTime);
-            textStartTime.text = d.GetPrettyDate();
+            textStartTime.text = d.ToString();
         }
 
         if (textEndTime != null)
         {
             var d = new System.DateTime(1970, 1, 1);
             d = d.AddSeconds(data.endTime);
-            textEndTime.text = d.GetPrettyDate();
+            textEndTime.text = d.ToString();
+        }
+    }
+
+    public void SetRaidEventPreparationData()
+    {
+        if (RaidEventPreparation != null)
+        {
+            RaidEventPreparation.data = data;
+            eventSetRaidEventPreparation.Invoke();
+        }
+    }
+
+    public void ShowRaidEventPreparation()
+    {
+        if (RaidEventPreparation != null)
+        {
+            var historyManager = FindObjectOfType<UIHistoryManager>();
+            if (historyManager)
+                historyManager.Next(RaidEventPreparation);
+            else
+                RaidEventPreparation.Show();
         }
     }
 

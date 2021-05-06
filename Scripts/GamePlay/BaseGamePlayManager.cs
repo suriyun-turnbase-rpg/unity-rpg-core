@@ -9,7 +9,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public static BaseGamePlayManager Singleton { get; private set; }
     public static string BattleSession { get; private set; }
     public static BaseStage PlayingStage { get; protected set; }
-    public static BaseRaidBossStage PlayingRaidBossStage { get; protected set; }
+    public static RaidEvent PlayingRaidEvent { get; protected set; }
     public static Player Helper { get; protected set; }
     public static EBattleType BattleType { get; protected set; }
     public static int TotalDamage { get; protected set; }
@@ -177,6 +177,19 @@ public abstract class BaseGamePlayManager : MonoBehaviour
                 GameInstance.Singleton.OnGameServiceError(error, WinGame);
             });
         }
+        else if (BattleType == EBattleType.RaidBoss)
+        {
+            GameInstance.GameService.FinishRaidBossBattle(BattleSession, EBattleResult.Win, TotalDamage, CountDeadCharacters(), (result) =>
+            {
+                isEnding = true;
+                Time.timeScale = 1;
+                GameInstance.Singleton.OnGameServiceFinishRaidBossBattleResult(result);
+                // TODO: Show UI
+            }, (error) =>
+            {
+                GameInstance.Singleton.OnGameServiceError(error, WinGame);
+            });
+        }
     }
 
     protected IEnumerator LoseGameRoutine()
@@ -196,6 +209,19 @@ public abstract class BaseGamePlayManager : MonoBehaviour
                 GameInstance.Singleton.OnGameServiceFinishDuelResult(result);
                 uiArenaResult.SetData(result);
                 uiArenaResult.Show();
+            }, (error) =>
+            {
+                GameInstance.Singleton.OnGameServiceError(error, WinGame);
+            });
+        }
+        else if (BattleType == EBattleType.RaidBoss)
+        {
+            GameInstance.GameService.FinishRaidBossBattle(BattleSession, EBattleResult.Lose, TotalDamage, CountDeadCharacters(), (result) =>
+            {
+                isEnding = true;
+                Time.timeScale = 1;
+                GameInstance.Singleton.OnGameServiceFinishRaidBossBattleResult(result);
+                // TODO: Show UI
             }, (error) =>
             {
                 GameInstance.Singleton.OnGameServiceError(error, WinGame);
@@ -241,6 +267,18 @@ public abstract class BaseGamePlayManager : MonoBehaviour
             }, (error) =>
             {
                 GameInstance.Singleton.OnGameServiceError(error, onError);
+            });
+        }
+        else if (BattleType == EBattleType.RaidBoss)
+        {
+            GameInstance.GameService.FinishRaidBossBattle(BattleSession, EBattleResult.Lose, TotalDamage, CountDeadCharacters(), (result) =>
+            {
+                isEnding = true;
+                Time.timeScale = 1;
+                GameInstance.Singleton.GetAllPlayerData(GameInstance.LoadAllPlayerDataState.GoToManageScene);
+            }, (error) =>
+            {
+                GameInstance.Singleton.OnGameServiceError(error, WinGame);
             });
         }
     }
@@ -300,7 +338,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         if (PlayerFormation.DataMap.Values.Where(a => a.DataId == formationName && !string.IsNullOrEmpty(a.ItemId)).Count() == 0)
             return;
 
-        PlayingRaidBossStage = data.RaidBossStage;
+        PlayingRaidEvent = data;
         Helper = null;
         BattleType = EBattleType.RaidBoss;
         GameInstance.GameService.StartRaidBossBattle(data.Id, (result) =>
