@@ -230,14 +230,6 @@ public partial class GameInstance : MonoBehaviour
         PlayerStamina.SetData(result.stamina);
     }
 
-    public void OnGameServiceFinishRaidBossBattleResult(FinishRaidBossBattleResult result)
-    {
-        if (!result.Success)
-            return;
-
-        Player.SetData(result.player);
-    }
-
     public void OnGameServiceSetProfileNameResult(PlayerResult result)
     {
         if (!result.Success)

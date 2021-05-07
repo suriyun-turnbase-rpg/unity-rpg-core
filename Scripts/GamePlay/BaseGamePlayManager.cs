@@ -184,7 +184,6 @@ public abstract class BaseGamePlayManager : MonoBehaviour
             {
                 isEnding = true;
                 Time.timeScale = 1;
-                GameInstance.Singleton.OnGameServiceFinishRaidBossBattleResult(result);
                 uiRaidEventResult.SetData(result);
                 uiRaidEventResult.Show();
             }, (error) =>
@@ -222,7 +221,6 @@ public abstract class BaseGamePlayManager : MonoBehaviour
             {
                 isEnding = true;
                 Time.timeScale = 1;
-                GameInstance.Singleton.OnGameServiceFinishRaidBossBattleResult(result);
                 uiRaidEventResult.SetData(result);
                 uiRaidEventResult.Show();
             }, (error) =>
