@@ -1012,6 +1012,46 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoFinishRaidBossBattle(playerId, loginToken, session, battleResult, totalDamage, deadCharacters, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void GetMailList(UnityAction<MailListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetMailList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetMailList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void ReadMail(string id, UnityAction<ReadMailResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ReadMail");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoReadMail(playerId, loginToken, id, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void ClaimMailRewards(string id, UnityAction<ItemResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ClaimMailRewards");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoClaimMailRewards(playerId, loginToken, id, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void DeleteMail(string id, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: DeleteMail");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoDeleteMail(playerId, loginToken, id, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -1089,4 +1129,8 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoGetRaidEventList(string playerId, string loginToken, UnityAction<RaidEventListResult> onFinish);
     protected abstract void DoStartRaidBossBattle(string playerId, string loginToken, string eventId, UnityAction<StartRaidBossBattleResult> onFinish);
     protected abstract void DoFinishRaidBossBattle(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishRaidBossBattleResult> onFinish);
+    protected abstract void DoGetMailList(string playerId, string loginToken, UnityAction<MailListResult> onFinish);
+    protected abstract void DoReadMail(string playerId, string loginToken, string id, UnityAction<ReadMailResult> onFinish);
+    protected abstract void DoClaimMailRewards(string playerId, string loginToken, string id, UnityAction<ItemResult> onFinish);
+    protected abstract void DoDeleteMail(string playerId, string loginToken, string id, UnityAction<GameServiceResult> onFinish);
 }

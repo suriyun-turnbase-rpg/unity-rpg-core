@@ -231,6 +231,18 @@ public class FinishRaidBossBattleResult : PlayerResult
 }
 
 [System.Serializable]
+public class MailListResult : GameServiceResult
+{
+    public List<Mail> list = new List<Mail>();
+}
+
+[System.Serializable]
+public class ReadMailResult : GameServiceResult
+{
+    public Mail mail;
+}
+
+[System.Serializable]
 public class EarnAchievementResult : PlayerResult
 {
     public int rewardPlayerExp;
