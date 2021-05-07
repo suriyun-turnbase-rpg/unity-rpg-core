@@ -27,6 +27,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public UIWin uiWin;
     public UILose uiLose;
     public UIArenaResult uiArenaResult;
+    public UIRaidEventResult uiRaidEventResult;
     public UIPlayer uiFriendRequest;
     public UIPauseGame uiPauseGame;
     public float winGameDelay = 2f;
@@ -184,7 +185,8 @@ public abstract class BaseGamePlayManager : MonoBehaviour
                 isEnding = true;
                 Time.timeScale = 1;
                 GameInstance.Singleton.OnGameServiceFinishRaidBossBattleResult(result);
-                // TODO: Show UI
+                uiRaidEventResult.SetData(result);
+                uiRaidEventResult.Show();
             }, (error) =>
             {
                 GameInstance.Singleton.OnGameServiceError(error, WinGame);
@@ -221,7 +223,8 @@ public abstract class BaseGamePlayManager : MonoBehaviour
                 isEnding = true;
                 Time.timeScale = 1;
                 GameInstance.Singleton.OnGameServiceFinishRaidBossBattleResult(result);
-                // TODO: Show UI
+                uiRaidEventResult.SetData(result);
+                uiRaidEventResult.Show();
             }, (error) =>
             {
                 GameInstance.Singleton.OnGameServiceError(error, WinGame);
