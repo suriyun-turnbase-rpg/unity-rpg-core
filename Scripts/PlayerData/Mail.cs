@@ -8,6 +8,10 @@ public partial class Mail : IMail
     public string Title { get { return title; } set { title = value; } }
     public string content;
     public string Content { get { return content; } set { content = value; } }
+    public string currencies;
+    public string Currencies { get { return currencies; } set { currencies = value; } }
+    public string items;
+    public string Items { get { return items; } set { items = value; } }
     public bool hasReward;
     public bool HasReward { get { return hasReward; } set { hasReward = value; } }
     public bool isRead;
