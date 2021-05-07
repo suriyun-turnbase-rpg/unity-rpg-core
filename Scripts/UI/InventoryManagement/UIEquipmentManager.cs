@@ -14,6 +14,7 @@ public class UIEquipmentManager : UIBase
     public UIItem uiEquipmentSlotPrefab;
     public UIEquipmentSlotContainer[] uiEquipmentSlotContainers;
     public UIItemList uiEquipmentList;
+    public UIItemListFilterSetting filterSetting;
     public UIItem uiCharacterInfo;
 
     private readonly Dictionary<string, UIItem> UIEquipmentSlots = new Dictionary<string, UIItem>();
@@ -111,7 +112,11 @@ public class UIEquipmentManager : UIBase
 
         if (uiEquipmentList != null)
         {
-            var list = PlayerItem.DataMap.Values.Where(a => a.PlayerId == playerId && a.EquipmentData != null).ToList();
+            filterSetting.showMaterial = false;
+            filterSetting.showCharacter = false;
+            filterSetting.showEquipment = true;
+            filterSetting.dontShowInTeamCharacter = false;
+            var list = PlayerItem.DataMap.Values.Where(a => UIItemListFilter.Filter(a, filterSetting)).ToList();
             list.SortLevel();
             uiEquipmentList.selectable = true;
             uiEquipmentList.multipleSelection = false;

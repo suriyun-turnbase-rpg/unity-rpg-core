@@ -4,6 +4,8 @@ public struct UIItemListFilterSetting
     public bool showCharacter;
     public bool showEquipment;
     public bool showMaterial;
+    public bool dontShowInTeamCharacter;
+    public bool dontShowEquippedEquipment;
     public string category;
 }
 
@@ -11,22 +13,25 @@ public static class UIItemListFilter
 {
     public static bool Filter(PlayerItem item, UIItemListFilterSetting setting)
     {
-        if (!setting.showCharacter &&
-            !setting.showEquipment &&
-            !setting.showMaterial &&
-            string.IsNullOrEmpty(setting.category))
+        if (!string.IsNullOrEmpty(setting.category) && !MatchCategory(item, setting.category))
+            return false;
+        if (IsMaterial(item))
+            return setting.showMaterial;
+        if (IsCharacter(item))
         {
-            // No setting, No filter, Show all
-            return true;
+            if (!setting.showCharacter)
+                return false;
+            if (setting.dontShowInTeamCharacter && item.InTeamFormations.Count > 0)
+                return false;
         }
-        if ((setting.showMaterial && IsMaterial(item)) ||
-            (setting.showCharacter && IsCharacter(item)) ||
-            (setting.showEquipment && IsEquipment(item)))
+        if (IsEquipment(item))
         {
-            // Filter by item types and category
-            return string.IsNullOrEmpty(setting.category) || MatchCategory(item, setting.category);
+            if (!setting.showEquipment)
+                return false;
+            if (setting.dontShowEquippedEquipment && item.EquippedByItem != null)
+                return false;
         }
-        return false;
+        return true;
     }
 
     public static bool IsCharacter(PlayerItem item)

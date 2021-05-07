@@ -23,6 +23,7 @@ public class UIFormationManager : UIBase
     public Transform togglerContainer;
     public Transform formationContainer;
     public UIItemList uiCharacterList;
+    public UIItemListFilterSetting filterSetting;
     public BaseGamePlayFormation characterFormation;
     private readonly Dictionary<string, UIFormationToggleData> UIFormationToggles = new Dictionary<string, UIFormationToggleData>();
     public UIFormationToggleData SelectedFormation { get; private set; }
@@ -118,7 +119,11 @@ public class UIFormationManager : UIBase
 
         if (uiCharacterList != null)
         {
-            var list = PlayerItem.DataMap.Values.Where(a => a.PlayerId == playerId && a.CharacterData != null).ToList();
+            filterSetting.showMaterial = false;
+            filterSetting.showCharacter = true;
+            filterSetting.showEquipment = false;
+            filterSetting.dontShowEquippedEquipment = false;
+            var list = PlayerItem.DataMap.Values.Where(a => UIItemListFilter.Filter(a, filterSetting)).ToList();
             list.SortLevel();
             uiCharacterList.selectable = true;
             uiCharacterList.multipleSelection = false;
