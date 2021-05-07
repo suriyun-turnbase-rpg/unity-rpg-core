@@ -70,14 +70,14 @@ public class UIRaidEvent : UIDataItem<RaidEvent>
         if (textStartTime != null)
         {
             var d = new System.DateTime(1970, 1, 1);
-            d = d.AddSeconds(data.startTime);
+            d = d.AddSeconds(data.StartTime);
             textStartTime.text = d.ToString();
         }
 
         if (textEndTime != null)
         {
             var d = new System.DateTime(1970, 1, 1);
-            d = d.AddSeconds(data.endTime);
+            d = d.AddSeconds(data.EndTime);
             textEndTime.text = d.ToString();
         }
 
