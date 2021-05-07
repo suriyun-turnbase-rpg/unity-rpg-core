@@ -92,12 +92,12 @@ public class UIClanDonation : UIDataItem<ClanDonation>
         {
             foreach (var rewardCurrency in data.rewardCurrencies)
             {
-                if (CacheUiRewardCurrencies.ContainsKey(rewardCurrency.Id))
+                if (CacheUiRewardCurrencies.ContainsKey(rewardCurrency.id))
                 {
-                    CacheUiRewardCurrencies[rewardCurrency.Id].data = new PlayerCurrency()
+                    CacheUiRewardCurrencies[rewardCurrency.id].data = new PlayerCurrency()
                     {
-                        DataId = rewardCurrency.Id,
-                        Amount = rewardCurrency.Amount,
+                        DataId = rewardCurrency.id,
+                        Amount = rewardCurrency.amount,
                     };
                 }
             }

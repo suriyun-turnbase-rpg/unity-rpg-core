@@ -9,8 +9,6 @@ public class IapPackage : BaseGameData
 {
     [HideInInspector]
     public string productId;
-    public Sprite icon;
-    public string category;
     public Sprite highlight;
     public int rewardSoftCurrency;
     public int rewardHardCurrency;

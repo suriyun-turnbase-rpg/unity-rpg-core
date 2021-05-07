@@ -6,9 +6,7 @@ using UnityEditor;
 
 public abstract class BaseMission : BaseGameData
 {
-    [Header("Generic Info")]
     public StageType stageType;
-    public Sprite icon;
     public int recommendBattlePoint;
     [Header("Stamina")]
     public int requireStamina;

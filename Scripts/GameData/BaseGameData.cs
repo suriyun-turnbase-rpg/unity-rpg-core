@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class BaseGameData : ScriptableObject
+public abstract class BaseGameData : ScriptableObject, IGameData
 {
     [Tooltip("Default title")]
     public string title;
@@ -22,7 +20,14 @@ public abstract class BaseGameData : ScriptableObject
     }
 
     public string tag;
+    public string category;
+    public Sprite icon;
+    public Sprite icon2;
+    public Sprite icon3;
 
     public virtual string Id { get { return name; } }
+    public Sprite Icon { get { return icon; } }
+    public Sprite Icon2 { get { return icon2; } }
+    public Sprite Icon3 { get { return icon3; } }
     protected virtual void OnValidate() { }
 }

@@ -116,12 +116,12 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
         {
             foreach (var rewardCurrency in data.firstClearRewardCustomCurrencies)
             {
-                if (CacheUiFirstClearRewardCustomCurrencies.ContainsKey(rewardCurrency.Id))
+                if (CacheUiFirstClearRewardCustomCurrencies.ContainsKey(rewardCurrency.id))
                 {
-                    CacheUiFirstClearRewardCustomCurrencies[rewardCurrency.Id].data = new PlayerCurrency()
+                    CacheUiFirstClearRewardCustomCurrencies[rewardCurrency.id].data = new PlayerCurrency()
                     {
-                        DataId = rewardCurrency.Id,
-                        Amount = rewardCurrency.Amount,
+                        DataId = rewardCurrency.id,
+                        Amount = rewardCurrency.amount,
                     };
                 }
             }

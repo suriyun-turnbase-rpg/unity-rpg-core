@@ -199,12 +199,12 @@ public class UIClanManager : UIClan
         {
             foreach (var rewardCurrency in GameInstance.GameDatabase.clanCheckinRewardCurrencies)
             {
-                if (CacheUiCheckinRewardCurrencies.ContainsKey(rewardCurrency.Id))
+                if (CacheUiCheckinRewardCurrencies.ContainsKey(rewardCurrency.id))
                 {
-                    CacheUiCheckinRewardCurrencies[rewardCurrency.Id].data = new PlayerCurrency()
+                    CacheUiCheckinRewardCurrencies[rewardCurrency.id].data = new PlayerCurrency()
                     {
-                        DataId = rewardCurrency.Id,
-                        Amount = rewardCurrency.Amount,
+                        DataId = rewardCurrency.id,
+                        Amount = rewardCurrency.amount,
                     };
                 }
             }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ public class UIRaidEvent : UIDataItem<RaidEvent>
     public Image imageHpGage;
     public Text textStartTime;
     public Text textEndTime;
+    public UIRaidBossRewardList rewardList;
     public UnityEvent eventSetRaidEventPreparation;
 
     public override void Clear()
@@ -79,6 +81,11 @@ public class UIRaidEvent : UIDataItem<RaidEvent>
             var d = new System.DateTime(1970, 1, 1);
             d = d.AddSeconds(data.endTime);
             textEndTime.text = d.ToString();
+        }
+
+        if (rewardList != null)
+        {
+            rewardList.SetListItems(new List<RaidBossReward>(data.RaidBossStage.rewards));
         }
     }
 

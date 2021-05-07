@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Globalization;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -141,12 +139,6 @@ public class CreateEvolveItemData
 
 public abstract class BaseItem : BaseGameData
 {
-    [Header("General information")]
-    public Sprite icon;
-    public Sprite icon2;
-    public Sprite icon3;
-    public string category;
-
     [Tooltip("This data MUST be set")]
     public ItemTier itemTier;
 
