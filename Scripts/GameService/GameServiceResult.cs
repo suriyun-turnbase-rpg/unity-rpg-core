@@ -44,6 +44,7 @@ public class GameServiceErrorCode
     public const string NOT_HAVE_PERMISSION = ERROR_PREFIX + "NOT_HAVE_PERMISSION";
     public const string CLAN_OWNER_CANNOT_EXIT = ERROR_PREFIX + "CLAN_OWNER_CANNOT_EXIT";
     public const string NOT_AVAILABLE = ERROR_PREFIX + "NOT_AVAILABLE";
+    public const string CANNOT_RECEIVE_ALL_ITEMS = ERROR_PREFIX + "CANNOT_RECEIVE_ALL_ITEMS";
 }
 
 [System.Serializable]
@@ -226,7 +227,7 @@ public class StartRaidBossBattleResult : GameServiceResult
 public class FinishRaidBossBattleResult : PlayerResult
 {
     public int totalDamage;
-    public int rating;
+    public RaidEvent raidEvent;
 }
 
 [System.Serializable]

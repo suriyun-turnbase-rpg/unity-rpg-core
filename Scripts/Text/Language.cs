@@ -192,6 +192,7 @@ public static class DefaultLocale
         Texts.Add(GameServiceErrorCode.CANNOT_EVOLVE, "Cannot evolve");
         Texts.Add(GameServiceErrorCode.CANNOT_REFILL_STAMINA, "Cannot refill stamina");
         Texts.Add(GameServiceErrorCode.NOT_AVAILABLE, "Services not available");
+        Texts.Add(GameServiceErrorCode.CANNOT_RECEIVE_ALL_ITEMS, "Cannot receive all items");
         Texts.Add(GameServiceErrorCode.JOINED_CLAN, "Already joined clan");
         Texts.Add(GameServiceErrorCode.NOT_JOINED_CLAN, "Not joined clan");
         Texts.Add(GameServiceErrorCode.NOT_HAVE_PERMISSION, "You don't have permission to do it");
