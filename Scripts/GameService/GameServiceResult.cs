@@ -224,7 +224,7 @@ public class StartRaidBossBattleResult : GameServiceResult
 }
 
 [System.Serializable]
-public class FinishRaidBossBattleResult : PlayerResult
+public class FinishRaidBossBattleResult : GameServiceResult
 {
     public int totalDamage;
     public RaidEvent raidEvent;
