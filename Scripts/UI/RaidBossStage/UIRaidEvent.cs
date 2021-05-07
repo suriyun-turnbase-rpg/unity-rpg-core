@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UIRaidEvent : UIDataItem<RaidEvent>
 {
-    [Header("General")]
     public Text textTitle;
     public Text textDescription;
     public Image imageIcon;
