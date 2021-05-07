@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UIArenaResult : UIDataItem<FinishDuelResult>
@@ -17,8 +15,11 @@ public class UIArenaResult : UIDataItem<FinishDuelResult>
     public override void Show()
     {
         base.Show();
-        buttonGoToManageScene.onClick.RemoveListener(OnClickGoToManageScene);
-        buttonGoToManageScene.onClick.AddListener(OnClickGoToManageScene);
+        if (buttonGoToManageScene != null)
+        {
+            buttonGoToManageScene.onClick.RemoveListener(OnClickGoToManageScene);
+            buttonGoToManageScene.onClick.AddListener(OnClickGoToManageScene);
+        }
 
         if (ratingAnimator != null)
             ratingAnimator.SetInteger(ANIM_KEY_BATTLE_RATING, data.rating);
