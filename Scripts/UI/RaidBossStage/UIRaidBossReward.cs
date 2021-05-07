@@ -77,6 +77,7 @@ public class UIRaidBossReward : UIDataItem<RaidBossReward>
                         dataAndAmounts[item] += customItem.amount;
                 }
             }
+            uiRewards.ClearListItems();
             foreach (var kvPair in dataAndAmounts)
             {
                 uiRewards.SetListItem(kvPair.Key, kvPair.Value);
