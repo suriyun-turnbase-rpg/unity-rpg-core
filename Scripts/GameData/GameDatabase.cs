@@ -49,6 +49,10 @@ public partial class GameDatabase : ScriptableObject
     [Tooltip("List of game stages, place all stages here")]
     public BaseRaidBossStage[] raidBossStages;
 
+    [Header("Clan Boss Stage database")]
+    [Tooltip("List of game stages, place all stages here")]
+    public BaseClanBossStage[] clanBossStages;
+
     [Header("Achievement database")]
     [Tooltip("List of achievements, place all achievements here")]
     public Achievement[] achievements;
@@ -121,6 +125,7 @@ public partial class GameDatabase : ScriptableObject
     public readonly Dictionary<string, Formation> Formations = new Dictionary<string, Formation>();
     public readonly Dictionary<string, BaseStage> Stages = new Dictionary<string, BaseStage>();
     public readonly Dictionary<string, BaseRaidBossStage> RaidBossStages = new Dictionary<string, BaseRaidBossStage>();
+    public readonly Dictionary<string, BaseClanBossStage> ClanBossStages = new Dictionary<string, BaseClanBossStage>();
     public readonly Dictionary<string, Achievement> Achievements = new Dictionary<string, Achievement>();
     public readonly Dictionary<string, ItemCraftFormula> ItemCrafts = new Dictionary<string, ItemCraftFormula>();
     public readonly Dictionary<string, LootBox> LootBoxes = new Dictionary<string, LootBox>();
@@ -137,6 +142,7 @@ public partial class GameDatabase : ScriptableObject
         Formations.Clear();
         Stages.Clear();
         RaidBossStages.Clear();
+        ClanBossStages.Clear();
         Achievements.Clear();
         ItemCrafts.Clear();
         LootBoxes.Clear();
@@ -197,6 +203,7 @@ public partial class GameDatabase : ScriptableObject
         AddFormationsToDatabase(formations);
         AddStagesToDatabase(stages);
         AddRaidBossStagesToDatabase(raidBossStages);
+        AddClanBossStagesToDatabase(clanBossStages);
         AddStagesToDatabase(unlockStages);
         AddAchievementsToDatabase(achievements);
         AddItemCraftsToDatabase(itemCrafts);
@@ -258,6 +265,20 @@ public partial class GameDatabase : ScriptableObject
             if (!string.IsNullOrEmpty(dataId) && !RaidBossStages.ContainsKey(dataId))
             {
                 RaidBossStages[dataId] = raidBossStage;
+            }
+        }
+    }
+
+    private void AddClanBossStagesToDatabase(IEnumerable<BaseClanBossStage> clanBossStages)
+    {
+        foreach (var clanBossStage in clanBossStages)
+        {
+            if (clanBossStage == null)
+                continue;
+            var dataId = clanBossStage.Id;
+            if (!string.IsNullOrEmpty(dataId) && !ClanBossStages.ContainsKey(dataId))
+            {
+                ClanBossStages[dataId] = clanBossStage;
             }
         }
     }
@@ -358,6 +379,7 @@ public partial class GameDatabase : ScriptableObject
         var formationsJson = string.Empty;
         var stagesJson = string.Empty;
         var raidBossStagesJson = string.Empty;
+        var clanBossStagesJson = string.Empty;
         var lootBoxesJson = string.Empty;
         var iapPackagesJson = string.Empty;
         var inGamePackagesJson = string.Empty;
@@ -438,6 +460,14 @@ public partial class GameDatabase : ScriptableObject
             raidBossStagesJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
         }
         raidBossStagesJson = "{" + raidBossStagesJson + "}";
+
+        foreach (var entry in gameDatabase.RaidBossStages)
+        {
+            if (!string.IsNullOrEmpty(clanBossStagesJson))
+                clanBossStagesJson += ",";
+            clanBossStagesJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        clanBossStagesJson = "{" + clanBossStagesJson + "}";
 
         foreach (var entry in gameDatabase.LootBoxes)
         {
@@ -525,6 +555,7 @@ public partial class GameDatabase : ScriptableObject
         keyValues["formations"] = formationsJson;
         keyValues["stages"] = stagesJson;
         keyValues["raidBossStages"] = raidBossStagesJson;
+        keyValues["clanBossStages"] = clanBossStagesJson;
         keyValues["lootBoxes"] = lootBoxesJson;
         keyValues["iapPackages"] = iapPackagesJson;
         keyValues["inGamePackages"] = inGamePackagesJson;

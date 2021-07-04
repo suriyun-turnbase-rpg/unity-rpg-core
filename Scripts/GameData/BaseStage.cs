@@ -8,6 +8,7 @@ public abstract class BaseStage : BaseMission
 {
     [Header("Stage Info")]
     public string stageNumber;
+    public StageType stageType;
     [Header("Rewards")]
     public CurrencyRandomAmount[] randomCustomCurrencies;
     public int randomSoftCurrencyMinAmount;

@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public struct RaidBossReward
+public struct ClanBossReward
 {
-    public int rankMin;
-    public int rankMax;
+    public int damageDealtMin;
+    public int damageDealtMax;
     public CurrencyAmount[] rewardCustomCurrencies;
     public int rewardSoftCurrency;
     public int rewardHardCurrency;
@@ -36,8 +36,8 @@ public struct RaidBossReward
             }
         }
         jsonRewardItems = "[" + jsonRewardItems + "]";
-        return "{\"rankMin\":" + rankMin + "," +
-            "\"rankMax\":" + rankMax + "," +
+        return "{\"damageDealtMin\":" + damageDealtMin + "," +
+            "\"damageDealtMax\":" + damageDealtMax + "," +
             "\"rewardCustomCurrencies\":" + jsonRewardCustomCurrencies + "," +
             "\"rewardSoftCurrency\":" + rewardSoftCurrency + "," +
             "\"rewardHardCurrency\":" + rewardHardCurrency + "," +
@@ -45,10 +45,10 @@ public struct RaidBossReward
     }
 }
 
-public abstract class BaseRaidBossStage : BaseMission
+public abstract class BaseClanBossStage : BaseMission
 {
     [Header("Rewards")]
-    public RaidBossReward[] rewards;
+    public ClanBossReward[] rewards;
 
     public abstract PlayerItem GetCharacter();
 
