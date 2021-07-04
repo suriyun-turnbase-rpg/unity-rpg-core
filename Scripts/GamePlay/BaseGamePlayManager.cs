@@ -10,6 +10,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public static string BattleSession { get; private set; }
     public static BaseStage PlayingStage { get; protected set; }
     public static RaidEvent PlayingRaidEvent { get; protected set; }
+    public static ClanEvent PlayingClanEvent { get; protected set; }
     public static Player Helper { get; protected set; }
     public static EBattleType BattleType { get; protected set; }
     public static int TotalDamage { get; protected set; }
@@ -345,6 +346,27 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         GameInstance.GameService.StartRaidBossBattle(data.Id, (result) =>
         {
             GameInstance.Singleton.OnGameServiceStartRaidBossBattleResult(result);
+            BattleSession = result.session;
+            TotalDamage = 0;
+            GameInstance.Singleton.LoadBattleScene();
+        }, (error) =>
+        {
+            GameInstance.Singleton.OnGameServiceError(error);
+        });
+    }
+
+    public static void StartClanBossBattle(ClanEvent data)
+    {
+        var formationName = Player.CurrentPlayer.SelectedFormation;
+        if (PlayerFormation.DataMap.Values.Where(a => a.DataId == formationName && !string.IsNullOrEmpty(a.ItemId)).Count() == 0)
+            return;
+
+        PlayingClanEvent = data;
+        Helper = null;
+        BattleType = EBattleType.ClanBoss;
+        GameInstance.GameService.StartClanBossBattle(data.Id, (result) =>
+        {
+            GameInstance.Singleton.OnGameServiceStartClanBossBattleResult(result);
             BattleSession = result.session;
             TotalDamage = 0;
             GameInstance.Singleton.LoadBattleScene();

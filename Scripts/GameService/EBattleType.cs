@@ -3,4 +3,5 @@
 	Stage,
 	Arena,
 	RaidBoss,
+	ClanBoss,
 }

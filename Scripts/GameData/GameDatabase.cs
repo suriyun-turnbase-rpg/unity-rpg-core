@@ -461,7 +461,7 @@ public partial class GameDatabase : ScriptableObject
         }
         raidBossStagesJson = "{" + raidBossStagesJson + "}";
 
-        foreach (var entry in gameDatabase.RaidBossStages)
+        foreach (var entry in gameDatabase.ClanBossStages)
         {
             if (!string.IsNullOrEmpty(clanBossStagesJson))
                 clanBossStagesJson += ",";

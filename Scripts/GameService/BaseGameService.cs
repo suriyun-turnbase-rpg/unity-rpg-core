@@ -1052,6 +1052,36 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoDeleteMail(playerId, loginToken, id, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void GetClanEventList(UnityAction<ClanEventListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetClanEventList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetClanEventList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void StartClanBossBattle(string eventId, UnityAction<StartClanBossBattleResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: StartClanBossBattle");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoStartClanBossBattle(playerId, loginToken, eventId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void FinishClanBossBattle(string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishClanBossBattleResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: FinishClanBossBattle");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoFinishClanBossBattle(playerId, loginToken, session, battleResult, totalDamage, deadCharacters, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -1133,4 +1163,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoReadMail(string playerId, string loginToken, string id, UnityAction<ReadMailResult> onFinish);
     protected abstract void DoClaimMailRewards(string playerId, string loginToken, string id, UnityAction<ItemResult> onFinish);
     protected abstract void DoDeleteMail(string playerId, string loginToken, string id, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoGetClanEventList(string playerId, string loginToken, UnityAction<ClanEventListResult> onFinish);
+    protected abstract void DoStartClanBossBattle(string playerId, string loginToken, string eventId, UnityAction<StartClanBossBattleResult> onFinish);
+    protected abstract void DoFinishClanBossBattle(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishClanBossBattleResult> onFinish);
 }

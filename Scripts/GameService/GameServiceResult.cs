@@ -231,6 +231,27 @@ public class FinishRaidBossBattleResult : GameServiceResult
 }
 
 [System.Serializable]
+public class ClanEventListResult : GameServiceResult
+{
+    public List<ClanEvent> list = new List<ClanEvent>();
+}
+
+[System.Serializable]
+public class StartClanBossBattleResult : GameServiceResult
+{
+    public PlayerStamina stamina;
+    public string session;
+    public int remainingHp;
+}
+
+[System.Serializable]
+public class FinishClanBossBattleResult : GameServiceResult
+{
+    public int totalDamage;
+    public ClanEvent raidEvent;
+}
+
+[System.Serializable]
 public class MailListResult : GameServiceResult
 {
     public List<Mail> list = new List<Mail>();
