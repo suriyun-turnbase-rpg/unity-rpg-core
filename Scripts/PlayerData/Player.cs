@@ -165,8 +165,8 @@ public partial class Player : BasePlayerData, ILevel, IPlayer
         get
         {
             int level = ArenaLevel;
-            if (level >= GameDatabase.arenaRanks.Count)
-                level = GameDatabase.arenaRanks.Count - 1;
+            if (level >= GameDatabase.arenaRanks.Length)
+                level = GameDatabase.arenaRanks.Length - 1;
             return level >= 0 ? GameDatabase.arenaRanks[level] : null;
         }
     }

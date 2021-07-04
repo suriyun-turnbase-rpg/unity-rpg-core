@@ -12,13 +12,13 @@ public partial class GameDatabase : ScriptableObject
     public Currency softCurrency = new Currency() { id = "GOLD", startAmount = 0 };
     [Tooltip("`Hard Currency`, `Start Amount` is start amount when create new player")]
     public Currency hardCurrency = new Currency() { id = "GEM", startAmount = 0 };
-    public List<Currency> customCurrencies;
+    public Currency[] customCurrencies;
     [Tooltip("Stamina which will be used to enter stage")]
     public Stamina stageStamina = new Stamina() { id = "STAGE_STAMINA", maxAmountTable = new Int32Attribute() };
     [Tooltip("Stamina which will be used to enter arena")]
     public Stamina arenaStamina = new Stamina() { id = "ARENA_STAMINA", maxAmountTable = new Int32Attribute() };
-    public List<Stamina> customStaminas;
-    public List<Formation> formations = new List<Formation>() {
+    public Stamina[] customStaminas;
+    public Formation[] formations = new Formation[] {
         new Formation() { id = "STAGE_FORMATION_A", formationType = EFormationType.Stage },
         new Formation() { id = "STAGE_FORMATION_B", formationType = EFormationType.Stage },
         new Formation() { id = "STAGE_FORMATION_C", formationType = EFormationType.Stage },
@@ -39,50 +39,50 @@ public partial class GameDatabase : ScriptableObject
 
     [Header("Item database")]
     [Tooltip("List of game items, place all items here (includes character, equipment)")]
-    public List<BaseItem> items;
+    public BaseItem[] items;
 
     [Header("Stage database")]
     [Tooltip("List of game stages, place all stages here")]
-    public List<BaseStage> stages;
+    public BaseStage[] stages;
 
     [Header("Raid Boss Stage database")]
     [Tooltip("List of game stages, place all stages here")]
-    public List<BaseRaidBossStage> raidBossStages;
+    public BaseRaidBossStage[] raidBossStages;
 
     [Header("Achievement database")]
     [Tooltip("List of achievements, place all achievements here")]
-    public List<Achievement> achievements;
+    public Achievement[] achievements;
 
     [Header("Item Craft Formula database")]
     [Tooltip("List of item craft formula, place all item craft formula here")]
-    public List<ItemCraftFormula> itemCrafts;
+    public ItemCraftFormula[] itemCrafts;
 
     [Header("Loot Box database")]
     [Tooltip("List of game loot boxes, place all loot boxes here")]
-    public List<LootBox> lootBoxes;
+    public LootBox[] lootBoxes;
 
     [Header("In-Game Package database")]
     [Tooltip("List of game In-Game packages, place all In-Game packages here")]
-    public List<InGamePackage> inGamePackages;
+    public InGamePackage[] inGamePackages;
 
     [Header("In-App Purchasing Package database")]
     [Tooltip("List of game IAP packages, place all IAP packages here")]
-    public List<IapPackage> iapPackages;
+    public IapPackage[] iapPackages;
 
     [Header("Hard Currency Conversion")]
     public int hardToSoftCurrencyConversion;
 
     [Header("Game beginning")]
     [Tooltip("List of start items, place items that you want to give to players when begin the game")]
-    public List<ItemAmount> startItems;
+    public ItemAmount[] startItems;
     [Tooltip("List of start characters, characters in this list will joined team formation when begin the game")]
-    public List<CharacterItem> startCharacters;
+    public CharacterItem[] startCharacters;
     [Tooltip("List of stages that will be unlocked when begin the game")]
-    public List<BaseStage> unlockStages;
+    public BaseStage[] unlockStages;
 
     [Header("Fake data")]
     [Tooltip("List of fake players that will be shown in helper selection before start battle scene")]
-    public List<FakePlayer> fakePlayers;
+    public FakePlayer[] fakePlayers;
 
     [Header("Gameplay")]
     [Tooltip("Base attributes for all characters while battle")]
@@ -97,7 +97,7 @@ public partial class GameDatabase : ScriptableObject
     public bool resetItemLevelAfterEvolve;
 
     [Header("Arena")]
-    public List<ArenaRank> arenaRanks;
+    public ArenaRank[] arenaRanks;
     public int arenaWinScoreIncrease;
     public int arenaLoseScoreDecrease;
     public BaseEnvironmentData arenaEnvironment;
@@ -111,7 +111,7 @@ public partial class GameDatabase : ScriptableObject
     public int createClanCurrencyAmount;
     public int clanCheckinRewardClanExp;
     public CurrencyAmount[] clanCheckinRewardCurrencies;
-    public List<ClanDonation> clanDonations;
+    public ClanDonation[] clanDonations;
     public byte maxClanDonation = 5;
 
     public readonly Dictionary<string, BaseItem> Items = new Dictionary<string, BaseItem>();
@@ -147,7 +147,7 @@ public partial class GameDatabase : ScriptableObject
         AddItemsToDatabase(items);
 
         var startItemList = new List<BaseItem>();
-        if (startItems != null && startItems.Count > 0)
+        if (startItems != null && startItems.Length > 0)
         {
             foreach (var startItem in startItems)
             {
@@ -157,7 +157,7 @@ public partial class GameDatabase : ScriptableObject
         AddItemsToDatabase(startItemList);
 
         var startCharacterList = new List<BaseItem>();
-        if (startCharacters != null && startCharacters.Count > 0)
+        if (startCharacters != null && startCharacters.Length > 0)
         {
             foreach (var startCharacter in startCharacters)
             {
@@ -166,7 +166,7 @@ public partial class GameDatabase : ScriptableObject
         }
         AddItemsToDatabase(startCharacterList);
 
-        if (clanDonations != null && clanDonations.Count > 0)
+        if (clanDonations != null && clanDonations.Length > 0)
         {
             foreach (var clanDonation in clanDonations)
             {
@@ -176,7 +176,7 @@ public partial class GameDatabase : ScriptableObject
 
         Currencies[softCurrency.id] = softCurrency;
         Currencies[hardCurrency.id] = hardCurrency;
-        if (customCurrencies != null && customCurrencies.Count > 0)
+        if (customCurrencies != null && customCurrencies.Length > 0)
         {
             foreach (var currency in customCurrencies)
             {
@@ -186,7 +186,7 @@ public partial class GameDatabase : ScriptableObject
 
         Staminas[stageStamina.id] = stageStamina;
         Staminas[arenaStamina.id] = arenaStamina;
-        if (customStaminas != null && customStaminas.Count > 0)
+        if (customStaminas != null && customStaminas.Length > 0)
         {
             foreach (var stamina in customStaminas)
             {

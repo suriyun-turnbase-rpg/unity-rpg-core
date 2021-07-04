@@ -68,7 +68,7 @@ public class UIClanManager : UIClan
         if (uiUIClanDonationList != null)
         {
             uiUIClanDonationList.uiClanManager = this;
-            uiUIClanDonationList.SetListItems(GameInstance.GameDatabase.clanDonations);
+            uiUIClanDonationList.SetListItems(new List<ClanDonation>(GameInstance.GameDatabase.clanDonations));
         }
         RefreshData();
         RefreshCheckinStatus();
@@ -276,7 +276,7 @@ public class UIClanManager : UIClan
         if (uiUIClanDonationList != null)
         {
             uiUIClanDonationList.ClearListItems();
-            uiUIClanDonationList.SetListItems(GameInstance.GameDatabase.clanDonations);
+            uiUIClanDonationList.SetListItems(new List<ClanDonation>(GameInstance.GameDatabase.clanDonations));
         }
     }
 

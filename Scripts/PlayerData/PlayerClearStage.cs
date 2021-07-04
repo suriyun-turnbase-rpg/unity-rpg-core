@@ -103,8 +103,8 @@ public class PlayerClearStage : BasePlayerData, IPlayerClearStage
             if (!DataMap.ContainsKey(GetId(playerId, stage.Id)))
                 continue;
 
-            unlockStages = new List<BaseStage>(stage.unlockStages);
-            foreach (var unlockStage in unlockStages)
+            var stageUnlockStages = new List<BaseStage>(stage.unlockStages);
+            foreach (var unlockStage in stageUnlockStages)
             {
                 if (unlockStage.Id == checkStage.Id)
                     return true;

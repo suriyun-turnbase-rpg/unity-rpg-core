@@ -47,7 +47,7 @@ public partial class LiteDbGameService
         colPlayerStamina.Delete(a => a.PlayerId == player.Id);
         colPlayerUnlockItem.Delete(a => a.PlayerId == player.Id);
 
-        for (var i = 0; i < gameDb.startItems.Count; ++i)
+        for (var i = 0; i < gameDb.startItems.Length; ++i)
         {
             var startItem = gameDb.startItems[i];
             if (startItem == null || startItem.item == null)
@@ -68,7 +68,7 @@ public partial class LiteDbGameService
                 }
             }
         }
-        for (var i = 0; i < gameDb.startCharacters.Count; ++i)
+        for (var i = 0; i < gameDb.startCharacters.Length; ++i)
         {
             var startCharacter = gameDb.startCharacters[i];
             if (startCharacter == null)
