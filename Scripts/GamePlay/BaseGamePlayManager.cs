@@ -29,6 +29,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public UILose uiLose;
     public UIArenaResult uiArenaResult;
     public UIRaidEventResult uiRaidEventResult;
+    public UIClanEventResult uiClanEventResult;
     public UIPlayer uiFriendRequest;
     public UIPauseGame uiPauseGame;
     public float winGameDelay = 2f;
@@ -192,6 +193,19 @@ public abstract class BaseGamePlayManager : MonoBehaviour
                 GameInstance.Singleton.OnGameServiceError(error, WinGame);
             });
         }
+        else if (BattleType == EBattleType.ClanBoss)
+        {
+            GameInstance.GameService.FinishClanBossBattle(BattleSession, EBattleResult.Win, TotalDamage, CountDeadCharacters(), (result) =>
+            {
+                isEnding = true;
+                Time.timeScale = 1;
+                uiClanEventResult.SetData(result);
+                uiClanEventResult.Show();
+            }, (error) =>
+            {
+                GameInstance.Singleton.OnGameServiceError(error, WinGame);
+            });
+        }
     }
 
     protected IEnumerator LoseGameRoutine()
@@ -224,6 +238,19 @@ public abstract class BaseGamePlayManager : MonoBehaviour
                 Time.timeScale = 1;
                 uiRaidEventResult.SetData(result);
                 uiRaidEventResult.Show();
+            }, (error) =>
+            {
+                GameInstance.Singleton.OnGameServiceError(error, WinGame);
+            });
+        }
+        else if (BattleType == EBattleType.ClanBoss)
+        {
+            GameInstance.GameService.FinishClanBossBattle(BattleSession, EBattleResult.Lose, TotalDamage, CountDeadCharacters(), (result) =>
+            {
+                isEnding = true;
+                Time.timeScale = 1;
+                uiClanEventResult.SetData(result);
+                uiClanEventResult.Show();
             }, (error) =>
             {
                 GameInstance.Singleton.OnGameServiceError(error, WinGame);
@@ -274,6 +301,18 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         else if (BattleType == EBattleType.RaidBoss)
         {
             GameInstance.GameService.FinishRaidBossBattle(BattleSession, EBattleResult.Lose, TotalDamage, CountDeadCharacters(), (result) =>
+            {
+                isEnding = true;
+                Time.timeScale = 1;
+                GameInstance.Singleton.GetAllPlayerData(GameInstance.LoadAllPlayerDataState.GoToManageScene);
+            }, (error) =>
+            {
+                GameInstance.Singleton.OnGameServiceError(error, WinGame);
+            });
+        }
+        else if (BattleType == EBattleType.ClanBoss)
+        {
+            GameInstance.GameService.FinishClanBossBattle(BattleSession, EBattleResult.Lose, TotalDamage, CountDeadCharacters(), (result) =>
             {
                 isEnding = true;
                 Time.timeScale = 1;
