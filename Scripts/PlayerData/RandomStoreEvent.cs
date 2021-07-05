@@ -1,12 +1,14 @@
-﻿[System.Serializable]
+﻿using System.Collections.Generic;
+
+[System.Serializable]
 public partial class RandomStoreEvent : IRandomStoreEvent
 {
     public string dataId;
     public string DataId { get { return dataId; } set { dataId = value; } }
-    public string randomedItems;
-    public string RandomedItems { get { return randomedItems; } set { randomedItems = value; } }
-    public string purchaseItems;
-    public string PurchaseItems { get { return purchaseItems; } set { purchaseItems = value; } }
+    public List<RandomStoreItem> randomedItems = new List<RandomStoreItem>();
+    public List<RandomStoreItem> RandomedItems { get { return randomedItems; } set { randomedItems = value; } }
+    public List<int> purchaseItems = new List<int>();
+    public List<int> PurchaseItems { get { return purchaseItems; } set { purchaseItems = value; } }
 
     public static GameDatabase GameDatabase
     {
