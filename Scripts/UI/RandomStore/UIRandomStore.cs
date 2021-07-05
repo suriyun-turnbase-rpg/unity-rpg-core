@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class UIRandomStore : UIDataItemList<UIRandomStoreItem, RandomStoreItem>
 {
     public Text textEndsIn;
+    public UICurrency uiRefreshCurrency;
     public RandomStore randomStore;
     public AnimItemsRewarding animItemsRewarding;
     public RandomStoreEvent StoreEvent { get; private set; }
@@ -12,6 +13,15 @@ public class UIRandomStore : UIDataItemList<UIRandomStoreItem, RandomStoreItem>
     private void OnEnable()
     {
         GetRandomStore();
+        if (uiRefreshCurrency != null)
+        {
+            uiRefreshCurrency.data = new PlayerCurrency()
+            {
+                DataId = randomStore.refreshCurrencyId,
+                Amount = randomStore.refreshCurrencyAmount,
+            };
+            uiRefreshCurrency.Show();
+        }
     }
 
     protected override void Update()
@@ -68,5 +78,10 @@ public class UIRandomStore : UIDataItemList<UIRandomStoreItem, RandomStoreItem>
     private void OnRefreshRandomStoreFail(string error)
     {
         GameInstance.Singleton.OnGameServiceError(error, RefreshRandomStore);
+    }
+
+    public void OnClickRefresh()
+    {
+        RefreshRandomStore();
     }
 }
