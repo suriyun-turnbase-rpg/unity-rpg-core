@@ -46,11 +46,11 @@ public partial class GameDatabase : ScriptableObject
     public BaseStage[] stages;
 
     [Header("Raid Boss Stage database")]
-    [Tooltip("List of game stages, place all stages here")]
+    [Tooltip("List of raid-boss stages, place all stages here")]
     public BaseRaidBossStage[] raidBossStages;
 
     [Header("Clan Boss Stage database")]
-    [Tooltip("List of game stages, place all stages here")]
+    [Tooltip("List of clan-boss stages, place all stages here")]
     public BaseClanBossStage[] clanBossStages;
 
     [Header("Achievement database")]
@@ -64,6 +64,10 @@ public partial class GameDatabase : ScriptableObject
     [Header("Loot Box database")]
     [Tooltip("List of game loot boxes, place all loot boxes here")]
     public LootBox[] lootBoxes;
+
+    [Header("Random Store database")]
+    [Tooltip("List of game random store, place all random store here")]
+    public RandomStore[] randomStores;
 
     [Header("In-Game Package database")]
     [Tooltip("List of game In-Game packages, place all In-Game packages here")]
@@ -129,6 +133,7 @@ public partial class GameDatabase : ScriptableObject
     public readonly Dictionary<string, Achievement> Achievements = new Dictionary<string, Achievement>();
     public readonly Dictionary<string, ItemCraftFormula> ItemCrafts = new Dictionary<string, ItemCraftFormula>();
     public readonly Dictionary<string, LootBox> LootBoxes = new Dictionary<string, LootBox>();
+    public readonly Dictionary<string, RandomStore> RandomStores = new Dictionary<string, RandomStore>();
     public readonly Dictionary<string, InGamePackage> InGamePackages = new Dictionary<string, InGamePackage>();
     public readonly Dictionary<string, IapPackage> IapPackages = new Dictionary<string, IapPackage>();
     public readonly Dictionary<string, FakePlayer> FakePlayers = new Dictionary<string, FakePlayer>();
@@ -146,6 +151,7 @@ public partial class GameDatabase : ScriptableObject
         Achievements.Clear();
         ItemCrafts.Clear();
         LootBoxes.Clear();
+        RandomStores.Clear();
         InGamePackages.Clear();
         IapPackages.Clear();
         FakePlayers.Clear();
@@ -208,6 +214,7 @@ public partial class GameDatabase : ScriptableObject
         AddAchievementsToDatabase(achievements);
         AddItemCraftsToDatabase(itemCrafts);
         AddLootBoxesToDatabase(lootBoxes);
+        AddRandomStoresToDatabase(randomStores);
         AddInGamePackagesToDatabase(inGamePackages);
         AddIapPackagesToDatabase(iapPackages);
         AddFakePlayersToDatabase(fakePlayers);
@@ -325,6 +332,20 @@ public partial class GameDatabase : ScriptableObject
         }
     }
 
+    private void AddRandomStoresToDatabase(IEnumerable<RandomStore> randomStores)
+    {
+        foreach (var randomStore in randomStores)
+        {
+            if (randomStore == null)
+                continue;
+            var dataId = randomStore.Id;
+            if (!string.IsNullOrEmpty(dataId) && !RandomStores.ContainsKey(dataId))
+            {
+                RandomStores[dataId] = randomStore;
+            }
+        }
+    }
+
     private void AddInGamePackagesToDatabase(IEnumerable<InGamePackage> inGamePackages)
     {
         foreach (var inGamePackage in inGamePackages)
@@ -381,6 +402,7 @@ public partial class GameDatabase : ScriptableObject
         var raidBossStagesJson = string.Empty;
         var clanBossStagesJson = string.Empty;
         var lootBoxesJson = string.Empty;
+        var randomStoresJson = string.Empty;
         var iapPackagesJson = string.Empty;
         var inGamePackagesJson = string.Empty;
         var startItemsJson = string.Empty;
@@ -477,6 +499,14 @@ public partial class GameDatabase : ScriptableObject
         }
         lootBoxesJson = "{" + lootBoxesJson + "}";
 
+        foreach (var entry in gameDatabase.RandomStores)
+        {
+            if (!string.IsNullOrEmpty(randomStoresJson))
+                randomStoresJson += ",";
+            randomStoresJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        randomStoresJson = "{" + randomStoresJson + "}";
+
         foreach (var entry in gameDatabase.IapPackages)
         {
             if (!string.IsNullOrEmpty(iapPackagesJson))
@@ -557,6 +587,7 @@ public partial class GameDatabase : ScriptableObject
         keyValues["raidBossStages"] = raidBossStagesJson;
         keyValues["clanBossStages"] = clanBossStagesJson;
         keyValues["lootBoxes"] = lootBoxesJson;
+        keyValues["randomStores"] = randomStoresJson;
         keyValues["iapPackages"] = iapPackagesJson;
         keyValues["inGamePackages"] = inGamePackagesJson;
         keyValues["hardToSoftCurrencyConversion"] = gameDatabase.hardToSoftCurrencyConversion.ToString();
