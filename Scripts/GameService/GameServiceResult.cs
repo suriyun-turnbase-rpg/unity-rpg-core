@@ -74,22 +74,27 @@ public class StartStageResult : GameServiceResult
 }
 
 [System.Serializable]
-public class FinishStageResult : PlayerResult
+public class ItemResult : PlayerResult
+{
+    public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
+    public List<PlayerItem> rewardItems = new List<PlayerItem>();
+    public List<PlayerItem> createItems = new List<PlayerItem>();
+    public List<PlayerItem> updateItems = new List<PlayerItem>();
+    public List<string> deleteItemIds = new List<string>();
+}
+
+[System.Serializable]
+public class FinishStageResult : ItemResult
 {
     public int rating;
     public int rewardPlayerExp;
     public int rewardCharacterExp;
     public int rewardSoftCurrency;
-    public List<PlayerItem> rewardItems = new List<PlayerItem>();
     public bool isFirstClear;
     public int firstClearRewardSoftCurrency;
     public int firstClearRewardHardCurrency;
     public int firstClearRewardPlayerExp;
     public List<PlayerItem> firstClearRewardItems = new List<PlayerItem>();
-    public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
-    public List<PlayerItem> createItems = new List<PlayerItem>();
-    public List<PlayerItem> updateItems = new List<PlayerItem>();
-    public List<string> deleteItemIds = new List<string>();
     public PlayerClearStage clearStage;
 }
 
@@ -97,16 +102,6 @@ public class FinishStageResult : PlayerResult
 public class CurrencyResult : GameServiceResult
 {
     public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
-}
-
-[System.Serializable]
-public class ItemResult : GameServiceResult
-{
-    public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
-    public List<PlayerItem> rewardItems = new List<PlayerItem>();
-    public List<PlayerItem> createItems = new List<PlayerItem>();
-    public List<PlayerItem> updateItems = new List<PlayerItem>();
-    public List<string> deleteItemIds = new List<string>();
 }
 
 [System.Serializable]
@@ -196,17 +191,12 @@ public class StartDuelResult : GameServiceResult
 }
 
 [System.Serializable]
-public class FinishDuelResult : PlayerResult
+public class FinishDuelResult : ItemResult
 {
     public int rating;
     public int updateScore;
     public int rewardSoftCurrency;
     public int rewardHardCurrency;
-    public List<PlayerItem> rewardItems = new List<PlayerItem>();
-    public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
-    public List<PlayerItem> createItems = new List<PlayerItem>();
-    public List<PlayerItem> updateItems = new List<PlayerItem>();
-    public List<string> deleteItemIds = new List<string>();
 }
 
 [System.Serializable]
@@ -228,6 +218,19 @@ public class FinishRaidBossBattleResult : GameServiceResult
 {
     public int totalDamage;
     public RaidEvent raidEvent;
+}
+
+[System.Serializable]
+public class RandomStoreResult : GameServiceResult
+{
+    public RandomStoreEvent store;
+    public int endsIn;
+}
+
+[System.Serializable]
+public class PurchaseRandomStoreItemResult : ItemResult
+{
+    public RandomStoreEvent store;
 }
 
 [System.Serializable]
@@ -270,16 +273,11 @@ public class MailsCountResult : GameServiceResult
 }
 
 [System.Serializable]
-public class EarnAchievementResult : PlayerResult
+public class EarnAchievementResult : ItemResult
 {
     public int rewardPlayerExp;
     public int rewardSoftCurrency;
     public int rewardHardCurrency;
-    public List<PlayerItem> rewardItems = new List<PlayerItem>();
-    public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
-    public List<PlayerItem> createItems = new List<PlayerItem>();
-    public List<PlayerItem> updateItems = new List<PlayerItem>();
-    public List<string> deleteItemIds = new List<string>();
 }
 
 [System.Serializable]
