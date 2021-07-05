@@ -16,9 +16,9 @@ public partial class LiteDbGameService
         onFinish(result);
     }
 
-    protected override void DoRefreshRandomStore(string playerId, string loginToken, string id, UnityAction<RandomStoreResult> onFinish)
+    protected override void DoRefreshRandomStore(string playerId, string loginToken, string id, UnityAction<RefreshRandomStoreResult> onFinish)
     {
-        var result = new RandomStoreResult();
+        var result = new RefreshRandomStoreResult();
         result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }

@@ -234,6 +234,12 @@ public class PurchaseRandomStoreItemResult : ItemResult
 }
 
 [System.Serializable]
+public class RefreshRandomStoreResult : RandomStoreResult
+{
+    public List<PlayerCurrency> updateCurrencies = new List<PlayerCurrency>();
+}
+
+[System.Serializable]
 public class ClanEventListResult : GameServiceResult
 {
     public List<ClanEvent> list = new List<ClanEvent>();

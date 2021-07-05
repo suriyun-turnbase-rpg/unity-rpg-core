@@ -1112,7 +1112,7 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoPurchaseRandomStoreItem(playerId, loginToken, id, index, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
-    public void RefreshRandomStore(string id, UnityAction<RandomStoreResult> onSuccess = null, UnityAction<string> onError = null)
+    public void RefreshRandomStore(string id, UnityAction<RefreshRandomStoreResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: RefreshRandomStore");
         var player = Player.CurrentPlayer;
@@ -1209,5 +1209,5 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoFinishClanBossBattle(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishClanBossBattleResult> onFinish);
     protected abstract void DoGetRandomStore(string playerId, string loginToken, string id, UnityAction<RandomStoreResult> onFinish);
     protected abstract void DoPurchaseRandomStoreItem(string playerId, string loginToken, string id, int index, UnityAction<PurchaseRandomStoreItemResult> onFinish);
-    protected abstract void DoRefreshRandomStore(string playerId, string loginToken, string id, UnityAction<RandomStoreResult> onFinish);
+    protected abstract void DoRefreshRandomStore(string playerId, string loginToken, string id, UnityAction<RefreshRandomStoreResult> onFinish);
 }

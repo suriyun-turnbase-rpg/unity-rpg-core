@@ -52,4 +52,21 @@ public class UIRandomStore : UIDataItemList<UIRandomStoreItem, RandomStoreItem>
     {
         GameInstance.Singleton.OnGameServiceError(error, GetRandomStore);
     }
+
+    private void RefreshRandomStore()
+    {
+        ClearListItems();
+        GameInstance.GameService.RefreshRandomStore(randomStore.Id, OnRefreshRandomStoreSuccess, OnRefreshRandomStoreFail);
+    }
+
+    private void OnRefreshRandomStoreSuccess(RefreshRandomStoreResult result)
+    {
+        OnGetRandomStoreSuccess(result);
+        PlayerCurrency.SetDataRange(result.updateCurrencies);
+    }
+
+    private void OnRefreshRandomStoreFail(string error)
+    {
+        GameInstance.Singleton.OnGameServiceError(error, RefreshRandomStore);
+    }
 }

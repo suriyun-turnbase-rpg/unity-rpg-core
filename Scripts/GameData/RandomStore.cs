@@ -53,6 +53,10 @@ public class RandomStore : BaseGameData
     [Min(30)]
     [Tooltip("Automatically in-store item list refresh duration in seconds")]
     public float refreshDuration;
+    [Tooltip("Currency Id which will be used to refresh selling item list")]
+    public string refreshCurrencyId;
+    [Tooltip("Currency amount which will be used to refresh selling item list")]
+    public int refreshCurrencyAmount;
 
     public RandomStoreItem RandomItem()
     {
@@ -79,6 +83,8 @@ public class RandomStore : BaseGameData
         return "{\"id\":\"" + Id + "\"," +
             "\"itemsAmount\":" + itemsAmount + "," +
             "\"refreshDuration\":" + refreshDuration + "," +
+            "\"refreshCurrencyId\":\"" + refreshCurrencyId + "\"," +
+            "\"refreshCurrencyAmount\":" + refreshCurrencyAmount + "," +
             "\"items\":" + jsonItems + "}";
     }
 }
