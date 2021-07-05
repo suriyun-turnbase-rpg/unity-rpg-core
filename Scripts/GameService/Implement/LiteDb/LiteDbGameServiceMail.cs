@@ -29,4 +29,11 @@ public partial class LiteDbGameService : BaseGameService
         result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }
+
+    protected override void DoGetMailsCount(string playerId, string loginToken, UnityAction<MailsCountResult> onFinish)
+    {
+        var result = new MailsCountResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
 }

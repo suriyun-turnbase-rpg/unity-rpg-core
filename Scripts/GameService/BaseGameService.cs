@@ -1052,6 +1052,16 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoDeleteMail(playerId, loginToken, id, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void GetMailsCount(UnityAction<MailsCountResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetMailsCount");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetMailsCount(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     public void GetClanEventList(UnityAction<ClanEventListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetClanEventList");
@@ -1163,6 +1173,7 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoReadMail(string playerId, string loginToken, string id, UnityAction<ReadMailResult> onFinish);
     protected abstract void DoClaimMailRewards(string playerId, string loginToken, string id, UnityAction<ItemResult> onFinish);
     protected abstract void DoDeleteMail(string playerId, string loginToken, string id, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoGetMailsCount(string playerId, string loginToken, UnityAction<MailsCountResult> onFinish);
     protected abstract void DoGetClanEventList(string playerId, string loginToken, UnityAction<ClanEventListResult> onFinish);
     protected abstract void DoStartClanBossBattle(string playerId, string loginToken, string eventId, UnityAction<StartClanBossBattleResult> onFinish);
     protected abstract void DoFinishClanBossBattle(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishClanBossBattleResult> onFinish);

@@ -264,6 +264,12 @@ public class ReadMailResult : GameServiceResult
 }
 
 [System.Serializable]
+public class MailsCountResult : GameServiceResult
+{
+    public int count;
+}
+
+[System.Serializable]
 public class EarnAchievementResult : PlayerResult
 {
     public int rewardPlayerExp;
