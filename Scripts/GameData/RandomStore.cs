@@ -35,6 +35,12 @@ public struct RandomStoreItem
 public class RandomStore : BaseGameData
 {
     public RandomStoreItem[] items;
+    [Min(1)]
+    [Tooltip("Amount of items which will be randomed and shows in store")]
+    public int itemsAmount;
+    [Min(30)]
+    [Tooltip("Automatically in-store item list refresh duration in seconds")]
+    public float refreshDuration;
 
     public RandomStoreItem RandomItem()
     {
@@ -59,6 +65,8 @@ public class RandomStore : BaseGameData
         jsonItems = "[" + jsonItems + "]";
         // Combine
         return "{\"id\":\"" + Id + "\"," +
+            "\"itemsAmount\":" + itemsAmount + "," +
+            "\"refreshDuration\":" + refreshDuration + "," +
             "\"items\":" + jsonItems + "}";
     }
 }
