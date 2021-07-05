@@ -12,6 +12,7 @@ public abstract class BaseItemAmount<T> where T : BaseItem
     public string Id
     {
         get { return item == null ? "" : item.Id; }
+        set { item = GameInstance.GameDatabase.Items[value] as T; }
     }
 
     public virtual string ToJson()
