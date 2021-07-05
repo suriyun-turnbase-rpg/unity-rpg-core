@@ -2,9 +2,8 @@
 {
     public UIRaidEventPreparation uiRaidEventPreparation;
 
-    public override void Show()
+    private void OnEnable()
     {
-        base.Show();
         GetRaidEventList();
     }
 

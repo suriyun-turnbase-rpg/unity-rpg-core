@@ -2,9 +2,8 @@
 {
     public UIClanEventPreparation uiClanEventPreparation;
 
-    public override void Show()
+    private void OnEnable()
     {
-        base.Show();
         GetClanEventList();
     }
 
