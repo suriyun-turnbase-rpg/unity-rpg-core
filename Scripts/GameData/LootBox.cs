@@ -1,12 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 [System.Serializable]
-public class LootBoxReward
+public struct LootBoxReward
 {
     public ItemAmount rewardItem;
     public int randomWeight;
@@ -21,7 +18,7 @@ public class LootBoxReward
         get { return rewardItem == null ? 0 : rewardItem.amount; }
     }
 
-    public virtual string ToJson()
+    public string ToJson()
     {
         if (string.IsNullOrEmpty(Id) || Amount <= 0)
             return "";
@@ -32,13 +29,13 @@ public class LootBoxReward
 }
 
 [System.Serializable]
-public class LootBoxPack
+public struct LootBoxPack
 {
     [Range(1, 20)]
-    public int openAmount = 1;
-    public int price = 0;
+    public int openAmount;
+    public int price;
 
-    public virtual string ToJson()
+    public string ToJson()
     {
         return "{\"openAmount\":" + openAmount + "," +
             "\"price\":" + price + "}";
