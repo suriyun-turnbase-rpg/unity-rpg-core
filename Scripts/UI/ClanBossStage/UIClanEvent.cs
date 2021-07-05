@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(100)]
 public class UIClanEvent : UIDataItem<ClanEvent>
 {
     public Text textTitle;
