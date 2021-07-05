@@ -13,11 +13,23 @@ public struct RandomStoreItem
     public string Id
     {
         get { return rewardItem == null ? "" : rewardItem.Id; }
+        set
+        {
+            if (rewardItem == null)
+                rewardItem = new ItemAmount();
+            rewardItem.Id = value;
+        }
     }
 
     public int Amount
     {
         get { return rewardItem == null ? 0 : rewardItem.amount; }
+        set
+        {
+            if (rewardItem == null)
+                rewardItem = new ItemAmount();
+            rewardItem.amount = value;
+        }
     }
 
     public string ToJson()
@@ -26,7 +38,7 @@ public struct RandomStoreItem
             return "";
         return "{\"id\":\"" + Id + "\"," +
             "\"amount\":" + Amount + "," +
-            "\"requireCurrencyId\":" + requireCurrencyId + "," +
+            "\"requireCurrencyId\":\"" + requireCurrencyId + "\"," +
             "\"requireCurrencyAmount\":" + requireCurrencyAmount + "," +
             "\"randomWeight\":" + randomWeight + "}";
     }
