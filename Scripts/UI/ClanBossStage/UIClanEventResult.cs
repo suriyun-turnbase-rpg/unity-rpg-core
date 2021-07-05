@@ -36,7 +36,7 @@ public class UIClanEventResult : UIDataItem<FinishClanBossBattleResult>
             textTotalDamage.text = data.totalDamage.ToString("N0");
 
         if (uiClanEvent != null)
-            uiClanEvent.SetData(data.raidEvent);
+            uiClanEvent.SetData(data.clanEvent);
     }
 
     public void OnClickGoToManageScene()

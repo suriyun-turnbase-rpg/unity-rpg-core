@@ -248,7 +248,7 @@ public class StartClanBossBattleResult : GameServiceResult
 public class FinishClanBossBattleResult : GameServiceResult
 {
     public int totalDamage;
-    public ClanEvent raidEvent;
+    public ClanEvent clanEvent;
 }
 
 [System.Serializable]
