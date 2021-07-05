@@ -25,9 +25,11 @@ public class GameDatabaseManagerEditor : EditorWindow
             new GameDataListSection<BaseItem>("items", "Items"),
             new GameDataListSection<BaseStage>("stages", "Stages"),
             new GameDataListSection<BaseRaidBossStage>("raidBossStages", "Raid-Boss Stages"),
+            new GameDataListSection<BaseClanBossStage>("clanBossStages", "Clan-Boss Stages"),
             new GameDataListSection<Achievement>("achievements", "Achievements"),
             new GameDataListSection<ItemCraftFormula>("itemCrafts", "Item Crafts"),
             new GameDataListSection<LootBox>("lootBoxes", "Loot Boxes"),
+            new GameDataListSection<RandomStore>("randomStores", "Random Stores"),
             new GameDataListSection<InGamePackage>("inGamePackages", "In-Game Packages"),
             new GameDataListSection<IapPackage>("iapPackages", "In-App Purchase\nPackages"),
         };
