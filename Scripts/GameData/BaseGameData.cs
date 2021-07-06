@@ -2,6 +2,8 @@
 
 public abstract class BaseGameData : ScriptableObject, IGameData
 {
+    [Tooltip("Game data ID, if this is empty it will uses file's name as ID")]
+    public string id;
     [Tooltip("Default title")]
     public string title;
     [Tooltip("Titles by language keys")]
@@ -25,7 +27,7 @@ public abstract class BaseGameData : ScriptableObject, IGameData
     public Sprite icon2;
     public Sprite icon3;
 
-    public virtual string Id { get { return name; } }
+    public virtual string Id { get { return string.IsNullOrEmpty(id) ? name : id; } }
     public Sprite Icon { get { return icon; } }
     public Sprite Icon2 { get { return icon2; } }
     public Sprite Icon3 { get { return icon3; } }
