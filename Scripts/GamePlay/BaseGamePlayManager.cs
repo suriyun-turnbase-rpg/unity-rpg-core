@@ -34,6 +34,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public UIPauseGame uiPauseGame;
     public float winGameDelay = 2f;
     public float loseGameDelay = 2f;
+    public float multiHitCountCombatTextSpawnDelay = 0.5f;
 
     private bool? isAutoPlay;
     public bool IsAutoPlay
@@ -75,55 +76,66 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         Singleton = this;
     }
 
-    public void SpawnDamageText(int amount, BaseCharacterEntity character)
+    public void SpawnDamageText(int amount, BaseCharacterEntity character, int hitCount)
     {
-        SpawnCombatText(combatDamagePrefab, amount, character);
+        StartCoroutine(SpawnCombatAmountText(combatDamagePrefab, amount, character, hitCount));
     }
 
-    public void SpawnCriticalText(int amount, BaseCharacterEntity character)
+    public void SpawnCriticalText(int amount, BaseCharacterEntity character, int hitCount)
     {
-        SpawnCombatText(combatCriticalPrefab, amount, character);
+        StartCoroutine(SpawnCombatAmountText(combatCriticalPrefab, amount, character, hitCount));
     }
 
-    public void SpawnBlockText(int amount, BaseCharacterEntity character)
+    public void SpawnBlockText(int amount, BaseCharacterEntity character, int hitCount)
     {
-        SpawnCombatText(combatBlockPrefab, amount, character);
+        StartCoroutine(SpawnCombatAmountText(combatBlockPrefab, amount, character, hitCount));
     }
 
-    public void SpawnHealText(int amount, BaseCharacterEntity character)
+    public void SpawnHealText(int amount, BaseCharacterEntity character, int hitCount)
     {
-        SpawnCombatText(combatHealPrefab, amount, character);
+        StartCoroutine(SpawnCombatAmountText(combatHealPrefab, amount, character, hitCount));
     }
 
-    public void SpawnPoisonText(int amount, BaseCharacterEntity character)
+    public void SpawnPoisonText(int amount, BaseCharacterEntity character, int hitCount)
     {
-        SpawnCombatText(combatPoisonPrefab, amount, character);
+        StartCoroutine(SpawnCombatAmountText(combatPoisonPrefab, amount, character, hitCount));
     }
 
-    public void SpawnMissText(BaseCharacterEntity character)
+    public void SpawnMissText(BaseCharacterEntity character, int hitCount)
     {
-        var combatText = Instantiate(combatMissPrefab, combatTextContainer);
-        combatText.transform.localScale = Vector3.one;
-        combatText.TempObjectFollower.targetObject = character.bodyEffectContainer;
-        combatText.Amount = 0;
-        combatText.TempText.text = LanguageManager.GetText(GameText.COMBAT_MISS);
+        StartCoroutine(SpawnCombatText(combatMissPrefab, LanguageManager.GetText(GameText.COMBAT_MISS), character, hitCount));
     }
 
-    public void SpawnResistText(BaseCharacterEntity character)
+    public void SpawnResistText(BaseCharacterEntity character, int hitCount)
     {
-        var resistText = Instantiate(combatResistPrefab, combatTextContainer);
-        resistText.transform.localScale = Vector3.one;
-        resistText.TempObjectFollower.targetObject = character.bodyEffectContainer;
-        resistText.Amount = 0;
-        resistText.TempText.text = LanguageManager.GetText(GameText.COMBAT_MISS);
+        StartCoroutine(SpawnCombatText(combatResistPrefab, LanguageManager.GetText(GameText.COMBAT_RESIST), character, hitCount));
     }
 
-    public void SpawnCombatText(UICombatText prefab, int amount, BaseCharacterEntity character)
+    public IEnumerator SpawnCombatAmountText(UICombatText prefab, int amount, BaseCharacterEntity character, int hitCount)
     {
-        var combatText = Instantiate(prefab, combatTextContainer);
-        combatText.transform.localScale = Vector3.one;
-        combatText.TempObjectFollower.targetObject = character.bodyEffectContainer;
-        combatText.Amount = amount;
+        var waiting = new WaitForSeconds(multiHitCountCombatTextSpawnDelay);
+        for (int i = 0; i < hitCount; ++i)
+        {
+            var combatText = Instantiate(prefab, combatTextContainer);
+            combatText.transform.localScale = Vector3.one;
+            combatText.TempObjectFollower.targetObject = character.bodyEffectContainer;
+            combatText.Amount = amount;
+            yield return waiting;
+        }
+    }
+
+    public IEnumerator SpawnCombatText(UICombatText prefab, string text, BaseCharacterEntity character, int hitCount)
+    {
+        var waiting = new WaitForSeconds(multiHitCountCombatTextSpawnDelay);
+        for (int i = 0; i < hitCount; ++i)
+        {
+            var combatText = Instantiate(prefab, combatTextContainer);
+            combatText.transform.localScale = Vector3.one;
+            combatText.TempObjectFollower.targetObject = character.bodyEffectContainer;
+            combatText.Amount = 0;
+            combatText.TempText.text = text;
+            yield return waiting;
+        }
     }
 
 
@@ -415,6 +427,10 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Call this increase total damage which will be saved when the battle ends
+    /// </summary>
+    /// <param name="damage"></param>
     public static void IncreaseTotalDamage(int damage)
     {
         TotalDamage += damage;

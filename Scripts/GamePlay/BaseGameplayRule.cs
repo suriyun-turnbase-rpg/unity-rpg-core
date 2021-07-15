@@ -44,6 +44,9 @@ public class BaseGameplayRule : ScriptableObject
         if (attackerElemental != null && attackerElemental.CacheElementEffectiveness.TryGetValue(defenderElemental, out effectiveness))
             totalDmg *= effectiveness;
         totalDmg += Mathf.CeilToInt(totalDmg * Random.Range(GameInstance.GameDatabase.minAtkVaryRate, GameInstance.GameDatabase.maxAtkVaryRate)) + fixDamage;
+        totalDmg /= hitCount;
+        if (totalDmg < 0)
+            totalDmg = 0;
         return totalDmg;
     }
 

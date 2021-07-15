@@ -268,6 +268,9 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         int hitCount = 1,
         int fixDamage = 0)
     {
+        if (hitCount < 0)
+            hitCount = 1;
+
         var stealHp = 0f;
         var attackerElemental = attacker.Item.CharacterData.elemental;
         var attackerAttributes = attacker.GetTotalAttributes();
@@ -302,16 +305,16 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         // Cannot evade, receive damage
         if (!GameInstance.GameplayRule.IsHit(attackerAttributes, defenderAttributes))
         {
-            Manager.SpawnMissText(this);
+            Manager.SpawnMissText(this, hitCount);
         }
         else
         {
             if (isBlock)
-                Manager.SpawnBlockText((int)totalDmg, this);
+                Manager.SpawnBlockText((int)totalDmg, this, hitCount);
             else if (isCritical)
-                Manager.SpawnCriticalText((int)totalDmg, this);
+                Manager.SpawnCriticalText((int)totalDmg, this, hitCount);
             else
-                Manager.SpawnDamageText((int)totalDmg, this);
+                Manager.SpawnDamageText((int)totalDmg, this, hitCount);
 
             Hp -= (int)totalDmg;
             if (!IsPlayerCharacter)
@@ -319,7 +322,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
 
             if (stealHp > 0f)
             {
-                Manager.SpawnHealText((int)stealHp, this);
+                Manager.SpawnHealText((int)stealHp, this, hitCount);
                 attacker.Hp += stealHp;
             }
         }
@@ -340,7 +343,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             if (Random.value <= attributes.resistanceChance)
             {
                 // Reisted, nerf will not applied
-                Manager.SpawnResistText(this);
+                Manager.SpawnResistText(this, 1);
                 return;
             }
         }
