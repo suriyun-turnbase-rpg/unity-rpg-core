@@ -24,6 +24,6 @@ public class UIMailsCount : UIBase
 
     private void OnGetMailsCountFail(string error)
     {
-        GameInstance.Singleton.OnGameServiceError(error, GetMailsCount);
+        // Do nothing, it's not so important
     }
 }
