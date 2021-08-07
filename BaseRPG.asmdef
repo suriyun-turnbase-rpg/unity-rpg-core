@@ -5,7 +5,14 @@
         "UIUtilities",
         "UnityEditorUtilsEditor",
         "UnityEditorUtils",
-        "DevExtension"
+        "DevExtension",
+        "UnityEngine.Purchasing",
+        "UnityEngine.Purchasing.Codeless",
+        "UnityEngine.Purchasing.Security",
+        "UnityEngine.Purchasing.SecurityCore",
+        "UnityEngine.Purchasing.SecurityStub",
+        "UnityEngine.Purchasing.Stores",
+        "Purchasing.Common"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
