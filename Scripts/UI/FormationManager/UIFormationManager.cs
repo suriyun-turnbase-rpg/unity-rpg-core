@@ -144,7 +144,7 @@ public class UIFormationManager : UIBase
             uiCharacterList.ClearListItems();
 
         if (characterFormation != null && formationType == EFormationType.Stage)
-            characterFormation.SetFormationCharacters(EBattleType.Stage);
+            characterFormation.SetFormationCharactersForStage();
     }
 
     private void SelectItem(UIDataItem ui)

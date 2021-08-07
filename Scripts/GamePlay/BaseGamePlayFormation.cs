@@ -39,6 +39,26 @@ public class BaseGamePlayFormation : MonoBehaviour
         }
     }
 
+    public void SetFormationCharactersForStage()
+    {
+        SetFormationCharacters(EBattleType.Stage);
+    }
+
+    public void SetFormationCharactersForArena()
+    {
+        SetFormationCharacters(EBattleType.Arena);
+    }
+
+    public void SetFormationCharactersForRaidBoss()
+    {
+        SetFormationCharacters(EBattleType.RaidBoss);
+    }
+
+    public void SetFormationCharactersForClanBoss()
+    {
+        SetFormationCharacters(EBattleType.ClanBoss);
+    }
+
     public virtual void SetCharacters(PlayerItem[] items)
     {
         ClearCharacters();
