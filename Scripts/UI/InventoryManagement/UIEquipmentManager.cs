@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class UIEquipmentManager : UIBase
 {
@@ -16,19 +18,39 @@ public class UIEquipmentManager : UIBase
     public UIItemList uiEquipmentList;
     public UIItemListFilterSetting filterSetting;
     public UIItem uiCharacterInfo;
+    [FormerlySerializedAs("signalObjects")]
+    public GameObject[] isSelectedItemSignalObjects = new GameObject[0];
+    public GameObject[] notSelectedItemSignalObjects = new GameObject[0];
+    public UnityEvent onIsSelectedItem = new UnityEvent();
+    public UnityEvent onNotSelectedItem = new UnityEvent();
+    public UnityEvent onUpdateEquipment = new UnityEvent();
 
     private readonly Dictionary<string, UIItem> UIEquipmentSlots = new Dictionary<string, UIItem>();
     public UIItem SelectedItem { get; private set; }
 
-    protected PlayerItem character;
-    public PlayerItem Character
-    {
-        get { return character; }
-        set
-        {
-            character = value;
+    private PlayerItem dirtyItem;
+    private bool dirtyIsSelectedItem = false;
 
-            if (character == null || character.CharacterData == null)
+    protected virtual void Start()
+    {
+        foreach (var signalObject in isSelectedItemSignalObjects)
+        {
+            signalObject.SetActive(false);
+        }
+        foreach (var signalObject in notSelectedItemSignalObjects)
+        {
+            signalObject.SetActive(true);
+        }
+        onNotSelectedItem.Invoke();
+    }
+
+    protected virtual void Update()
+    {
+        if (dirtyItem != UIGlobalData.SelectedItem)
+        {
+            dirtyItem = UIGlobalData.SelectedItem;
+
+            if (dirtyItem == null || dirtyItem.CharacterData == null)
             {
                 if (uiCharacterInfo != null)
                     uiCharacterInfo.Clear();
@@ -36,7 +58,25 @@ public class UIEquipmentManager : UIBase
             }
 
             if (uiCharacterInfo != null)
-                uiCharacterInfo.SetData(character);
+                uiCharacterInfo.SetData(dirtyItem);
+        }
+
+        bool isSelectedItem = SelectedItem != null;
+        if (dirtyIsSelectedItem != isSelectedItem)
+        {
+            dirtyIsSelectedItem = isSelectedItem;
+            foreach (var signalObject in isSelectedItemSignalObjects)
+            {
+                signalObject.SetActive(isSelectedItem);
+            }
+            foreach (var signalObject in notSelectedItemSignalObjects)
+            {
+                signalObject.SetActive(!isSelectedItem);
+            }
+            if (isSelectedItem)
+                onIsSelectedItem.Invoke();
+            else
+                onNotSelectedItem.Invoke();
         }
     }
 
@@ -57,7 +97,7 @@ public class UIEquipmentManager : UIBase
         var playerId = Player.CurrentPlayerId;
 
         if (uiCharacterInfo != null)
-            uiCharacterInfo.SetData(character);
+            uiCharacterInfo.SetData(UIGlobalData.SelectedItem);
 
         // Setup empty slots
         if (UIEquipmentSlots.Count == 0)
@@ -81,16 +121,16 @@ public class UIEquipmentManager : UIBase
                     var newEquipmentSlot = newEquipmentSlotObject.GetComponent<UIItem>();
                     newEquipmentSlot.SetData(null);
                     newEquipmentSlot.notShowEquippedStatus = true;
-                    newEquipmentSlot.clickMode = UIDataItemClickMode.Default;
-                    newEquipmentSlot.eventClick.RemoveListener(OnClickUIEquipmentSlot);
-                    newEquipmentSlot.eventClick.AddListener(OnClickUIEquipmentSlot);
+                    newEquipmentSlot.selectionMode = UIDataItemSelectionMode.Default;
+                    newEquipmentSlot.eventSelect.RemoveListener(OnClickUIEquipmentSlot);
+                    newEquipmentSlot.eventSelect.AddListener(OnClickUIEquipmentSlot);
 
                     UIEquipmentSlots.Add(equipPosition, newEquipmentSlot);
                 }
             }
         }
 
-        var equippedItems = Character.EquippedItems;
+        var equippedItems = UIGlobalData.SelectedItem.EquippedItems;
         // Set item to slots
         foreach (var slot in UIEquipmentSlots)
         {
@@ -118,8 +158,7 @@ public class UIEquipmentManager : UIBase
             filterSetting.dontShowInTeamCharacter = false;
             var list = PlayerItem.DataMap.Values.Where(a => UIItemListFilter.Filter(a, filterSetting)).ToList();
             list.SortLevel();
-            uiEquipmentList.selectable = true;
-            uiEquipmentList.multipleSelection = false;
+            uiEquipmentList.selectionMode = UIDataItemSelectionMode.Toggle;
             uiEquipmentList.eventSelect.RemoveListener(SelectItem);
             uiEquipmentList.eventSelect.AddListener(SelectItem);
             uiEquipmentList.eventDeselect.RemoveListener(DeselectItem);
@@ -163,7 +202,7 @@ public class UIEquipmentManager : UIBase
         var position = GetEquipmentPosition(uiItem);
         if (SelectedItem != null)
         {
-            GameInstance.GameService.EquipItem(Character.Id, SelectedItem.data.Id, position, OnSetEquipmentSuccess, OnSetEquipmentFail);
+            GameInstance.GameService.EquipItem(UIGlobalData.SelectedItem.Id, SelectedItem.data.Id, position, OnSetEquipmentSuccess, OnSetEquipmentFail);
             ClearSelectedItem();
         }
         else if (!uiItem.IsEmpty())
@@ -174,6 +213,7 @@ public class UIEquipmentManager : UIBase
     {
         GameInstance.Singleton.OnGameServiceItemResult(result);
         Setup();
+        onUpdateEquipment.Invoke();
     }
 
     private void OnSetEquipmentFail(string error)

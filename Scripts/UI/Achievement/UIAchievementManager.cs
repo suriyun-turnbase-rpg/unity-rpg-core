@@ -21,8 +21,7 @@ public class UIAchievementManager : UIBase
     {
         if (uiAchievementList != null)
         {
-            uiAchievementList.selectable = true;
-            uiAchievementList.multipleSelection = false;
+            uiAchievementList.selectionMode = UIDataItemSelectionMode.Toggle;
             uiAchievementList.eventSelect.RemoveListener(SelectItem);
             uiAchievementList.eventSelect.AddListener(SelectItem);
             uiAchievementList.eventDeselect.RemoveListener(DeselectItem);

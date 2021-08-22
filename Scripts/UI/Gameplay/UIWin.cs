@@ -130,8 +130,7 @@ public class UIWin : UIDataItem<FinishStageResult>
                     playerItems.Add(item);
             }
 
-            uiIncreasedExpCharacters.selectable = false;
-            uiIncreasedExpCharacters.multipleSelection = false;
+            uiIncreasedExpCharacters.selectionMode = UIDataItemSelectionMode.Disable;
             uiIncreasedExpCharacters.SetListItems(playerItems);
             foreach (var uiItem in uiIncreasedExpCharacters.UIEntries.Values)
             {
@@ -142,8 +141,7 @@ public class UIWin : UIDataItem<FinishStageResult>
 
         if (uiRewardItems != null)
         {
-            uiRewardItems.selectable = false;
-            uiRewardItems.multipleSelection = false;
+            uiRewardItems.selectionMode = UIDataItemSelectionMode.Disable;
             uiRewardItems.SetListItems(data.rewardItems);
         }
 
@@ -163,8 +161,7 @@ public class UIWin : UIDataItem<FinishStageResult>
 
         if (uiFirstClearRewardItems != null)
         {
-            uiFirstClearRewardItems.selectable = false;
-            uiFirstClearRewardItems.multipleSelection = false;
+            uiFirstClearRewardItems.selectionMode = UIDataItemSelectionMode.Disable;
             uiFirstClearRewardItems.SetListItems(data.firstClearRewardItems);
         }
 

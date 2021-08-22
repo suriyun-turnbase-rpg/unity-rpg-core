@@ -15,8 +15,7 @@ public class UIUnlockItemManager : UIBase
 
         if (uiUnlockItemList != null)
         {
-            uiUnlockItemList.selectable = true;
-            uiUnlockItemList.multipleSelection = false;
+            uiUnlockItemList.selectionMode = UIDataItemSelectionMode.Toggle;
             uiUnlockItemList.eventSelect.RemoveListener(SelectItem);
             uiUnlockItemList.eventSelect.AddListener(SelectItem);
             uiUnlockItemList.eventDeselect.RemoveListener(DeselectItem);

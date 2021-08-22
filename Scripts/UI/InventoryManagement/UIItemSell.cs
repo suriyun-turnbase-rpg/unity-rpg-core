@@ -13,7 +13,6 @@ public class UIItemSell : UIItemSelection
 
     // Private
     private int totalSellPrice;
-    private List<string> selectingItemIds = new List<string>();
 
     public override void Show()
     {
@@ -24,7 +23,7 @@ public class UIItemSell : UIItemSelection
             var currencyData = PlayerCurrency.SoftCurrency.Clone().SetAmount(0, 0);
             uiCurrency.SetData(currencyData);
         }
-        SetSelectingItemIds(selectingItemIds);
+        SetSelectingItemIds();
     }
 
     public override void Hide()
@@ -36,7 +35,6 @@ public class UIItemSell : UIItemSelection
             var currencyData = PlayerCurrency.SoftCurrency.Clone().SetAmount(0, 0);
             uiCurrency.SetData(currencyData);
         }
-        selectingItemIds = null;
     }
 
     protected override List<PlayerItem> GetAvailableItemList()
@@ -83,13 +81,12 @@ public class UIItemSell : UIItemSelection
         }
     }
 
-    public void SetSelectingItemIds(List<string> itemIds)
+    public void SetSelectingItemIds()
     {
-        selectingItemIds = itemIds;
         var availableItems = GetAvailableItems();
-        if (selectingItemIds != null && selectingItemIds.Count > 0 && availableItems.Count > 0)
+        if (UIGlobalData.SelectingItemIds.Count > 0 && availableItems.Count > 0)
         {
-            foreach (var selectingItemId in selectingItemIds)
+            foreach (var selectingItemId in UIGlobalData.SelectingItemIds)
             {
                 if (availableItems.ContainsKey(selectingItemId))
                     availableItems[selectingItemId].Select();

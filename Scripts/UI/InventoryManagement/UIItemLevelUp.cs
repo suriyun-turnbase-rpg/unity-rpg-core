@@ -27,10 +27,10 @@ public class UIItemLevelUp : UIItemWithMaterials
     public void SetupLevelUp()
     {
         if (levelUpButton != null)
-            levelUpButton.interactable = Item.CanLevelUp;
+            levelUpButton.interactable = UIGlobalData.SelectedItem.CanLevelUp;
 
         materials = GetSelectedItemAmountPair(true);
-        var levelUpPrice = Item.LevelUpPrice;
+        var levelUpPrice = UIGlobalData.SelectedItem.LevelUpPrice;
         var increasingExp = 0;
         totalLevelUpPrice = 0;
         foreach (var entry in materials)
@@ -39,7 +39,7 @@ public class UIItemLevelUp : UIItemWithMaterials
             totalLevelUpPrice += entry.Value * levelUpPrice;
         }
 
-        newItem = Item.CreateLevelUpItem(increasingExp);
+        newItem = UIGlobalData.SelectedItem.CreateLevelUpItem(increasingExp);
 
         if (uiAfterInfo != null)
             uiAfterInfo.SetData(newItem);
@@ -53,19 +53,19 @@ public class UIItemLevelUp : UIItemWithMaterials
 
     protected override List<PlayerItem> GetAvailableItemList()
     {
-        if (!Item.IsReachMaxLevel)
+        if (!UIGlobalData.SelectedItem.IsReachMaxLevel)
         {
-            if (Item.CharacterData != null)
+            if (UIGlobalData.SelectedItem.CharacterData != null)
             {
                 var filterSetting = GameInstance.GameDatabase.characterLevelUpMaterialFilter;
-                var list = PlayerItem.DataMap.Values.Where(a => !a.Id.Equals(Item.Id) && a.CanBeMaterial && UIItemListFilter.Filter(a, filterSetting)).ToList();
+                var list = PlayerItem.DataMap.Values.Where(a => !a.Id.Equals(UIGlobalData.SelectedItem.Id) && a.CanBeMaterial && UIItemListFilter.Filter(a, filterSetting)).ToList();
                 list.SortRewardExp();
                 return list;
             }
-            if (Item.EquipmentData != null)
+            if (UIGlobalData.SelectedItem.EquipmentData != null)
             {
                 var filterSetting = GameInstance.GameDatabase.equipmentLevelUpMaterialFilter;
-                var list = PlayerItem.DataMap.Values.Where(a => !a.Id.Equals(Item.Id) && a.CanBeMaterial && UIItemListFilter.Filter(a, filterSetting)).ToList();
+                var list = PlayerItem.DataMap.Values.Where(a => !a.Id.Equals(UIGlobalData.SelectedItem.Id) && a.CanBeMaterial && UIItemListFilter.Filter(a, filterSetting)).ToList();
                 list.SortRewardExp();
                 return list;
             }
@@ -101,16 +101,16 @@ public class UIItemLevelUp : UIItemWithMaterials
             return;
         }
         var idAmountPair = GetSelectedItemIdAmountPair();
-        gameService.LevelUpItem(Item.Id, idAmountPair, OnLevelUpSuccess, OnLevelUpFail);
+        gameService.LevelUpItem(UIGlobalData.SelectedItem.Id, idAmountPair, OnLevelUpSuccess, OnLevelUpFail);
     }
 
     private void OnLevelUpSuccess(ItemResult result)
     {
-        if (animCharacterLevelUp != null && Item.CharacterData != null)
-            animCharacterLevelUp.Play(Item, newItem, materials.Keys.ToList());
+        if (animCharacterLevelUp != null && UIGlobalData.SelectedItem.CharacterData != null)
+            animCharacterLevelUp.Play(UIGlobalData.SelectedItem, newItem, materials.Keys.ToList());
 
-        if (animEquipmentLevelUp != null && Item.EquipmentData != null)
-            animEquipmentLevelUp.Play(Item, newItem, materials.Keys.ToList());
+        if (animEquipmentLevelUp != null && UIGlobalData.SelectedItem.EquipmentData != null)
+            animEquipmentLevelUp.Play(UIGlobalData.SelectedItem, newItem, materials.Keys.ToList());
 
         GameInstance.Singleton.OnGameServiceItemResult(result);
         eventLevelUpSuccess.Invoke();
@@ -121,8 +121,8 @@ public class UIItemLevelUp : UIItemWithMaterials
         foreach (var updateItem in updateItems)
         {
             var id = updateItem.Id;
-            if (updateItem.Id == Item.Id)
-                Item = updateItem;
+            if (updateItem.Id == UIGlobalData.SelectedItem.Id)
+                UIGlobalData.SelectedItem = updateItem;
             if (items.ContainsKey(id))
                 items[id].SetData(updateItem);
         }

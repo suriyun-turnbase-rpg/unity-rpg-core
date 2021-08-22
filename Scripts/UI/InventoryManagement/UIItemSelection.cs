@@ -17,8 +17,7 @@ public abstract class UIItemSelection : UIBase
         if (uiAvailableItemList != null)
         {
             uiAvailableItemList.limitSelection = limitSelection;
-            uiAvailableItemList.selectable = true;
-            uiAvailableItemList.multipleSelection = true;
+            uiAvailableItemList.selectionMode = UIDataItemSelectionMode.Toggle;
             uiAvailableItemList.eventSelect.RemoveListener(SelectItem);
             uiAvailableItemList.eventSelect.AddListener(SelectItem);
             uiAvailableItemList.eventDeselect.RemoveListener(DeselectItem);
@@ -27,7 +26,7 @@ public abstract class UIItemSelection : UIBase
         }
 
         if (uiSelectedItemList != null)
-            uiSelectedItemList.selectable = false;
+            uiSelectedItemList.selectionMode = UIDataItemSelectionMode.Disable;
     }
 
     protected virtual void OnSetListItem(UIItem ui) { }

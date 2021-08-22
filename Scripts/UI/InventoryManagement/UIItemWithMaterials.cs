@@ -8,31 +8,31 @@ public abstract class UIItemWithMaterials : UIItemSelection
     public UIItem uiAfterInfo;
     public UICurrency uiCurrency;
 
-    protected PlayerItem item;
-    public PlayerItem Item
+    private PlayerItem dirtyItem;
+
+    protected virtual void Update()
     {
-        get { return item; }
-        set
+        if (dirtyItem != UIGlobalData.SelectedItem)
         {
-            item = value;
+            dirtyItem = UIGlobalData.SelectedItem;
 
             if (uiBeforeInfo != null)
-                uiBeforeInfo.SetData(item);
+                uiBeforeInfo.SetData(dirtyItem);
 
             if (uiAfterInfo != null)
-                uiAfterInfo.SetData(item);
+                uiAfterInfo.SetData(dirtyItem);
         }
     }
-    
+
     public override void Show()
     {
         base.Show();
 
         if (uiBeforeInfo != null)
-            uiBeforeInfo.SetData(Item);
+            uiBeforeInfo.SetData(UIGlobalData.SelectedItem);
 
         if (uiAfterInfo != null)
-            uiAfterInfo.SetData(Item);
+            uiAfterInfo.SetData(UIGlobalData.SelectedItem);
 
         if (uiCurrency != null)
         {

@@ -51,8 +51,7 @@ public class UIChatManager : UIBase
         sortedChats.Sort();
         if (uiChatList != null)
         {
-            uiChatList.selectable = false;
-            uiChatList.multipleSelection = false;
+            uiChatList.selectionMode = UIDataItemSelectionMode.Disable;
             foreach (var chat in sortedChats)
             {
                 var ui = uiChatList.SetListItem(chat);

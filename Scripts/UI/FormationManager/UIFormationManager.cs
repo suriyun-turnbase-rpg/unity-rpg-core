@@ -24,7 +24,7 @@ public class UIFormationManager : UIBase
     public Transform formationContainer;
     public UIItemList uiCharacterList;
     public UIItemListFilterSetting filterSetting;
-    public BaseGamePlayFormation characterFormation;
+    public BaseGamePlayFormation[] characterFormations = new BaseGamePlayFormation[0];
     private readonly Dictionary<string, UIFormationToggleData> UIFormationToggles = new Dictionary<string, UIFormationToggleData>();
     public UIFormationToggleData SelectedFormation { get; private set; }
     public UIItem SelectedItem { get; private set; }
@@ -125,8 +125,7 @@ public class UIFormationManager : UIBase
             filterSetting.dontShowEquippedEquipment = false;
             var list = PlayerItem.DataMap.Values.Where(a => UIItemListFilter.Filter(a, filterSetting)).ToList();
             list.SortLevel();
-            uiCharacterList.selectable = true;
-            uiCharacterList.multipleSelection = false;
+            uiCharacterList.selectionMode = UIDataItemSelectionMode.Toggle;
             uiCharacterList.eventSelect.RemoveListener(SelectItem);
             uiCharacterList.eventSelect.AddListener(SelectItem);
             uiCharacterList.eventDeselect.RemoveListener(DeselectItem);
@@ -142,9 +141,6 @@ public class UIFormationManager : UIBase
     {
         if (uiCharacterList != null)
             uiCharacterList.ClearListItems();
-
-        if (characterFormation != null && formationType == EFormationType.Stage)
-            characterFormation.SetFormationCharactersForStage();
     }
 
     private void SelectItem(UIDataItem ui)
@@ -190,10 +186,27 @@ public class UIFormationManager : UIBase
     private void OnSelectFormationSuccess(PlayerResult result)
     {
         Player.CurrentPlayer = result.player;
+        UpdateCharacterFormations();
     }
 
     private void OnSelectFormationFail(string error)
     {
         GameInstance.Singleton.OnGameServiceError(error);
+    }
+
+    public void UpdateCharacterFormations()
+    {
+        foreach (var characterFormation in characterFormations)
+        {
+            switch (formationType)
+            {
+                case EFormationType.Stage:
+                    characterFormation.SetFormationCharactersForStage();
+                    break;
+                case EFormationType.Arena:
+                    characterFormation.SetFormationCharactersForArena();
+                    break;
+            }
+        }
     }
 }

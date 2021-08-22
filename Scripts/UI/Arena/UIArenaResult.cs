@@ -61,8 +61,7 @@ public class UIArenaResult : UIDataItem<FinishDuelResult>
 			
         if (uiRewardItems != null)
         {
-            uiRewardItems.selectable = false;
-            uiRewardItems.multipleSelection = false;
+            uiRewardItems.selectionMode = UIDataItemSelectionMode.Disable;
             uiRewardItems.SetListItems(data.rewardItems);
         }
 

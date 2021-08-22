@@ -8,6 +8,7 @@ public class UIInventoryManager : UIBase
     public UIItemList uiItemList;
     public UIItemListFilterSetting filterSetting;
     public bool dontSelectFirstEntryOnShow;
+    public UIDataItemSelectionMode listSelectionMode = UIDataItemSelectionMode.Toggle;
 
     public override void Show()
     {
@@ -15,8 +16,7 @@ public class UIInventoryManager : UIBase
 
         if (uiItemList != null)
         {
-            uiItemList.selectable = true;
-            uiItemList.multipleSelection = false;
+            uiItemList.selectionMode = listSelectionMode;
             uiItemList.eventSelect.RemoveListener(SelectItem);
             uiItemList.eventSelect.AddListener(SelectItem);
             uiItemList.eventDeselect.RemoveListener(DeselectItem);
@@ -34,9 +34,13 @@ public class UIInventoryManager : UIBase
             {
                 if (uiItemList.UIEntries.Count > 0)
                 {
-                    var allUIs = uiItemList.UIEntries.Values.ToList();
-                    allUIs[0].Selected = true;
-                    SelectItem(allUIs[0]);
+                    if (listSelectionMode == UIDataItemSelectionMode.Toggle ||
+                        listSelectionMode == UIDataItemSelectionMode.MultipleToggle)
+                    {
+                        var allUIs = uiItemList.UIEntries.Values.ToList();
+                        allUIs[0].Selected = true;
+                        SelectItem(allUIs[0]);
+                    }
                 }
                 else
                 {
@@ -63,6 +67,7 @@ public class UIInventoryManager : UIBase
 
     protected virtual void SelectItem(UIDataItem ui)
     {
+        UIGlobalData.SelectedItem = (ui as UIItem).data;
         if (uiSelectedInfo != null)
         {
             uiSelectedInfo.SetData((ui as UIItem).data);

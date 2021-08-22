@@ -33,17 +33,17 @@ public class UIItemEvolve : UIItemWithMaterials
     private void SetupEvolve()
     {
         if (evolveButton != null)
-            evolveButton.interactable = Item.CanEvolve;
+            evolveButton.interactable = UIGlobalData.SelectedItem.CanEvolve;
         
-        if (Item.EvolveItem != null)
+        if (UIGlobalData.SelectedItem.EvolveItem != null)
         {
-            newItem = Item.CreateEvolveItem();
+            newItem = UIGlobalData.SelectedItem.CreateEvolveItem();
 
             if (uiAfterInfo != null)
                 uiAfterInfo.SetData(newItem);
 
             materials = new List<PlayerItem>();
-            evolveMaterials = Item.EvolveMaterials;
+            evolveMaterials = UIGlobalData.SelectedItem.EvolveMaterials;
             foreach (var evolveItem in evolveMaterials)
             {
                 var evolveItemDataId = evolveItem.Key;
@@ -81,7 +81,7 @@ public class UIItemEvolve : UIItemWithMaterials
 
             if (uiCurrency != null)
             {
-                var currencyData = PlayerCurrency.SoftCurrency.Clone().SetAmount(Item.EvolvePrice, 0);
+                var currencyData = PlayerCurrency.SoftCurrency.Clone().SetAmount(UIGlobalData.SelectedItem.EvolvePrice, 0);
                 uiCurrency.SetData(currencyData);
             }
         }
@@ -89,10 +89,10 @@ public class UIItemEvolve : UIItemWithMaterials
 
     protected override List<PlayerItem> GetAvailableItemList()
     {
-        if (Item.CanEvolve)
+        if (UIGlobalData.SelectedItem.CanEvolve)
         {
-            var evolveMaterialDataIds = Item.EvolveMaterials.Keys.ToList();
-            var list = PlayerItem.DataMap.Values.Where(a => !a.Id.Equals(Item.Id) && evolveMaterialDataIds.Contains(a.DataId)).ToList();
+            var evolveMaterialDataIds = UIGlobalData.SelectedItem.EvolveMaterials.Keys.ToList();
+            var list = PlayerItem.DataMap.Values.Where(a => !a.Id.Equals(UIGlobalData.SelectedItem.Id) && evolveMaterialDataIds.Contains(a.DataId)).ToList();
             list.SortLevel();
             return list;
         }
@@ -129,22 +129,22 @@ public class UIItemEvolve : UIItemWithMaterials
     {
         var gameInstance = GameInstance.Singleton;
         var gameService = GameInstance.GameService;
-        if (!PlayerCurrency.HaveEnoughSoftCurrency(Item.EvolvePrice))
+        if (!PlayerCurrency.HaveEnoughSoftCurrency(UIGlobalData.SelectedItem.EvolvePrice))
         {
             gameInstance.WarnNotEnoughSoftCurrency();
             return;
         }
         var idAmountPair = GetSelectedItemIdAmountPair();
-        gameService.EvolveItem(Item.Id, idAmountPair, OnEvolveSuccess, OnEvolveFail);
+        gameService.EvolveItem(UIGlobalData.SelectedItem.Id, idAmountPair, OnEvolveSuccess, OnEvolveFail);
     }
 
     private void OnEvolveSuccess(ItemResult result)
     {
-        if (animCharacterEvolve != null && Item.CharacterData != null)
-            animCharacterEvolve.Play(Item, newItem, materials);
+        if (animCharacterEvolve != null && UIGlobalData.SelectedItem.CharacterData != null)
+            animCharacterEvolve.Play(UIGlobalData.SelectedItem, newItem, materials);
 
-        if (animEquipmentEvolve != null && Item.EquipmentData != null)
-            animEquipmentEvolve.Play(Item, newItem, materials);
+        if (animEquipmentEvolve != null && UIGlobalData.SelectedItem.EquipmentData != null)
+            animEquipmentEvolve.Play(UIGlobalData.SelectedItem, newItem, materials);
 
         GameInstance.Singleton.OnGameServiceItemResult(result);
         eventEvolveSuccess.Invoke();
@@ -153,8 +153,8 @@ public class UIItemEvolve : UIItemWithMaterials
         foreach (var updateItem in updateItems)
         {
             var id = updateItem.Id;
-            if (updateItem.Id == Item.Id)
-                Item = updateItem;
+            if (updateItem.Id == UIGlobalData.SelectedItem.Id)
+                UIGlobalData.SelectedItem = updateItem;
             if (items.ContainsKey(id))
                 items[id].SetData(updateItem);
         }

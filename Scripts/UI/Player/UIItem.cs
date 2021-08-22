@@ -508,38 +508,27 @@ public class UIItem : UIDataItem<PlayerItem>
 
     public void OnClickLevelUp()
     {
-        if (uiLevelUp != null)
-        {
-            uiLevelUp.Item = data;
-            eventSelectLevelUpItem.Invoke();
-        }
+        UIGlobalData.SelectedItem = data;
+        eventSelectLevelUpItem.Invoke();
     }
 
     public void OnClickEvolve()
     {
-        if (uiEvolve != null)
-        {
-            uiEvolve.Item = data;
-            eventSelectEvolveItem.Invoke();
-        }
+        UIGlobalData.SelectedItem = data;
+        eventSelectEvolveItem.Invoke();
     }
 
     public void OnClickSell()
     {
-        if (uiSell != null)
-        {
-            uiSell.SetSelectingItemIds(new List<string>() { data.Id });
-            eventSelectSellItem.Invoke();
-        }
+        UIGlobalData.SelectingItemIds.Clear();
+        UIGlobalData.SelectingItemIds.Add(data.Id);
+        eventSelectSellItem.Invoke();
     }
 
     public void OnClickManageEquipment()
     {
-        if (uiEquipmentManager != null)
-        {
-            uiEquipmentManager.Character = data;
-            eventSelectEquipmentManageCharacter.Invoke();
-        }
+        UIGlobalData.SelectedItem = data;
+        eventSelectEquipmentManageCharacter.Invoke();
     }
 
     public override bool IsEmpty()
