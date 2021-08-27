@@ -383,7 +383,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             }
         }
 
-        var buff = NewBuff(level, skill, buffIndex, caster, this);
+        var buff = NewBuff(level, skill, buffIndex, seed, caster, this);
         if (buff.GetRemainsDuration() > 0f)
         {
             // Buff cannot stack so remove old buff
@@ -431,7 +431,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     }
 
     public abstract BaseCharacterSkill NewSkill(int level, BaseSkill skill);
-    public abstract BaseCharacterBuff NewBuff(int level, BaseSkill skill, int buffIndex, BaseCharacterEntity giver, BaseCharacterEntity receiver);
+    public abstract BaseCharacterBuff NewBuff(int level, BaseSkill skill, int buffIndex, int seed, BaseCharacterEntity giver, BaseCharacterEntity receiver);
 }
 
 [System.Serializable]
