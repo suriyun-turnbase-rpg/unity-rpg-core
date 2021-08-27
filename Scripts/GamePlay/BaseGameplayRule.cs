@@ -5,6 +5,7 @@ using UnityEngine;
 public class BaseGameplayRule : ScriptableObject
 {
     public virtual float GetDamage(
+        int seed,
         Elemental attackerElemental,
         Elemental defenderElemental,
         CalculatedAttributes attackerAttributes,
@@ -50,17 +51,17 @@ public class BaseGameplayRule : ScriptableObject
         return totalDmg;
     }
 
-    public virtual bool IsCrit(CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
+    public virtual bool IsCrit(int seed, CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
     {
         return Random.value <= attackerAttributes.critChance;
     }
 
-    public virtual float GetCritDamage(CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes, float damage)
+    public virtual float GetCritDamage(int seed, CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes, float damage)
     {
         return damage * attackerAttributes.critDamageRate;
     }
 
-    public virtual bool IsBlock(CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
+    public virtual bool IsBlock(int seed, CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
     {
         return Random.value <= defenderAttributes.blockChance;
     }
@@ -70,7 +71,7 @@ public class BaseGameplayRule : ScriptableObject
         return damage / defenderAttributes.blockDamageRate;
     }
 
-    public virtual bool IsHit(CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
+    public virtual bool IsHit(int seed, CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
     {
 #if !NO_EVADE_STATS
         var hitChance = 1f;

@@ -235,34 +235,36 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         Container = container;
     }
 
-    public virtual void Attack(BaseCharacterEntity target, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0)
+    public virtual void Attack(BaseCharacterEntity target, int seed, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0)
     {
         if (target == null)
             return;
         target.ReceiveDamage(
             this,
+            seed,
             pAtkRate,
             mAtkRate,
             hitCount,
             fixDamage);
     }
 
-    public virtual void Attack(BaseCharacterEntity target, BaseDamage damagePrefab, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0)
+    public virtual void Attack(BaseCharacterEntity target, BaseDamage damagePrefab, int seed, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0)
     {
         if (damagePrefab == null)
         {
             // Apply damage immediately
-            Attack(target, pAtkRate, mAtkRate, hitCount, fixDamage);
+            Attack(target, seed, pAtkRate, mAtkRate, hitCount, fixDamage);
         }
         else
         {
             var damage = Instantiate(damagePrefab, damageContainer.position, damageContainer.rotation);
-            damage.Setup(this, target, pAtkRate, mAtkRate, hitCount, fixDamage);
+            damage.Setup(this, target, seed, pAtkRate, mAtkRate, hitCount, fixDamage);
         }
     }
 
     public virtual bool ReceiveDamage(
         BaseCharacterEntity attacker,
+        int seed,
         float pAtkRate = 1f,
         float mAtkRate = 1f,
         int hitCount = 1,
@@ -277,6 +279,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         var defenderElemental = Item.CharacterData.elemental;
         var defenderAttributes = GetTotalAttributes();
         var totalDmg = GameInstance.GameplayRule.GetDamage(
+            seed,
             attackerElemental,
             defenderElemental,
             attackerAttributes,
@@ -290,20 +293,20 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         var isCritical = false;
         var isBlock = false;
         // Critical occurs
-        if (GameInstance.GameplayRule.IsCrit(attackerAttributes, defenderAttributes))
+        if (GameInstance.GameplayRule.IsCrit(seed, attackerAttributes, defenderAttributes))
         {
-            totalDmg = GameInstance.GameplayRule.GetCritDamage(attackerAttributes, defenderAttributes, totalDmg);
+            totalDmg = GameInstance.GameplayRule.GetCritDamage(seed, attackerAttributes, defenderAttributes, totalDmg);
             isCritical = true;
         }
         // Block occurs
-        if (GameInstance.GameplayRule.IsBlock(attackerAttributes, defenderAttributes))
+        if (GameInstance.GameplayRule.IsBlock(seed, attackerAttributes, defenderAttributes))
         {
             totalDmg = GameInstance.GameplayRule.GetBlockDamage(attackerAttributes, defenderAttributes, totalDmg);
             isBlock = true;
         }
 
         // Cannot evade, receive damage
-        if (!GameInstance.GameplayRule.IsHit(attackerAttributes, defenderAttributes))
+        if (!GameInstance.GameplayRule.IsHit(seed, attackerAttributes, defenderAttributes))
         {
             Manager.SpawnMissText(this, hitCount);
         }

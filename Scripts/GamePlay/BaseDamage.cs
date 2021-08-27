@@ -26,5 +26,5 @@ public abstract class BaseDamage : MonoBehaviour
         }
     }
 
-    public abstract void Setup(BaseCharacterEntity attacker, BaseCharacterEntity target, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0);
+    public abstract void Setup(BaseCharacterEntity attacker, BaseCharacterEntity target, int seed, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0);
 }
