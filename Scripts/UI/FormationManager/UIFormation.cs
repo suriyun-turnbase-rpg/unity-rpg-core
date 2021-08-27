@@ -57,7 +57,7 @@ public class UIFormation : UIBase
 
     protected virtual void Update()
     {
-        bool isSelectedItem = manager.SelectedItem != null;
+        bool isSelectedItem = manager != null && manager.SelectedItem != null;
         if (dirtyIsSelectedItem != isSelectedItem)
         {
             dirtyIsSelectedItem = isSelectedItem;
