@@ -367,6 +367,15 @@ public partial class GameInstance : MonoBehaviour
         PlayerCurrency.SetData(result.currency);
     }
 
+    public void OnGameServiceGetFormationCharactersAndEquipments(FormationCharactersAndEquipmentsResult result)
+    {
+        if (!result.Success)
+            return;
+
+        PlayerItem.SetDataRange(result.characters);
+        PlayerItem.SetDataRange(result.equipments);
+    }
+
     #region Current Player Data Validation
     /// <summary>
     /// Set profile name first time, when it's not already set.
