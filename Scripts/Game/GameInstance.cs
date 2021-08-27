@@ -208,6 +208,8 @@ public partial class GameInstance : MonoBehaviour
             return;
 
         PlayerStamina.SetData(result.stamina);
+        PlayerItem.SetDataRange(result.opponentCharacters);
+        PlayerItem.SetDataRange(result.opponentEquipments);
     }
 
     public void OnGameServiceFinishDuelResult(FinishDuelResult result)

@@ -188,6 +188,7 @@ public class StartDuelResult : GameServiceResult
     public PlayerStamina stamina;
     public string session;
     public List<PlayerItem> opponentCharacters = new List<PlayerItem>();
+    public List<PlayerItem> opponentEquipments = new List<PlayerItem>();
 }
 
 [System.Serializable]
