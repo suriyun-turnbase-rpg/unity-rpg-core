@@ -40,28 +40,28 @@ public abstract class BaseSkillBuff
     [Tooltip("If this is True, chance to stun will be equals to apply chance")]
     public bool isStun;
 
-    public bool RandomToApply(int level = 1)
+    public bool RandomToApply(int seed, int level)
     {
-        return Random.value <= GetApplyChance(level);
+        return RandomNumberUtils.RandomFloat(seed, 0, 1) <= GetApplyChance(level);
     }
 
-    public float GetApplyChance(int level = 1)
+    public float GetApplyChance(int level)
     {
         return applyChance + (applyChanceIncreaseEachLevel * level);
     }
 
-    public CalculatedAttributes GetAttributes(int level = 1)
+    public CalculatedAttributes GetAttributes(int level)
     {
         return attributes + (attributesIncreaseEachLevel * level);
     }
 
-    public float GetPAtkHealRate(int level = 1)
+    public float GetPAtkHealRate(int level)
     {
         return pAtkHealRate + (pAtkHealRateIncreaseEachLevel * level);
     }
 
 #if !NO_MAGIC_STATS
-    public float GetMAtkHealRate(int level = 1)
+    public float GetMAtkHealRate(int level)
     {
         return mAtkHealRate + (mAtkHealRateIncreaseEachLevel * level);
     }

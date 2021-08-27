@@ -333,7 +333,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         return true;
     }
 
-    public virtual void ApplyBuff(BaseCharacterEntity caster, int level, BaseSkill skill, int buffIndex)
+    public virtual void ApplyBuff(BaseCharacterEntity caster, int level, BaseSkill skill, int buffIndex, int seed)
     {
         if (skill == null || buffIndex < 0 || buffIndex >= skill.GetBuffs().Count || skill.GetBuffs()[buffIndex] == null || Hp <= 0)
             return;
@@ -343,7 +343,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         {
             // Resistance
             var attributes = GetTotalAttributes();
-            if (Random.value <= attributes.resistanceChance)
+            if (RandomNumberUtils.RandomFloat(seed, 0, 1) <= attributes.resistanceChance)
             {
                 // Reisted, nerf will not applied
                 Manager.SpawnResistText(this, 1);

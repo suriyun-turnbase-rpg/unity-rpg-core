@@ -44,7 +44,7 @@ public class BaseGameplayRule : ScriptableObject
         var effectiveness = 1f;
         if (attackerElemental != null && attackerElemental.CacheElementEffectiveness.TryGetValue(defenderElemental, out effectiveness))
             totalDmg *= effectiveness;
-        totalDmg += Mathf.CeilToInt(totalDmg * Random.Range(GameInstance.GameDatabase.minAtkVaryRate, GameInstance.GameDatabase.maxAtkVaryRate)) + fixDamage;
+        totalDmg += Mathf.CeilToInt(totalDmg * RandomNumberUtils.RandomFloat(seed, GameInstance.GameDatabase.minAtkVaryRate, GameInstance.GameDatabase.maxAtkVaryRate)) + fixDamage;
         totalDmg /= hitCount;
         if (totalDmg < 0)
             totalDmg = 0;
@@ -53,7 +53,7 @@ public class BaseGameplayRule : ScriptableObject
 
     public virtual bool IsCrit(int seed, CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
     {
-        return Random.value <= attackerAttributes.critChance;
+        return RandomNumberUtils.RandomFloat(seed, 0, 1) <= attackerAttributes.critChance;
     }
 
     public virtual float GetCritDamage(int seed, CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes, float damage)
@@ -63,7 +63,7 @@ public class BaseGameplayRule : ScriptableObject
 
     public virtual bool IsBlock(int seed, CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
     {
-        return Random.value <= defenderAttributes.blockChance;
+        return RandomNumberUtils.RandomFloat(seed, 0, 1) <= defenderAttributes.blockChance;
     }
 
     public virtual float GetBlockDamage(CalculatedAttributes attributes, CalculatedAttributes defenderAttributes, float damage)
@@ -77,7 +77,7 @@ public class BaseGameplayRule : ScriptableObject
         var hitChance = 1f;
         if (attackerAttributes.acc > 0 && defenderAttributes.eva > 0)
             hitChance = attackerAttributes.acc / defenderAttributes.eva;
-        return !(hitChance < 0 || Random.value > hitChance);
+        return !(hitChance < 0 || RandomNumberUtils.RandomFloat(seed, 0, 1) > hitChance);
 #else
         return true;
 #endif
