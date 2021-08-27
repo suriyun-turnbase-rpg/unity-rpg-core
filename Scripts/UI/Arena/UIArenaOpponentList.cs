@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class UIArenaOpponentList : UIPlayerList
+﻿public class UIArenaOpponentList : UIPlayerList
 {
     private void OnEnable()
     {
+        selectionMode = UIDataItemSelectionMode.Toggle;
         RefreshList();
     }
 

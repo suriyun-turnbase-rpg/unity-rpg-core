@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class UIHelperList : UIPlayerList
+﻿public class UIHelperList : UIPlayerList
 {
     private void OnEnable()
     {
+        selectionMode = UIDataItemSelectionMode.Toggle;
         RefreshList();
     }
 
