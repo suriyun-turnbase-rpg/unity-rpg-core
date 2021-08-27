@@ -1122,6 +1122,20 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoRefreshRandomStore(playerId, loginToken, id, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void GetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetFormationCharactersAndEquipments");
+        HandleServiceCall();
+        DoGetFormationCharactersAndEquipments(playerId, formationDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void GetArenaFormationCharactersAndEquipments(string playerId, UnityAction<FormationCharactersAndEquipmentsResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetArenaFormationCharactersAndEquipments");
+        HandleServiceCall();
+        DoGetArenaFormationCharactersAndEquipments(playerId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     protected abstract void DoRegister(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoLogin(string username, string password, UnityAction<PlayerResult> onFinish);
     protected abstract void DoRegisterOrLogin(string username, string password, UnityAction<PlayerResult> onFinish);
@@ -1210,4 +1224,6 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoGetRandomStore(string playerId, string loginToken, string id, UnityAction<RandomStoreResult> onFinish);
     protected abstract void DoPurchaseRandomStoreItem(string playerId, string loginToken, string id, int index, UnityAction<PurchaseRandomStoreItemResult> onFinish);
     protected abstract void DoRefreshRandomStore(string playerId, string loginToken, string id, UnityAction<RefreshRandomStoreResult> onFinish);
+    protected abstract void DoGetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish);
+    protected abstract void DoGetArenaFormationCharactersAndEquipments(string playerId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish);
 }

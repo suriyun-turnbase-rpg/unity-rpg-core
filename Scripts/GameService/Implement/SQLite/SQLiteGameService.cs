@@ -811,4 +811,18 @@ public partial class SQLiteGameService : BaseGameService
             new SqliteParameter("@id", playerAchievement.Id));
         return playerAchievement;
     }
+
+    protected override void DoGetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish)
+    {
+        var result = new FormationCharactersAndEquipmentsResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoGetArenaFormationCharactersAndEquipments(string playerId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish)
+    {
+        var result = new FormationCharactersAndEquipmentsResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
 }

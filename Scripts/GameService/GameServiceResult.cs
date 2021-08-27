@@ -360,3 +360,10 @@ public class RefillStaminaInfoResult : GameServiceResult
     public int requireHardCurrency;
     public int refillAmount;
 }
+
+[System.Serializable]
+public class FormationCharactersAndEquipmentsResult : GameServiceResult
+{
+    public List<PlayerItem> characters = new List<PlayerItem>();
+    public List<PlayerItem> equipments = new List<PlayerItem>();
+}

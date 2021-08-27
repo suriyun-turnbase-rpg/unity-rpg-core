@@ -260,4 +260,18 @@ public partial class LiteDbGameService : BaseGameService
         }
         onFinish(result);
     }
+
+    protected override void DoGetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish)
+    {
+        var result = new FormationCharactersAndEquipmentsResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoGetArenaFormationCharactersAndEquipments(string playerId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish)
+    {
+        var result = new FormationCharactersAndEquipmentsResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
 }
