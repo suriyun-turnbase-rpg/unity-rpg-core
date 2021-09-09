@@ -531,6 +531,61 @@ public class UIItem : UIDataItem<PlayerItem>
         eventSelectEquipmentManageCharacter.Invoke();
     }
 
+    public void OnClickPreviousItem()
+    {
+        var item = GetPreviousItem();
+        if (item != null)
+            data = item;
+        UIGlobalData.SelectedItem = data;
+    }
+
+    private PlayerItem GetPreviousItem()
+    {
+        List<PlayerItem> allItems = new List<PlayerItem>(PlayerItem.DataMap.Values);
+        PlayerItem item = null;
+        if (data != null)
+        {
+            for (int i = 0; i < allItems.Count; ++i)
+            {
+                if (allItems[i].PlayerId != Player.CurrentPlayerId) continue;
+                if (allItems[i].ItemData.GetType() != data.ItemData.GetType()) continue;
+                if (allItems[i].Id == data.Id && item != null)
+                    return item;
+                item = allItems[i];
+            }
+        }
+        return item;
+    }
+
+    public void OnClickNextItem()
+    {
+        var item = GetNextItem();
+        if (item != null)
+            data = item;
+        UIGlobalData.SelectedItem = data;
+    }
+
+    private PlayerItem GetNextItem()
+    {
+        List<PlayerItem> allItems = new List<PlayerItem>(PlayerItem.DataMap.Values);
+        bool foundItem = false;
+        PlayerItem item = null;
+        if (data != null)
+        {
+            for (int i = 0; i < allItems.Count; ++i)
+            {
+                if (allItems[i].PlayerId != Player.CurrentPlayerId) continue;
+                if (allItems[i].ItemData.GetType() != data.ItemData.GetType()) continue;
+                if (foundItem)
+                    return allItems[i];
+                if (allItems[i].Id == data.Id)
+                    foundItem = true;
+                item = allItems[i];
+            }
+        }
+        return item;
+    }
+
     public override bool IsEmpty()
     {
         return data == null || string.IsNullOrEmpty(data.DataId);
