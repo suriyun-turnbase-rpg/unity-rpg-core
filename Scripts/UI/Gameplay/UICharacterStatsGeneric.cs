@@ -17,37 +17,55 @@ public class UICharacterStatsGeneric : UIBase
     public BaseCharacterEntity character;
     public bool notFollowCharacter;
 
-    private UIFollowWorldObject tempObjectFollower;
-    public UIFollowWorldObject TempObjectFollower
+    private UIFollowWorldObject cacheObjectFollower;
+    public UIFollowWorldObject CacheObjectFollower
     {
         get
         {
-            if (tempObjectFollower == null)
-                tempObjectFollower = GetComponent<UIFollowWorldObject>();
-            return tempObjectFollower;
+            if (cacheObjectFollower == null)
+                cacheObjectFollower = GetComponent<UIFollowWorldObject>();
+            return cacheObjectFollower;
         }
     }
+
+    private Canvas attachedCanvas;
+    private bool attachedWorldSpaceCanvas;
 
     protected override void Awake()
     {
         base.Awake();
-        if (notFollowCharacter)
-        {
-            TempObjectFollower.enabled = false;
-            TempObjectFollower.TempPositionFollower.enabled = false;
-        }
         if (!characterStatsRoot)
             characterStatsRoot = root;
+        attachedCanvas = GetComponent<Canvas>();
+        if (attachedCanvas != null)
+            attachedWorldSpaceCanvas = (attachedCanvas.renderMode == RenderMode.WorldSpace);
+        if (notFollowCharacter || attachedWorldSpaceCanvas)
+        {
+            CacheObjectFollower.enabled = false;
+            CacheObjectFollower.CachePositionFollower.enabled = false;
+        }
+    }
+
+    public void Attach(Transform uiContainer, BaseCharacterEntity character)
+    {
+        this.character = character;
+        if (attachedWorldSpaceCanvas)
+        {
+            transform.SetParent(character.uiContainer, true);
+        }
+        else
+        {
+            transform.SetParent(uiContainer);
+            transform.localScale = Vector3.one;
+        }
+        transform.localPosition = Vector3.zero;
     }
 
     protected virtual void Update()
     {
-        if (character == null)
-            return;
-
-        if (!notFollowCharacter)
-            TempObjectFollower.targetObject = character.uiContainer;
-
+        if (!attachedWorldSpaceCanvas && !notFollowCharacter)
+            CacheObjectFollower.targetObject = character.uiContainer;
+        
         var itemData = character.Item.ItemData;
         var rate = (float)character.Hp / (float)character.MaxHp;
 
