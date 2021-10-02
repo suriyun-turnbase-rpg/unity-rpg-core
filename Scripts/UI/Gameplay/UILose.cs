@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
-public class UILose : UIBase
+public partial class UILose : UIBase
 {
     public Button buttonRevive;
     public Button buttonRestart;
@@ -23,12 +20,21 @@ public class UILose : UIBase
     public override void Show()
     {
         base.Show();
-        buttonRevive.onClick.RemoveListener(OnClickRevive);
-        buttonRevive.onClick.AddListener(OnClickRevive);
-        buttonRestart.onClick.RemoveListener(OnClickRestart);
-        buttonRestart.onClick.AddListener(OnClickRestart);
-        buttonGiveUp.onClick.RemoveListener(OnClickGiveUp);
-        buttonGiveUp.onClick.AddListener(OnClickGiveUp);
+        if (buttonRevive != null)
+        {
+            buttonRevive.onClick.RemoveListener(OnClickRevive);
+            buttonRevive.onClick.AddListener(OnClickRevive);
+        }
+        if (buttonRestart != null)
+        {
+            buttonRestart.onClick.RemoveListener(OnClickRestart);
+            buttonRestart.onClick.AddListener(OnClickRestart);
+        }
+        if (buttonGiveUp != null)
+        {
+            buttonGiveUp.onClick.RemoveListener(OnClickGiveUp);
+            buttonGiveUp.onClick.AddListener(OnClickGiveUp);
+        }
     }
 
     public void OnClickRevive()

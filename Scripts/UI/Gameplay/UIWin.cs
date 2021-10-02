@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIWin : UIDataItem<FinishStageResult>
+public partial class UIWin : UIDataItem<FinishStageResult>
 {
     public const string ANIM_KEY_BATTLE_RATING = "Rating";
     public Animator ratingAnimator;
@@ -50,13 +49,22 @@ public class UIWin : UIDataItem<FinishStageResult>
     public override void Show()
     {
         base.Show();
-        buttonRestart.onClick.RemoveListener(OnClickRestart);
-        buttonRestart.onClick.AddListener(OnClickRestart);
-        buttonGoToManageScene.onClick.RemoveListener(OnClickGoToManageScene);
-        buttonGoToManageScene.onClick.AddListener(OnClickGoToManageScene);
-        buttonGoToNextStage.onClick.RemoveListener(OnClickGoToNextStage);
-        buttonGoToNextStage.onClick.AddListener(OnClickGoToNextStage);
-        buttonGoToNextStage.interactable = NextStage != null;
+        if (buttonRestart != null)
+        {
+            buttonRestart.onClick.RemoveListener(OnClickRestart);
+            buttonRestart.onClick.AddListener(OnClickRestart);
+        }
+        if (buttonGoToManageScene != null)
+        {
+            buttonGoToManageScene.onClick.RemoveListener(OnClickGoToManageScene);
+            buttonGoToManageScene.onClick.AddListener(OnClickGoToManageScene);
+        }
+        if (buttonGoToNextStage != null)
+        {
+            buttonGoToNextStage.onClick.RemoveListener(OnClickGoToNextStage);
+            buttonGoToNextStage.onClick.AddListener(OnClickGoToNextStage);
+            buttonGoToNextStage.interactable = NextStage != null;
+        }
 
         if (ratingAnimator != null)
             ratingAnimator.SetInteger(ANIM_KEY_BATTLE_RATING, data.rating);

@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
-public class UIPauseGame : UIBase
+public partial class UIPauseGame : UIBase
 {
     public Button buttonContinue;
     public Button buttonRestart;
@@ -23,12 +20,21 @@ public class UIPauseGame : UIBase
     public override void Show()
     {
         base.Show();
-        buttonContinue.onClick.RemoveListener(OnClickContinue);
-        buttonContinue.onClick.AddListener(OnClickContinue);
-        buttonRestart.onClick.RemoveListener(OnClickRestart);
-        buttonRestart.onClick.AddListener(OnClickRestart);
-        buttonGiveUp.onClick.RemoveListener(OnClickGiveUp);
-        buttonGiveUp.onClick.AddListener(OnClickGiveUp);
+        if (buttonContinue != null)
+        {
+            buttonContinue.onClick.RemoveListener(OnClickContinue);
+            buttonContinue.onClick.AddListener(OnClickContinue);
+        }
+        if (buttonRestart != null)
+        {
+            buttonRestart.onClick.RemoveListener(OnClickRestart);
+            buttonRestart.onClick.AddListener(OnClickRestart);
+        }
+        if (buttonGiveUp != null)
+        {
+            buttonGiveUp.onClick.RemoveListener(OnClickGiveUp);
+            buttonGiveUp.onClick.AddListener(OnClickGiveUp);
+        }
     }
 
     public void OnClickContinue()
