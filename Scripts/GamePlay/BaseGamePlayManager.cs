@@ -284,7 +284,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         }
     }
 
-    public void Giveup(UnityAction onError)
+    public virtual void Giveup(UnityAction onError)
     {
         if (BattleType == EBattleType.Stage)
         {
@@ -336,7 +336,7 @@ public abstract class BaseGamePlayManager : MonoBehaviour
         }
     }
 
-    public void Restart()
+    public virtual void Restart()
     {
         if (BattleType == EBattleType.Stage)
             StartStage(PlayingStage, Helper);
