@@ -39,11 +39,23 @@ public abstract class BaseCharacterEntity : MonoBehaviour
                 return;
             item = value;
             Skills.Clear();
-            var skills = item.CharacterData.skills;
-            foreach (var skill in skills)
+            if (item.CharacterData.skills != null && item.CharacterData.skills.Count > 0)
             {
-                if (skill != null)
+                foreach (var skill in item.CharacterData.skills)
                 {
+                    if (skill == null) continue;
+                    // TODO: Implement skill level
+                    Skills.Add(NewSkill(1, skill));
+                }
+            }
+            foreach (var equippedItem in item.EquippedItems.Values)
+            {
+                if (equippedItem == null) continue;
+                var equipmentItem = equippedItem.ItemData as EquipmentItem;
+                if (equipmentItem == null || equipmentItem.skills == null || equipmentItem.skills.Count == 0) continue;
+                foreach (var skill in equipmentItem.skills)
+                {
+                    if (skill == null) continue;
                     // TODO: Implement skill level
                     Skills.Add(NewSkill(1, skill));
                 }

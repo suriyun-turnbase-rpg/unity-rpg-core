@@ -6,6 +6,7 @@ public class EquipmentItem : BaseActorItem
 {
     [Header("Equipment Data")]
     public CalculatedAttributes extraAttributes;
+    public List<BaseSkill> skills;
     public List<string> equippablePositions;
     public EquipmentItemEvolve evolveInfo;
     public EquipItemModelPrefab[] equipModelPrefabs;
@@ -20,6 +21,7 @@ public class EquipmentItem : BaseActorItem
     {
         var newItem = ScriptableObjectUtility.CreateAsset<EquipmentItem>(name);
         newItem.extraAttributes = extraAttributes.Clone();
+        newItem.skills = new List<BaseSkill>(skills);
         newItem.equippablePositions = new List<string>(equippablePositions);
         newItem.evolveInfo = (EquipmentItemEvolve)evolveInfo.Clone();
         return newItem;
