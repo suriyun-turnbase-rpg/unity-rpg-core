@@ -17,7 +17,6 @@ public class UIFormationCharacters : MonoBehaviour
             uiStats.character = formation.Characters[i];
             uiStats.notFollowCharacter = true;
             uiStats.Show();
-            formation.Characters[i].UiCharacterStats = uiStats;
         }
     }
 }
