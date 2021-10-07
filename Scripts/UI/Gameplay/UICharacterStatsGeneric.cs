@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(UIFollowWorldObject))]
@@ -18,16 +16,7 @@ public class UICharacterStatsGeneric : UIBase
     public bool notFollowCharacter;
     public bool hideIfCharacterIsBoss;
 
-    private UIFollowWorldObject cacheObjectFollower;
-    public UIFollowWorldObject CacheObjectFollower
-    {
-        get
-        {
-            if (cacheObjectFollower == null)
-                cacheObjectFollower = GetComponent<UIFollowWorldObject>();
-            return cacheObjectFollower;
-        }
-    }
+    public UIFollowWorldObject CacheObjectFollower { get; private set; }
 
     private Canvas attachedCanvas;
     private bool attachedWorldSpaceCanvas;
@@ -37,9 +26,14 @@ public class UICharacterStatsGeneric : UIBase
         base.Awake();
         if (!characterStatsRoot)
             characterStatsRoot = root;
+        CacheObjectFollower = GetComponent<UIFollowWorldObject>();
         attachedCanvas = GetComponent<Canvas>();
         if (attachedCanvas != null)
             attachedWorldSpaceCanvas = (attachedCanvas.renderMode == RenderMode.WorldSpace);
+    }
+
+    private void Start()
+    {
         if (notFollowCharacter || attachedWorldSpaceCanvas)
         {
             CacheObjectFollower.enabled = false;
@@ -64,7 +58,7 @@ public class UICharacterStatsGeneric : UIBase
 
     protected virtual void Update()
     {
-        if (hideIfCharacterIsBoss && character.IsBoss)
+        if ((hideIfCharacterIsBoss && character.IsBoss) || !character)
         {
             HideCharacterStats();
             return;
