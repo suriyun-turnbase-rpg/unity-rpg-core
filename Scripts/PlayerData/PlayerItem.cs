@@ -463,6 +463,7 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         {
             sumExp += itemTier.expTable.Calculate(i + 1, itemTier.maxLevel);
         }
+        result.Id = System.Guid.NewGuid().ToString();
         result.DataId = itemData.Id;
         result.Exp = sumExp;
         return result;
