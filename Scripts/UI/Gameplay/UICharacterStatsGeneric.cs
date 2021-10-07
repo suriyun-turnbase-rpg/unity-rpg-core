@@ -16,6 +16,7 @@ public class UICharacterStatsGeneric : UIBase
     public UICharacterBuff[] uiBuffs;
     public BaseCharacterEntity character;
     public bool notFollowCharacter;
+    public bool hideIfCharacterIsBoss;
 
     private UIFollowWorldObject cacheObjectFollower;
     public UIFollowWorldObject CacheObjectFollower
@@ -63,9 +64,15 @@ public class UICharacterStatsGeneric : UIBase
 
     protected virtual void Update()
     {
+        if (hideIfCharacterIsBoss && character.IsBoss)
+        {
+            HideCharacterStats();
+            return;
+        }
+
         if (!attachedWorldSpaceCanvas && !notFollowCharacter)
             CacheObjectFollower.targetObject = character.uiContainer;
-        
+
         var itemData = character.Item.ItemData;
         var rate = (float)character.Hp / (float)character.MaxHp;
 
@@ -112,6 +119,8 @@ public class UICharacterStatsGeneric : UIBase
 
     public void ShowCharacterStats()
     {
+        if (hideIfCharacterIsBoss && character.IsBoss)
+            return;
         characterStatsRoot.SetActive(true);
     }
 

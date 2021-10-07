@@ -23,7 +23,9 @@ public class BaseGamePlayFormation : MonoBehaviour
                 var itemId = playerFormation.ItemId;
                 PlayerItem item;
                 if (!string.IsNullOrEmpty(itemId) && PlayerItem.DataMap.TryGetValue(itemId, out item))
-                    SetCharacter(i, item);
+                {
+                    SetCharacter(i, item, false);
+                }
             }
         }
         if (BaseGamePlayManager.Helper != null &&
@@ -59,7 +61,7 @@ public class BaseGamePlayFormation : MonoBehaviour
         SetFormationCharacters(EBattleType.ClanBoss);
     }
 
-    public virtual void SetCharacters(PlayerItem[] items)
+    public virtual void SetCharacters(PlayerItem[] items, List<int> bossIndexes = null)
     {
         ClearCharacters();
         for (var i = 0; i < containers.Length; ++i)
@@ -67,11 +69,11 @@ public class BaseGamePlayFormation : MonoBehaviour
             if (items.Length <= i)
                 break;
             var item = items[i];
-            SetCharacter(i, item);
+            SetCharacter(i, item, bossIndexes != null && bossIndexes.Contains(i));
         }
     }
 
-    public virtual BaseCharacterEntity SetCharacter(int position, PlayerItem item)
+    public virtual BaseCharacterEntity SetCharacter(int position, PlayerItem item, bool isBoss)
     {
         if (position < 0 || position >= containers.Length || item == null || item.CharacterData == null)
             return null;
@@ -88,6 +90,7 @@ public class BaseGamePlayFormation : MonoBehaviour
         var character = Instantiate(item.CharacterData.model);
         character.SetFormation(this, position, container);
         character.Item = item;
+        character.IsBoss = isBoss;
         Characters[position] = character;
 
         return character;
