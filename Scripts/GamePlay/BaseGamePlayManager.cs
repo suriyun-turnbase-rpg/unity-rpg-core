@@ -25,7 +25,6 @@ public abstract class BaseGamePlayManager : MonoBehaviour
     public UICombatText combatMissPrefab;
     public UICombatText combatResistPrefab;
     [Header("Gameplay UI")]
-    public UICharacterStatsGeneric uiBossStats;
     public UIWin uiWin;
     public UILose uiLose;
     public UIArenaResult uiArenaResult;
