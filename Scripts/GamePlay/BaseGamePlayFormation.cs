@@ -7,6 +7,7 @@ public class BaseGamePlayFormation : MonoBehaviour
     public BaseGamePlayManager Manager { get { return BaseGamePlayManager.Singleton; } }
     public Transform[] containers;
     public Transform helperContainer;
+    public UIFormationCharacters uiFormationCharacters;
     public readonly Dictionary<int, BaseCharacterEntity> Characters = new Dictionary<int, BaseCharacterEntity>();
 
     public virtual void SetFormationCharacters(EBattleType battleType)
@@ -71,6 +72,8 @@ public class BaseGamePlayFormation : MonoBehaviour
             var item = items[i];
             SetCharacter(i, item, bossIndexes != null && bossIndexes.Contains(i));
         }
+        if (uiFormationCharacters != null)
+            uiFormationCharacters.SetFormation(this);
     }
 
     public virtual BaseCharacterEntity SetCharacter(int position, PlayerItem item, bool isBoss)
