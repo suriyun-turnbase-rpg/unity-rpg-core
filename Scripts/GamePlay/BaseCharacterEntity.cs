@@ -92,6 +92,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     public virtual bool IsActiveCharacter { get { return false; } }
     public virtual bool IsPlayerCharacter { get { return false; } }
     public bool IsBoss { get; set; }
+    public UICharacterStatsGeneric UiCharacterStats { get; set; }
 
     private Transform container;
     public Transform Container
