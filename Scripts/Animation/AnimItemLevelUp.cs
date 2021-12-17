@@ -14,9 +14,10 @@ public class AnimItemLevelUp : MonoBehaviour
     public float animationDurationEachMaterials = 0.8f;
     [Tooltip("Total duration = `animationDurationEachMaterials` * {materials amount} + `extraAnimationDuration`")]
     public float extraAnimationDuration = 0f;
-    public UnityEvent onLevelUp;
-    public UnityEvent onStart;
-    public UnityEvent onEnd;
+    public ObjectsActivatingByItemTiers objectsActivatingByItemTiers = new ObjectsActivatingByItemTiers();
+    public UnityEvent onLevelUp = new UnityEvent();
+    public UnityEvent onStart = new UnityEvent();
+    public UnityEvent onEnd = new UnityEvent();
 
     private PlayerItem oldItem;
     private PlayerItem newItem;
@@ -35,6 +36,8 @@ public class AnimItemLevelUp : MonoBehaviour
 
     public void Play(PlayerItem oldItem, PlayerItem newItem, List<PlayerItem> materials)
     {
+        objectsActivatingByItemTiers.Activate(oldItem.Tier);
+
         if (oldItem.Exp == newItem.Exp)
             return;
 

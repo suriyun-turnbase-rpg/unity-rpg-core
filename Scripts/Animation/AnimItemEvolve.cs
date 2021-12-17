@@ -13,15 +13,17 @@ public class AnimItemEvolve : MonoBehaviour
     public float animationDurationEachMaterials = 0.8f;
     [Tooltip("Total duration = `animationDurationEachMaterials` * {materials amount} + `extraAnimationDuration`")]
     public float extraAnimationDuration = 0f;
-    public UnityEvent onEvolve;
-    public UnityEvent onStart;
-    public UnityEvent onEnd;
+    public ObjectsActivatingByItemTiers objectsActivatingByItemTiers = new ObjectsActivatingByItemTiers();
+    public UnityEvent onEvolve = new UnityEvent();
+    public UnityEvent onStart = new UnityEvent();
+    public UnityEvent onEnd = new UnityEvent();
 
     private PlayerItem oldItem;
     private PlayerItem newItem;
 
     public void Play(PlayerItem oldItem, PlayerItem newItem, List<PlayerItem> materials)
     {
+        objectsActivatingByItemTiers.Activate(oldItem.Tier);
         onStart.Invoke();
 
         this.oldItem = oldItem;
@@ -58,6 +60,7 @@ public class AnimItemEvolve : MonoBehaviour
     IEnumerator DelayBeforePlay(float delay)
     {
         yield return new WaitForSeconds(delay);
+        objectsActivatingByItemTiers.Activate(newItem.Tier);
         uiEvolveItem.SetData(newItem);
         uiLevel.level = newItem.Level;
         uiLevel.maxLevel = newItem.MaxLevel;
