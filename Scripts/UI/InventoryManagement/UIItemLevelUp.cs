@@ -22,6 +22,8 @@ public class UIItemLevelUp : UIItemWithMaterials
     {
         base.Show();
         SetupLevelUp();
+        if (uiAvailableItemList != null)
+            uiAvailableItemList.selectionMode = UIDataItemSelectionMode.MultipleToggle;
     }
 
     public void SetupLevelUp()
