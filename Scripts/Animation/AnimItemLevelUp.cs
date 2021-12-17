@@ -122,6 +122,9 @@ public class AnimItemLevelUp : MonoBehaviour
         }
         uiLevel.currentExp = (int)collectExp;
         uiLevel.requiredExp = (int)nextExp;
+        // Smooth fill amount
+        if (uiLevel.imageExpGage != null)
+            uiLevel.imageExpGage.fillAmount = collectExp / nextExp;
     }
 
     public void Skip()

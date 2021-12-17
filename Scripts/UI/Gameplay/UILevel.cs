@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(int.MinValue)]
 public class UILevel : MonoBehaviour, ILevel
 {
     public Text textLevel;
