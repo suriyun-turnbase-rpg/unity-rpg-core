@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class UIItemWithMaterials : UIItemSelection
+﻿public abstract class UIItemWithMaterials : UIItemSelection
 {
     public UIItem uiBeforeInfo;
     public UIItem uiAfterInfo;
