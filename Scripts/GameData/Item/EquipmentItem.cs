@@ -19,7 +19,7 @@ public class EquipmentItem : BaseActorItem
 #if UNITY_EDITOR
     public override BaseActorItem CreateEvolveItemAsset(CreateEvolveItemData createEvolveItemData)
     {
-        var newItem = ScriptableObjectUtility.CreateAsset<EquipmentItem>(name);
+        var newItem = ScriptableObjectUtility.CreateAsset<EquipmentItem>(Id);
         newItem.extraAttributes = extraAttributes.Clone();
         newItem.skills = new List<BaseSkill>(skills);
         newItem.equippablePositions = new List<string>(equippablePositions);

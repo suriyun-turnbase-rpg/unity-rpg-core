@@ -394,9 +394,9 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
         var requiredMaterials = SpecificEvolveInfo.requiredMaterials;
         foreach (var requiredMaterial in requiredMaterials)
         {
-            if (requiredMaterial.item == null || string.IsNullOrEmpty(requiredMaterial.item.name))
+            if (requiredMaterial.item == null || string.IsNullOrEmpty(requiredMaterial.item.Id))
                 continue;
-            var dataId = requiredMaterial.item.name;
+            var dataId = requiredMaterial.item.Id;
             if (!evolveMaterials.ContainsKey(dataId))
                 evolveMaterials.Add(dataId, requiredMaterial.amount);
             else

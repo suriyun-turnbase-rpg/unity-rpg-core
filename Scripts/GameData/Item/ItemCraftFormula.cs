@@ -31,9 +31,9 @@ public class ItemCraftFormula : BaseGameData
         cacheMaterials = new Dictionary<string, int>();
         foreach (var material in materials)
         {
-            if (material.item == null || string.IsNullOrEmpty(material.item.name))
+            if (material.item == null || string.IsNullOrEmpty(material.item.Id))
                 continue;
-            var dataId = material.item.name;
+            var dataId = material.item.Id;
             if (!cacheMaterials.ContainsKey(dataId))
                 cacheMaterials.Add(dataId, material.amount);
             else

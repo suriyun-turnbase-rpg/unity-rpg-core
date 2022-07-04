@@ -19,7 +19,7 @@ public class CharacterItem : BaseActorItem
 #if UNITY_EDITOR
     public override BaseActorItem CreateEvolveItemAsset(CreateEvolveItemData createEvolveItemData)
     {
-        var newItem = ScriptableObjectUtility.CreateAsset<CharacterItem>(name);
+        var newItem = ScriptableObjectUtility.CreateAsset<CharacterItem>(Id);
         newItem.attackAnimations = new List<BaseAttackAnimationData>(attackAnimations);
         newItem.skills = new List<BaseSkill>(skills);
         newItem.model = model;
