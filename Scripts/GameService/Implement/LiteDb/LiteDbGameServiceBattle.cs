@@ -28,7 +28,7 @@ public partial class LiteDbGameService
             result.error = GameServiceErrorCode.INVALID_STAGE_NOT_AVAILABLE;
         else
         {
-            colPlayerBattle.Delete(a => a.PlayerId == playerId && a.BattleResult == (byte)EBattleResult.None && a.BattleType == (byte)EBattleType.Stage);
+            colPlayerBattle.DeleteMany(a => a.PlayerId == playerId && a.BattleResult == (byte)EBattleResult.None && a.BattleType == (byte)EBattleType.Stage);
             var stage = gameDb.Stages[stageDataId];
             var stageStaminaTable = gameDb.stageStamina;
             if (string.IsNullOrEmpty(stage.requireCustomStamina) &&

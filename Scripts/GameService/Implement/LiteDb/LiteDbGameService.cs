@@ -9,16 +9,16 @@ public partial class LiteDbGameService : BaseGameService
 {
     public string dbPath = "./tbRpgDb.db";
     private LiteDatabase db;
-    private LiteCollection<DbPlayer> colPlayer;
-    private LiteCollection<DbPlayerItem> colPlayerItem;
-    private LiteCollection<DbPlayerAchievement> colPlayerAchievement;
-    private LiteCollection<DbPlayerAuth> colPlayerAuth;
-    private LiteCollection<DbPlayerCurrency> colPlayerCurrency;
-    private LiteCollection<DbPlayerStamina> colPlayerStamina;
-    private LiteCollection<DbPlayerFormation> colPlayerFormation;
-    private LiteCollection<DbPlayerUnlockItem> colPlayerUnlockItem;
-    private LiteCollection<DbPlayerClearStage> colPlayerClearStage;
-    private LiteCollection<DbPlayerBattle> colPlayerBattle;
+    private ILiteCollection<DbPlayer> colPlayer;
+    private ILiteCollection<DbPlayerItem> colPlayerItem;
+    private ILiteCollection<DbPlayerAchievement> colPlayerAchievement;
+    private ILiteCollection<DbPlayerAuth> colPlayerAuth;
+    private ILiteCollection<DbPlayerCurrency> colPlayerCurrency;
+    private ILiteCollection<DbPlayerStamina> colPlayerStamina;
+    private ILiteCollection<DbPlayerFormation> colPlayerFormation;
+    private ILiteCollection<DbPlayerUnlockItem> colPlayerUnlockItem;
+    private ILiteCollection<DbPlayerClearStage> colPlayerClearStage;
+    private ILiteCollection<DbPlayerBattle> colPlayerBattle;
 
     private void Awake()
     {

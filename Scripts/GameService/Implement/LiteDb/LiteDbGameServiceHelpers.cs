@@ -41,11 +41,11 @@ public partial class LiteDbGameService
             colPlayerCurrency.Update(playerCurrency);
         }
 
-        colPlayerClearStage.Delete(a => a.PlayerId == player.Id);
-        colPlayerFormation.Delete(a => a.PlayerId == player.Id);
-        colPlayerItem.Delete(a => a.PlayerId == player.Id);
-        colPlayerStamina.Delete(a => a.PlayerId == player.Id);
-        colPlayerUnlockItem.Delete(a => a.PlayerId == player.Id);
+        colPlayerClearStage.DeleteMany(a => a.PlayerId == player.Id);
+        colPlayerFormation.DeleteMany(a => a.PlayerId == player.Id);
+        colPlayerItem.DeleteMany(a => a.PlayerId == player.Id);
+        colPlayerStamina.DeleteMany(a => a.PlayerId == player.Id);
+        colPlayerUnlockItem.DeleteMany(a => a.PlayerId == player.Id);
 
         for (var i = 0; i < gameDb.startItems.Length; ++i)
         {

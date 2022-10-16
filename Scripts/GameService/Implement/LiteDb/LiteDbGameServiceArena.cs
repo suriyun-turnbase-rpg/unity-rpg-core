@@ -28,7 +28,7 @@ public partial class LiteDbGameService
         else
         {
             var fakePlayer = gameDb.FakePlayers[targetPlayerId];
-            colPlayerBattle.Delete(a => a.PlayerId == playerId && a.BattleResult == (byte)EBattleResult.None && a.BattleType == (byte)EBattleType.Arena);
+            colPlayerBattle.DeleteMany(a => a.PlayerId == playerId && a.BattleResult == (byte)EBattleResult.None && a.BattleType == (byte)EBattleType.Arena);
             var stage = gameDb.FakePlayers[targetPlayerId];
             var arenaStaminaTable = gameDb.arenaStamina;
             if (!DecreasePlayerStamina(player, arenaStaminaTable, 1))
