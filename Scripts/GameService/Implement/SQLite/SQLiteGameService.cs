@@ -244,7 +244,12 @@ public partial class SQLiteGameService : BaseGameService
             selectedArenaFormation TEXT NOT NULL DEFAULT '',
             arenaScore INTEGER NOT NULL DEFAULT 0,
             highestArenaRank INTEGER NOT NULL DEFAULT 0,
-            highestArenaRankCurrentSeason INTEGER NOT NULL DEFAULT 0)");
+            highestArenaRankCurrentSeason INTEGER NOT NULL DEFAULT 0,
+            clanId TEXT NOT NULL DEFAULT '',
+            clanRole INTEGER NOT NULL DEFAULT 0,
+            iconId TEXT NOT NULL DEFAULT '',
+            frameId TEXT NOT NULL DEFAULT '',
+            titleId TEXT NOT NULL DEFAULT '')");
 
         ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerItem (
             id TEXT NOT NULL PRIMARY KEY,
@@ -325,6 +330,21 @@ public partial class SQLiteGameService : BaseGameService
 
         if (!IsColumnExist("player", "selectedArenaFormation"))
             ExecuteNonQuery("ALTER TABLE player ADD selectedArenaFormation TEXT NOT NULL DEFAULT '';");
+
+        if (!IsColumnExist("player", "clanId"))
+            ExecuteNonQuery("ALTER TABLE player ADD clanId TEXT NOT NULL DEFAULT '';");
+
+        if (!IsColumnExist("playerBattle", "clanRole"))
+            ExecuteNonQuery("ALTER TABLE playerBattle ADD clanRole INTEGER NOT NULL DEFAULT 0;");
+
+        if (!IsColumnExist("player", "iconId"))
+            ExecuteNonQuery("ALTER TABLE player ADD iconId TEXT NOT NULL DEFAULT '';");
+
+        if (!IsColumnExist("player", "frameId"))
+            ExecuteNonQuery("ALTER TABLE player ADD frameId TEXT NOT NULL DEFAULT '';");
+
+        if (!IsColumnExist("player", "titleId"))
+            ExecuteNonQuery("ALTER TABLE player ADD titleId TEXT NOT NULL DEFAULT '';");
 
         if (!IsColumnExist("playerBattle", "battleType"))
             ExecuteNonQuery("ALTER TABLE playerBattle ADD battleType INTEGER NOT NULL DEFAULT 0;");
