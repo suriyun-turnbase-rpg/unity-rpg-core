@@ -50,6 +50,12 @@ public partial class Player : BasePlayerData, ILevel, IPlayer
     public string ClanId { get { return clanId; } set { clanId = value; } }
     public byte clanRole;
     public byte ClanRole { get { return clanRole; } set { clanRole = value; } }
+    public string iconId;
+    public string IconId { get { return iconId; } set { iconId = value; } }
+    public string frameId;
+    public string FrameId { get { return frameId; } set { frameId = value; } }
+    public string titleId;
+    public string TitleId { get { return titleId; } set { titleId = value; } }
     public bool isFriend;
 
     public bool JoinedClan
@@ -113,6 +119,9 @@ public partial class Player : BasePlayerData, ILevel, IPlayer
         to.HighestArenaRankCurrentSeason = from.HighestArenaRankCurrentSeason;
         to.ClanId = from.ClanId;
         to.ClanRole = from.ClanRole;
+        to.IconId = from.IconId;
+        to.FrameId = from.FrameId;
+        to.TitleId = from.TitleId;
         return to;
     }
 

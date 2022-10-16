@@ -11,6 +11,12 @@ public partial class Clan : ILevel, IClan
     public string Description { get { return description; } set { description = value; } }
     public Player owner;
     public Player Owner { get { return owner; } set { owner = value; } }
+    public string iconId;
+    public string IconId { get { return iconId; } set { iconId = value; } }
+    public string frameId;
+    public string FrameId { get { return frameId; } set { frameId = value; } }
+    public string titleId;
+    public string TitleId { get { return titleId; } set { titleId = value; } }
 
     private int level = -1;
     private int collectExp = -1;
@@ -85,6 +91,9 @@ public partial class Clan : ILevel, IClan
         to.Exp = from.Exp;
         to.Description = from.Description;
         to.Owner = from.Owner;
+        to.IconId = from.IconId;
+        to.FrameId = from.FrameId;
+        to.TitleId = from.TitleId;
         return to;
     }
 }

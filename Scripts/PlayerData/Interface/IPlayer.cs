@@ -13,4 +13,7 @@
     int HighestArenaRankCurrentSeason { get; set; }
     string ClanId { get; set; }
     byte ClanRole { get; set; }
+    string IconId { get; set; }
+    string FrameId { get; set; }
+    string TitleId { get; set; }
 }

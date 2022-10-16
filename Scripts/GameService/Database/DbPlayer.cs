@@ -30,6 +30,12 @@ public partial class DbPlayer : IPlayer
     public string ClanId { get { return clanId; } set { clanId = value; } }
     public byte clanRole;
     public byte ClanRole { get { return clanRole; } set { clanRole = value; } }
+    public string iconId;
+    public string IconId { get { return iconId; } set { iconId = value; } }
+    public string frameId;
+    public string FrameId { get { return frameId; } set { frameId = value; } }
+    public string titleId;
+    public string TitleId { get { return titleId; } set { titleId = value; } }
 
     public static List<Player> CloneList(IEnumerable<DbPlayer> list)
     {
