@@ -304,6 +304,21 @@ public partial class SQLiteGameService : BaseGameService
             dataId TEXT NOT NULL,
             amount INTEGER NOT NULL)");
 
+        ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerUnlockIcon (
+            id TEXT NOT NULL PRIMARY KEY,
+            playerId TEXT NOT NULL,
+            iconId TEXT NOT NULL)");
+
+        ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerUnlockFrame (
+            id TEXT NOT NULL PRIMARY KEY,
+            playerId TEXT NOT NULL,
+            frameId TEXT NOT NULL)");
+
+        ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerUnlockTitle (
+            id TEXT NOT NULL PRIMARY KEY,
+            playerId TEXT NOT NULL,
+            titleId TEXT NOT NULL)");
+
         ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS playerClearStage (
             id TEXT NOT NULL PRIMARY KEY,
             playerId TEXT NOT NULL,

@@ -122,6 +122,14 @@ public partial class GameDatabase : ScriptableObject
     public ClanDonation[] clanDonations;
     public byte maxClanDonation = 5;
 
+    [Header("Other Unlockables")]
+    public GenericUnlockable[] playerIcons;
+    public GenericUnlockable[] playerFrames;
+    public GenericUnlockable[] playerTitles;
+    public GenericUnlockable[] clanIcons;
+    public GenericUnlockable[] clanFrames;
+    public GenericUnlockable[] clanTitles;
+
     public readonly Dictionary<string, BaseItem> Items = new Dictionary<string, BaseItem>();
     public readonly Dictionary<string, ClanDonation> ClanDonations = new Dictionary<string, ClanDonation>();
     public readonly Dictionary<string, Currency> Currencies = new Dictionary<string, Currency>();
@@ -136,6 +144,12 @@ public partial class GameDatabase : ScriptableObject
     public readonly Dictionary<string, RandomStore> RandomStores = new Dictionary<string, RandomStore>();
     public readonly Dictionary<string, InGamePackage> InGamePackages = new Dictionary<string, InGamePackage>();
     public readonly Dictionary<string, IapPackage> IapPackages = new Dictionary<string, IapPackage>();
+    public readonly Dictionary<string, GenericUnlockable> PlayerIcons = new Dictionary<string, GenericUnlockable>();
+    public readonly Dictionary<string, GenericUnlockable> PlayerFrames = new Dictionary<string, GenericUnlockable>();
+    public readonly Dictionary<string, GenericUnlockable> PlayerTitles = new Dictionary<string, GenericUnlockable>();
+    public readonly Dictionary<string, GenericUnlockable> ClanIcons = new Dictionary<string, GenericUnlockable>();
+    public readonly Dictionary<string, GenericUnlockable> ClanFrames = new Dictionary<string, GenericUnlockable>();
+    public readonly Dictionary<string, GenericUnlockable> ClanTitles = new Dictionary<string, GenericUnlockable>();
     public readonly Dictionary<string, FakePlayer> FakePlayers = new Dictionary<string, FakePlayer>();
 
     public void Setup()
@@ -154,6 +168,12 @@ public partial class GameDatabase : ScriptableObject
         RandomStores.Clear();
         InGamePackages.Clear();
         IapPackages.Clear();
+        PlayerIcons.Clear();
+        PlayerFrames.Clear();
+        PlayerTitles.Clear();
+        ClanIcons.Clear();
+        ClanFrames.Clear();
+        ClanTitles.Clear();
         FakePlayers.Clear();
 
         AddItemsToDatabase(items);
@@ -217,6 +237,12 @@ public partial class GameDatabase : ScriptableObject
         AddRandomStoresToDatabase(randomStores);
         AddInGamePackagesToDatabase(inGamePackages);
         AddIapPackagesToDatabase(iapPackages);
+        AddPlayerIconsToDatabase(playerIcons);
+        AddPlayerFramesToDatabase(playerFrames);
+        AddPlayerTitlesToDatabase(playerTitles);
+        AddClanIconsToDatabase(clanIcons);
+        AddClanFramesToDatabase(clanFrames);
+        AddClanTitlesToDatabase(clanTitles);
         AddFakePlayersToDatabase(fakePlayers);
     }
 
@@ -374,6 +400,90 @@ public partial class GameDatabase : ScriptableObject
         }
     }
 
+    private void AddPlayerIconsToDatabase(IEnumerable<GenericUnlockable> entries)
+    {
+        foreach (var entry in entries)
+        {
+            if (entry == null)
+                continue;
+            var dataId = entry.Id;
+            if (!string.IsNullOrEmpty(dataId) && !PlayerIcons.ContainsKey(dataId))
+            {
+                PlayerIcons[dataId] = entry;
+            }
+        }
+    }
+
+    private void AddPlayerFramesToDatabase(IEnumerable<GenericUnlockable> entries)
+    {
+        foreach (var entry in entries)
+        {
+            if (entry == null)
+                continue;
+            var dataId = entry.Id;
+            if (!string.IsNullOrEmpty(dataId) && !PlayerFrames.ContainsKey(dataId))
+            {
+                PlayerFrames[dataId] = entry;
+            }
+        }
+    }
+
+    private void AddPlayerTitlesToDatabase(IEnumerable<GenericUnlockable> entries)
+    {
+        foreach (var entry in entries)
+        {
+            if (entry == null)
+                continue;
+            var dataId = entry.Id;
+            if (!string.IsNullOrEmpty(dataId) && !PlayerTitles.ContainsKey(dataId))
+            {
+                PlayerTitles[dataId] = entry;
+            }
+        }
+    }
+
+    private void AddClanIconsToDatabase(IEnumerable<GenericUnlockable> entries)
+    {
+        foreach (var entry in entries)
+        {
+            if (entry == null)
+                continue;
+            var dataId = entry.Id;
+            if (!string.IsNullOrEmpty(dataId) && !ClanIcons.ContainsKey(dataId))
+            {
+                ClanIcons[dataId] = entry;
+            }
+        }
+    }
+
+    private void AddClanFramesToDatabase(IEnumerable<GenericUnlockable> entries)
+    {
+        foreach (var entry in entries)
+        {
+            if (entry == null)
+                continue;
+            var dataId = entry.Id;
+            if (!string.IsNullOrEmpty(dataId) && !ClanFrames.ContainsKey(dataId))
+            {
+                ClanFrames[dataId] = entry;
+            }
+        }
+    }
+
+    private void AddClanTitlesToDatabase(IEnumerable<GenericUnlockable> entries)
+    {
+        foreach (var entry in entries)
+        {
+            if (entry == null)
+                continue;
+            var dataId = entry.Id;
+            if (!string.IsNullOrEmpty(dataId) && !ClanTitles.ContainsKey(dataId))
+            {
+                ClanTitles[dataId] = entry;
+            }
+        }
+    }
+
     private void AddFakePlayersToDatabase(IEnumerable<FakePlayer> fakePlayers)
     {
         foreach (var fakePlayer in fakePlayers)
@@ -405,6 +515,12 @@ public partial class GameDatabase : ScriptableObject
         var randomStoresJson = string.Empty;
         var iapPackagesJson = string.Empty;
         var inGamePackagesJson = string.Empty;
+        var playerIconsJson = string.Empty;
+        var playerFramesJson = string.Empty;
+        var playerTitlesJson = string.Empty;
+        var clanIconsJson = string.Empty;
+        var clanFramesJson = string.Empty;
+        var clanTitlesJson = string.Empty;
         var startItemsJson = string.Empty;
         var startCharactersJson = string.Empty;
         var unlockStagesJson = string.Empty;
@@ -523,6 +639,54 @@ public partial class GameDatabase : ScriptableObject
         }
         inGamePackagesJson = "{" + inGamePackagesJson + "}";
 
+        foreach (var entry in gameDatabase.PlayerIcons)
+        {
+            if (!string.IsNullOrEmpty(playerIconsJson))
+                playerIconsJson += ",";
+            playerIconsJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        playerIconsJson = "{" + playerIconsJson + "}";
+
+        foreach (var entry in gameDatabase.PlayerFrames)
+        {
+            if (!string.IsNullOrEmpty(playerFramesJson))
+                playerFramesJson += ",";
+            playerFramesJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        playerFramesJson = "{" + playerFramesJson + "}";
+
+        foreach (var entry in gameDatabase.PlayerTitles)
+        {
+            if (!string.IsNullOrEmpty(playerTitlesJson))
+                playerTitlesJson += ",";
+            playerTitlesJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        playerTitlesJson = "{" + playerTitlesJson + "}";
+
+        foreach (var entry in gameDatabase.ClanIcons)
+        {
+            if (!string.IsNullOrEmpty(clanIconsJson))
+                clanIconsJson += ",";
+            clanIconsJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        clanIconsJson = "{" + clanIconsJson + "}";
+
+        foreach (var entry in gameDatabase.ClanFrames)
+        {
+            if (!string.IsNullOrEmpty(clanFramesJson))
+                clanFramesJson += ",";
+            clanFramesJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        clanFramesJson = "{" + clanFramesJson + "}";
+
+        foreach (var entry in gameDatabase.ClanTitles)
+        {
+            if (!string.IsNullOrEmpty(clanTitlesJson))
+                clanTitlesJson += ",";
+            clanTitlesJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        clanTitlesJson = "{" + clanTitlesJson + "}";
+
         foreach (var entry in gameDatabase.startItems)
         {
             if (entry == null || entry.item == null)
@@ -590,6 +754,12 @@ public partial class GameDatabase : ScriptableObject
         keyValues["randomStores"] = randomStoresJson;
         keyValues["iapPackages"] = iapPackagesJson;
         keyValues["inGamePackages"] = inGamePackagesJson;
+        keyValues["playerIcons"] = playerIconsJson;
+        keyValues["playerFrames"] = playerFramesJson;
+        keyValues["playerTitles"] = playerTitlesJson;
+        keyValues["clanIcons"] = clanIconsJson;
+        keyValues["clanFrames"] = clanFramesJson;
+        keyValues["clanTitles"] = clanTitlesJson;
         keyValues["hardToSoftCurrencyConversion"] = gameDatabase.hardToSoftCurrencyConversion.ToString();
         keyValues["startItems"] = startItemsJson;
         keyValues["startCharacters"] = startCharactersJson;
