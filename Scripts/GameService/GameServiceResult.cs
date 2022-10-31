@@ -369,6 +369,12 @@ public class FormationCharactersAndEquipmentsResult : GameServiceResult
 }
 
 [System.Serializable]
+public class AllDailyRewardListResult : GameServiceResult
+{
+    public List<DailyRewardListResult> dailyRewards = new List<DailyRewardListResult>();
+}
+
+[System.Serializable]
 public class DailyRewardListResult : GameServiceResult
 {
     public List<ClaimableDailyReward> rewards = new List<ClaimableDailyReward>();
