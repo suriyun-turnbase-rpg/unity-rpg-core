@@ -377,6 +377,7 @@ public class AllDailyRewardListResult : GameServiceResult
 [System.Serializable]
 public class DailyRewardListResult : GameServiceResult
 {
+    public string id;
     public List<ClaimableDailyReward> rewards = new List<ClaimableDailyReward>();
     public int currentDate;
     public int cycleStart;
