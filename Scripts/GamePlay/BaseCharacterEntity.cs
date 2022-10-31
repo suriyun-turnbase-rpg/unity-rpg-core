@@ -339,7 +339,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
 
             if (stealHp > 0f)
             {
-                Manager.SpawnHealText((int)stealHp, this, hitCount);
+                Manager.SpawnHealText((int)stealHp, attacker, hitCount);
                 attacker.Hp += stealHp;
             }
         }
