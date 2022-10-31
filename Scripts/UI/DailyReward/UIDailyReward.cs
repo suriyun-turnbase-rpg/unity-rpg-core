@@ -14,7 +14,7 @@ public class UIDailyReward : UIDataItem<RewardData>
     public string Id { get; protected set; }
     public int Day { get; protected set; }
     public bool IsClaimed { get; protected set; }
-    public bool CanClaimed { get; protected set; }
+    public bool CanClaim { get; protected set; }
 
     public override void Clear()
     {
@@ -83,7 +83,7 @@ public class UIDailyReward : UIDataItem<RewardData>
         Id = id;
         Day = day;
         IsClaimed = isClaimed;
-        CanClaimed = canClaim;
+        CanClaim = canClaim;
 
         if (textDay != null)
             textDay.text = day.ToString("N0");
