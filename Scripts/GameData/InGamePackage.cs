@@ -19,16 +19,18 @@ public class InGamePackage : BaseGameData
 
     public virtual string ToJson()
     {
-        // Rewards
+        // Reward Items
         var jsonRewardItems = "";
-        foreach (var entry in rewardItems)
+        if (rewardItems != null)
         {
-            if (!string.IsNullOrEmpty(jsonRewardItems))
-                jsonRewardItems += ",";
-            jsonRewardItems += entry.ToJson();
+            foreach (var entry in rewardItems)
+            {
+                if (!string.IsNullOrEmpty(jsonRewardItems))
+                    jsonRewardItems += ",";
+                jsonRewardItems += entry.ToJson();
+            }
         }
         jsonRewardItems = "[" + jsonRewardItems + "]";
-        // Combine
         return "{\"id\":\"" + Id + "\"," +
             "\"requirementType\":" + (byte)requirementType + "," +
             "\"price\":" + price + "," +

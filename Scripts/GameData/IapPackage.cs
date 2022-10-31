@@ -102,13 +102,16 @@ public class IapPackage : BaseGameData
 
     public virtual string ToJson()
     {
-        // Items
+        // Reward Items
         var jsonRewardItems = "";
-        foreach (var entry in rewardItems)
+        if (rewardItems != null)
         {
-            if (!string.IsNullOrEmpty(jsonRewardItems))
-                jsonRewardItems += ",";
-            jsonRewardItems += entry.ToJson();
+            foreach (var entry in rewardItems)
+            {
+                if (!string.IsNullOrEmpty(jsonRewardItems))
+                    jsonRewardItems += ",";
+                jsonRewardItems += entry.ToJson();
+            }
         }
         jsonRewardItems = "[" + jsonRewardItems + "]";
         // Combine
