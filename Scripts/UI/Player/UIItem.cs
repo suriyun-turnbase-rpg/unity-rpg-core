@@ -348,6 +348,7 @@ public class UIItem : UIDataItem<PlayerItem>
 
         var attributes = data.Attributes;
         var itemData = data.ItemData;
+        var tier = data.Tier;
 
         if (textTitle != null)
             textTitle.text = itemData == null ? "" : itemData.Title;
@@ -365,22 +366,22 @@ public class UIItem : UIDataItem<PlayerItem>
             imageIcon3.sprite = itemData == null ? null : itemData.icon3;
 
         if (textAmount != null)
-            textAmount.text = data.Amount.ToString("N0") + "/" + data.ItemData.MaxStack.ToString("N0");
+            textAmount.text = data.Amount.ToString("N0") + (itemData == null ? string.Empty : ("/" + itemData.MaxStack.ToString("N0")));
 
         if (textTierTitle)
-            textTierTitle.text = data.Tier == null ? "" : data.Tier.Title;
+            textTierTitle.text = tier == null ? "" : tier.Title;
 
         if (textTierDescription)
-            textTierDescription.text = data.Tier == null ? "" : data.Tier.Description;
+            textTierDescription.text = tier == null ? "" : tier.Description;
 
         if (imageTierIcon != null)
-            imageTierIcon.sprite = data.Tier == null ? null : data.Tier.icon;
+            imageTierIcon.sprite = tier == null ? null : tier.icon;
 
         if (imageTierIcon2 != null)
-            imageTierIcon2.sprite = data.Tier == null ? null : data.Tier.icon2;
+            imageTierIcon2.sprite = tier == null ? null : tier.icon2;
 
         if (imageTierIcon3 != null)
-            imageTierIcon3.sprite = data.Tier == null ? null : data.Tier.icon3;
+            imageTierIcon3.sprite = tier == null ? null : tier.icon3;
 
         if (textElementalTitle != null)
         {
