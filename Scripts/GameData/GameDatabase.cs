@@ -122,6 +122,9 @@ public partial class GameDatabase : ScriptableObject
     public ClanDonation[] clanDonations;
     public byte maxClanDonation = 5;
 
+    [Header("Daily Reward")]
+    public DailyReward[] dailyRewards;
+
     [Header("Other Unlockables")]
     public GenericUnlockable[] playerIcons;
     public GenericUnlockable[] playerFrames;
@@ -150,6 +153,7 @@ public partial class GameDatabase : ScriptableObject
     public readonly Dictionary<string, GenericUnlockable> ClanIcons = new Dictionary<string, GenericUnlockable>();
     public readonly Dictionary<string, GenericUnlockable> ClanFrames = new Dictionary<string, GenericUnlockable>();
     public readonly Dictionary<string, GenericUnlockable> ClanTitles = new Dictionary<string, GenericUnlockable>();
+    public readonly Dictionary<string, DailyReward> DailyRewards = new Dictionary<string, DailyReward>();
     public readonly Dictionary<string, FakePlayer> FakePlayers = new Dictionary<string, FakePlayer>();
 
     public void Setup()
@@ -174,6 +178,7 @@ public partial class GameDatabase : ScriptableObject
         ClanIcons.Clear();
         ClanFrames.Clear();
         ClanTitles.Clear();
+        DailyRewards.Clear();
         FakePlayers.Clear();
 
         AddItemsToDatabase(items);
@@ -243,6 +248,7 @@ public partial class GameDatabase : ScriptableObject
         AddClanIconsToDatabase(clanIcons);
         AddClanFramesToDatabase(clanFrames);
         AddClanTitlesToDatabase(clanTitles);
+        AddDailyRewardsToDatabase(dailyRewards);
         AddFakePlayersToDatabase(fakePlayers);
     }
 
@@ -484,6 +490,20 @@ public partial class GameDatabase : ScriptableObject
         }
     }
 
+    private void AddDailyRewardsToDatabase(IEnumerable<DailyReward> entries)
+    {
+        foreach (var entry in entries)
+        {
+            if (entry == null)
+                continue;
+            var dataId = entry.Id;
+            if (!string.IsNullOrEmpty(dataId) && !DailyRewards.ContainsKey(dataId))
+            {
+                DailyRewards[dataId] = entry;
+            }
+        }
+    }
+
     private void AddFakePlayersToDatabase(IEnumerable<FakePlayer> fakePlayers)
     {
         foreach (var fakePlayer in fakePlayers)
@@ -521,6 +541,7 @@ public partial class GameDatabase : ScriptableObject
         var clanIconsJson = string.Empty;
         var clanFramesJson = string.Empty;
         var clanTitlesJson = string.Empty;
+        var dailyRewardsJson = string.Empty;
         var startItemsJson = string.Empty;
         var startCharactersJson = string.Empty;
         var unlockStagesJson = string.Empty;
@@ -687,6 +708,14 @@ public partial class GameDatabase : ScriptableObject
         }
         clanTitlesJson = "{" + clanTitlesJson + "}";
 
+        foreach (var entry in gameDatabase.DailyRewards)
+        {
+            if (!string.IsNullOrEmpty(dailyRewardsJson))
+                dailyRewardsJson += ",";
+            dailyRewardsJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        dailyRewardsJson = "{" + dailyRewardsJson + "}";
+
         foreach (var entry in gameDatabase.startItems)
         {
             if (entry == null || entry.item == null)
@@ -760,6 +789,7 @@ public partial class GameDatabase : ScriptableObject
         keyValues["clanIcons"] = clanIconsJson;
         keyValues["clanFrames"] = clanFramesJson;
         keyValues["clanTitles"] = clanTitlesJson;
+        keyValues["dailyRewards"] = dailyRewardsJson;
         keyValues["hardToSoftCurrencyConversion"] = gameDatabase.hardToSoftCurrencyConversion.ToString();
         keyValues["startItems"] = startItemsJson;
         keyValues["startCharacters"] = startCharactersJson;
