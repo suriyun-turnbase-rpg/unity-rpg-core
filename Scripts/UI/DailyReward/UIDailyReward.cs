@@ -37,42 +37,36 @@ public class UIDailyReward : UIDataItem<RewardData>
         bool shown = false;
         if (uiRewardCurrency != null)
         {
+            uiRewardCurrency.Hide();
             if (data.currencies != null && data.currencies.Length > 0)
             {
-                uiRewardCurrency.data = new PlayerCurrency()
-                {
-                    DataId = data.currencies[0].id,
-                    Amount = data.currencies[0].amount,
-                };
                 if (!shown)
                 {
+                    uiRewardCurrency.data = new PlayerCurrency()
+                    {
+                        DataId = data.currencies[0].id,
+                        Amount = data.currencies[0].amount,
+                    };
                     uiRewardCurrency.Show();
                     shown = true;
-                }
-                else
-                {
-                    uiRewardCurrency.Hide();
                 }
             }
         }
 
         if (uiRewardItem != null)
         {
+            uiRewardItem.Hide();
             if (data.items != null && data.items.Length > 0)
             {
-                uiRewardItem.data = new PlayerItem()
-                {
-                    DataId = data.items[0].item.id,
-                    Amount = data.items[0].amount,
-                };
                 if (!shown)
                 {
+                    uiRewardItem.data = new PlayerItem()
+                    {
+                        DataId = data.items[0].item.id,
+                        Amount = data.items[0].amount,
+                    };
                     uiRewardItem.Show();
                     shown = true;
-                }
-                else
-                {
-                    uiRewardItem.Hide();
                 }
             }
         }
@@ -97,6 +91,8 @@ public class UIDailyReward : UIDataItem<RewardData>
 
     public void OnClickClaim()
     {
+        if (IsClaimed || !CanClaim)
+            return;
         uiDailyRewardManager.OnClickClaim();
     }
 }
