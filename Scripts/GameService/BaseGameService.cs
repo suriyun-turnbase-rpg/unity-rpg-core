@@ -1122,6 +1122,26 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoRefreshRandomStore(playerId, loginToken, id, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void GetDailyRewardList(string id, UnityAction<DailyRewardListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetDailyRewardList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetDailyRewardList(playerId, loginToken, id, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void ClaimDailyReward(string id, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: ClaimDailyReward");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoClaimDailyReward(playerId, loginToken, id, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     public void GetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetFormationCharactersAndEquipments");
@@ -1224,6 +1244,8 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoGetRandomStore(string playerId, string loginToken, string id, UnityAction<RandomStoreResult> onFinish);
     protected abstract void DoPurchaseRandomStoreItem(string playerId, string loginToken, string id, int index, UnityAction<PurchaseRandomStoreItemResult> onFinish);
     protected abstract void DoRefreshRandomStore(string playerId, string loginToken, string id, UnityAction<RefreshRandomStoreResult> onFinish);
+    protected abstract void DoGetDailyRewardList(string playerId, string loginToken, string id, UnityAction<DailyRewardListResult> onFinish);
+    protected abstract void DoClaimDailyReward(string playerId, string loginToken, string id, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoGetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish);
     protected abstract void DoGetArenaFormationCharactersAndEquipments(string playerId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish);
 }

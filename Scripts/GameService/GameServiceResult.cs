@@ -367,3 +367,12 @@ public class FormationCharactersAndEquipmentsResult : GameServiceResult
     public List<PlayerItem> characters = new List<PlayerItem>();
     public List<PlayerItem> equipments = new List<PlayerItem>();
 }
+
+[System.Serializable]
+public class DailyRewardListResult : GameServiceResult
+{
+    public List<ClaimableDailyReward> rewards = new List<ClaimableDailyReward>();
+    public int currentDate;
+    public int cycleStart;
+    public int cycleEnd;
+}

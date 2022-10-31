@@ -1,5 +1,4 @@
 ﻿[System.Serializable]
-
 public partial class Mail : IMail
 {
     public string id;
