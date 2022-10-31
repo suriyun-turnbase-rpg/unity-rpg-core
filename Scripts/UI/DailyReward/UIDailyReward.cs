@@ -8,7 +8,13 @@ public class UIDailyReward : UIDataItem<RewardData>
     public UICurrency uiRewardCurrency;
     public UIItem uiRewardItem;
     public Text textDay;
-    public GameObject receivedSignal;
+    public GameObject isClaimedSignal;
+    public GameObject canClaimSignal;
+    public UIDailyRewardManager uiDailyRewardManager;
+    public string Id { get; protected set; }
+    public int Day { get; protected set; }
+    public bool IsClaimed { get; protected set; }
+    public bool CanClaimed { get; protected set; }
 
     public override void Clear()
     {
@@ -72,8 +78,25 @@ public class UIDailyReward : UIDataItem<RewardData>
         }
     }
 
-    public void OnClickReceive()
+    public void SetupClaimData(string id, int day, bool isClaimed, bool canClaim)
     {
+        Id = id;
+        Day = day;
+        IsClaimed = isClaimed;
+        CanClaimed = canClaim;
 
+        if (textDay != null)
+            textDay.text = day.ToString("N0");
+
+        if (isClaimedSignal != null)
+            isClaimedSignal.SetActive(isClaimed);
+
+        if (canClaimSignal != null)
+            canClaimSignal.SetActive(canClaim);
+    }
+
+    public void OnClickClaim()
+    {
+        uiDailyRewardManager.OnClickClaim();
     }
 }
