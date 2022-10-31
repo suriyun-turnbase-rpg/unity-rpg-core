@@ -30,6 +30,6 @@ public struct RewardData
             }
         }
         jsonRewardItems = "[" + jsonRewardItems + "]";
-        return "{\"rewardCurrencies\":" + jsonRewardCurrencies + ", \"rewardItems\":" + jsonRewardItems + "}";
+        return "{\"currencies\":" + jsonRewardCurrencies + ", \"items\":" + jsonRewardItems + "}";
     }
 }
