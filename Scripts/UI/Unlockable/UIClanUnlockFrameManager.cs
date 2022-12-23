@@ -47,6 +47,7 @@ public class UIClanUnlockFrameManager : UIBase
 
     public void OnClickUse()
     {
-
+        GameInstance.GameService.SetClanFrame(uiGenericUnlockableList.GetSelectedUIList()[0].data.Id);
+        Hide();
     }
 }

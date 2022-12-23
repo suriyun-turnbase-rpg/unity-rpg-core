@@ -47,6 +47,7 @@ public class UIUnlockFrameManager : UIBase
 
     public void OnClickUse()
     {
-
+        GameInstance.GameService.SetPlayerFrame(uiGenericUnlockableList.GetSelectedUIList()[0].data.Id);
+        Hide();
     }
 }

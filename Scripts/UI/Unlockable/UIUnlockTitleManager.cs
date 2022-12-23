@@ -47,6 +47,7 @@ public class UIUnlockTitleManager : UIBase
 
     public void OnClickUse()
     {
-
+        GameInstance.GameService.SetPlayerTitle(uiGenericUnlockableList.GetSelectedUIList()[0].data.Id);
+        Hide();
     }
 }
