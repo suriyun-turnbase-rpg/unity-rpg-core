@@ -13,6 +13,12 @@ public class UIItemCraftManager : UIBase
 
     public void ReloadList()
     {
+        uiItemCraftList.selectionMode = UIDataItemSelectionMode.Toggle;
+        uiItemCraftList.eventSelect.RemoveListener(SelectItem);
+        uiItemCraftList.eventSelect.AddListener(SelectItem);
+        uiItemCraftList.eventDeselect.RemoveListener(DeselectItem);
+        uiItemCraftList.eventDeselect.AddListener(DeselectItem);
+        uiItemCraftList.ClearListItems();
         uiItemCraftList.SetListItems(new List<ItemCraftFormula>(GameInstance.GameDatabase.ItemCrafts.Values), (ui) =>
         {
             ui.uiItemCraftManager = this;
