@@ -21,7 +21,7 @@ public struct LootBoxReward
     public string ToJson()
     {
         if (string.IsNullOrEmpty(Id) || Amount <= 0)
-            return "";
+            return "{}";
         return "{\"id\":\"" + Id + "\"," +
             "\"amount\":" + Amount + "," +
             "\"randomWeight\":" + randomWeight + "}";

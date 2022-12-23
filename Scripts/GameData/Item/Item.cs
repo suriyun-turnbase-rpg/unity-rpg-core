@@ -18,7 +18,7 @@ public abstract class BaseItemAmount<T> where T : BaseItem
     public virtual string ToJson()
     {
         if (string.IsNullOrEmpty(Id) || amount <= 0)
-            return "";
+            return "{}";
         return "{\"id\":\"" + Id + "\"," +
             "\"amount\":" + amount + "}";
     }
@@ -32,7 +32,7 @@ public abstract class BaseItemDrop<T> : BaseItemAmount<T> where T : BaseItem
     public override string ToJson()
     {
         if (string.IsNullOrEmpty(Id) || amount <= 0)
-            return "";
+            return "{}";
         return "{\"id\":\"" + Id + "\"," +
             "\"amount\":" + amount + "," +
             "\"randomRate\":" + randomRate.ToString(new CultureInfo("en-US", false)) + "}";
