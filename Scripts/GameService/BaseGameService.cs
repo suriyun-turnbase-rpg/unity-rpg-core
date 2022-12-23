@@ -1152,6 +1152,66 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoClaimDailyReward(playerId, loginToken, id, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void GetUnlockIconList(UnityAction<UnlockIconListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetUnlockIconList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetUnlockIconList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void GetUnlockFrameList(UnityAction<UnlockFrameListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetUnlockFrameList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetUnlockFrameList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void GetUnlockTitleList(UnityAction<UnlockTitleListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetUnlockTitleList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetUnlockTitleList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void GetClanUnlockIconList(UnityAction<ClanUnlockIconListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetClanUnlockIconList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetClanUnlockIconList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void GetClanUnlockFrameList(UnityAction<ClanUnlockFrameListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetClanUnlockFrameList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetClanUnlockFrameList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void GetClanUnlockTitleList(UnityAction<ClanUnlockTitleListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetClanUnlockTitleList");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoGetClanUnlockTitleList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     public void GetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetFormationCharactersAndEquipments");
@@ -1257,6 +1317,12 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoGetAllDailyRewardList(string playerId, string loginToken, UnityAction<AllDailyRewardListResult> onFinish);
     protected abstract void DoGetDailyRewardList(string playerId, string loginToken, string id, UnityAction<DailyRewardListResult> onFinish);
     protected abstract void DoClaimDailyReward(string playerId, string loginToken, string id, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoGetUnlockIconList(string playerId, string loginToken, UnityAction<UnlockIconListResult> onFinish);
+    protected abstract void DoGetUnlockFrameList(string playerId, string loginToken, UnityAction<UnlockFrameListResult> onFinish);
+    protected abstract void DoGetUnlockTitleList(string playerId, string loginToken, UnityAction<UnlockTitleListResult> onFinish);
+    protected abstract void DoGetClanUnlockIconList(string playerId, string loginToken, UnityAction<ClanUnlockIconListResult> onFinish);
+    protected abstract void DoGetClanUnlockFrameList(string playerId, string loginToken, UnityAction<ClanUnlockFrameListResult> onFinish);
+    protected abstract void DoGetClanUnlockTitleList(string playerId, string loginToken, UnityAction<ClanUnlockTitleListResult> onFinish);
     protected abstract void DoGetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish);
     protected abstract void DoGetArenaFormationCharactersAndEquipments(string playerId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish);
 }

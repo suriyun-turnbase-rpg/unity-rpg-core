@@ -369,6 +369,42 @@ public class FormationCharactersAndEquipmentsResult : GameServiceResult
 }
 
 [System.Serializable]
+public class UnlockIconListResult : GameServiceResult
+{
+    public List<PlayerUnlockIcon> list = new List<PlayerUnlockIcon>();
+}
+
+[System.Serializable]
+public class UnlockFrameListResult : GameServiceResult
+{
+    public List<PlayerUnlockFrame> list = new List<PlayerUnlockFrame>();
+}
+
+[System.Serializable]
+public class UnlockTitleListResult : GameServiceResult
+{
+    public List<PlayerUnlockTitle> list = new List<PlayerUnlockTitle>();
+}
+
+[System.Serializable]
+public class ClanUnlockIconListResult : GameServiceResult
+{
+    public List<ClanUnlockIcon> list = new List<ClanUnlockIcon>();
+}
+
+[System.Serializable]
+public class ClanUnlockFrameListResult : GameServiceResult
+{
+    public List<ClanUnlockFrame> list = new List<ClanUnlockFrame>();
+}
+
+[System.Serializable]
+public class ClanUnlockTitleListResult : GameServiceResult
+{
+    public List<ClanUnlockTitle> list = new List<ClanUnlockTitle>();
+}
+
+[System.Serializable]
 public class AllDailyRewardListResult : GameServiceResult
 {
     public List<DailyRewardListResult> dailyRewards = new List<DailyRewardListResult>();
