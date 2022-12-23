@@ -19,6 +19,12 @@ public partial class LiteDbGameService : BaseGameService
     private ILiteCollection<DbPlayerUnlockItem> colPlayerUnlockItem;
     private ILiteCollection<DbPlayerClearStage> colPlayerClearStage;
     private ILiteCollection<DbPlayerBattle> colPlayerBattle;
+    private ILiteCollection<DbPlayerUnlockIcon> colPlayerUnlockIcon;
+    private ILiteCollection<DbPlayerUnlockFrame> colPlayerUnlockFrame;
+    private ILiteCollection<DbPlayerUnlockTitle> colPlayerUnlockTitle;
+    private ILiteCollection<DbClanUnlockIcon> colClanUnlockIcon;
+    private ILiteCollection<DbClanUnlockFrame> colClanUnlockFrame;
+    private ILiteCollection<DbClanUnlockTitle> colClanUnlockTitle;
 
     private void Awake()
     {
@@ -45,6 +51,12 @@ public partial class LiteDbGameService : BaseGameService
         colPlayerUnlockItem = db.GetCollection<DbPlayerUnlockItem>("playerUnlockItem");
         colPlayerClearStage = db.GetCollection<DbPlayerClearStage>("playerClearStage");
         colPlayerBattle = db.GetCollection<DbPlayerBattle>("playerBattle");
+        colPlayerUnlockIcon = db.GetCollection<DbPlayerUnlockIcon>("playerUnlockIcon");
+        colPlayerUnlockFrame = db.GetCollection<DbPlayerUnlockFrame>("playerUnlockFrame");
+        colPlayerUnlockTitle = db.GetCollection<DbPlayerUnlockTitle>("playerUnlockTitle");
+        colClanUnlockIcon = db.GetCollection<DbClanUnlockIcon>("clanUnlockIcon");
+        colClanUnlockFrame = db.GetCollection<DbClanUnlockFrame>("clanUnlockFrame");
+        colClanUnlockTitle = db.GetCollection<DbClanUnlockTitle>("clanUnlockTitle");
     }
 
     protected override void DoGetAchievementList(string playerId, string loginToken, UnityAction<AchievementListResult> onFinish)

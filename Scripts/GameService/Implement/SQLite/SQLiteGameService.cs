@@ -334,6 +334,21 @@ public partial class SQLiteGameService : BaseGameService
             rating INTEGER NOT NULL,
             battleType INTEGER NOT NULL DEFAULT 0)");
 
+        ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS clanUnlockIcon (
+            id TEXT NOT NULL PRIMARY KEY,
+            clanId TEXT NOT NULL,
+            iconId TEXT NOT NULL)");
+
+        ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS clanUnlockFrame (
+            id TEXT NOT NULL PRIMARY KEY,
+            clanId TEXT NOT NULL,
+            frameId TEXT NOT NULL)");
+
+        ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS clanUnlockTitle (
+            id TEXT NOT NULL PRIMARY KEY,
+            clanId TEXT NOT NULL,
+            titleId TEXT NOT NULL)");
+
         if (!IsColumnExist("player", "arenaScore"))
             ExecuteNonQuery("ALTER TABLE player ADD arenaScore INTEGER NOT NULL DEFAULT 0;");
             
