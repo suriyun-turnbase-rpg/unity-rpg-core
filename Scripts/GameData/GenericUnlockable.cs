@@ -8,6 +8,6 @@ public class GenericUnlockable : BaseGameData
     public virtual string ToJson()
     {
         return "{\"id\":\"" + Id + "\"," +
-            "\"isLocking\":" + (locked ? "true" : "false") + "}";
+            "\"locked\":" + (locked ? "true" : "false") + "}";
     }
 }
