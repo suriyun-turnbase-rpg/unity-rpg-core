@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.Serialization;
@@ -9,6 +7,9 @@ public class UIPlayer : UIDataItem<Player>
 {
     public Text textProfileName;
     public UILevel uiLevel;
+    public UIPlayerIcon uiIcon;
+    public UIPlayerFrame uiFrame;
+    public UIPlayerTitle uiTitle;
     public UIItem uiMainCharacter;
     public UIPlayerList uiPlayerList;
     [Header("Friend buttons")]
@@ -211,6 +212,15 @@ public class UIPlayer : UIDataItem<Player>
             uiLevel.currentExp = data.CurrentExp;
             uiLevel.requiredExp = data.RequiredExp;
         }
+
+        if (uiIcon != null)
+            uiIcon.Player = data;
+
+        if (uiFrame != null)
+            uiFrame.Player = data;
+
+        if (uiTitle != null)
+            uiTitle.Player = data;
 
         if (uiMainCharacter != null)
         {

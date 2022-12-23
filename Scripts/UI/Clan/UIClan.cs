@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -9,6 +7,9 @@ public class UIClan : UIDataItem<Clan>
 {
     public Text textName;
     public UILevel uiLevel;
+    public UIClanIcon uiIcon;
+    public UIClanFrame uiFrame;
+    public UIClanTitle uiTitle;
     public UIPlayer uiOwner;
     [FormerlySerializedAs("uiClanList")]
     public UIClanList uiClanJoinRequestList;
@@ -63,6 +64,15 @@ public class UIClan : UIDataItem<Clan>
             uiLevel.currentExp = data.CurrentExp;
             uiLevel.requiredExp = data.RequiredExp;
         }
+
+        if (uiIcon != null)
+            uiIcon.Clan = data;
+
+        if (uiFrame != null)
+            uiFrame.Clan = data;
+
+        if (uiTitle != null)
+            uiTitle.Clan = data;
 
         if (uiOwner != null)
             uiOwner.data = data.Owner;
