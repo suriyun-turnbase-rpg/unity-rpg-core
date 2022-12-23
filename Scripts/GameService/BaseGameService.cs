@@ -1182,6 +1182,36 @@ public abstract partial class BaseGameService : MonoBehaviour
         DoGetUnlockTitleList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
+    public void SetPlayerIcon(string iconDataId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: SetPlayerIcon");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoSetPlayerIcon(playerId, loginToken, iconDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void SetPlayerFrame(string iconDataId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: SetPlayerFrame");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoSetPlayerFrame(playerId, loginToken, iconDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void SetPlayerTitle(string iconDataId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: SetPlayerTitle");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoSetPlayerTitle(playerId, loginToken, iconDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
     public void GetClanUnlockIconList(UnityAction<ClanUnlockIconListResult> onSuccess = null, UnityAction<string> onError = null)
     {
         Debug.Log("Call Service: GetClanUnlockIconList");
@@ -1210,6 +1240,36 @@ public abstract partial class BaseGameService : MonoBehaviour
         var loginToken = player.LoginToken;
         HandleServiceCall();
         DoGetClanUnlockTitleList(playerId, loginToken, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void SetClanIcon(string iconDataId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: SetClanIcon");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoSetClanIcon(playerId, loginToken, iconDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void SetClanFrame(string iconDataId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: SetClanFrame");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoSetClanFrame(playerId, loginToken, iconDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    public void SetClanTitle(string iconDataId, UnityAction<GameServiceResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: SetClanTitle");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoSetClanTitle(playerId, loginToken, iconDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     public void GetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onSuccess = null, UnityAction<string> onError = null)
@@ -1320,9 +1380,15 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoGetUnlockIconList(string playerId, string loginToken, UnityAction<UnlockIconListResult> onFinish);
     protected abstract void DoGetUnlockFrameList(string playerId, string loginToken, UnityAction<UnlockFrameListResult> onFinish);
     protected abstract void DoGetUnlockTitleList(string playerId, string loginToken, UnityAction<UnlockTitleListResult> onFinish);
+    protected abstract void DoSetPlayerIcon(string playerId, string loginToken, string iconDataId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoSetPlayerFrame(string playerId, string loginToken, string frameDataId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoSetPlayerTitle(string playerId, string loginToken, string titleDataId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoGetClanUnlockIconList(string playerId, string loginToken, UnityAction<ClanUnlockIconListResult> onFinish);
     protected abstract void DoGetClanUnlockFrameList(string playerId, string loginToken, UnityAction<ClanUnlockFrameListResult> onFinish);
     protected abstract void DoGetClanUnlockTitleList(string playerId, string loginToken, UnityAction<ClanUnlockTitleListResult> onFinish);
+    protected abstract void DoSetClanIcon(string playerId, string loginToken, string iconDataId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoSetClanFrame(string playerId, string loginToken, string frameDataId, UnityAction<GameServiceResult> onFinish);
+    protected abstract void DoSetClanTitle(string playerId, string loginToken, string titleDataId, UnityAction<GameServiceResult> onFinish);
     protected abstract void DoGetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish);
     protected abstract void DoGetArenaFormationCharactersAndEquipments(string playerId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish);
 }

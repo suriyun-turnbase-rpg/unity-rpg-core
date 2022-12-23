@@ -67,4 +67,73 @@ public partial class LiteDbGameService
             result.list.AddRange(DbClanUnlockTitle.CloneList(colClanUnlockTitle.Find(a => a.ClanId == player.ClanId)));
         onFinish(result);
     }
+
+    protected override void DoSetPlayerIcon(string playerId, string loginToken, string iconDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        if (player == null)
+        {
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        }
+        else
+        {
+            player.IconId = iconDataId;
+            colPlayer.Update(player);
+        }
+        onFinish(result);
+    }
+
+    protected override void DoSetPlayerFrame(string playerId, string loginToken, string frameDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        if (player == null)
+        {
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        }
+        else
+        {
+            player.FrameId = frameDataId;
+            colPlayer.Update(player);
+        }
+        onFinish(result);
+    }
+
+    protected override void DoSetPlayerTitle(string playerId, string loginToken, string titleDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        if (player == null)
+        {
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        }
+        else
+        {
+            player.TitleId = titleDataId;
+            colPlayer.Update(player);
+        }
+        onFinish(result);
+    }
+
+    protected override void DoSetClanIcon(string playerId, string loginToken, string iconDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoSetClanFrame(string playerId, string loginToken, string frameDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoSetClanTitle(string playerId, string loginToken, string titleDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
 }

@@ -171,4 +171,55 @@ public partial class SQLiteGameService
         }
         return list;
     }
+
+    protected override void DoSetPlayerIcon(string playerId, string loginToken, string iconDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        ExecuteNonQuery(@"UPDATE player SET iconId=@iconDataId WHERE id=@playerId AND loginToken=@loginToken LIMIT 1",
+            new SqliteParameter("@playerId", playerId),
+            new SqliteParameter("@loginToken", loginToken),
+            new SqliteParameter("@iconDataId", iconDataId));
+        onFinish(result);
+    }
+
+    protected override void DoSetPlayerFrame(string playerId, string loginToken, string frameDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        ExecuteNonQuery(@"UPDATE player SET frameId=@frameDataId WHERE id=@playerId AND loginToken=@loginToken LIMIT 1",
+            new SqliteParameter("@playerId", playerId),
+            new SqliteParameter("@loginToken", loginToken),
+            new SqliteParameter("@frameDataId", frameDataId));
+        onFinish(result);
+    }
+
+    protected override void DoSetPlayerTitle(string playerId, string loginToken, string titleDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        ExecuteNonQuery(@"UPDATE player SET titleId=@titleDataId WHERE id=@playerId AND loginToken=@loginToken LIMIT 1",
+            new SqliteParameter("@playerId", playerId),
+            new SqliteParameter("@loginToken", loginToken),
+            new SqliteParameter("@titleDataId", titleDataId));
+        onFinish(result);
+    }
+
+    protected override void DoSetClanIcon(string playerId, string loginToken, string iconDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoSetClanFrame(string playerId, string loginToken, string frameDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoSetClanTitle(string playerId, string loginToken, string titleDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var result = new GameServiceResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
 }
