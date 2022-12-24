@@ -48,6 +48,5 @@ public class UIUnlockIconManager : UIBase
     public void OnClickUse()
     {
         GameInstance.GameService.SetPlayerIcon(uiGenericUnlockableList.GetSelectedUIList()[0].data.Id);
-        Hide();
     }
 }

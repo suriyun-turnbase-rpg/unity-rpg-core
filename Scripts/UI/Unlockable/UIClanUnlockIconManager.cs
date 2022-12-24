@@ -48,6 +48,5 @@ public class UIClanUnlockIconManager : UIBase
     public void OnClickUse()
     {
         GameInstance.GameService.SetClanIcon(uiGenericUnlockableList.GetSelectedUIList()[0].data.Id);
-        Hide();
     }
 }

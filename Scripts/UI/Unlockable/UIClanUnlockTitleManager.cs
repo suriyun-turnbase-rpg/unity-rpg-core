@@ -48,6 +48,5 @@ public class UIClanUnlockTitleManager : UIBase
     public void OnClickUse()
     {
         GameInstance.GameService.SetClanTitle(uiGenericUnlockableList.GetSelectedUIList()[0].data.Id);
-        Hide();
     }
 }
