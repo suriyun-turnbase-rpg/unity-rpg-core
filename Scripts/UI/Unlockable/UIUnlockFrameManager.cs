@@ -19,9 +19,13 @@ public class UIUnlockFrameManager : UIBase
         uiGenericUnlockableList.eventDeselect.RemoveListener(DeselectItem);
         uiGenericUnlockableList.eventDeselect.AddListener(DeselectItem);
         uiGenericUnlockableList.ClearListItems();
+        int i = 0;
         uiGenericUnlockableList.SetListItems(new List<GenericUnlockable>(GameInstance.GameDatabase.PlayerFrames.Values), (ui) =>
         {
             ui.unlockDetectFunction = PlayerUnlockFrame.IsUnlock;
+            if (i == 0 || Player.CurrentPlayer.FrameId == ui.data.Id)
+                ui.OnClick();
+            i++;
         });
         GameInstance.GameService.GetUnlockFrameList();
     }
@@ -47,6 +51,10 @@ public class UIUnlockFrameManager : UIBase
 
     public void OnClickUse()
     {
-        GameInstance.GameService.SetPlayerFrame(uiGenericUnlockableList.GetSelectedUIList()[0].data.Id);
+        string id = uiGenericUnlockableList.GetSelectedUIList()[0].data.Id;
+        GameInstance.GameService.SetPlayerFrame(id, (result) =>
+        {
+            Player.CurrentPlayer.FrameId = id;
+        });
     }
 }

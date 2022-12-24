@@ -19,9 +19,13 @@ public class UIUnlockIconManager : UIBase
         uiGenericUnlockableList.eventDeselect.RemoveListener(DeselectItem);
         uiGenericUnlockableList.eventDeselect.AddListener(DeselectItem);
         uiGenericUnlockableList.ClearListItems();
+        int i = 0;
         uiGenericUnlockableList.SetListItems(new List<GenericUnlockable>(GameInstance.GameDatabase.PlayerIcons.Values), (ui) =>
         {
             ui.unlockDetectFunction = PlayerUnlockIcon.IsUnlock;
+            if (i == 0 || Player.CurrentPlayer.IconId == ui.data.Id)
+                ui.OnClick();
+            i++;
         });
         GameInstance.GameService.GetUnlockIconList();
     }
@@ -47,6 +51,10 @@ public class UIUnlockIconManager : UIBase
 
     public void OnClickUse()
     {
-        GameInstance.GameService.SetPlayerIcon(uiGenericUnlockableList.GetSelectedUIList()[0].data.Id);
+        string id = uiGenericUnlockableList.GetSelectedUIList()[0].data.Id;
+        GameInstance.GameService.SetPlayerIcon(id, (result) =>
+        {
+            Player.CurrentPlayer.IconId = id;
+        });
     }
 }

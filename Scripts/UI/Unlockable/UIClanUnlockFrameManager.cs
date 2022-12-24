@@ -4,6 +4,7 @@ public class UIClanUnlockFrameManager : UIBase
 {
     public UIGenericUnlockable uiSelectedInfo;
     public UIGenericUnlockableList uiGenericUnlockableList;
+    public UIClanManager uiClanManager;
 
     public override void Show()
     {
@@ -19,9 +20,13 @@ public class UIClanUnlockFrameManager : UIBase
         uiGenericUnlockableList.eventDeselect.RemoveListener(DeselectItem);
         uiGenericUnlockableList.eventDeselect.AddListener(DeselectItem);
         uiGenericUnlockableList.ClearListItems();
+        int i = 0;
         uiGenericUnlockableList.SetListItems(new List<GenericUnlockable>(GameInstance.GameDatabase.ClanFrames.Values), (ui) =>
         {
             ui.unlockDetectFunction = ClanUnlockFrame.IsUnlock;
+            if (i == 0 || uiClanManager.data.FrameId == ui.data.Id)
+                ui.OnClick();
+            i++;
         });
         GameInstance.GameService.GetClanUnlockFrameList();
     }
@@ -47,6 +52,10 @@ public class UIClanUnlockFrameManager : UIBase
 
     public void OnClickUse()
     {
-        GameInstance.GameService.SetClanFrame(uiGenericUnlockableList.GetSelectedUIList()[0].data.Id);
+        string id = uiGenericUnlockableList.GetSelectedUIList()[0].data.Id;
+        GameInstance.GameService.SetClanFrame(id, (result) =>
+        {
+            uiClanManager.data.FrameId = id;
+        });
     }
 }

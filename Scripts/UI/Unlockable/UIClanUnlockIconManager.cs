@@ -4,6 +4,7 @@ public class UIClanUnlockIconManager : UIBase
 {
     public UIGenericUnlockable uiSelectedInfo;
     public UIGenericUnlockableList uiGenericUnlockableList;
+    public UIClanManager uiClanManager;
 
     public override void Show()
     {
@@ -19,9 +20,13 @@ public class UIClanUnlockIconManager : UIBase
         uiGenericUnlockableList.eventDeselect.RemoveListener(DeselectItem);
         uiGenericUnlockableList.eventDeselect.AddListener(DeselectItem);
         uiGenericUnlockableList.ClearListItems();
+        int i = 0;
         uiGenericUnlockableList.SetListItems(new List<GenericUnlockable>(GameInstance.GameDatabase.ClanIcons.Values), (ui) =>
         {
             ui.unlockDetectFunction = ClanUnlockIcon.IsUnlock;
+            if (i == 0 || uiClanManager.data.IconId == ui.data.Id)
+                ui.OnClick();
+            i++;
         });
         GameInstance.GameService.GetClanUnlockIconList();
     }
@@ -47,6 +52,10 @@ public class UIClanUnlockIconManager : UIBase
 
     public void OnClickUse()
     {
-        GameInstance.GameService.SetClanIcon(uiGenericUnlockableList.GetSelectedUIList()[0].data.Id);
+        string id = uiGenericUnlockableList.GetSelectedUIList()[0].data.Id;
+        GameInstance.GameService.SetClanIcon(id, (result) =>
+        {
+            uiClanManager.data.IconId = id;
+        });
     }
 }

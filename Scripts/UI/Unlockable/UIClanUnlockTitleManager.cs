@@ -4,6 +4,7 @@ public class UIClanUnlockTitleManager : UIBase
 {
     public UIGenericUnlockable uiSelectedInfo;
     public UIGenericUnlockableList uiGenericUnlockableList;
+    public UIClanManager uiClanManager;
 
     public override void Show()
     {
@@ -19,9 +20,13 @@ public class UIClanUnlockTitleManager : UIBase
         uiGenericUnlockableList.eventDeselect.RemoveListener(DeselectItem);
         uiGenericUnlockableList.eventDeselect.AddListener(DeselectItem);
         uiGenericUnlockableList.ClearListItems();
+        int i = 0;
         uiGenericUnlockableList.SetListItems(new List<GenericUnlockable>(GameInstance.GameDatabase.ClanTitles.Values), (ui) =>
         {
             ui.unlockDetectFunction = ClanUnlockTitle.IsUnlock;
+            if (i == 0 || uiClanManager.data.TitleId == ui.data.Id)
+                ui.OnClick();
+            i++;
         });
         GameInstance.GameService.GetClanUnlockTitleList();
     }
@@ -47,6 +52,10 @@ public class UIClanUnlockTitleManager : UIBase
 
     public void OnClickUse()
     {
-        GameInstance.GameService.SetClanTitle(uiGenericUnlockableList.GetSelectedUIList()[0].data.Id);
+        string id = uiGenericUnlockableList.GetSelectedUIList()[0].data.Id;
+        GameInstance.GameService.SetClanTitle(id, (result) =>
+        {
+            uiClanManager.data.TitleId = id;
+        });
     }
 }
