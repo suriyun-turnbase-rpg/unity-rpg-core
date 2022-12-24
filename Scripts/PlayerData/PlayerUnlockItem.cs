@@ -97,9 +97,9 @@ public class PlayerUnlockItem : BasePlayerData, IPlayerUnlockItem
         return false;
     }
 
-    public static bool IsUnlock(string playerId, BaseItem itemData)
+    public static bool IsUnlock(string playerId, BaseItem data)
     {
-        return IsUnlock(playerId, itemData);
+        return IsUnlock(playerId, data.Id);
     }
 
     public static bool IsUnlock(string dataId)
@@ -107,8 +107,8 @@ public class PlayerUnlockItem : BasePlayerData, IPlayerUnlockItem
         return IsUnlock(Player.CurrentPlayerId, dataId);
     }
 
-    public static bool IsUnlock(BaseItem itemData)
+    public static bool IsUnlock(BaseItem data)
     {
-        return IsUnlock(Player.CurrentPlayerId, itemData);
+        return IsUnlock(Player.CurrentPlayerId, data);
     }
 }

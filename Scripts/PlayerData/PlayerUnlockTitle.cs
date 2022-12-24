@@ -96,7 +96,7 @@ public class PlayerUnlockTitle : BasePlayerData, IPlayerUnlockTitle
 
     public static bool IsUnlock(string playerId, GenericUnlockable data)
     {
-        return IsUnlock(playerId, data);
+        return IsUnlock(playerId, data.Id);
     }
 
     public static bool IsUnlock(string dataId)

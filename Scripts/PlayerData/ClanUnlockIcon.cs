@@ -96,7 +96,7 @@ public class ClanUnlockIcon : BasePlayerData, IClanUnlockIcon
 
     public static bool IsUnlock(string clanId, GenericUnlockable data)
     {
-        return IsUnlock(clanId, data);
+        return IsUnlock(clanId, data.Id);
     }
 
     public static bool IsUnlock(string dataId)
