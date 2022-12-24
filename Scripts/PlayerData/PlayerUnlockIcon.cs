@@ -91,6 +91,8 @@ public class PlayerUnlockIcon : BasePlayerData, IPlayerUnlockIcon
         var Id = GetId(playerId, dataId);
         if (DataMap.ContainsKey(Id))
             return true;
+        if (GameInstance.GameDatabase.PlayerIcons.ContainsKey(dataId) && !GameInstance.GameDatabase.PlayerIcons[dataId].locked)
+            return true;
         return false;
     }
 

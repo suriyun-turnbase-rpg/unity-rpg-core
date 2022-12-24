@@ -91,6 +91,8 @@ public class PlayerUnlockTitle : BasePlayerData, IPlayerUnlockTitle
         var Id = GetId(playerId, dataId);
         if (DataMap.ContainsKey(Id))
             return true;
+        if (GameInstance.GameDatabase.PlayerTitles.ContainsKey(dataId) && !GameInstance.GameDatabase.PlayerTitles[dataId].locked)
+            return true;
         return false;
     }
 

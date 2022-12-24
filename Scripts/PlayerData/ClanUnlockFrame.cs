@@ -91,6 +91,8 @@ public class ClanUnlockFrame : BasePlayerData, IClanUnlockFrame
         var Id = GetId(clanId, dataId);
         if (DataMap.ContainsKey(Id))
             return true;
+        if (GameInstance.GameDatabase.ClanFrames.ContainsKey(dataId) && !GameInstance.GameDatabase.ClanFrames[dataId].locked)
+            return true;
         return false;
     }
 

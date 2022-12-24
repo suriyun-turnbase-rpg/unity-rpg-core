@@ -91,6 +91,8 @@ public class ClanUnlockIcon : BasePlayerData, IClanUnlockIcon
         var Id = GetId(clanId, dataId);
         if (DataMap.ContainsKey(Id))
             return true;
+        if (GameInstance.GameDatabase.ClanIcons.ContainsKey(dataId) && !GameInstance.GameDatabase.ClanIcons[dataId].locked)
+            return true;
         return false;
     }
 

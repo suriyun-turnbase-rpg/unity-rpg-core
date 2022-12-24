@@ -91,6 +91,8 @@ public class PlayerUnlockFrame : BasePlayerData, IPlayerUnlockFrame
         var Id = GetId(playerId, dataId);
         if (DataMap.ContainsKey(Id))
             return true;
+        if (GameInstance.GameDatabase.PlayerFrames.ContainsKey(dataId) && !GameInstance.GameDatabase.PlayerFrames[dataId].locked)
+            return true;
         return false;
     }
 

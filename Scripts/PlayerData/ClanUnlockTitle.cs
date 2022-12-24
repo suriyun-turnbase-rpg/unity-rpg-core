@@ -91,6 +91,8 @@ public class ClanUnlockTitle : BasePlayerData, IClanUnlockTitle
         var Id = GetId(clanId, dataId);
         if (DataMap.ContainsKey(Id))
             return true;
+        if (GameInstance.GameDatabase.ClanTitles.ContainsKey(dataId) && !GameInstance.GameDatabase.ClanTitles[dataId].locked)
+            return true;
         return false;
     }
 
