@@ -17,7 +17,7 @@ public class UIDailyRewardManager : UIBase
 
     public void ReloadList()
     {
-        GameInstance.GameService.GetDailyRewardList(dailyReward.id, (result) =>
+        GameInstance.GameService.GetDailyRewardList(dailyReward.Id, (result) =>
         {
             ReloadList(result.rewards);
         });
@@ -42,7 +42,7 @@ public class UIDailyRewardManager : UIBase
         int index = 0;
         uiDailyRewardList.SetListItems(list, (ui) =>
         {
-            ui.SetupClaimData(dailyReward.id, index + 1, isClaimedArray[index], canClaimArray[index]);
+            ui.SetupClaimData(dailyReward.Id, index + 1, isClaimedArray[index], canClaimArray[index]);
             ui.uiDailyRewardManager = this;
             index++;
         });
@@ -63,7 +63,7 @@ public class UIDailyRewardManager : UIBase
 
     public void OnClickClaim()
     {
-        GameInstance.GameService.ClaimDailyReward(dailyReward.id, OnClickClaimSuccess, OnClickClaimFail);
+        GameInstance.GameService.ClaimDailyReward(dailyReward.Id, OnClickClaimSuccess, OnClickClaimFail);
     }
 
     private void OnClickClaimSuccess(GameServiceResult result)

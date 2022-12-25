@@ -62,7 +62,7 @@ public class UIDailyReward : UIDataItem<RewardData>
                 {
                     uiRewardItem.data = new PlayerItem()
                     {
-                        DataId = data.items[0].item.id,
+                        DataId = data.items[0].item.Id,
                         Amount = data.items[0].amount,
                     };
                     uiRewardItem.Show();
