@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UIFortuneWheelManager : MonoBehaviour
@@ -7,6 +5,7 @@ public class UIFortuneWheelManager : MonoBehaviour
     public AnimationCurve curve = AnimationCurve.Linear(0.0f, 0.0f, 1.0f, 1.0f);
     public FortuneWheel fortuneWheel;
     public RectTransform wheel;
+    public UICurrency uiPrice;
     public UICurrency uiRewardCurrency;
     public UIItem uiRewardItem;
     public Transform uiRewardContainer;
@@ -17,7 +16,7 @@ public class UIFortuneWheelManager : MonoBehaviour
     public int testRewardIndex;
 
     private bool _isPlaying = false;
-    private int _rewardIndex = 0;
+    private SpinFortuneWheelResult _result;
     private float _startAngle = 0f;
     private float _endAngle = 0f;
     private float _spinTime = 0f;
@@ -38,7 +37,7 @@ public class UIFortuneWheelManager : MonoBehaviour
         if (_spinTime > spinDuration)
         {
             _isPlaying = false;
-            ShowReward(_rewardIndex);
+            ShowReward();
         }
 
         float time = _spinTime / spinDuration;
@@ -46,8 +45,20 @@ public class UIFortuneWheelManager : MonoBehaviour
         wheel.eulerAngles = new Vector3(0, 0, angle);
     }
 
-    public void SetupWheel()
+    private void SetupWheel()
     {
+        if (uiPrice)
+        {
+            switch (fortuneWheel.requirementType)
+            {
+                case FortuneWheelRequirementType.RequireSoftCurrency:
+                    uiPrice.data = PlayerCurrency.SoftCurrency.Clone().SetAmount(fortuneWheel.price, 0);
+                    break;
+                case FortuneWheelRequirementType.RequireHardCurrency:
+                    uiPrice.data = PlayerCurrency.HardCurrency.Clone().SetAmount(fortuneWheel.price, 0);
+                    break;
+            }
+        }
         uiRewardContainer.RemoveAllChildren();
         _iconAngle = 360f / fortuneWheel.rewards.Length;
         _halfIconAngle = _iconAngle * 0.5f;
@@ -90,7 +101,7 @@ public class UIFortuneWheelManager : MonoBehaviour
         }
     }
 
-    public float GetRandomAngles(int rewardIndex)
+    private float GetRandomAngles(int rewardIndex)
     {
         float angle = -(_iconAngle * rewardIndex);
         float minAngle = (angle - _halfIconAngleWithPaddings) % 360f;
@@ -105,13 +116,13 @@ public class UIFortuneWheelManager : MonoBehaviour
 
         GameInstance.GameService.SpinFortuneWheel(fortuneWheel.Id, (result) =>
         {
-            _rewardIndex = result.rewardIndex;
-            Spin(_rewardIndex);
+            _result = result;
+            Spin(_result.rewardIndex);
         }, GameInstance.Singleton.OnGameServiceError);
 
     }
 
-    public void Spin(int rewardIndex)
+    private void Spin(int rewardIndex)
     {
         _spinTime = 0f;
         _startAngle = _endAngle % 360f;
@@ -119,16 +130,15 @@ public class UIFortuneWheelManager : MonoBehaviour
         _isPlaying = true;
     }
 
-    public void ShowReward(int rewardIndex)
+    private void ShowReward()
     {
-
+        GameInstance.Singleton.OnGameServiceItemResult(_result);
     }
 
     [ContextMenu("Test Spin")]
     public void TestSpin()
     {
-        _rewardIndex = testRewardIndex;
         SetupWheel();
-        Spin(_rewardIndex);
+        Spin(testRewardIndex);
     }
 }
