@@ -125,6 +125,9 @@ public partial class GameDatabase : ScriptableObject
     [Header("Daily Reward")]
     public DailyReward[] dailyRewards;
 
+    [Header("Fortune Wheel")]
+    public FortuneWheel[] fortuneWheels;
+
     [Header("Other Unlockables")]
     public GenericUnlockable[] playerIcons;
     public GenericUnlockable[] playerFrames;
@@ -154,6 +157,7 @@ public partial class GameDatabase : ScriptableObject
     public readonly Dictionary<string, GenericUnlockable> ClanFrames = new Dictionary<string, GenericUnlockable>();
     public readonly Dictionary<string, GenericUnlockable> ClanTitles = new Dictionary<string, GenericUnlockable>();
     public readonly Dictionary<string, DailyReward> DailyRewards = new Dictionary<string, DailyReward>();
+    public readonly Dictionary<string, FortuneWheel> FortuneWheels = new Dictionary<string, FortuneWheel>();
     public readonly Dictionary<string, FakePlayer> FakePlayers = new Dictionary<string, FakePlayer>();
 
     public void Setup()
@@ -179,6 +183,7 @@ public partial class GameDatabase : ScriptableObject
         ClanFrames.Clear();
         ClanTitles.Clear();
         DailyRewards.Clear();
+        FortuneWheels.Clear();
         FakePlayers.Clear();
 
         AddItemsToDatabase(items);
@@ -249,6 +254,7 @@ public partial class GameDatabase : ScriptableObject
         AddClanFramesToDatabase(clanFrames);
         AddClanTitlesToDatabase(clanTitles);
         AddDailyRewardsToDatabase(dailyRewards);
+        AddFortuneWheelsToDatabase(fortuneWheels);
         AddFakePlayersToDatabase(fakePlayers);
     }
 
@@ -504,6 +510,20 @@ public partial class GameDatabase : ScriptableObject
         }
     }
 
+    private void AddFortuneWheelsToDatabase(IEnumerable<FortuneWheel> entries)
+    {
+        foreach (var entry in entries)
+        {
+            if (entry == null)
+                continue;
+            var dataId = entry.Id;
+            if (!string.IsNullOrEmpty(dataId) && !FortuneWheels.ContainsKey(dataId))
+            {
+                FortuneWheels[dataId] = entry;
+            }
+        }
+    }
+
     private void AddFakePlayersToDatabase(IEnumerable<FakePlayer> fakePlayers)
     {
         foreach (var fakePlayer in fakePlayers)
@@ -542,6 +562,7 @@ public partial class GameDatabase : ScriptableObject
         var clanFramesJson = string.Empty;
         var clanTitlesJson = string.Empty;
         var dailyRewardsJson = string.Empty;
+        var fortuneWheelsJson = string.Empty;
         var startItemsJson = string.Empty;
         var startCharactersJson = string.Empty;
         var unlockStagesJson = string.Empty;
@@ -716,6 +737,14 @@ public partial class GameDatabase : ScriptableObject
         }
         dailyRewardsJson = "{" + dailyRewardsJson + "}";
 
+        foreach (var entry in gameDatabase.FortuneWheels)
+        {
+            if (!string.IsNullOrEmpty(fortuneWheelsJson))
+                fortuneWheelsJson += ",";
+            fortuneWheelsJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        fortuneWheelsJson = "{" + fortuneWheelsJson + "}";
+
         foreach (var entry in gameDatabase.startItems)
         {
             if (entry == null || entry.item == null)
@@ -790,6 +819,7 @@ public partial class GameDatabase : ScriptableObject
         keyValues["clanFrames"] = clanFramesJson;
         keyValues["clanTitles"] = clanTitlesJson;
         keyValues["dailyRewards"] = dailyRewardsJson;
+        keyValues["fortuneWheels"] = fortuneWheelsJson;
         keyValues["hardToSoftCurrencyConversion"] = gameDatabase.hardToSoftCurrencyConversion.ToString();
         keyValues["startItems"] = startItemsJson;
         keyValues["startCharacters"] = startCharactersJson;
