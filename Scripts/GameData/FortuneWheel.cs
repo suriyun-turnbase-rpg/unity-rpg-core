@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 [System.Serializable]
 public struct FortuneWheelReward
 {
     public ItemAmount[] rewardItems;
     public int rewardSoftCurrency;
     public int rewardHardCurrency;
+    public int randomWeight;
 
     public string ToJson()
     {
@@ -25,7 +22,8 @@ public struct FortuneWheelReward
         jsonRewardItems = "[" + jsonRewardItems + "]";
         return "{\"rewardSoftCurrency\":" + rewardSoftCurrency + "," +
             "\"rewardHardCurrency\":" + rewardHardCurrency + "," +
-            "\"rewardItems\":" + jsonRewardItems + "}";
+            "\"rewardItems\":" + jsonRewardItems + "," +
+            "\"randomWeight\":" + randomWeight + "}";
     }
 }
 
