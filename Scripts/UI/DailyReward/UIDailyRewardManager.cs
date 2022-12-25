@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UIDailyRewardManager : UIBase
 {
-    public string id;
+    public DailyReward dailyReward;
     public UIDailyRewardList uiDailyRewardList;
     public GameObject canClaimSignal;
     public GameObject cannotClaimSignal;
@@ -17,7 +17,7 @@ public class UIDailyRewardManager : UIBase
 
     public void ReloadList()
     {
-        GameInstance.GameService.GetDailyRewardList(id, (result) =>
+        GameInstance.GameService.GetDailyRewardList(dailyReward.id, (result) =>
         {
             ReloadList(result.rewards);
         });
@@ -29,7 +29,6 @@ public class UIDailyRewardManager : UIBase
         bool[] isClaimedArray = new bool[rewards.Count];
         bool[] canClaimArray = new bool[rewards.Count];
         List<RewardData> list = new List<RewardData>();
-        GameInstance.GameDatabase.DailyRewards.TryGetValue(id, out DailyReward dailyReward);
         for (int i = 0; i < rewards.Count; ++i)
         {
             isClaimedArray[i] = rewards[i].IsClaimed;
@@ -43,7 +42,7 @@ public class UIDailyRewardManager : UIBase
         int index = 0;
         uiDailyRewardList.SetListItems(list, (ui) =>
         {
-            ui.SetupClaimData(id, index + 1, isClaimedArray[index], canClaimArray[index]);
+            ui.SetupClaimData(dailyReward.id, index + 1, isClaimedArray[index], canClaimArray[index]);
             ui.uiDailyRewardManager = this;
             index++;
         });
@@ -64,7 +63,7 @@ public class UIDailyRewardManager : UIBase
 
     public void OnClickClaim()
     {
-        GameInstance.GameService.ClaimDailyReward(id, OnClickClaimSuccess, OnClickClaimFail);
+        GameInstance.GameService.ClaimDailyReward(dailyReward.id, OnClickClaimSuccess, OnClickClaimFail);
     }
 
     private void OnClickClaimSuccess(GameServiceResult result)

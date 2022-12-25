@@ -11,7 +11,7 @@ public class UIAllDailyRewardManager : MonoBehaviour
     {
         foreach (var uiDailyRewardManager in uiDailyRewardManagers)
         {
-            UIDailyRewardManagers[uiDailyRewardManager.id] = uiDailyRewardManager;
+            UIDailyRewardManagers[uiDailyRewardManager.dailyReward.Id] = uiDailyRewardManager;
         }
     }
 
