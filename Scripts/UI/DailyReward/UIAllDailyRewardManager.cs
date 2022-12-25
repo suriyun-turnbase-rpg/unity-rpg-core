@@ -11,6 +11,11 @@ public class UIAllDailyRewardManager : MonoBehaviour
     {
         foreach (var uiDailyRewardManager in uiDailyRewardManagers)
         {
+            if (uiDailyRewardManager.dailyReward == null)
+            {
+                Debug.LogWarning($"[{typeof(UIAllDailyRewardManager)}] `dailyReward` data for {uiDailyRewardManager.name} is empty");
+                continue;
+            }
             UIDailyRewardManagers[uiDailyRewardManager.dailyReward.Id] = uiDailyRewardManager;
         }
     }
