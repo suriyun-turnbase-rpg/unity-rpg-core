@@ -159,6 +159,12 @@ public class AvailableLootBoxListResult : GameServiceResult
 }
 
 [System.Serializable]
+public class AvailableFortuneWheelListResult : GameServiceResult
+{
+    public List<string> list = new List<string>();
+}
+
+[System.Serializable]
 public class AvailableIapPackageListResult : GameServiceResult
 {
     public List<string> list = new List<string>();
@@ -418,4 +424,10 @@ public class DailyRewardListResult : GameServiceResult
     public int currentDate;
     public int cycleStart;
     public int cycleEnd;
+}
+
+[System.Serializable]
+public class SpinFortuneWheelResult : ItemResult
+{
+    public int rewardIndex;
 }

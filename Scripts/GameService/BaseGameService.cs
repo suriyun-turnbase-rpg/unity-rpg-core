@@ -337,6 +337,22 @@ public abstract partial class BaseGameService : MonoBehaviour
     }
 
     /// <summary>
+    /// SpinFortuneWheel
+    /// </summary>
+    /// <param name="fortuneWheelDataId"></param>
+    /// <param name="onSuccess"></param>
+    /// <param name="onError"></param>
+    public void SpinFortuneWheel(string fortuneWheelDataId, UnityAction<SpinFortuneWheelResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: SpinFortuneWheel");
+        var player = Player.CurrentPlayer;
+        var playerId = player.Id;
+        var loginToken = player.LoginToken;
+        HandleServiceCall();
+        DoSpinFortuneWheel(playerId, loginToken, fortuneWheelDataId, (finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    /// <summary>
     /// OpenIAPPackage_iOS
     /// </summary>
     /// <param name="receipt"></param>
@@ -516,6 +532,18 @@ public abstract partial class BaseGameService : MonoBehaviour
         Debug.Log("Call Service: GetAvailableLootBoxList");
         HandleServiceCall();
         DoGetAvailableLootBoxList((finishResult) => HandleResult(finishResult, onSuccess, onError));
+    }
+
+    /// <summary>
+    /// GetAvailableFortuneWheelList
+    /// </summary>
+    /// <param name="onSuccess"></param>
+    /// <param name="onError"></param>
+    public void GetAvailableFortuneWheelList(UnityAction<AvailableFortuneWheelListResult> onSuccess = null, UnityAction<string> onError = null)
+    {
+        Debug.Log("Call Service: GetAvailableFortuneWheelList");
+        HandleServiceCall();
+        DoGetAvailableFortuneWheelList((finishResult) => HandleResult(finishResult, onSuccess, onError));
     }
 
     /// <summary>
@@ -1310,11 +1338,13 @@ public abstract partial class BaseGameService : MonoBehaviour
     protected abstract void DoGetUnlockItemList(string playerId, string loginToken, UnityAction<UnlockItemListResult> onFinish);
     protected abstract void DoGetClearStageList(string playerId, string loginToken, UnityAction<ClearStageListResult> onFinish);
     protected abstract void DoGetAvailableLootBoxList(UnityAction<AvailableLootBoxListResult> onFinish);
+    protected abstract void DoGetAvailableFortuneWheelList(UnityAction<AvailableFortuneWheelListResult> onFinish);
     protected abstract void DoGetAvailableIapPackageList(UnityAction<AvailableIapPackageListResult> onFinish);
     protected abstract void DoGetAvailableInGamePackageList(UnityAction<AvailableInGamePackageListResult> onFinish);
     protected abstract void DoGetAvailableStageList(UnityAction<AvailableStageListResult> onFinish);
     protected abstract void DoSetFormation(string playerId, string loginToken, string characterId, string formationName, int position, UnityAction<FormationListResult> onFinish);
     protected abstract void DoOpenLootBox(string playerId, string loginToken, string lootBoxDataId, int packIndex, UnityAction<ItemResult> onFinish);
+    protected abstract void DoSpinFortuneWheel(string playerId, string loginToken, string fortuneWheelDataId, UnityAction<SpinFortuneWheelResult> onFinish);
     protected abstract void DoOpenIapPackage_iOS(string playerId, string loginToken, string iapPackageDataId, string receipt, UnityAction<ItemResult> onFinish);
     protected abstract void DoOpenIapPackage_Android(string playerId, string loginToken, string iapPackageDataId, string data, string signature, UnityAction<ItemResult> onFinish);
     protected abstract void DoGetHelperList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish);

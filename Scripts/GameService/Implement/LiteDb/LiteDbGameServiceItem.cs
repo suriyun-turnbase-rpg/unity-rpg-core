@@ -711,4 +711,18 @@ public partial class LiteDbGameService
         }
         onFinish(result);
     }
+
+    protected override void DoGetAvailableFortuneWheelList(UnityAction<AvailableFortuneWheelListResult> onFinish)
+    {
+        var result = new AvailableFortuneWheelListResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
+
+    protected override void DoSpinFortuneWheel(string playerId, string loginToken, string fortuneWheelDataId, UnityAction<SpinFortuneWheelResult> onFinish)
+    {
+        var result = new SpinFortuneWheelResult();
+        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        onFinish(result);
+    }
 }

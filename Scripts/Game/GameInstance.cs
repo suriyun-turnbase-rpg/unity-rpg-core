@@ -38,6 +38,7 @@ public partial class GameInstance : MonoBehaviour
     public static BaseGameplayRule GameplayRule { get; private set; }
     public static BaseGameService GameService { get; private set; }
     public static readonly List<string> AvailableLootBoxes = new List<string>();
+    public static readonly List<string> AvailableFortuneWheels = new List<string>();
     public static readonly List<string> AvailableIapPackages = new List<string>();
     public static readonly List<string> AvailableInGamePackages = new List<string>();
     public static readonly List<string> AvailableStages = new List<string>();
@@ -52,6 +53,7 @@ public partial class GameInstance : MonoBehaviour
     private static bool isPlayerUnlockItemListLoaded;
     private static bool isPlayerClearStageListLoaded;
     private static bool isAvailableLootBoxListLoaded;
+    private static bool isAvailableFortuneWheelListLoaded;
     private static bool isAvailableIapPackageListLoaded;
     private static bool isAvailableInGamePackageListLoaded;
     private static bool isAvailableStageListLoaded;
@@ -153,6 +155,7 @@ public partial class GameInstance : MonoBehaviour
         isPlayerUnlockItemListLoaded = false;
         isPlayerClearStageListLoaded = false;
         isAvailableLootBoxListLoaded = false;
+        isAvailableFortuneWheelListLoaded = false;
         isAvailableIapPackageListLoaded = false;
         isAvailableInGamePackageListLoaded = false;
         LoadLoginScene();
@@ -323,6 +326,15 @@ public partial class GameInstance : MonoBehaviour
         AvailableLootBoxes.AddRange(result.list);
     }
 
+    public void OnGameServiceAvailableFortuneWheelListResult(AvailableFortuneWheelListResult result)
+    {
+        if (!result.Success)
+            return;
+
+        AvailableFortuneWheels.Clear();
+        AvailableFortuneWheels.AddRange(result.list);
+    }
+
     public void OnGameServiceAvailableIapPackageListResult(AvailableIapPackageListResult result)
     {
         if (!result.Success)
@@ -405,6 +417,7 @@ public partial class GameInstance : MonoBehaviour
         GetUnlockItemList();
         GetClearStageList();
         GetAvailableLootBoxList();
+        GetAvailableFortuneWheelList();
         GetAvailableIAPPackageList();
         GetAvailableInGamePackageList();
         GetAvailableStageList();
@@ -539,6 +552,22 @@ public partial class GameInstance : MonoBehaviour
     }
 
     /// <summary>
+    /// Get list of available to fortune wheels
+    /// </summary>
+    private void GetAvailableFortuneWheelList()
+    {
+        isAvailableFortuneWheelListLoaded = false;
+        GameService.GetAvailableFortuneWheelList(OnGetAvailableFortuneWheelListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
+    }
+
+    private void OnGetAvailableFortuneWheelListSuccess(AvailableFortuneWheelListResult result)
+    {
+        OnGameServiceAvailableFortuneWheelListResult(result);
+        isAvailableFortuneWheelListLoaded = true;
+        ValidatePlayerData();
+    }
+
+    /// <summary>
     /// Get list of available to open iap packages
     /// </summary>
     private void GetAvailableIAPPackageList()
@@ -599,6 +628,7 @@ public partial class GameInstance : MonoBehaviour
             isPlayerUnlockItemListLoaded &&
             isPlayerClearStageListLoaded &&
             isAvailableLootBoxListLoaded &&
+            isAvailableFortuneWheelListLoaded &&
             isAvailableIapPackageListLoaded &&
             isAvailableInGamePackageListLoaded &&
             isAvailableStageListLoaded)
