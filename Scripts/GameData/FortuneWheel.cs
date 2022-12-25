@@ -56,6 +56,6 @@ public class FortuneWheel : BaseGameData
         return "{\"id\":\"" + Id + "\"," +
             "\"requirementType\":" + (byte)requirementType + "," +
             "\"price\":" + price + "," +
-            "\"rewardItems\":" + jsonRewards + "}";
+            "\"rewards\":" + jsonRewards + "}";
     }
 }
