@@ -17,12 +17,18 @@ public class UIFortuneWheelManager : MonoBehaviour
     public int testRewardIndex;
 
     private bool _isPlaying = false;
+    private int _rewardIndex = 0;
     private float _startAngle = 0f;
     private float _endAngle = 0f;
     private float _spinTime = 0f;
     private float _iconAngle;
     private float _halfIconAngle;
     private float _halfIconAngleWithPaddings;
+
+    private void Start()
+    {
+        SetupWheel();
+    }
 
     private void Update()
     {
@@ -32,7 +38,7 @@ public class UIFortuneWheelManager : MonoBehaviour
         if (_spinTime > spinDuration)
         {
             _isPlaying = false;
-            ShowReward();
+            ShowReward(_rewardIndex);
         }
 
         float time = _spinTime / spinDuration;
@@ -92,10 +98,17 @@ public class UIFortuneWheelManager : MonoBehaviour
         return Random.Range(minAngle, maxAngle);
     }
 
-    public void OnClickPlay()
+    public void OnClickSpin()
     {
         if (_isPlaying)
             return;
+
+        GameInstance.GameService.SpinFortuneWheel(fortuneWheel.Id, (result) =>
+        {
+            _rewardIndex = result.rewardIndex;
+            Spin(_rewardIndex);
+        }, GameInstance.Singleton.OnGameServiceError);
+
     }
 
     public void Spin(int rewardIndex)
@@ -106,7 +119,7 @@ public class UIFortuneWheelManager : MonoBehaviour
         _isPlaying = true;
     }
 
-    public void ShowReward()
+    public void ShowReward(int rewardIndex)
     {
 
     }
@@ -114,6 +127,8 @@ public class UIFortuneWheelManager : MonoBehaviour
     [ContextMenu("Test Spin")]
     public void TestSpin()
     {
-        Spin(testRewardIndex);
+        _rewardIndex = testRewardIndex;
+        SetupWheel();
+        Spin(_rewardIndex);
     }
 }
