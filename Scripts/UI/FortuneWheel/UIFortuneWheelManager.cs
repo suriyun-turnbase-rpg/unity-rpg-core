@@ -20,9 +20,9 @@ public class UIFortuneWheelManager : MonoBehaviour
     private float _startAngle = 0f;
     private float _endAngle = 0f;
     private float _spinTime = 0f;
-    private float _itemAngle;
-    private float _halfItemAngle;
-    private float _halfItemAngleWithPaddings;
+    private float _iconAngle;
+    private float _halfIconAngle;
+    private float _halfIconAngleWithPaddings;
 
     private void Update()
     {
@@ -43,9 +43,9 @@ public class UIFortuneWheelManager : MonoBehaviour
     public void SetupWheel()
     {
         uiRewardContainer.RemoveAllChildren();
-        _itemAngle = 360f / fortuneWheel.rewards.Length;
-        _halfItemAngle = _itemAngle * 0.5f;
-        _halfItemAngleWithPaddings = _halfItemAngle - (_halfItemAngle * 0.25f);
+        _iconAngle = 360f / fortuneWheel.rewards.Length;
+        _halfIconAngle = _iconAngle * 0.5f;
+        _halfIconAngleWithPaddings = _halfIconAngle - (_halfIconAngle * 0.25f);
         for (int i = 0; i < fortuneWheel.rewards.Length; ++i)
         {
             Transform uiTransform;
@@ -80,15 +80,15 @@ public class UIFortuneWheelManager : MonoBehaviour
                 };
                 uiTransform = ui.transform;
             }
-            uiTransform.RotateAround(uiRewardContainer.position, Vector3.back, _itemAngle * i);
+            uiTransform.RotateAround(uiRewardContainer.position, Vector3.back, _iconAngle * i);
         }
     }
 
     public float GetRandomAngles(int rewardIndex)
     {
-        float angle = -(_itemAngle * rewardIndex);
-        float minAngle = (angle - _halfItemAngleWithPaddings) % 360f;
-        float maxAngle = (angle + _halfItemAngleWithPaddings) % 360f;
+        float angle = -(_iconAngle * rewardIndex);
+        float minAngle = (angle - _halfIconAngleWithPaddings) % 360f;
+        float maxAngle = (angle + _halfIconAngleWithPaddings) % 360f;
         return Random.Range(minAngle, maxAngle);
     }
 
