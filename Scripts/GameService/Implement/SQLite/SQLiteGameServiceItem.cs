@@ -741,7 +741,6 @@ public partial class SQLiteGameService
     protected override void DoGetAvailableFortuneWheelList(UnityAction<AvailableFortuneWheelListResult> onFinish)
     {
         var result = new AvailableFortuneWheelListResult();
-        result.error = GameServiceErrorCode.NOT_AVAILABLE;
         onFinish(result);
     }
 
