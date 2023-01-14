@@ -117,4 +117,16 @@ public class PlayerClearStage : BasePlayerData, IPlayerClearStage
     {
         return IsUnlock(Player.CurrentPlayerId, checkStage);
     }
+
+    public static int GetBestRating(string playerId, BaseStage checkStage)
+    {
+        if (DataMap.TryGetValue(GetId(playerId, checkStage.Id), out var clearStage))
+            return clearStage.BestRating;
+        return 0;
+    }
+
+    public static int GetBestRating(BaseStage checkStage)
+    {
+        return GetBestRating(Player.CurrentPlayerId, checkStage);
+    }
 }

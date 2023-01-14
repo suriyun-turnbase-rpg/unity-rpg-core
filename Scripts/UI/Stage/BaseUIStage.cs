@@ -28,7 +28,7 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
     public GameObject[] activeObjectsWhenUnlocked;
     public GameObject[] inactiveObjectsWhenUnlocked;
     public UnityEvent eventSetStagePreparation;
-
+    public GameObject[] stars;
 
     private Dictionary<string, UICurrency> cacheUiFirstClearRewardCustomCurrencies;
     public Dictionary<string, UICurrency> CacheUiFirstClearRewardCustomCurrencies
@@ -150,6 +150,7 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
         }
 
         UpdateElementsWhenUnlocked();
+        UpdateStars();
     }
 
     public void UpdateElementsWhenUnlocked()
@@ -166,6 +167,20 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
         foreach (var obj in inactiveObjectsWhenUnlocked)
         {
             obj.SetActive(!isUnlocked);
+        }
+    }
+
+    public void UpdateStars()
+    {
+        foreach (var star in stars)
+        {
+            star.SetActive(false);
+        }
+        var bestRating = PlayerClearStage.GetBestRating(data);
+        for (int i = 0; i < stars.Length; ++i)
+        {
+            if (i < bestRating)
+                stars[i].SetActive(true);
         }
     }
 
