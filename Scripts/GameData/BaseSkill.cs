@@ -8,7 +8,7 @@ public enum BuffType
     Nerf,
 }
 
-public abstract class BaseSkillBuff
+public abstract partial class BaseSkillBuff
 {
     public Sprite icon;
     public BuffType type;
@@ -68,7 +68,7 @@ public abstract class BaseSkillBuff
 #endif
 }
 
-public abstract class BaseSkill : BaseGameData
+public abstract partial class BaseSkill : BaseGameData
 {
     public bool isPassive;
     public BaseSkillCastAnimationData castAnimation;

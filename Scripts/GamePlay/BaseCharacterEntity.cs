@@ -142,7 +142,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
         var hasChanges = false;
         var cacheAnimator = GetComponent<Animator>();
@@ -287,7 +287,6 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         if (hitCount < 0)
             hitCount = 1;
 
-        var stealHp = 0f;
         var attackerElemental = attacker.Item.CharacterData.elemental;
         var attackerAttributes = attacker.GetTotalAttributes();
         var defenderElemental = Item.CharacterData.elemental;
@@ -298,7 +297,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             defenderElemental,
             attackerAttributes,
             defenderAttributes,
-            out stealHp,
+            out var stealHp,
             pAtkRate,
             mAtkRate,
             hitCount,
@@ -409,7 +408,9 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             Buffs[buff.Id] = buff;
         }
         else
+        {
             buff.BuffRemove();
+        }
     }
 
     public void ChangeActionClip(AnimationClip clip)
