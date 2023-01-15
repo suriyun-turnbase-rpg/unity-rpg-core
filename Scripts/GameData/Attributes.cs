@@ -89,8 +89,8 @@ public struct SingleAttribute
 
     public string ToJson()
     {
-        return "{\"minValue\":" + minValue + "," +
-            "\"maxValue\":" + maxValue + "," +
+        return "{\"minValue\":" + minValue.ToString(new CultureInfo("en-US", false)) + "," +
+            "\"maxValue\":" + maxValue.ToString(new CultureInfo("en-US", false)) + "," +
             "\"growth\":" + growth.ToString(new CultureInfo("en-US", false)) + "}";
     }
 }
@@ -750,7 +750,7 @@ public struct CalculatedAttributes
     public float bloodStealRateByMAtk;
 #endif
     [Range(-1f, 1f)]
-    [Tooltip("Chance to counter attack (Increase damage by `counterDamageRate`)")]
+    [Tooltip("Chance to counter attack (Counter damage calculated by `counterDamageRate`)")]
     public float counterChance;
     [Tooltip("Damage when counter attack = this * Damage")]
     public float counterDamageRate;
