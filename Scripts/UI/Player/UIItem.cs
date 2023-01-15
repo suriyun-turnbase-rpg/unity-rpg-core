@@ -36,7 +36,12 @@ public class UIItem : UIDataItem<PlayerItem>
         AttributeBlockChance,
         AttributeBlockDamageRate,
         AttributeResistanceChance,
-        Hidden,
+        AttributePDmgReductionRate,
+        AttributeMDmgReductionRate,
+        AttributeAllDmgReductionRate,
+        AttributeCounterChance,
+        AttributeCounterDamageRate,
+        Hidden = 1000,
     }
     [Header("General")]
     public Text textTitle;
@@ -235,6 +240,9 @@ public class UIItem : UIDataItem<PlayerItem>
             case DisplayStats.AttributePDef:
                 textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_PDEF, attributes.pDef);
                 return;
+            case DisplayStats.AttributePDmgReductionRate:
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_PDMG_REDUCTION_RATE, attributes.pDmgReductionRate);
+                return;
 #if !NO_MAGIC_STATS
             case DisplayStats.AttributeMAtk:
                 textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MATK, attributes.mAtk);
@@ -242,7 +250,13 @@ public class UIItem : UIDataItem<PlayerItem>
             case DisplayStats.AttributeMDef:
                 textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MDEF, attributes.mDef);
                 return;
+            case DisplayStats.AttributeMDmgReductionRate:
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MDMG_REDUCTION_RATE, attributes.mDmgReductionRate);
+                return;
 #endif
+            case DisplayStats.AttributeAllDmgReductionRate:
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_ALLDMG_REDUCTION_RATE, attributes.allDmgReductionRate);
+                return;
             case DisplayStats.AttributeSpd:
                 textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_SPD, attributes.spd);
                 return;
@@ -296,6 +310,12 @@ public class UIItem : UIDataItem<PlayerItem>
                 return;
             case DisplayStats.AttributeResistanceChance:
                 textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_RESISTANCE_CHANCE, attributes.resistanceChance);
+                return;
+            case DisplayStats.AttributeCounterChance:
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_COUNTER_CHANCE, attributes.counterChance);
+                return;
+            case DisplayStats.AttributeCounterDamageRate:
+                textDisplayStats.text = LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_COUNTER_DAMAGE_RATE, attributes.counterDamageRate);
                 return;
             default:
                 textDisplayStats.text = "";
