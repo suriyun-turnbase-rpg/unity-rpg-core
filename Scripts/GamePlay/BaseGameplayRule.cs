@@ -24,10 +24,12 @@ public class BaseGameplayRule : ScriptableObject
         // damage = attack * (100 / (100 + defense))
         var calcPAtk = attackerAttributes.pAtk * pAtkRate;
         var pDmg = calcPAtk * (100f / (100f + defenderAttributes.pDef));
+        pDmg /= (defenderAttributes.pDmgReductionRate + defenderAttributes.allDmgReductionRate);
         stealHp += pDmg * attackerAttributes.bloodStealRateByPAtk;
 #if !NO_MAGIC_STATS
         var calcMAtk = attackerAttributes.mAtk * mAtkRate;
         var mDmg = calcMAtk * (100f / (100f + defenderAttributes.mDef));
+        mDmg /= (defenderAttributes.mDmgReductionRate + defenderAttributes.allDmgReductionRate);
         stealHp += mDmg * attackerAttributes.bloodStealRateByMAtk;
 #endif
         if (pDmg < 0)
