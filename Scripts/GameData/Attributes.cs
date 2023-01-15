@@ -118,6 +118,13 @@ public enum AttributeType
 #if !NO_MAGIC_STATS
     BloodStealRateByMAtk = 14,
 #endif
+    PDmgReductionRate = 15,
+#if !NO_MAGIC_STATS
+    MDmgReductionRate = 16,
+#endif
+    AllDmgReductionRate = 17,
+    CounterChance = 18,
+    CounterDamageRate = 19,
 }
 
 //CalculatedAttributes
@@ -136,6 +143,9 @@ public struct RandomAttributes
     [Header("P.Defend")]
     public int minPDef;
     public int maxPDef;
+    [Header("P.Damage Reduction Rate")]
+    public int minPDmgReductionRate;
+    public int maxPDmgReductionRate;
 #if !NO_MAGIC_STATS
     [Header("M.Attack")]
     public int minMAtk;
@@ -143,7 +153,13 @@ public struct RandomAttributes
     [Header("M.Defend")]
     public int minMDef;
     public int maxMDef;
+    [Header("M.Damage Reduction Rate")]
+    public int minMDmgReductionRate;
+    public int maxMDmgReductionRate;
 #endif
+    [Header("All Damage Reduction Rate")]
+    public int minAllDmgReductionRate;
+    public int maxAllDmgReductionRate;
     [Header("Speed")]
     public int minSpd;
     public int maxSpd;
@@ -156,41 +172,41 @@ public struct RandomAttributes
     public int maxAcc;
 #endif
     [Header("Critical Chance")]
-    [Range(0f, 1f)]
+    [Range(-1f, 1f)]
     public float minCritChance;
-    [Range(0f, 1f)]
+    [Range(-1f, 1f)]
     public float maxCritChance;
     [Header("Critical Damage Rate")]
-    [Range(0f, 1f)]
     public float minCritDamageRate;
-    [Range(0f, 1f)]
     public float maxCritDamageRate;
     [Header("Block Chance")]
-    [Range(0f, 1f)]
+    [Range(-1f, 1f)]
     public float minBlockChance;
-    [Range(0f, 1f)]
+    [Range(-1f, 1f)]
     public float maxBlockChance;
     [Header("Block Damage Rate")]
-    [Range(0f, 1f)]
     public float minBlockDamageRate;
-    [Range(0f, 1f)]
     public float maxBlockDamageRate;
     [Header("Resistance Chance")]
-    [Range(0f, 1f)]
+    [Range(-1f, 1f)]
     public float minResistanceChance;
-    [Range(0f, 1f)]
+    [Range(-1f, 1f)]
     public float maxResistanceChance;
     [Header("Blood Steal")]
-    [Range(0f, 1f)]
     public float minBloodStealRateByPAtk;
-    [Range(0f, 1f)]
     public float maxBloodStealRateByPAtk;
 #if !NO_MAGIC_STATS
-    [Range(0f, 1f)]
     public float minBloodStealRateByMAtk;
-    [Range(0f, 1f)]
     public float maxBloodStealRateByMAtk;
 #endif
+    [Header("Counter Chance")]
+    [Range(-1f, 1f)]
+    public float minCounterChance;
+    [Range(-1f, 1f)]
+    public float maxCounterChance;
+    [Header("Counter Damage Rate")]
+    public float minCounterDamageRate;
+    public float maxCounterDamageRate;
 
     public CalculatedAttributes GetCalculatedAttributes()
     {
@@ -210,6 +226,10 @@ public struct RandomAttributes
         tempIntVal = UnityEngine.Random.Range(minPDef, maxPDef);
         if (tempIntVal != 0)
             randomingAmounts[AttributeType.PDef] = tempIntVal;
+        // PDmgReductionRate
+        tempFloatVal = UnityEngine.Random.Range(minPDmgReductionRate, maxPDmgReductionRate);
+        if (tempFloatVal != 0)
+            randomingAmounts[AttributeType.PDmgReductionRate] = tempFloatVal;
 #if !NO_MAGIC_STATS
         // MAtk
         tempIntVal = UnityEngine.Random.Range(minMAtk, maxMAtk);
@@ -219,7 +239,15 @@ public struct RandomAttributes
         tempIntVal = UnityEngine.Random.Range(minMDef, maxMDef);
         if (tempIntVal != 0)
             randomingAmounts[AttributeType.MDef] = tempIntVal;
+        // MDmgReductionRate
+        tempFloatVal = UnityEngine.Random.Range(minMDmgReductionRate, maxMDmgReductionRate);
+        if (tempFloatVal != 0)
+            randomingAmounts[AttributeType.MDmgReductionRate] = tempFloatVal;
 #endif
+        // AllDmgReductionRate
+        tempFloatVal = UnityEngine.Random.Range(minAllDmgReductionRate, maxAllDmgReductionRate);
+        if (tempFloatVal != 0)
+            randomingAmounts[AttributeType.AllDmgReductionRate] = tempFloatVal;
         // Spd
         tempIntVal = UnityEngine.Random.Range(minSpd, maxSpd);
         if (tempIntVal != 0)
@@ -263,6 +291,14 @@ public struct RandomAttributes
         if (tempFloatVal != 0)
             randomingAmounts[AttributeType.BloodStealRateByMAtk] = tempFloatVal;
 #endif
+        // Counter Chance
+        tempFloatVal = UnityEngine.Random.Range(minCounterChance, maxCounterChance);
+        if (tempFloatVal != 0)
+            randomingAmounts[AttributeType.CounterChance] = tempFloatVal;
+        // Counter Damage Rate
+        tempFloatVal = UnityEngine.Random.Range(minCounterDamageRate, maxCounterDamageRate);
+        if (tempFloatVal != 0)
+            randomingAmounts[AttributeType.CounterDamageRate] = tempFloatVal;
 
         List<AttributeType> shufflingKeys = new List<AttributeType>(randomingAmounts.Keys);
         shufflingKeys = shufflingKeys.OrderBy(a => UnityEngine.Random.value).ToList();
@@ -282,6 +318,9 @@ public struct RandomAttributes
                 case AttributeType.PDef:
                     result.pDef = (int)randomingAmounts[shufflingKeys[i]];
                     break;
+                case AttributeType.PDmgReductionRate:
+                    result.pDmgReductionRate = randomingAmounts[shufflingKeys[i]];
+                    break;
 #if !NO_MAGIC_STATS
                 case AttributeType.MAtk:
                     result.mAtk = (int)randomingAmounts[shufflingKeys[i]];
@@ -289,7 +328,13 @@ public struct RandomAttributes
                 case AttributeType.MDef:
                     result.mDef = (int)randomingAmounts[shufflingKeys[i]];
                     break;
+                case AttributeType.MDmgReductionRate:
+                    result.mDmgReductionRate = randomingAmounts[shufflingKeys[i]];
+                    break;
 #endif
+                case AttributeType.AllDmgReductionRate:
+                    result.allDmgReductionRate = randomingAmounts[shufflingKeys[i]];
+                    break;
                 case AttributeType.Spd:
                     result.spd = (int)randomingAmounts[shufflingKeys[i]];
                     break;
@@ -324,6 +369,12 @@ public struct RandomAttributes
                     result.bloodStealRateByMAtk = randomingAmounts[shufflingKeys[i]];
                     break;
 #endif
+                case AttributeType.CounterChance:
+                    result.counterChance = randomingAmounts[shufflingKeys[i]];
+                    break;
+                case AttributeType.CounterDamageRate:
+                    result.counterDamageRate = randomingAmounts[shufflingKeys[i]];
+                    break;
             }
         }
         return result;
@@ -340,12 +391,18 @@ public struct RandomAttributes
             "\"maxPAtk\":" + maxPAtk + "," +
             "\"minPDef\":" + minPDef + "," +
             "\"maxPDef\":" + maxPDef + "," +
+            "\"minPDmgReductionRate\":" + minPDmgReductionRate.ToString(new CultureInfo("en-US", false)) + "," +
+            "\"maxPDmgReductionRate\":" + maxPDmgReductionRate.ToString(new CultureInfo("en-US", false)) + "," +
 #if !NO_MAGIC_STATS
             "\"minMAtk\":" + minMAtk + "," +
             "\"maxMAtk\":" + maxMAtk + "," +
             "\"minMDef\":" + minMDef + "," +
             "\"maxMDef\":" + maxMDef + "," +
+            "\"minMDmgReductionRate\":" + minMDmgReductionRate.ToString(new CultureInfo("en-US", false)) + "," +
+            "\"maxMDmgReductionRate\":" + maxMDmgReductionRate.ToString(new CultureInfo("en-US", false)) + "," +
 #endif
+            "\"minAllDmgReductionRate\":" + minAllDmgReductionRate.ToString(new CultureInfo("en-US", false)) + "," +
+            "\"maxAllDmgReductionRate\":" + maxAllDmgReductionRate.ToString(new CultureInfo("en-US", false)) + "," +
             "\"minSpd\":" + minSpd + "," +
             "\"maxSpd\":" + maxSpd + "," +
 #if !NO_EVADE_STATS
@@ -369,6 +426,10 @@ public struct RandomAttributes
 #if !NO_MAGIC_STATS
             "\"minBloodStealRateByMAtk\":" + minBloodStealRateByMAtk.ToString(new CultureInfo("en-US", false)) + "," +
             "\"maxBloodStealRateByMAtk\":" + maxBloodStealRateByMAtk.ToString(new CultureInfo("en-US", false)) + "," +
+            "\"minCounterChance\":" + minCounterChance.ToString(new CultureInfo("en-US", false)) + "," +
+            "\"maxCounterChance\":" + maxCounterChance.ToString(new CultureInfo("en-US", false)) + "," +
+            "\"minCounterDamageRate\":" + minCounterDamageRate.ToString(new CultureInfo("en-US", false)) + "," +
+            "\"maxCounterDamageRate\":" + maxCounterDamageRate.ToString(new CultureInfo("en-US", false)) + "," +
 #endif
             "\"end\":0}";
     }
@@ -383,12 +444,18 @@ public struct Attributes
     public Int32Attribute pAtk;
     [Tooltip("P.Defend (P stands for physical), pAtk will minus to this to calculate damage")]
     public Int32Attribute pDef;
+    [Tooltip("P.Damage when reducted = this / P.Damage")]
+    public SingleAttribute pDmgReductionRate;
 #if !NO_MAGIC_STATS
     [Tooltip("M.Attack (M stands for magical), This will minus to mDef to calculate damage")]
     public Int32Attribute mAtk;
     [Tooltip("M.Defend (M stands for magical), mAtk will minus to this to calculate damage")]
     public Int32Attribute mDef;
+    [Tooltip("M.Damage when reducted = this / M.Damage")]
+    public SingleAttribute mDmgReductionRate;
 #endif
+    [Tooltip("All Damage when reducted = this / All Damage")]
+    public SingleAttribute allDmgReductionRate;
     [Tooltip("Speed, Character with higher speed will have more chance to attack")]
     public Int32Attribute spd;
 #if !NO_EVADE_STATS
@@ -415,6 +482,11 @@ public struct Attributes
 #if !NO_MAGIC_STATS
     public SingleAttribute bloodStealRateByMAtk;
 #endif
+    [Header("Counter attributes")]
+    [Tooltip("Chance to counter attack, this min-max value should not over 1")]
+    public SingleAttribute counterChance;
+    [Tooltip("Damage when counter attack = this * Damage")]
+    public SingleAttribute counterDamageRate;
 
     public Attributes Clone()
     {
@@ -422,10 +494,13 @@ public struct Attributes
         result.hp = hp.Clone();
         result.pAtk = pAtk.Clone();
         result.pDef = pDef.Clone();
+        result.pDmgReductionRate = pDmgReductionRate.Clone();
 #if !NO_MAGIC_STATS
         result.mAtk = mAtk.Clone();
         result.mDef = mDef.Clone();
+        result.mDmgReductionRate = mDmgReductionRate.Clone();
 #endif
+        result.allDmgReductionRate = allDmgReductionRate.Clone();
         result.spd = spd.Clone();
 #if !NO_EVADE_STATS
         result.eva = eva.Clone();
@@ -440,6 +515,8 @@ public struct Attributes
 #if !NO_MAGIC_STATS
         result.bloodStealRateByMAtk = bloodStealRateByMAtk.Clone();
 #endif
+        result.counterChance = counterChance.Clone();
+        result.counterDamageRate = counterDamageRate.Clone();
         return result;
     }
 
@@ -449,10 +526,13 @@ public struct Attributes
         result.hp = hp.Calculate(currentLevel, maxLevel);
         result.pAtk = pAtk.Calculate(currentLevel, maxLevel);
         result.pDef = pDef.Calculate(currentLevel, maxLevel);
+        result.pDmgReductionRate = pDmgReductionRate.Calculate(currentLevel, maxLevel);
 #if !NO_MAGIC_STATS
         result.mAtk = mAtk.Calculate(currentLevel, maxLevel);
         result.mDef = mDef.Calculate(currentLevel, maxLevel);
+        result.mDmgReductionRate = mDmgReductionRate.Calculate(currentLevel, maxLevel);
 #endif
+        result.allDmgReductionRate = allDmgReductionRate.Calculate(currentLevel, maxLevel);
         result.spd = spd.Calculate(currentLevel, maxLevel);
 #if !NO_EVADE_STATS
         result.eva = eva.Calculate(currentLevel, maxLevel);
@@ -467,6 +547,8 @@ public struct Attributes
 #if !NO_MAGIC_STATS
         result.bloodStealRateByMAtk = bloodStealRateByMAtk.Calculate(currentLevel, maxLevel);
 #endif
+        result.counterChance = counterChance.Calculate(currentLevel, maxLevel);
+        result.counterDamageRate = counterDamageRate.Calculate(currentLevel, maxLevel);
         return result;
     }
 
@@ -485,6 +567,10 @@ public struct Attributes
         pDef.maxValue = this.pDef.Calculate(newMaxLevel, defaultMaxLevel);
         attributes.pDef = pDef;
 
+        var pDmgReductionRate = this.pDmgReductionRate.Clone();
+        pDmgReductionRate.maxValue = this.pDmgReductionRate.Calculate(newMaxLevel, defaultMaxLevel);
+        attributes.pDmgReductionRate = pDmgReductionRate;
+
 #if !NO_MAGIC_STATS
         var mAtk = this.mAtk.Clone();
         mAtk.maxValue = this.mAtk.Calculate(newMaxLevel, defaultMaxLevel);
@@ -493,7 +579,15 @@ public struct Attributes
         var mDef = this.mDef.Clone();
         mDef.maxValue = this.mDef.Calculate(newMaxLevel, defaultMaxLevel);
         attributes.mDef = mDef;
+
+        var mDmgReductionRate = this.mDmgReductionRate.Clone();
+        mDmgReductionRate.maxValue = this.mDmgReductionRate.Calculate(newMaxLevel, defaultMaxLevel);
+        attributes.mDmgReductionRate = mDmgReductionRate;
 #endif
+
+        var allDmgReductionRate = this.allDmgReductionRate.Clone();
+        allDmgReductionRate.maxValue = this.allDmgReductionRate.Calculate(newMaxLevel, defaultMaxLevel);
+        attributes.allDmgReductionRate = allDmgReductionRate;
 
         var spd = this.spd.Clone();
         spd.maxValue = this.spd.Calculate(newMaxLevel, defaultMaxLevel);
@@ -539,6 +633,14 @@ public struct Attributes
         attributes.bloodStealRateByMAtk = bloodStealRateByMAtk;
 #endif
 
+        var counterChance = this.counterChance.Clone();
+        counterChance.maxValue = this.counterChance.Calculate(newMaxLevel, defaultMaxLevel);
+        attributes.counterChance = counterChance;
+
+        var counterDamageRate = this.counterDamageRate.Clone();
+        counterDamageRate.maxValue = this.counterDamageRate.Calculate(newMaxLevel, defaultMaxLevel);
+        attributes.counterDamageRate = counterDamageRate;
+
         return attributes;
     }
 
@@ -548,10 +650,13 @@ public struct Attributes
         result.hp = a.hp * b;
         result.pAtk = a.pAtk * b;
         result.pDef = a.pDef * b;
+        result.pDmgReductionRate = a.pDmgReductionRate * b;
 #if !NO_MAGIC_STATS
         result.mAtk = a.mAtk * b;
         result.mDef = a.mDef * b;
+        result.mDmgReductionRate = a.mDmgReductionRate * b;
 #endif
+        result.allDmgReductionRate = a.allDmgReductionRate * b;
         result.spd = a.spd * b;
 #if !NO_EVADE_STATS
         result.eva = a.eva * b;
@@ -566,6 +671,8 @@ public struct Attributes
 #if !NO_MAGIC_STATS
         result.bloodStealRateByMAtk = a.bloodStealRateByMAtk * b;
 #endif
+        result.counterChance = a.counterChance * b;
+        result.counterDamageRate = a.counterDamageRate * b;
         return result;
     }
 }
@@ -580,12 +687,18 @@ public struct CalculatedAttributes
     public float pAtk;
     [Tooltip("C.pDef (C stands for Character) = C.pDef + this")]
     public float pDef;
+    [Tooltip("P.Damage when reducted = this / P.Damage")]
+    public float pDmgReductionRate;
 #if !NO_MAGIC_STATS
     [Tooltip("C.mAtk (C stands for Character) = C.mAtk + this")]
     public float mAtk;
     [Tooltip("C.mDef (C stands for Character) = C.mDef + this")]
     public float mDef;
+    [Tooltip("M.Damage when reducted = this / M.Damage")]
+    public float mDmgReductionRate;
 #endif
+    [Tooltip("All Damage when reducted = this / All Damage")]
+    public float allDmgReductionRate;
     [Tooltip("C.Spd (C stands for Character) = C.Spd + this")]
     public float spd;
 #if !NO_EVADE_STATS
@@ -616,30 +729,31 @@ public struct CalculatedAttributes
     public float accRate;
 #endif
     [Header("Critical attributes")]
-    [Range(0f, 1f)]
+    [Range(-1f, 1f)]
     [Tooltip("Chance to critical attack (Increase damage by `critDamageRate`)")]
     public float critChance;
-    [Range(1f, 100f)]
     [Tooltip("Damage when critical attack = this * Damage")]
     public float critDamageRate;
     [Header("Block attributes")]
-    [Range(0f, 1f)]
+    [Range(-1f, 1f)]
     [Tooltip("Chance to block (Reduce damage by `blockDamageRate`)")]
     public float blockChance;
-    [Range(1f, 100f)]
     [Tooltip("Damage when block = this / Damage")]
     public float blockDamageRate;
     [Header("Resistance attributes")]
     [Tooltip("Chance to prevent application of a harmful effect")]
-    [Range(0f, 1f)]
+    [Range(-1f, 1f)]
     public float resistanceChance;
     [Header("Blood steal attributes")]
-    [Range(0f, 1f)]
     public float bloodStealRateByPAtk;
 #if !NO_MAGIC_STATS
-    [Range(0f, 1f)]
     public float bloodStealRateByMAtk;
 #endif
+    [Range(-1f, 1f)]
+    [Tooltip("Chance to counter attack (Increase damage by `counterDamageRate`)")]
+    public float counterChance;
+    [Tooltip("Damage when counter attack = this * Damage")]
+    public float counterDamageRate;
 
     public CalculatedAttributes Clone()
     {
@@ -647,10 +761,13 @@ public struct CalculatedAttributes
         result.hp = hp;
         result.pAtk = pAtk;
         result.pDef = pDef;
+        result.pDmgReductionRate = pDmgReductionRate;
 #if !NO_MAGIC_STATS
         result.mAtk = mAtk;
         result.mDef = mDef;
+        result.mDmgReductionRate = mDmgReductionRate;
 #endif
+        result.allDmgReductionRate = allDmgReductionRate;
         result.spd = spd;
 #if !NO_EVADE_STATS
         result.eva = eva;
@@ -683,6 +800,9 @@ public struct CalculatedAttributes
         result.bloodStealRateByMAtk = bloodStealRateByMAtk;
 #endif
 
+        result.counterChance = counterChance;
+        result.counterDamageRate = counterDamageRate;
+
         return result;
     }
 
@@ -693,10 +813,13 @@ public struct CalculatedAttributes
         result.hp += b.hp;
         result.pAtk += b.pAtk;
         result.pDef += b.pDef;
+        result.pDmgReductionRate += b.pDmgReductionRate;
 #if !NO_MAGIC_STATS
         result.mAtk += b.mAtk;
         result.mDef += b.mDef;
+        result.mDmgReductionRate += b.mDmgReductionRate;
 #endif
+        result.allDmgReductionRate += b.allDmgReductionRate;
         result.spd += b.spd;
 #if !NO_EVADE_STATS
         result.eva += b.eva;
@@ -729,6 +852,9 @@ public struct CalculatedAttributes
         result.bloodStealRateByMAtk += b.bloodStealRateByMAtk;
 #endif
 
+        result.counterChance += b.counterChance;
+        result.counterDamageRate += b.counterDamageRate;
+
         return result;
     }
 
@@ -738,10 +864,13 @@ public struct CalculatedAttributes
         result.hp -= b.hp;
         result.pAtk -= b.pAtk;
         result.pDef -= b.pDef;
+        result.pDmgReductionRate -= b.pDmgReductionRate;
 #if !NO_MAGIC_STATS
         result.mAtk -= b.mAtk;
         result.mDef -= b.mDef;
+        result.mDmgReductionRate -= b.mDmgReductionRate;
 #endif
+        result.allDmgReductionRate -= b.allDmgReductionRate;
         result.spd -= b.spd;
 #if !NO_EVADE_STATS
         result.eva -= b.eva;
@@ -774,6 +903,9 @@ public struct CalculatedAttributes
         result.bloodStealRateByMAtk -= b.bloodStealRateByMAtk;
 #endif
 
+        result.counterChance -= b.counterChance;
+        result.counterDamageRate -= b.counterDamageRate;
+
         return result;
     }
 
@@ -783,10 +915,13 @@ public struct CalculatedAttributes
         result.hp = Mathf.CeilToInt(a.hp * b);
         result.pAtk = Mathf.CeilToInt(a.pAtk * b);
         result.pDef = Mathf.CeilToInt(a.pDef * b);
+        result.pDmgReductionRate = Mathf.CeilToInt(a.pDmgReductionRate * b);
 #if !NO_MAGIC_STATS
         result.mAtk = Mathf.CeilToInt(a.mAtk * b);
         result.mDef = Mathf.CeilToInt(a.mDef * b);
+        result.mDmgReductionRate = Mathf.CeilToInt(a.mDmgReductionRate * b);
 #endif
+        result.allDmgReductionRate = Mathf.CeilToInt(a.allDmgReductionRate * b);
         result.spd = Mathf.CeilToInt(a.spd * b);
 #if !NO_EVADE_STATS
         result.eva = Mathf.CeilToInt(a.eva * b);
@@ -819,6 +954,9 @@ public struct CalculatedAttributes
         result.bloodStealRateByMAtk = a.bloodStealRateByMAtk * b;
 #endif
 
+        result.counterChance = a.counterChance * b;
+        result.counterDamageRate = a.counterDamageRate * b;
+
         return result;
     }
     #endregion
@@ -842,6 +980,11 @@ public struct CalculatedAttributes
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_PDEF, pDef, bonusAttributes.pDef);
             result += "\n";
         }
+        if (pDmgReductionRate != 0 || bonusAttributes.pDmgReductionRate != 0)
+        {
+            result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_PDMG_REDUCTION_RATE, pDmgReductionRate, bonusAttributes.pDmgReductionRate);
+            result += "\n";
+        }
 #if !NO_MAGIC_STATS
         if (mAtk != 0 || bonusAttributes.mAtk != 0)
         {
@@ -853,7 +996,17 @@ public struct CalculatedAttributes
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_MDEF, mDef, bonusAttributes.mDef);
             result += "\n";
         }
+        if (mDmgReductionRate != 0 || bonusAttributes.mDmgReductionRate != 0)
+        {
+            result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_MDMG_REDUCTION_RATE, mDmgReductionRate, bonusAttributes.mDmgReductionRate);
+            result += "\n";
+        }
 #endif
+        if (allDmgReductionRate != 0 || bonusAttributes.allDmgReductionRate != 0)
+        {
+            result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_ALLDMG_REDUCTION_RATE, allDmgReductionRate, bonusAttributes.allDmgReductionRate);
+            result += "\n";
+        }
         if (spd != 0 || bonusAttributes.spd != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_SPD, spd, bonusAttributes.spd);
@@ -948,6 +1101,16 @@ public struct CalculatedAttributes
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_MATK, bloodStealRateByMAtk, bonusAttributes.bloodStealRateByMAtk, true);
         }
 #endif
+        if (counterChance != 0 || bonusAttributes.counterChance != 0)
+        {
+            result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_COUNTER_CHANCE, counterChance, bonusAttributes.counterChance, true);
+            result += "\n";
+        }
+        if (counterDamageRate != 0 || bonusAttributes.counterDamageRate != 0)
+        {
+            result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_COUNTER_DAMAGE_RATE, counterDamageRate, bonusAttributes.counterDamageRate, true);
+            result += "\n";
+        }
         return result;
     }
 }

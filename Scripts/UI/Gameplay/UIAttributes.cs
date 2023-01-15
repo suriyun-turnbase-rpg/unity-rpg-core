@@ -12,10 +12,16 @@ public class UIAttributes : UIDataItem<CalculatedAttributes>
     public Text textPAtk;
     public GameObject containerPDef;
     public Text textPDef;
+    public GameObject containerPDmgReductionRate;
+    public Text textPDmgReductionRate;
     public GameObject containerMAtk;
     public Text textMAtk;
     public GameObject containerMDef;
     public Text textMDef;
+    public GameObject containerMDmgReductionRate;
+    public Text textMDmgReductionRate;
+    public GameObject containerAllDmgReductionRate;
+    public Text textAllDmgReductionRate;
     public GameObject containerSpd;
     public Text textSpd;
     public GameObject containerEva;
@@ -52,6 +58,11 @@ public class UIAttributes : UIDataItem<CalculatedAttributes>
     [Header("Resistance attributes")]
     public GameObject containerResistance;
     public Text textResistanceChance;
+    [Header("Counter attributes")]
+    public GameObject containerCounterChance;
+    public Text textCounterChance;
+    public GameObject containerCounterDamageRate;
+    public Text textCounterDamageRate;
     [Header("Options")]
     public bool useFormatForInfo;
     public bool hideInfoIfEmpty;
@@ -88,6 +99,13 @@ public class UIAttributes : UIDataItem<CalculatedAttributes>
                 containerPDef.SetActive(Mathf.Abs(data.pDef) > 0);
         }
 
+        if (textPDmgReductionRate != null)
+        {
+            textPDmgReductionRate.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_PDMG_REDUCTION_RATE, data.pDmgReductionRate) : LanguageManager.FormatNumber(data.pDmgReductionRate);
+            if (hideInfoIfEmpty && containerPDmgReductionRate != null)
+                containerPDmgReductionRate.SetActive(Mathf.Abs(data.pDmgReductionRate) > 0);
+        }
+
 #if !NO_MAGIC_STATS
         if (textMAtk != null)
         {
@@ -102,7 +120,21 @@ public class UIAttributes : UIDataItem<CalculatedAttributes>
             if (hideInfoIfEmpty && containerMDef != null)
                 containerMDef.SetActive(Mathf.Abs(data.mDef) > 0);
         }
+
+        if (textMDmgReductionRate != null)
+        {
+            textMDmgReductionRate.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MDMG_REDUCTION_RATE, data.mDmgReductionRate) : LanguageManager.FormatNumber(data.mDmgReductionRate);
+            if (hideInfoIfEmpty && containerMDmgReductionRate != null)
+                containerMDmgReductionRate.SetActive(Mathf.Abs(data.mDmgReductionRate) > 0);
+        }
 #endif
+
+        if (textAllDmgReductionRate != null)
+        {
+            textAllDmgReductionRate.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_ALLDMG_REDUCTION_RATE, data.allDmgReductionRate) : LanguageManager.FormatNumber(data.allDmgReductionRate);
+            if (hideInfoIfEmpty && containerAllDmgReductionRate != null)
+                containerAllDmgReductionRate.SetActive(Mathf.Abs(data.allDmgReductionRate) > 0);
+        }
 
         if (textSpd != null)
         {
@@ -220,6 +252,20 @@ public class UIAttributes : UIDataItem<CalculatedAttributes>
             textResistanceChance.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_RESISTANCE_CHANCE, data.resistanceChance, true) : LanguageManager.FormatNumber(data.resistanceChance, true);
             if (hideInfoIfEmpty && containerResistance != null)
                 containerResistance.SetActive(Mathf.Abs(data.resistanceChance) > 0);
+        }
+
+        if (textCounterChance != null)
+        {
+            textCounterChance.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_COUNTER_CHANCE, data.counterChance, true) : LanguageManager.FormatNumber(data.counterChance, true);
+            if (hideInfoIfEmpty && containerCounterChance != null)
+                containerCounterChance.SetActive(Mathf.Abs(data.counterChance) > 0);
+        }
+
+        if (textCounterDamageRate != null)
+        {
+            textCounterDamageRate.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_COUNTER_DAMAGE_RATE, data.counterDamageRate, true) : LanguageManager.FormatNumber(data.counterDamageRate, true);
+            if (hideInfoIfEmpty && containerCounterDamageRate != null)
+                containerCounterDamageRate.SetActive(Mathf.Abs(data.counterDamageRate) > 0);
         }
     }
 

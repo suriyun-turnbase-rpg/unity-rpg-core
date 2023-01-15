@@ -306,20 +306,19 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
 
             if (CharacterData == null)
                 return result;
-
-            var valueList = DataMap.Values;
-            var list = valueList.Where(entry =>
-                entry.PlayerId == PlayerId &&
-                entry.EquipmentData != null &&
-                entry.EquipItemId == Id &&
-                !string.IsNullOrEmpty(entry.EquipPosition) &&
-                entry.Amount > 0).ToList();
+            /*
+            List<PlayerItem> list = new List<PlayerItem>();
+            foreach (var entry in DataMap.Values)
+            {
+                if (entry.PlayerId == PlayerId && entry.EquipmentData != null && entry.EquipItemId == Id && !string.IsNullOrEmpty(entry.EquipPosition) && entry.Amount > 0)
+                    list.Add(entry);
+            }
 
             foreach (var entry in list)
             {
                 result.Add(entry.EquipPosition, entry);
             }
-
+            */
             return result;
         }
     }

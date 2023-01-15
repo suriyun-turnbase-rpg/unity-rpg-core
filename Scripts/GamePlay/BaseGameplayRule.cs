@@ -71,6 +71,16 @@ public class BaseGameplayRule : ScriptableObject
         return damage / defenderAttributes.blockDamageRate;
     }
 
+    public virtual bool IsCounter(int seed, CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
+    {
+        return RandomNumberUtils.RandomFloat(seed, 0, 1) <= defenderAttributes.counterChance;
+    }
+
+    public virtual float GetCounterDamage(CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes, float damage)
+    {
+        return damage * attackerAttributes.counterDamageRate;
+    }
+
     public virtual bool IsHit(int seed, CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
     {
 #if !NO_EVADE_STATS
