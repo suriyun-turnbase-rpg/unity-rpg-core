@@ -172,6 +172,8 @@ public abstract class BaseUIStage<TPreparation, TStage> : UIDataItem<TStage>
 
     public void UpdateStars()
     {
+        if (stars == null || stars.Length == 0)
+            return;
         foreach (var star in stars)
         {
             star.SetActive(false);

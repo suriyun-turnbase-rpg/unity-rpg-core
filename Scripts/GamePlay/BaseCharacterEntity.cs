@@ -249,7 +249,14 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         Container = container;
     }
 
-    public virtual void Attack(BaseCharacterEntity target, int seed, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0)
+    public virtual void Attack(
+        BaseCharacterEntity target,
+        int seed,
+        float pAtkRate,
+        float mAtkRate,
+        int hitCount,
+        int fixDamage,
+        bool fromCounter)
     {
         if (target == null)
             return;
@@ -259,30 +266,40 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             pAtkRate,
             mAtkRate,
             hitCount,
-            fixDamage);
+            fixDamage,
+            fromCounter);
     }
 
-    public virtual void Attack(BaseCharacterEntity target, BaseDamage damagePrefab, int seed, float pAtkRate = 1f, float mAtkRate = 1f, int hitCount = 1, int fixDamage = 0)
+    public virtual void Attack(
+        BaseCharacterEntity target,
+        BaseDamage damagePrefab,
+        int seed,
+        float pAtkRate,
+        float mAtkRate,
+        int hitCount,
+        int fixDamage,
+        bool fromCounter)
     {
         if (damagePrefab == null)
         {
             // Apply damage immediately
-            Attack(target, seed, pAtkRate, mAtkRate, hitCount, fixDamage);
+            Attack(target, seed, pAtkRate, mAtkRate, hitCount, fixDamage, fromCounter);
         }
         else
         {
             var damage = Instantiate(damagePrefab, damageContainer.position, damageContainer.rotation);
-            damage.Setup(this, target, seed, pAtkRate, mAtkRate, hitCount, fixDamage);
+            damage.Setup(this, target, seed, pAtkRate, mAtkRate, hitCount, fixDamage, fromCounter);
         }
     }
 
     public virtual bool ReceiveDamage(
         BaseCharacterEntity attacker,
         int seed,
-        float pAtkRate = 1f,
-        float mAtkRate = 1f,
-        int hitCount = 1,
-        int fixDamage = 0)
+        float pAtkRate,
+        float mAtkRate,
+        int hitCount,
+        int fixDamage,
+        bool fromCounter)
     {
         if (hitCount < 0)
             hitCount = 1;
@@ -303,22 +320,38 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             hitCount,
             fixDamage);
 
-        var isCritical = false;
-        var isBlock = false;
+        // Counter occurs
+        unchecked
+        {
+            seed += 16;
+        }
+        var isCounter = !fromCounter && GameInstance.GameplayRule.IsCounter(seed, attackerAttributes, defenderAttributes);
+        if (fromCounter)
+            totalDmg = GameInstance.GameplayRule.GetCounterDamage(attackerAttributes, defenderAttributes, totalDmg);
+
         // Critical occurs
-        if (GameInstance.GameplayRule.IsCrit(seed, attackerAttributes, defenderAttributes))
+        unchecked
         {
+            seed += 16;
+        }
+        var isCritical = GameInstance.GameplayRule.IsCrit(seed, attackerAttributes, defenderAttributes);
+        if (isCritical)
             totalDmg = GameInstance.GameplayRule.GetCritDamage(seed, attackerAttributes, defenderAttributes, totalDmg);
-            isCritical = true;
-        }
+
         // Block occurs
-        if (GameInstance.GameplayRule.IsBlock(seed, attackerAttributes, defenderAttributes))
+        unchecked
         {
-            totalDmg = GameInstance.GameplayRule.GetBlockDamage(attackerAttributes, defenderAttributes, totalDmg);
-            isBlock = true;
+            seed += 16;
         }
+        var isBlock = GameInstance.GameplayRule.IsBlock(seed, attackerAttributes, defenderAttributes);
+        if (isBlock)
+            totalDmg = GameInstance.GameplayRule.GetBlockDamage(attackerAttributes, defenderAttributes, totalDmg);
 
         // Cannot evade, receive damage
+        unchecked
+        {
+            seed += 16;
+        }
         if (!GameInstance.GameplayRule.IsHit(seed, attackerAttributes, defenderAttributes))
         {
             Manager.SpawnMissText(this, hitCount);
@@ -341,9 +374,17 @@ public abstract class BaseCharacterEntity : MonoBehaviour
                 Manager.SpawnHealText((int)stealHp, attacker, hitCount);
                 attacker.Hp += stealHp;
             }
+
+            if (isCounter)
+                Counter(attacker, seed);
         }
 
         return true;
+    }
+
+    public virtual void Counter(BaseCharacterEntity target, int seed)
+    {
+        Attack(target, seed, 1f, 1f, 1, 0, true);
     }
 
     public virtual void ApplyBuff(BaseCharacterEntity caster, int level, BaseSkill skill, int buffIndex, int seed)

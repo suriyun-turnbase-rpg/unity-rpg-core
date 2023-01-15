@@ -24,10 +24,12 @@ public class BaseGameplayRule : ScriptableObject
         // damage = attack * (100 / (100 + defense))
         var calcPAtk = attackerAttributes.pAtk * pAtkRate;
         var pDmg = calcPAtk * (100f / (100f + defenderAttributes.pDef));
+        pDmg -= (defenderAttributes.pDmgReductionRate + defenderAttributes.allDmgReductionRate) * pDmg;
         stealHp += pDmg * attackerAttributes.bloodStealRateByPAtk;
 #if !NO_MAGIC_STATS
         var calcMAtk = attackerAttributes.mAtk * mAtkRate;
         var mDmg = calcMAtk * (100f / (100f + defenderAttributes.mDef));
+        mDmg -= (defenderAttributes.mDmgReductionRate + defenderAttributes.allDmgReductionRate) * mDmg;
         stealHp += mDmg * attackerAttributes.bloodStealRateByMAtk;
 #endif
         if (pDmg < 0)
@@ -69,6 +71,16 @@ public class BaseGameplayRule : ScriptableObject
     public virtual float GetBlockDamage(CalculatedAttributes attributes, CalculatedAttributes defenderAttributes, float damage)
     {
         return damage / defenderAttributes.blockDamageRate;
+    }
+
+    public virtual bool IsCounter(int seed, CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
+    {
+        return RandomNumberUtils.RandomFloat(seed, 0, 1) <= defenderAttributes.counterChance;
+    }
+
+    public virtual float GetCounterDamage(CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes, float damage)
+    {
+        return damage * attackerAttributes.counterDamageRate;
     }
 
     public virtual bool IsHit(int seed, CalculatedAttributes attackerAttributes, CalculatedAttributes defenderAttributes)
