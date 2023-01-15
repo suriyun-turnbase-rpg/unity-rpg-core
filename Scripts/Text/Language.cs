@@ -117,8 +117,11 @@ public static class DefaultLocale
         Texts.Add(GameText.TITLE_ATTRIBUTE_HP, "Hp");
         Texts.Add(GameText.TITLE_ATTRIBUTE_PATK, "P.Atk");
         Texts.Add(GameText.TITLE_ATTRIBUTE_PDEF, "P.Def");
+        Texts.Add(GameText.TITLE_ATTRIBUTE_PDMG_REDUCTION_RATE, "P.Dmg Reduction Rate");
         Texts.Add(GameText.TITLE_ATTRIBUTE_MATK, "M.Atk");
         Texts.Add(GameText.TITLE_ATTRIBUTE_MDEF, "M.Def");
+        Texts.Add(GameText.TITLE_ATTRIBUTE_MDMG_REDUCTION_RATE, "M.Dmg Reduction Rate");
+        Texts.Add(GameText.TITLE_ATTRIBUTE_ALLDMG_REDUCTION_RATE, "All Dmg Reduction Rate");
         Texts.Add(GameText.TITLE_ATTRIBUTE_SPD, "Speed");
         Texts.Add(GameText.TITLE_ATTRIBUTE_EVA, "Evasion");
         Texts.Add(GameText.TITLE_ATTRIBUTE_ACC, "Accuracy");
@@ -137,6 +140,8 @@ public static class DefaultLocale
         Texts.Add(GameText.TITLE_ATTRIBUTE_RESISTANCE_CHANCE, "Resistance");
         Texts.Add(GameText.TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_PATK, "Blood Steal Rate by P.Atk");
         Texts.Add(GameText.TITLE_ATTRIBUTE_BLOOD_STEAL_RATE_BY_MATK, "Blood Steal Rate by M.Atk");
+        Texts.Add(GameText.TITLE_ATTRIBUTE_COUNTER_CHANCE, "Counter Chance");
+        Texts.Add(GameText.TITLE_ATTRIBUTE_COUNTER_DAMAGE_RATE, "Counter Damage Rate");
         // Warn
         Texts.Add(GameText.WARN_TITLE_DELETE_FRIEND, "Delete Friend");
         Texts.Add(GameText.WARN_DESCRIPTION_DELETE_FRIEND, "Do you want to delete this player from your friend list?");
