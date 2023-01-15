@@ -321,6 +321,10 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             fixDamage);
 
         // Counter occurs
+        unchecked
+        {
+            seed += 16;
+        }
         var isCounter = !fromCounter && GameInstance.GameplayRule.IsCounter(seed, attackerAttributes, defenderAttributes);
         if (fromCounter)
             totalDmg = GameInstance.GameplayRule.GetCounterDamage(attackerAttributes, defenderAttributes, totalDmg);
