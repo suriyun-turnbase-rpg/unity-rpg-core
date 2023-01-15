@@ -715,13 +715,97 @@ public partial class LiteDbGameService
     protected override void DoGetAvailableFortuneWheelList(UnityAction<AvailableFortuneWheelListResult> onFinish)
     {
         var result = new AvailableFortuneWheelListResult();
+        result.list.AddRange(GameInstance.GameDatabase.FortuneWheels.Keys);
         onFinish(result);
     }
 
     protected override void DoSpinFortuneWheel(string playerId, string loginToken, string fortuneWheelDataId, UnityAction<SpinFortuneWheelResult> onFinish)
     {
         var result = new SpinFortuneWheelResult();
-        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        var gameDb = GameInstance.GameDatabase;
+        var player = colPlayer.FindOne(a => a.Id == playerId && a.LoginToken == loginToken);
+        FortuneWheel fortuneWheel;
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!gameDb.FortuneWheels.TryGetValue(fortuneWheelDataId, out fortuneWheel))
+            result.error = GameServiceErrorCode.INVALID_LOOT_BOX_DATA;
+        else
+        {
+            var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+            var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+            var requirementType = fortuneWheel.requirementType;
+            var price = fortuneWheel.price;
+            if (requirementType == FortuneWheelRequirementType.RequireSoftCurrency && price > softCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_SOFT_CURRENCY;
+            else if (requirementType == FortuneWheelRequirementType.RequireHardCurrency && price > hardCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
+            else
+            {
+                bool scChanged = false;
+                bool hcChanged = false;
+                switch (requirementType)
+                {
+                    case FortuneWheelRequirementType.RequireSoftCurrency:
+                        softCurrency.Amount -= price;
+                        scChanged = true;
+                        break;
+                    case FortuneWheelRequirementType.RequireHardCurrency:
+                        hardCurrency.Amount -= price;
+                        hcChanged = true;
+                        break;
+                }
+
+                var reward = fortuneWheel.RandomReward();
+                result.rewardIndex = reward.rewardIndex;
+                // Update soft currency
+                if (reward.rewardSoftCurrency > 0)
+                {
+                    softCurrency.Amount += reward.rewardSoftCurrency;
+                    scChanged = true;
+                }
+                if (scChanged)
+                {
+                    colPlayerCurrency.Update(softCurrency);
+                    result.updateCurrencies.Add(PlayerCurrency.CloneTo(softCurrency, new PlayerCurrency()));
+                }
+                // Update hard currency
+                if (reward.rewardHardCurrency > 0)
+                {
+                    hardCurrency.amount += reward.rewardHardCurrency;
+                    hcChanged = true;
+                }
+                if (hcChanged)
+                {
+                    colPlayerCurrency.Update(hardCurrency);
+                    result.updateCurrencies.Add(PlayerCurrency.CloneTo(hardCurrency, new PlayerCurrency()));
+                }
+                // Update items
+                for (int i = 0; i < reward.rewardItems.Length; ++i)
+                {
+                    if (AddItems(playerId, reward.rewardItems[i].Id, reward.rewardItems[i].amount, out var tempCreateItems, out var tempUpdateItems))
+                    {
+                        result.rewardItems.Add(new PlayerItem()
+                        {
+                            Id = i.ToString(),
+                            PlayerId = player.Id,
+                            DataId = reward.rewardItems[i].Id,
+                            Amount = reward.rewardItems[i].amount
+                        });
+                        foreach (var createEntry in tempCreateItems)
+                        {
+                            colPlayerItem.Insert(createEntry);
+                            result.createItems.Add(PlayerItem.CloneTo(createEntry, new PlayerItem()));
+                            HelperUnlockItem(player.Id, createEntry.DataId);
+                        }
+                        foreach (var updateEntry in tempUpdateItems)
+                        {
+                            colPlayerItem.Update(updateEntry);
+                            result.updateItems.Add(PlayerItem.CloneTo(updateEntry, new PlayerItem()));
+                        }
+                    }
+                }
+            }
+        }
         onFinish(result);
     }
 }

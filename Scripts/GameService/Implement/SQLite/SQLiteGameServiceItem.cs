@@ -181,7 +181,7 @@ public partial class SQLiteGameService
                 var foundItem = GetPlayerItemById(sellingItemId);
                 if (foundItem == null || foundItem.PlayerId != playerId)
                     continue;
-                
+
                 if (foundItem.CanSell)
                     sellingItems.Add(foundItem);
             }
@@ -741,13 +741,101 @@ public partial class SQLiteGameService
     protected override void DoGetAvailableFortuneWheelList(UnityAction<AvailableFortuneWheelListResult> onFinish)
     {
         var result = new AvailableFortuneWheelListResult();
+        result.list.AddRange(GameInstance.GameDatabase.FortuneWheels.Keys);
         onFinish(result);
     }
 
     protected override void DoSpinFortuneWheel(string playerId, string loginToken, string fortuneWheelDataId, UnityAction<SpinFortuneWheelResult> onFinish)
     {
         var result = new SpinFortuneWheelResult();
-        result.error = GameServiceErrorCode.NOT_AVAILABLE;
+        var gameDb = GameInstance.GameDatabase;
+        var player = GetPlayerByLoginToken(playerId, loginToken);
+        FortuneWheel fortuneWheel;
+        if (player == null)
+            result.error = GameServiceErrorCode.INVALID_LOGIN_TOKEN;
+        else if (!gameDb.FortuneWheels.TryGetValue(fortuneWheelDataId, out fortuneWheel))
+            result.error = GameServiceErrorCode.INVALID_LOOT_BOX_DATA;
+        else
+        {
+            var softCurrency = GetCurrency(playerId, gameDb.softCurrency.id);
+            var hardCurrency = GetCurrency(playerId, gameDb.hardCurrency.id);
+            var requirementType = fortuneWheel.requirementType;
+            var price = fortuneWheel.price;
+            if (requirementType == FortuneWheelRequirementType.RequireSoftCurrency && price > softCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_SOFT_CURRENCY;
+            else if (requirementType == FortuneWheelRequirementType.RequireHardCurrency && price > hardCurrency.Amount)
+                result.error = GameServiceErrorCode.NOT_ENOUGH_HARD_CURRENCY;
+            else
+            {
+                bool scChanged = false;
+                bool hcChanged = false;
+                switch (requirementType)
+                {
+                    case FortuneWheelRequirementType.RequireSoftCurrency:
+                        softCurrency.Amount -= price;
+                        scChanged = true;
+                        break;
+                    case FortuneWheelRequirementType.RequireHardCurrency:
+                        hardCurrency.Amount -= price;
+                        hcChanged = true;
+                        break;
+                }
+
+                var reward = fortuneWheel.RandomReward();
+                result.rewardIndex = reward.rewardIndex;
+                // Update soft currency
+                if (reward.rewardSoftCurrency > 0)
+                {
+                    softCurrency.Amount += reward.rewardSoftCurrency;
+                    scChanged = true;
+                }
+                if (scChanged)
+                {
+                    ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                    new SqliteParameter("@amount", softCurrency.Amount),
+                    new SqliteParameter("@id", softCurrency.Id));
+                    result.updateCurrencies.Add(softCurrency);
+                }
+                // Update hard currency
+                if (reward.rewardHardCurrency > 0)
+                {
+                    hardCurrency.amount += reward.rewardHardCurrency;
+                    hcChanged = true;
+                }
+                if (hcChanged)
+                {
+                    ExecuteNonQuery(@"UPDATE playerCurrency SET amount=@amount WHERE id=@id",
+                        new SqliteParameter("@amount", hardCurrency.Amount),
+                        new SqliteParameter("@id", hardCurrency.Id));
+                    result.updateCurrencies.Add(hardCurrency);
+                }
+                // Update items
+                for (int i = 0; i < reward.rewardItems.Length; ++i)
+                {
+                    if (AddItems(playerId, reward.rewardItems[i].Id, reward.rewardItems[i].amount, out var tempCreateItems, out var tempUpdateItems))
+                    {
+                        result.rewardItems.Add(new PlayerItem()
+                        {
+                            Id = i.ToString(),
+                            PlayerId = player.Id,
+                            DataId = reward.rewardItems[i].Id,
+                            Amount = reward.rewardItems[i].amount
+                        });
+                        foreach (var createEntry in tempCreateItems)
+                        {
+                            QueryCreatePlayerItem(createEntry);
+                            result.createItems.Add(createEntry);
+                            HelperUnlockItem(player.Id, createEntry.DataId);
+                        }
+                        foreach (var updateEntry in tempUpdateItems)
+                        {
+                            QueryUpdatePlayerItem(updateEntry);
+                            result.updateItems.Add(updateEntry);
+                        }
+                    }
+                }
+            }
+        }
         onFinish(result);
     }
 }

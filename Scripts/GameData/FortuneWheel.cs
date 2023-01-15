@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 [System.Serializable]
 public struct FortuneWheelReward
 {
@@ -5,6 +8,8 @@ public struct FortuneWheelReward
     public int rewardSoftCurrency;
     public int rewardHardCurrency;
     public int randomWeight;
+    [HideInInspector]
+    public int rewardIndex;
 
     public string ToJson()
     {
@@ -38,6 +43,17 @@ public class FortuneWheel : BaseGameData
     public FortuneWheelRequirementType requirementType;
     public int price = 0;
     public FortuneWheelReward[] rewards;
+
+    public FortuneWheelReward RandomReward()
+    {
+        var weight = new Dictionary<FortuneWheelReward, int>();
+        for (int i = 0; i < rewards.Length; ++i)
+        {
+            rewards[i].rewardIndex = i;
+            weight.Add(rewards[i], rewards[i].randomWeight);
+        }
+        return WeightedRandomizer.From(weight).TakeOne();
+    }
 
     public virtual string ToJson()
     {
