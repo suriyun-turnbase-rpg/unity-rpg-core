@@ -236,6 +236,8 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             if (CharacterData != null)
             {
                 var result = new CalculatedAttributes();
+                if (Tier != null)
+                    result += Tier.attributes.CreateCalculationAttributes(Level, MaxLevel);
                 result += CharacterData.attributes.CreateCalculationAttributes(Level, MaxLevel);
                 if (GameDatabase != null)
                     result += GameDatabase.characterBaseAttributes;
@@ -245,6 +247,8 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             if (EquipmentData != null)
             {
                 var result = new CalculatedAttributes();
+                if (Tier != null)
+                    result += Tier.attributes.CreateCalculationAttributes(Level, MaxLevel);
                 result += EquipmentData.attributes.CreateCalculationAttributes(Level, MaxLevel);
                 result += EquipmentData.extraAttributes;
                 result += RandomedAttributes;
