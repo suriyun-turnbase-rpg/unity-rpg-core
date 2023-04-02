@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ItemTier : BaseGameData
 {
@@ -14,6 +12,8 @@ public class ItemTier : BaseGameData
     public Int32Attribute levelUpPriceTable;
     [Tooltip("Exp that other item gain when use this as material")]
     public Int32Attribute rewardExpTable;
+    [Tooltip("Max values of these attributes are max values of when item's level which is this's `maxLevel` value")]
+    public Attributes attributes;
     [Tooltip("Requires currency for evolve")]
     public int evolvePrice;
     public ushort sortWeight;
