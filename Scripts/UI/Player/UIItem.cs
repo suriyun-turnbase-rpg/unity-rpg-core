@@ -498,6 +498,7 @@ public class UIItem : UIDataItem<PlayerItem>
             {
                 var character = Instantiate(data.CharacterData.model);
                 character.Container = characterModelContainer;
+                character.Item = data;
                 var characterRenderers = character.GetComponentsInChildren<Renderer>();
                 foreach (var characterRenderer in characterRenderers)
                 {
