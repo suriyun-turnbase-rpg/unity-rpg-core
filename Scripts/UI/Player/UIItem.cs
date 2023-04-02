@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -429,19 +428,28 @@ public class UIItem : UIDataItem<PlayerItem>
         if (imageElementalIcon != null)
         {
             if (data.CharacterData != null && data.CharacterData.elemental != null)
+            {
                 imageElementalIcon.sprite = data.CharacterData.elemental.icon;
+                imageElementalIcon.preserveAspect = true;
+            }
         }
 
         if (imageElementalIcon2 != null)
         {
             if (data.CharacterData != null && data.CharacterData.elemental != null)
+            {
                 imageElementalIcon2.sprite = data.CharacterData.elemental.icon2;
+                imageElementalIcon2.preserveAspect = true;
+            }
         }
 
         if (imageElementalIcon3 != null)
         {
             if (data.CharacterData != null && data.CharacterData.elemental != null)
+            {
                 imageElementalIcon3.sprite = data.CharacterData.elemental.icon3;
+                imageElementalIcon3.preserveAspect = true;
+            }
         }
 
         if (textAttributes != null)
