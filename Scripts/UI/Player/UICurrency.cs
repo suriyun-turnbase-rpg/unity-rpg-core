@@ -3,6 +3,8 @@
 public class UICurrency : UIDataItem<PlayerCurrency>
 {
     public Image imageIcon;
+    public Image imageIcon2;
+    public Image imageIcon3;
     public Text textAmount;
     public override void UpdateData()
     {
@@ -22,7 +24,22 @@ public class UICurrency : UIDataItem<PlayerCurrency>
         var currencyData = data.CurrencyData;
 
         if (imageIcon != null)
+        {
             imageIcon.sprite = currencyData.icon;
+            imageIcon.preserveAspect = true;
+        }
+
+        if (imageIcon2 != null)
+        {
+            imageIcon2.sprite = currencyData.icon2;
+            imageIcon2.preserveAspect = true;
+        }
+
+        if (imageIcon3 != null)
+        {
+            imageIcon3.sprite = currencyData.icon3;
+            imageIcon3.preserveAspect = true;
+        }
 
         if (textAmount != null)
             textAmount.text = data.Amount.ToString("N0");

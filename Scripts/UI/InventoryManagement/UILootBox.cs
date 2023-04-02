@@ -9,7 +9,9 @@ public class UILootBox : UIDataItem<LootBox>
     public Text textTitle;
     public Text textDescription;
     public Image imageIcon;
-	public Image imageHighlight;
+    public Image imageIcon2;
+    public Image imageIcon3;
+    public Image imageHighlight;
     [FormerlySerializedAs("uiCurrencies")]
     public UICurrency[] uiPrices;
 
@@ -32,10 +34,28 @@ public class UILootBox : UIDataItem<LootBox>
             textDescription.text = data == null ? "" : data.Description;
 
         if (imageIcon != null)
+        {
             imageIcon.sprite = data == null ? null : data.icon;
+            imageIcon.preserveAspect = true;
+        }
 
-		if (imageHighlight != null)
-			imageHighlight.sprite = data.highlight;
+        if (imageIcon2 != null)
+        {
+            imageIcon2.sprite = data == null ? null : data.icon2;
+            imageIcon2.preserveAspect = true;
+        }
+
+        if (imageIcon3 != null)
+        {
+            imageIcon3.sprite = data == null ? null : data.icon3;
+            imageIcon3.preserveAspect = true;
+        }
+
+        if (imageHighlight != null)
+        {
+            imageHighlight.sprite = data.highlight;
+            imageHighlight.preserveAspect = true;
+        }
 
         if (uiPrices != null && uiPrices.Length > 0)
         {

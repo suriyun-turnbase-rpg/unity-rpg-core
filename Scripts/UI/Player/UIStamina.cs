@@ -3,6 +3,8 @@
 public class UIStamina : UIDataItem<PlayerStamina>
 {
     public Image imageIcon;
+    public Image imageIcon2;
+    public Image imageIcon3;
     public Text textAmount;
     public Text recoveryingTime;
     public bool isCurrentPlayerStamina;
@@ -27,7 +29,22 @@ public class UIStamina : UIDataItem<PlayerStamina>
         var staminaData = data.StaminaData;
 
         if (imageIcon != null)
+        {
             imageIcon.sprite = staminaData == null ? null : staminaData.icon;
+            imageIcon.preserveAspect = true;
+        }
+
+        if (imageIcon2 != null)
+        {
+            imageIcon2.sprite = staminaData == null ? null : staminaData.icon2;
+            imageIcon2.preserveAspect = true;
+        }
+
+        if (imageIcon3 != null)
+        {
+            imageIcon3.sprite = staminaData == null ? null : staminaData.icon3;
+            imageIcon3.preserveAspect = true;
+        }
 
         if (textAmount != null)
             textAmount.text = data.Amount.ToString("N0");

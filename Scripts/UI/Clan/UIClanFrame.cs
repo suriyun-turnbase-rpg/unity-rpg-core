@@ -29,13 +29,22 @@ public class UIClanFrame : MonoBehaviour
             }
 
             if (imageIcon != null)
+            {
                 imageIcon.sprite = data == null ? null : data.icon;
+                imageIcon.preserveAspect = true;
+            }
 
             if (imageIcon2 != null)
+            {
                 imageIcon2.sprite = data == null ? null : data.icon2;
+                imageIcon2.preserveAspect = true;
+            }
 
             if (imageIcon3 != null)
+            {
                 imageIcon3.sprite = data == null ? null : data.icon3;
+                imageIcon3.preserveAspect = true;
+            }
         }
     }
 }

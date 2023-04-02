@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 public class UIAchievement : UIDataItem<PlayerAchievement>
 {
     public Text textTitle;
     public Text textDescription;
     public Image imageIcon;
+    public Image imageIcon2;
+    public Image imageIcon3;
     public Text textProgress;
     public Image imageProgressGage;
     public Button buttonEarn;
@@ -37,6 +36,12 @@ public class UIAchievement : UIDataItem<PlayerAchievement>
 
         if (imageIcon != null)
             imageIcon.sprite = null;
+
+        if (imageIcon2 != null)
+            imageIcon2.sprite = null;
+
+        if (imageIcon3 != null)
+            imageIcon3.sprite = null;
     }
 
     public override bool IsEmpty()
@@ -53,7 +58,22 @@ public class UIAchievement : UIDataItem<PlayerAchievement>
             textDescription.text = data == null ? "" : data.Achievement.Description;
 
         if (imageIcon != null)
+        {
             imageIcon.sprite = data == null ? null : data.Achievement.icon;
+            imageIcon.preserveAspect = true;
+        }
+
+        if (imageIcon2 != null)
+        {
+            imageIcon2.sprite = data == null ? null : data.Achievement.icon2;
+            imageIcon2.preserveAspect = true;
+        }
+
+        if (imageIcon3 != null)
+        {
+            imageIcon3.sprite = data == null ? null : data.Achievement.icon3;
+            imageIcon3.preserveAspect = true;
+        }
     }
 
     public void OnClickEarn()

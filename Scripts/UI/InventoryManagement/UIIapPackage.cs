@@ -1,14 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 public class UIIapPackage : UIDataItem<IapPackage>
 {
     public Text textTitle;
     public Text textDescription;
     public Image imageIcon;
-	public Image imageHighlight;
+    public Image imageIcon2;
+    public Image imageIcon3;
+    public Image imageHighlight;
     public Text textPrice;
 
     public override void Clear()
@@ -30,10 +29,28 @@ public class UIIapPackage : UIDataItem<IapPackage>
             textDescription.text = data == null ? "" : data.Description;
 
         if (imageIcon != null)
+        {
             imageIcon.sprite = data == null ? null : data.icon;
+            imageIcon.preserveAspect = true;
+        }
 
-		if (imageHighlight != null)
-			imageHighlight.sprite = data.highlight;
+        if (imageIcon2 != null)
+        {
+            imageIcon2.sprite = data == null ? null : data.icon2;
+            imageIcon2.preserveAspect = true;
+        }
+
+        if (imageIcon3 != null)
+        {
+            imageIcon3.sprite = data == null ? null : data.icon3;
+            imageIcon3.preserveAspect = true;
+        }
+
+        if (imageHighlight != null)
+        {
+            imageHighlight.sprite = data.highlight;
+            imageHighlight.preserveAspect = true;
+        }
 
         if (textPrice != null)
             textPrice.text = data == null ? "N/A" : data.GetSellPrice();

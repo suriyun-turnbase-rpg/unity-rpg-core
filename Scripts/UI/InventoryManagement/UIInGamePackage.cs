@@ -8,6 +8,8 @@ public class UIInGamePackage : UIDataItem<InGamePackage>
     public Text textTitle;
     public Text textDescription;
     public Image imageIcon;
+    public Image imageIcon2;
+    public Image imageIcon3;
     public Image imageHighlight;
     public UICurrency uiCurrency;
 
@@ -30,10 +32,28 @@ public class UIInGamePackage : UIDataItem<InGamePackage>
             textDescription.text = data == null ? "" : data.Description;
 
         if (imageIcon != null)
+        {
             imageIcon.sprite = data == null ? null : data.icon;
+            imageIcon.preserveAspect = true;
+        }
+
+        if (imageIcon2 != null)
+        {
+            imageIcon2.sprite = data == null ? null : data.icon2;
+            imageIcon2.preserveAspect = true;
+        }
+
+        if (imageIcon3 != null)
+        {
+            imageIcon3.sprite = data == null ? null : data.icon3;
+            imageIcon3.preserveAspect = true;
+        }
 
         if (imageHighlight != null)
+        {
             imageHighlight.sprite = data.highlight;
+            imageHighlight.preserveAspect = true;
+        }
 
         uiCurrency.Clear();
         if (data != null)

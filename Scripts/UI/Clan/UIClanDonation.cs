@@ -65,7 +65,10 @@ public class UIClanDonation : UIDataItem<ClanDonation>
     public override void UpdateData()
     {
         if (imageIcon != null)
+        {
             imageIcon.sprite = data.icon;
+            imageIcon.preserveAspect = true;
+        }
 
         if (uiCurrency != null)
         {

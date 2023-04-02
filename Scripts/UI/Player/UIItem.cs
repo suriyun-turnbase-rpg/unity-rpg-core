@@ -377,13 +377,22 @@ public class UIItem : UIDataItem<PlayerItem>
             textDescription.text = itemData == null ? "" : itemData.Description;
 
         if (imageIcon != null)
+        {
             imageIcon.sprite = itemData == null ? null : itemData.icon;
+            imageIcon.preserveAspect = true;
+        }
 
         if (imageIcon2 != null)
+        {
             imageIcon2.sprite = itemData == null ? null : itemData.icon2;
+            imageIcon2.preserveAspect = true;
+        }
 
         if (imageIcon3 != null)
+        {
             imageIcon3.sprite = itemData == null ? null : itemData.icon3;
+            imageIcon3.preserveAspect = true;
+        }
 
         if (textAmount != null)
             textAmount.text = data.Amount.ToString("N0") + (itemData == null ? string.Empty : ("/" + itemData.MaxStack.ToString("N0")));

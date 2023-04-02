@@ -9,6 +9,8 @@ public class UIRaidEvent : UIDataItem<RaidEvent>
     public Text textTitle;
     public Text textDescription;
     public Image imageIcon;
+    public Image imageIcon2;
+    public Image imageIcon3;
     public Text textRecommendBattlePoint;
     public UIStamina uiRequireStamina;
     public Text textHpPerMaxHp;
@@ -43,7 +45,22 @@ public class UIRaidEvent : UIDataItem<RaidEvent>
             textDescription.text = data.RaidBossStage.Description;
 
         if (imageIcon != null)
+        {
             imageIcon.sprite = data == null ? null : data.RaidBossStage.icon;
+            imageIcon.preserveAspect = true;
+        }
+
+        if (imageIcon2 != null)
+        {
+            imageIcon2.sprite = data == null ? null : data.RaidBossStage.icon2;
+            imageIcon2.preserveAspect = true;
+        }
+
+        if (imageIcon3 != null)
+        {
+            imageIcon3.sprite = data == null ? null : data.RaidBossStage.icon3;
+            imageIcon3.preserveAspect = true;
+        }
 
         if (textRecommendBattlePoint != null)
             textRecommendBattlePoint.text = data.RaidBossStage.recommendBattlePoint.ToString("N0");

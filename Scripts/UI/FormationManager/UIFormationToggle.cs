@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Toggle))]
@@ -35,7 +33,10 @@ public class UIFormationToggle : MonoBehaviour
                 textTitle.text = formation.title;
 
             if (imageIcon != null)
+            {
                 imageIcon.sprite = formation.icon;
+                imageIcon.preserveAspect = true;
+            }
         }
     }
 }

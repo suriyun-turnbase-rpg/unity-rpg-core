@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 public class UICharacterBuff : UIBase
 {
@@ -18,7 +15,10 @@ public class UICharacterBuff : UIBase
         var rate = buff.GetRemainsDurationRate();
 
         if (imageIcon != null)
+        {
             imageIcon.sprite = buff.Buff.icon;
+            imageIcon.preserveAspect = true;
+        }
 
         if (textRemainsTurns != null)
             textRemainsTurns.text = buff.GetRemainsDuration() <= 0 ? "" : buff.GetRemainsDuration().ToString("N2");
