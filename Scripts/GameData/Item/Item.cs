@@ -177,7 +177,7 @@ public abstract class BaseActorItem : MaterialItem
     public bool useFixLevelUpPrice = false;
     public int fixLevelUpPrice = 0;
 
-    [Tooltip("Max values of these attributes are max values of `GameDatabase.itemMaxLevel` level")]
+    [Tooltip("Max values of these attributes are max values of when item's level which is tier's `maxLevel` value")]
     public Attributes attributes;
 
     public RandomAttributes randomAttributes;
