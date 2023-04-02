@@ -310,7 +310,6 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
 
             if (CharacterData == null)
                 return result;
-            /*
             List<PlayerItem> list = new List<PlayerItem>();
             foreach (var entry in DataMap.Values)
             {
@@ -322,7 +321,6 @@ public class PlayerItem : BasePlayerData, ILevel, IPlayerItem
             {
                 result.Add(entry.EquipPosition, entry);
             }
-            */
             return result;
         }
     }
