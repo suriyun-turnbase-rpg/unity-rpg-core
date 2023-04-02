@@ -256,7 +256,9 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         float mAtkRate,
         int hitCount,
         int fixDamage,
-        bool fromCounter)
+        bool fromCounter,
+        bool useSkillHitChance,
+        float skillHitChance)
     {
         if (target == null)
             return;
@@ -267,7 +269,9 @@ public abstract class BaseCharacterEntity : MonoBehaviour
             mAtkRate,
             hitCount,
             fixDamage,
-            fromCounter);
+            fromCounter,
+            useSkillHitChance,
+            skillHitChance);
     }
 
     public virtual void Attack(
@@ -278,17 +282,19 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         float mAtkRate,
         int hitCount,
         int fixDamage,
-        bool fromCounter)
+        bool fromCounter,
+        bool useSkillHitChance,
+        float skillHitChance)
     {
         if (damagePrefab == null)
         {
             // Apply damage immediately
-            Attack(target, seed, pAtkRate, mAtkRate, hitCount, fixDamage, fromCounter);
+            Attack(target, seed, pAtkRate, mAtkRate, hitCount, fixDamage, fromCounter, useSkillHitChance, skillHitChance);
         }
         else
         {
             var damage = Instantiate(damagePrefab, damageContainer.position, damageContainer.rotation);
-            damage.Setup(this, target, seed, pAtkRate, mAtkRate, hitCount, fixDamage, fromCounter);
+            damage.Setup(this, target, seed, pAtkRate, mAtkRate, hitCount, fixDamage, fromCounter, useSkillHitChance, skillHitChance);
         }
     }
 
@@ -299,7 +305,9 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         float mAtkRate,
         int hitCount,
         int fixDamage,
-        bool fromCounter)
+        bool fromCounter,
+        bool useSkillHitChance,
+        float skillHitChance)
     {
         if (hitCount < 0)
             hitCount = 1;
@@ -347,12 +355,19 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         if (isBlock)
             totalDmg = GameInstance.GameplayRule.GetBlockDamage(attackerAttributes, defenderAttributes, totalDmg);
 
-        // Cannot evade, receive damage
+        // If it cannot evade, then it will receive damage
         unchecked
         {
             seed += 16;
         }
-        if (!GameInstance.GameplayRule.IsHit(seed, attackerAttributes, defenderAttributes))
+
+        bool isHit;
+        if (useSkillHitChance)
+            isHit = RandomNumberUtils.RandomFloat(seed, 0, 1) > skillHitChance;
+        else
+            isHit = GameInstance.GameplayRule.IsHit(seed, attackerAttributes, defenderAttributes);
+
+        if (!isHit)
         {
             Manager.SpawnMissText(this, hitCount);
         }
@@ -384,7 +399,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
 
     public virtual void Counter(BaseCharacterEntity target, int seed)
     {
-        Attack(target, seed, 1f, 1f, 1, 0, true);
+        Attack(target, seed, 1f, 1f, 1, 0, true, false, 0f);
     }
 
     public virtual void ApplyBuff(BaseCharacterEntity caster, int level, BaseSkill skill, int buffIndex, int seed)
