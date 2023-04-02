@@ -69,11 +69,13 @@ public class UICharacterStatsGeneric : UIBase
         if (!attachedWorldSpaceCanvas && !notFollowCharacter)
             CacheObjectFollower.targetObject = character.uiContainer;
 
+        var hp = (float)character.Hp;
+        var maxHp = (float)character.MaxHp;
         var itemData = character.Item.ItemData;
-        var rate = (float)character.Hp / (float)character.MaxHp;
+        var rate = hp / maxHp;
 
         if (textHpPerMaxHp != null)
-            textHpPerMaxHp.text = character.Hp.ToString("N0") + "/" + character.MaxHp.ToString("N0");
+            textHpPerMaxHp.text = hp.ToString("N0") + "/" + maxHp.ToString("N0");
 
         if (textHpPercent != null)
             textHpPercent.text = (rate * 100).ToString("N2") + "%";
