@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -69,6 +68,7 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     public readonly List<BaseCharacterSkill> Skills = new List<BaseCharacterSkill>();
     public BaseGamePlayFormation Formation { get; protected set; }
     public int Position { get; protected set; }
+    public int Priority { get; protected set; }
     public bool IsStun
     {
         get
@@ -239,13 +239,14 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         return result;
     }
 
-    public virtual void SetFormation(BaseGamePlayFormation formation, int position, Transform container)
+    public virtual void SetFormation(BaseGamePlayFormation formation, int position, int priority, Transform container)
     {
         if (container == null)
             return;
 
         Formation = formation;
         Position = position;
+        Priority = priority;
         Container = container;
     }
 

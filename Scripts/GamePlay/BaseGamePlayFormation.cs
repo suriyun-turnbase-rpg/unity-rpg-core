@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class BaseGamePlayFormation : MonoBehaviour
 {
@@ -18,7 +21,6 @@ public class BaseGamePlayFormation : MonoBehaviour
     public Transform[] containers;
     [HideInInspector]
     public Transform helperContainer;
-
     public List<ContainerData> characterContainers = new List<ContainerData>();
     public ContainerData helperCharacterContainer = default;
 
@@ -30,13 +32,17 @@ public class BaseGamePlayFormation : MonoBehaviour
         Migrate();
     }
 
+#if UNITY_EDITOR
     private void OnValidate()
     {
         Migrate();
+        EditorUtility.SetDirty(this);
     }
+#endif
 
-    private void Migrate()
+    private bool Migrate()
     {
+        bool hasChanges = false;
         if (containers != null && containers.Length > 0)
         {
             for (int i = 0; i < containers.Length; ++i)
@@ -46,6 +52,7 @@ public class BaseGamePlayFormation : MonoBehaviour
                     var tempContainer = characterContainers[i];
                     tempContainer.container = containers[i];
                     characterContainers[i] = tempContainer;
+                    hasChanges = true;
                 }
                 else
                 {
@@ -54,8 +61,10 @@ public class BaseGamePlayFormation : MonoBehaviour
                         container = containers[i],
                     };
                     characterContainers.Add(tempContainer);
+                    hasChanges = true;
                 }
             }
+            containers = null;
         }
 
         if (helperContainer != null)
@@ -63,7 +72,10 @@ public class BaseGamePlayFormation : MonoBehaviour
             var tempContainer = helperCharacterContainer;
             tempContainer.container = helperContainer;
             helperCharacterContainer = tempContainer;
+            helperContainer = null;
+            hasChanges = true;
         }
+        return hasChanges;
     }
 
     public virtual void SetFormationCharacters(EBattleType battleType)
@@ -72,7 +84,7 @@ public class BaseGamePlayFormation : MonoBehaviour
         if (battleType == EBattleType.Arena)
             formationName = Player.CurrentPlayer.SelectedArenaFormation;
         ClearCharacters();
-        for (var i = 0; i < containers.Length; ++i)
+        for (var i = 0; i < characterContainers.Count; ++i)
         {
             PlayerFormation playerFormation;
             if (PlayerFormation.TryGetData(formationName, i, out playerFormation))
@@ -88,7 +100,7 @@ public class BaseGamePlayFormation : MonoBehaviour
         if (BaseGamePlayManager.Helper != null &&
             !string.IsNullOrEmpty(BaseGamePlayManager.Helper.MainCharacter) &&
             GameInstance.GameDatabase.Items.ContainsKey(BaseGamePlayManager.Helper.MainCharacter) &&
-            helperContainer != null)
+            helperCharacterContainer.container != null)
         {
             var item = new PlayerItem();
             item.Id = "_Helper";
@@ -121,7 +133,7 @@ public class BaseGamePlayFormation : MonoBehaviour
     public virtual void SetCharacters(PlayerItem[] items, List<int> bossIndexes = null)
     {
         ClearCharacters();
-        for (var i = 0; i < containers.Length; ++i)
+        for (var i = 0; i < characterContainers.Count; ++i)
         {
             if (items.Length <= i)
                 break;
@@ -134,7 +146,7 @@ public class BaseGamePlayFormation : MonoBehaviour
 
     public virtual BaseCharacterEntity SetCharacter(int position, PlayerItem item, bool isBoss)
     {
-        if (position < 0 || position >= containers.Length || item == null || item.CharacterData == null)
+        if (position < 0 || position >= characterContainers.Count || item == null || item.CharacterData == null)
             return null;
 
         if (item.CharacterData.model == null)
@@ -143,11 +155,11 @@ public class BaseGamePlayFormation : MonoBehaviour
             return null;
         }
 
-        var container = containers[position];
+        var container = characterContainers[position].container;
         container.RemoveAllChildren();
 
         var character = Instantiate(item.CharacterData.model);
-        character.SetFormation(this, position, container);
+        character.SetFormation(this, position, characterContainers[position].priority, container);
         character.Item = item;
         character.IsBoss = isBoss;
         Characters[position] = character;
@@ -157,10 +169,10 @@ public class BaseGamePlayFormation : MonoBehaviour
 
     public virtual BaseCharacterEntity SetHelperCharacter(PlayerItem item)
     {
-        if (helperContainer == null)
+        if (helperCharacterContainer.container == null)
             return null;
 
-        var position = containers.Length;
+        var position = characterContainers.Count;
 
         if (item.CharacterData.model == null)
         {
@@ -168,11 +180,11 @@ public class BaseGamePlayFormation : MonoBehaviour
             return null;
         }
 
-        var container = helperContainer;
+        var container = helperCharacterContainer.container;
         container.RemoveAllChildren();
 
         var character = Instantiate(item.CharacterData.model);
-        character.SetFormation(this, position, container);
+        character.SetFormation(this, position, helperCharacterContainer.priority, container);
         character.Item = item;
         Characters[position] = character;
 
@@ -181,12 +193,12 @@ public class BaseGamePlayFormation : MonoBehaviour
 
     public virtual void ClearCharacters()
     {
-        foreach (var container in containers)
+        foreach (var container in characterContainers)
         {
-            container.RemoveAllChildren();
+            container.container.RemoveAllChildren();
         }
-        if (helperContainer != null)
-            helperContainer.RemoveAllChildren();
+        if (helperCharacterContainer.container != null)
+            helperCharacterContainer.container.RemoveAllChildren();
         Characters.Clear();
     }
 }
