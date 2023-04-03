@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterItem : BaseActorItem
+public partial class CharacterItem : BaseActorItem
 {
     [Header("Character Data")]
     public Elemental elemental;

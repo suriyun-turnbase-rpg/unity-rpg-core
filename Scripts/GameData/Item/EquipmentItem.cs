@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EquipmentItem : BaseActorItem
+public partial class EquipmentItem : BaseActorItem
 {
     [Header("Equipment Data")]
     public CalculatedAttributes extraAttributes;
