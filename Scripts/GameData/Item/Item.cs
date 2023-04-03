@@ -138,7 +138,7 @@ public class CreateEvolveItemData
     public float attributesRate;
 }
 
-public abstract class BaseItem : BaseGameData
+public abstract partial class BaseItem : BaseGameData
 {
     [Tooltip("This data MUST be set")]
     public ItemTier itemTier;
@@ -172,7 +172,7 @@ public abstract class BaseItem : BaseGameData
     }
 }
 
-public abstract class BaseActorItem : MaterialItem
+public abstract partial class BaseActorItem : MaterialItem
 {
     public bool useFixLevelUpPrice = false;
     public int fixLevelUpPrice = 0;

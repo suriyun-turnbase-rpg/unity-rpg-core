@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MaterialItem : BaseItem
+public partial class MaterialItem : BaseItem
 {
     [Header("Fix/Override variables")]
     public bool useFixSellPrice = false;
