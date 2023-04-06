@@ -5,30 +5,30 @@ public class GameEffect : MonoBehaviour
     public bool isLoop;
     public float lifeTime;
 
-    private Transform tempTransform;
+    private Transform _tempTransform;
     public Transform TempTransform
     {
         get
         {
-            if (tempTransform == null)
-                tempTransform = GetComponent<Transform>();
-            return tempTransform;
+            if (_tempTransform == null)
+                _tempTransform = GetComponent<Transform>();
+            return _tempTransform;
         }
     }
 
-    private ParticleSystem[] particles;
-    private AudioSource[] audioSources;
+    private ParticleSystem[] _particles;
+    private AudioSource[] _audioSources;
 
     private void Awake()
     {
-        particles = GetComponentsInChildren<ParticleSystem>();
-        foreach (var particle in particles)
+        _particles = GetComponentsInChildren<ParticleSystem>();
+        foreach (var particle in _particles)
         {
             if (particle)
                 particle.Play();
         }
-        audioSources = GetComponentsInChildren<AudioSource>();
-        foreach (var audioSource in audioSources)
+        _audioSources = GetComponentsInChildren<AudioSource>();
+        foreach (var audioSource in _audioSources)
         {
             if (audioSource)
                 audioSource.Play();
@@ -43,7 +43,7 @@ public class GameEffect : MonoBehaviour
 
     public void DestroyEffect()
     {
-        foreach (var particle in particles)
+        foreach (var particle in _particles)
         {
             if (particle)
             {
@@ -51,7 +51,7 @@ public class GameEffect : MonoBehaviour
                 mainEmitter.loop = false;
             }
         }
-        foreach (var audioSource in audioSources)
+        foreach (var audioSource in _audioSources)
         {
             if (audioSource)
                 audioSource.loop = false;
