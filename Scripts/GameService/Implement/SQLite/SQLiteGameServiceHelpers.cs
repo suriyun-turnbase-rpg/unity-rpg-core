@@ -167,6 +167,9 @@ public partial class SQLiteGameService
             player.ArenaScore = players.GetInt32("arenaScore");
             player.HighestArenaRank = players.GetInt32("highestArenaRank");
             player.HighestArenaRankCurrentSeason = players.GetInt32("highestArenaRankCurrentSeason");
+            player.IconId = players.GetString("iconId");
+            player.FrameId = players.GetString("frameId");
+            player.TitleId = players.GetString("titleId");
         }
         if (player == null)
             return false;
@@ -767,6 +770,9 @@ public partial class SQLiteGameService
             player.ArenaScore = players.GetInt32("arenaScore");
             player.HighestArenaRank = players.GetInt32("highestArenaRank");
             player.HighestArenaRankCurrentSeason = players.GetInt32("highestArenaRankCurrentSeason");
+            player.IconId = players.GetString("iconId");
+            player.FrameId = players.GetString("frameId");
+            player.TitleId = players.GetString("titleId");
         }
         return player;
     }

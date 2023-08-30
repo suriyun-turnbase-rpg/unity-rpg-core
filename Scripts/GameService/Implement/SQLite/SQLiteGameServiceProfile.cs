@@ -175,7 +175,7 @@ public partial class SQLiteGameService
     protected override void DoSetPlayerIcon(string playerId, string loginToken, string iconDataId, UnityAction<GameServiceResult> onFinish)
     {
         var result = new GameServiceResult();
-        ExecuteNonQuery(@"UPDATE player SET iconId=@iconDataId WHERE id=@playerId AND loginToken=@loginToken LIMIT 1",
+        ExecuteNonQuery(@"UPDATE player SET iconId=@iconDataId WHERE id=@playerId AND loginToken=@loginToken",
             new SqliteParameter("@playerId", playerId),
             new SqliteParameter("@loginToken", loginToken),
             new SqliteParameter("@iconDataId", iconDataId));
@@ -185,7 +185,7 @@ public partial class SQLiteGameService
     protected override void DoSetPlayerFrame(string playerId, string loginToken, string frameDataId, UnityAction<GameServiceResult> onFinish)
     {
         var result = new GameServiceResult();
-        ExecuteNonQuery(@"UPDATE player SET frameId=@frameDataId WHERE id=@playerId AND loginToken=@loginToken LIMIT 1",
+        ExecuteNonQuery(@"UPDATE player SET frameId=@frameDataId WHERE id=@playerId AND loginToken=@loginToken",
             new SqliteParameter("@playerId", playerId),
             new SqliteParameter("@loginToken", loginToken),
             new SqliteParameter("@frameDataId", frameDataId));
@@ -195,7 +195,7 @@ public partial class SQLiteGameService
     protected override void DoSetPlayerTitle(string playerId, string loginToken, string titleDataId, UnityAction<GameServiceResult> onFinish)
     {
         var result = new GameServiceResult();
-        ExecuteNonQuery(@"UPDATE player SET titleId=@titleDataId WHERE id=@playerId AND loginToken=@loginToken LIMIT 1",
+        ExecuteNonQuery(@"UPDATE player SET titleId=@titleDataId WHERE id=@playerId AND loginToken=@loginToken",
             new SqliteParameter("@playerId", playerId),
             new SqliteParameter("@loginToken", loginToken),
             new SqliteParameter("@titleDataId", titleDataId));
