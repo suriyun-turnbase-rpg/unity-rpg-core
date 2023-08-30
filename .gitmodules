@@ -1,3 +1,3 @@
 [submodule "Scripts/GameService/Implement/WebServiceClient"]
 	path = Scripts/GameService/Implement/WebServiceClient
-	url = https://github.com/insthync/rpg-web-service-client.git
+	url = ../rpg-web-service-client.git
