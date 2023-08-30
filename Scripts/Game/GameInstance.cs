@@ -43,21 +43,22 @@ public partial class GameInstance : MonoBehaviour
     public static readonly List<string> AvailableInGamePackages = new List<string>();
     public static readonly List<string> AvailableStages = new List<string>();
 
-    private readonly Queue<UIMessageDialog.Data> messageDialogData = new Queue<UIMessageDialog.Data>();
-    private LoadAllPlayerDataState loadAllPlayerDataState;
-    private static bool isPlayerAuthListLoaded;
-    private static bool isPlayerCurrencyListLoaded;
-    private static bool isPlayerFormationListLoaded;
-    private static bool isPlayerItemListLoaded;
-    private static bool isPlayerStaminaListLoaded;
-    private static bool isPlayerUnlockItemListLoaded;
-    private static bool isPlayerClearStageListLoaded;
-    private static bool isAvailableLootBoxListLoaded;
-    private static bool isAvailableFortuneWheelListLoaded;
-    private static bool isAvailableIapPackageListLoaded;
-    private static bool isAvailableInGamePackageListLoaded;
-    private static bool isAvailableStageListLoaded;
-    private static int countLoading = 0;
+    private readonly Queue<UIMessageDialog.Data> _messageDialogData = new Queue<UIMessageDialog.Data>();
+    private LoadAllPlayerDataState _loadAllPlayerDataState;
+    private static bool _isPlayerAuthListLoaded;
+    private static bool _isPlayerCurrencyListLoaded;
+    private static bool _isPlayerFormationListLoaded;
+    private static bool _isPlayerItemListLoaded;
+    private static bool _isPlayerStaminaListLoaded;
+    private static bool _isPlayerUnlockItemListLoaded;
+    private static bool _isPlayerClearStageListLoaded;
+    private static bool _isAvailableLootBoxListLoaded;
+    private static bool _isAvailableFortuneWheelListLoaded;
+    private static bool _isAvailableIapPackageListLoaded;
+    private static bool _isAvailableInGamePackageListLoaded;
+    private static bool _isAvailableStageListLoaded;
+    private static int _countLoading = 0;
+    private static AsyncOperation _loadSceneAsyncOperation;
 
     private void Awake()
     {
@@ -120,7 +121,7 @@ public partial class GameInstance : MonoBehaviour
     public void OnGameServiceError(string error, UnityAction errorAction)
     {
         Debug.LogError("OnGameServiceError: " + error);
-        messageDialogData.Enqueue(new UIMessageDialog.Data(LanguageManager.GetText(GameText.TITLE_ERROR_DIALOG), LanguageManager.GetText(error), errorAction));
+        _messageDialogData.Enqueue(new UIMessageDialog.Data(LanguageManager.GetText(GameText.TITLE_ERROR_DIALOG), LanguageManager.GetText(error), errorAction));
         ShowError();
     }
 
@@ -147,17 +148,17 @@ public partial class GameInstance : MonoBehaviour
 
     public void OnGameServiceLogout()
     {
-        isPlayerAuthListLoaded = false;
-        isPlayerCurrencyListLoaded = false;
-        isPlayerFormationListLoaded = false;
-        isPlayerItemListLoaded = false;
-        isPlayerStaminaListLoaded = false;
-        isPlayerUnlockItemListLoaded = false;
-        isPlayerClearStageListLoaded = false;
-        isAvailableLootBoxListLoaded = false;
-        isAvailableFortuneWheelListLoaded = false;
-        isAvailableIapPackageListLoaded = false;
-        isAvailableInGamePackageListLoaded = false;
+        _isPlayerAuthListLoaded = false;
+        _isPlayerCurrencyListLoaded = false;
+        _isPlayerFormationListLoaded = false;
+        _isPlayerItemListLoaded = false;
+        _isPlayerStaminaListLoaded = false;
+        _isPlayerUnlockItemListLoaded = false;
+        _isPlayerClearStageListLoaded = false;
+        _isAvailableLootBoxListLoaded = false;
+        _isAvailableFortuneWheelListLoaded = false;
+        _isAvailableIapPackageListLoaded = false;
+        _isAvailableInGamePackageListLoaded = false;
         LoadLoginScene();
     }
 
@@ -408,7 +409,7 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     public void GetAllPlayerData(LoadAllPlayerDataState loadAllPlayerDataState)
     {
-        this.loadAllPlayerDataState = loadAllPlayerDataState;
+        this._loadAllPlayerDataState = loadAllPlayerDataState;
         GetAuthList();
         GetCurrencyList();
         GetFormationList();
@@ -428,14 +429,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetAuthList()
     {
-        isPlayerAuthListLoaded = false;
+        _isPlayerAuthListLoaded = false;
         GameService.GetAuthList(OnGetAuthListSuccess, (error) => OnGameServiceError(error, GetAuthList));
     }
 
     private void OnGetAuthListSuccess(AuthListResult result)
     {
         OnGameServiceAuthListResult(result);
-        isPlayerAuthListLoaded = true;
+        _isPlayerAuthListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -444,14 +445,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetCurrencyList()
     {
-        isPlayerCurrencyListLoaded = false;
+        _isPlayerCurrencyListLoaded = false;
         GameService.GetCurrencyList(OnGetCurrencyListSuccess, (error) => OnGameServiceError(error, GetCurrencyList));
     }
 
     private void OnGetCurrencyListSuccess(CurrencyListResult result)
     {
         OnGameServiceCurrencyListResult(result);
-        isPlayerCurrencyListLoaded = true;
+        _isPlayerCurrencyListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -460,14 +461,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetFormationList()
     {
-        isPlayerFormationListLoaded = false;
+        _isPlayerFormationListLoaded = false;
         GameService.GetFormationList(OnGetFormationListSuccess, (error) => OnGameServiceError(error, GetFormationList));
     }
 
     private void OnGetFormationListSuccess(FormationListResult result)
     {
         OnGameServiceFormationListResult(result);
-        isPlayerFormationListLoaded = true;
+        _isPlayerFormationListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -476,14 +477,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetItemList()
     {
-        isPlayerItemListLoaded = false;
+        _isPlayerItemListLoaded = false;
         GameService.GetItemList(OnGetItemListSuccess, (error) => OnGameServiceError(error, GetItemList));
     }
 
     private void OnGetItemListSuccess(ItemListResult result)
     {
         OnGameServiceItemListResult(result);
-        isPlayerItemListLoaded = true;
+        _isPlayerItemListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -492,14 +493,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetStaminaList()
     {
-        isPlayerStaminaListLoaded = false;
+        _isPlayerStaminaListLoaded = false;
         GameService.GetStaminaList(OnGetStaminaListSuccess, (error) => OnGameServiceError(error, GetStaminaList));
     }
 
     private void OnGetStaminaListSuccess(StaminaListResult result)
     {
         OnGameServiceStaminaListResult(result);
-        isPlayerStaminaListLoaded = true;
+        _isPlayerStaminaListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -508,14 +509,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetUnlockItemList()
     {
-        isPlayerUnlockItemListLoaded = false;
+        _isPlayerUnlockItemListLoaded = false;
         GameService.GetUnlockItemList(OnGetUnlockItemListSuccess, (error) => OnGameServiceError(error, GetUnlockItemList));
     }
 
     private void OnGetUnlockItemListSuccess(UnlockItemListResult result)
     {
         OnGameServiceUnlockItemListResult(result);
-        isPlayerUnlockItemListLoaded = true;
+        _isPlayerUnlockItemListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -524,14 +525,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetClearStageList()
     {
-        isPlayerClearStageListLoaded = false;
+        _isPlayerClearStageListLoaded = false;
         GameService.GetClearStageList(OnGetClearStageListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
     }
 
     private void OnGetClearStageListSuccess(ClearStageListResult result)
     {
         OnGameServiceClearStageListResult(result);
-        isPlayerClearStageListLoaded = true;
+        _isPlayerClearStageListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -540,14 +541,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetAvailableLootBoxList()
     {
-        isAvailableLootBoxListLoaded = false;
+        _isAvailableLootBoxListLoaded = false;
         GameService.GetAvailableLootBoxList(OnGetAvailableLootBoxListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
     }
 
     private void OnGetAvailableLootBoxListSuccess(AvailableLootBoxListResult result)
     {
         OnGameServiceAvailableLootBoxListResult(result);
-        isAvailableLootBoxListLoaded = true;
+        _isAvailableLootBoxListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -556,14 +557,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetAvailableFortuneWheelList()
     {
-        isAvailableFortuneWheelListLoaded = false;
+        _isAvailableFortuneWheelListLoaded = false;
         GameService.GetAvailableFortuneWheelList(OnGetAvailableFortuneWheelListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
     }
 
     private void OnGetAvailableFortuneWheelListSuccess(AvailableFortuneWheelListResult result)
     {
         OnGameServiceAvailableFortuneWheelListResult(result);
-        isAvailableFortuneWheelListLoaded = true;
+        _isAvailableFortuneWheelListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -572,14 +573,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetAvailableIAPPackageList()
     {
-        isAvailableIapPackageListLoaded = false;
+        _isAvailableIapPackageListLoaded = false;
         GameService.GetAvailableIapPackageList(OnGetAvailableIAPPackageListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
     }
 
     private void OnGetAvailableIAPPackageListSuccess(AvailableIapPackageListResult result)
     {
         OnGameServiceAvailableIapPackageListResult(result);
-        isAvailableIapPackageListLoaded = true;
+        _isAvailableIapPackageListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -588,14 +589,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetAvailableInGamePackageList()
     {
-        isAvailableInGamePackageListLoaded = false;
+        _isAvailableInGamePackageListLoaded = false;
         GameService.GetAvailableInGamePackageList(OnGetAvailableInGamePackageListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
     }
 
     private void OnGetAvailableInGamePackageListSuccess(AvailableInGamePackageListResult result)
     {
         OnGameServiceAvailableInGamePackageListResult(result);
-        isAvailableInGamePackageListLoaded = true;
+        _isAvailableInGamePackageListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -604,14 +605,14 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void GetAvailableStageList()
     {
-        isAvailableStageListLoaded = false;
+        _isAvailableStageListLoaded = false;
         GameService.GetAvailableStageList(OnGetAvailableStageListSuccess, (error) => OnGameServiceError(error, GetClearStageList));
     }
 
     private void OnGetAvailableStageListSuccess(AvailableStageListResult result)
     {
         OnGameServiceAvailableStageListResult(result);
-        isAvailableStageListLoaded = true;
+        _isAvailableStageListLoaded = true;
         ValidatePlayerData();
     }
 
@@ -620,22 +621,22 @@ public partial class GameInstance : MonoBehaviour
     /// </summary>
     private void ValidatePlayerData()
     {
-        if (isPlayerAuthListLoaded &&
-            isPlayerCurrencyListLoaded &&
-            isPlayerFormationListLoaded &&
-            isPlayerItemListLoaded &&
-            isPlayerStaminaListLoaded &&
-            isPlayerUnlockItemListLoaded &&
-            isPlayerClearStageListLoaded &&
-            isAvailableLootBoxListLoaded &&
-            isAvailableFortuneWheelListLoaded &&
-            isAvailableIapPackageListLoaded &&
-            isAvailableInGamePackageListLoaded &&
-            isAvailableStageListLoaded)
+        if (_isPlayerAuthListLoaded &&
+            _isPlayerCurrencyListLoaded &&
+            _isPlayerFormationListLoaded &&
+            _isPlayerItemListLoaded &&
+            _isPlayerStaminaListLoaded &&
+            _isPlayerUnlockItemListLoaded &&
+            _isPlayerClearStageListLoaded &&
+            _isAvailableLootBoxListLoaded &&
+            _isAvailableFortuneWheelListLoaded &&
+            _isAvailableIapPackageListLoaded &&
+            _isAvailableInGamePackageListLoaded &&
+            _isAvailableStageListLoaded)
         {
             // Setup purchasing when all data loaded
             SetupPurchasing();
-            switch (loadAllPlayerDataState)
+            switch (_loadAllPlayerDataState)
             {
                 case LoadAllPlayerDataState.GoToManageScene:
                     LoadManageScene();
@@ -651,9 +652,9 @@ public partial class GameInstance : MonoBehaviour
     #region Error/Warning/Loading Handler
     private void ShowError()
     {
-        if (messageDialogData.Count > 0)
+        if (_messageDialogData.Count > 0)
         {
-            var data = messageDialogData.Dequeue();
+            var data = _messageDialogData.Dequeue();
             ShowMessageDialog(data.title, data.content, () =>
             {
                 ShowError();
@@ -873,8 +874,8 @@ public partial class GameInstance : MonoBehaviour
             Debug.LogWarning("`Loading Object` has not been set");
             return;
         }
-        ++countLoading;
-        if (countLoading > 0)
+        ++_countLoading;
+        if (_countLoading > 0)
             loadingObject.SetActive(true);
     }
 
@@ -885,11 +886,11 @@ public partial class GameInstance : MonoBehaviour
             Debug.LogWarning("`Loading Object` has not been set");
             return;
         }
-        --countLoading;
-        if (countLoading <= 0)
+        --_countLoading;
+        if (_countLoading <= 0)
         {
             loadingObject.SetActive(false);
-            countLoading = 0;
+            _countLoading = 0;
         }
     }
     #endregion
@@ -918,17 +919,20 @@ public partial class GameInstance : MonoBehaviour
 
     IEnumerator LoadSceneRoutine(string sceneName)
     {
-        AsyncOperation loadSceneAsyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        if (_loadSceneAsyncOperation != null)
+            yield break;
+        _loadSceneAsyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         if (onLoadSceneStart != null)
-            onLoadSceneStart.Invoke(sceneName, loadSceneAsyncOperation.progress);
-        while (!loadSceneAsyncOperation.isDone)
+            onLoadSceneStart.Invoke(sceneName, _loadSceneAsyncOperation.progress);
+        while (!_loadSceneAsyncOperation.isDone)
         {
             if (onLoadSceneProgress != null)
-                onLoadSceneProgress.Invoke(sceneName, loadSceneAsyncOperation.progress);
+                onLoadSceneProgress.Invoke(sceneName, _loadSceneAsyncOperation.progress);
             yield return null;
         }
         if (onLoadSceneFinish != null)
-            onLoadSceneFinish.Invoke(sceneName, loadSceneAsyncOperation.progress);
+            onLoadSceneFinish.Invoke(sceneName, _loadSceneAsyncOperation.progress);
+        _loadSceneAsyncOperation = null;
     }
     #endregion
 }
