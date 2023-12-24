@@ -29,7 +29,14 @@ public class UIAllDailyRewardManager : MonoBehaviour
                 if (UIDailyRewardManagers.TryGetValue(dailyReward.id, out var manager))
                 {
                     manager.ReloadList(dailyReward.rewards);
-                    manager.Show();
+                    foreach (var reward in dailyReward.rewards)
+                    {
+                        if (reward.CanClaim)
+                        {
+                            manager.Show();
+                            break;
+                        }
+                    }
                 }
             }
         });
