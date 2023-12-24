@@ -187,27 +187,27 @@ public abstract class BaseCharacterEntity : MonoBehaviour
 
         // Add attributes by passive skills
         var skills = new List<BaseCharacterSkill>(Skills);
-        if (skills != null)
+        foreach (var skill in skills)
         {
-            foreach (var skill in skills)
+            if (!skill.Skill || !skill.Skill.isPassive) continue;
+            var skillBuffs = skill.Skill.GetBuffs();
+            foreach (var buff in skillBuffs)
             {
-                if (!skill.Skill || !skill.Skill.isPassive) continue;
-                var skillBuffs = skill.Skill.GetBuffs();
-                foreach (var buff in skillBuffs)
-                {
-                    result += buff.GetAttributes(skill.Level);
-                }
+                result += buff.GetAttributes(skill.Level);
             }
         }
 
         // Add attributes by buffs
         var buffs = new List<BaseCharacterBuff>(Buffs.Values);
-        if (buffs != null)
+        foreach (var buff in buffs)
         {
-            foreach (var buff in buffs)
-            {
-                result += buff.Attributes;
-            }
+            result += buff.Attributes;
+        }
+
+        var buffComps = GetComponents<CharacterBuffComponent>();
+        foreach (var buffComp in buffComps)
+        {
+            result += buffComp.buffs;
         }
 
         // If this is character item, applies rate attributes

@@ -13,6 +13,7 @@ public class BaseGamePlayFormation : MonoBehaviour
         public Transform container;
         [Tooltip("Position priority, higher is more far, if character attack mode is attacking by priority it will attack near character first (low priority)")]
         public int priority;
+        public CalculatedAttributes buffs;
     }
 
     public BaseGamePlayManager Manager { get { return BaseGamePlayManager.Singleton; } }
@@ -162,6 +163,8 @@ public class BaseGamePlayFormation : MonoBehaviour
         character.SetFormation(this, position, characterContainers[position].priority, container);
         character.Item = item;
         character.IsBoss = isBoss;
+        CharacterBuffComponent buffComp = character.gameObject.AddComponent<CharacterBuffComponent>();
+        buffComp.buffs = characterContainers[position].buffs;
         Characters[position] = character;
 
         return character;
@@ -186,6 +189,8 @@ public class BaseGamePlayFormation : MonoBehaviour
         var character = Instantiate(item.CharacterData.model);
         character.SetFormation(this, position, helperCharacterContainer.priority, container);
         character.Item = item;
+        CharacterBuffComponent buffComp = character.gameObject.AddComponent<CharacterBuffComponent>();
+        buffComp.buffs = helperCharacterContainer.buffs;
         Characters[position] = character;
 
         return character;
