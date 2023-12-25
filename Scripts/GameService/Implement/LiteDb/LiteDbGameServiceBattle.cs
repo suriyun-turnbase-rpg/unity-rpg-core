@@ -122,6 +122,8 @@ public partial class LiteDbGameService
                     result.rewardCharacterExp = devivedExp;
                     foreach (var formation in formations)
                     {
+                        if (string.IsNullOrEmpty(formation.ItemId))
+                            continue;
                         var character = colPlayerItem.FindById(formation.ItemId);
                         if (character != null)
                         {
