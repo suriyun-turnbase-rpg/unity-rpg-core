@@ -28,26 +28,26 @@ public abstract class BaseCharacterEntity : MonoBehaviour
 
     public Animator CacheAnimator { get; private set; }
 
-    private PlayerItem item;
+    private PlayerItem _item;
     public PlayerItem Item
     {
-        get { return item; }
+        get { return _item; }
         set
         {
-            if (value == null || item == value || value.CharacterData == null)
+            if (value == null || _item == value || value.CharacterData == null)
                 return;
-            item = value;
+            _item = value;
             Skills.Clear();
-            if (item.CharacterData.skills != null && item.CharacterData.skills.Count > 0)
+            if (_item.CharacterData.skills != null && _item.CharacterData.skills.Count > 0)
             {
-                foreach (var skill in item.CharacterData.skills)
+                foreach (var skill in _item.CharacterData.skills)
                 {
                     if (skill == null) continue;
                     // TODO: Implement skill level
                     Skills.Add(NewSkill(1, skill));
                 }
             }
-            foreach (var equippedItem in item.EquippedItems.Values)
+            foreach (var equippedItem in _item.EquippedItems.Values)
             {
                 if (equippedItem == null) continue;
                 var equipmentItem = equippedItem.ItemData as EquipmentItem;
@@ -87,17 +87,34 @@ public abstract class BaseCharacterEntity : MonoBehaviour
         get { return (int)GetTotalAttributes().hp; }
     }
 
-    private float hp;
+    private float _hp;
     public float Hp
     {
-        get { return hp; }
+        get { return _hp; }
         set
         {
-            hp = value;
-            if (hp <= 0)
+            _hp = value;
+            if (_hp <= 0)
+            {
+                _hp = 0;
                 Dead();
-            if (hp >= MaxHp)
-                hp = MaxHp;
+            }
+            if (_hp >= MaxHp)
+                _hp = MaxHp;
+        }
+    }
+
+    private float _mp;
+    public float Mp
+    {
+        get { return _mp; }
+        set
+        {
+            _mp = value;
+            if (_mp <= 0)
+                _mp = 0;
+            if (_mp >= MaxHp)
+                _mp = MaxHp;
         }
     }
 
@@ -106,14 +123,14 @@ public abstract class BaseCharacterEntity : MonoBehaviour
     public bool IsBoss { get; set; }
     public UICharacterStatsGeneric UiCharacterStats { get; set; }
 
-    private Transform container;
+    private Transform _container;
     public Transform Container
     {
-        get { return container; }
+        get { return _container; }
         set
         {
-            container = value;
-            CacheTransform.SetParent(container);
+            _container = value;
+            CacheTransform.SetParent(_container);
             CacheTransform.localPosition = Vector3.zero;
             CacheTransform.localEulerAngles = Vector3.zero;
             gameObject.SetActive(true);

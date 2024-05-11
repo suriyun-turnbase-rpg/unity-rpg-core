@@ -125,6 +125,7 @@ public enum AttributeType
     AllDmgReductionRate = 17,
     CounterChance = 18,
     CounterDamageRate = 19,
+    Mp = 20,
 }
 
 //CalculatedAttributes
@@ -137,6 +138,9 @@ public struct RandomAttributes
     [Header("Hp")]
     public int minHp;
     public int maxHp;
+    [Header("Mp")]
+    public int minMp;
+    public int maxMp;
     [Header("P.Attack")]
     public int minPAtk;
     public int maxPAtk;
@@ -218,6 +222,10 @@ public struct RandomAttributes
         tempIntVal = UnityEngine.Random.Range(minHp, maxHp);
         if (tempIntVal != 0)
             randomingAmounts[AttributeType.Hp] = tempIntVal;
+        // Mp
+        tempIntVal = UnityEngine.Random.Range(minMp, maxMp);
+        if (tempIntVal != 0)
+            randomingAmounts[AttributeType.Mp] = tempIntVal;
         // PAtk
         tempIntVal = UnityEngine.Random.Range(minPAtk, maxPAtk);
         if (tempIntVal != 0)
@@ -312,6 +320,9 @@ public struct RandomAttributes
                 case AttributeType.Hp:
                     result.hp = (int)randomingAmounts[shufflingKeys[i]];
                     break;
+                case AttributeType.Mp:
+                    result.mp = (int)randomingAmounts[shufflingKeys[i]];
+                    break;
                 case AttributeType.PAtk:
                     result.pAtk = (int)randomingAmounts[shufflingKeys[i]];
                     break;
@@ -387,6 +398,8 @@ public struct RandomAttributes
             "\"maxType\":" + maxType + "," +
             "\"minHp\":" + minHp + "," +
             "\"maxHp\":" + maxHp + "," +
+            "\"minMp\":" + minMp + "," +
+            "\"maxMp\":" + maxMp + "," +
             "\"minPAtk\":" + minPAtk + "," +
             "\"maxPAtk\":" + maxPAtk + "," +
             "\"minPDef\":" + minPDef + "," +
@@ -440,6 +453,8 @@ public struct Attributes
 {
     [Tooltip("Max Hp, When battle if character's Hp = 0, The character will die")]
     public Int32Attribute hp;
+    [Tooltip("Max Mp, When battle if character's Mp = 0, The character will die")]
+    public Int32Attribute mp;
     [Tooltip("P.Attack (P stands for physical), This will minus to pDef to calculate damage")]
     public Int32Attribute pAtk;
     [Tooltip("P.Defend (P stands for physical), pAtk will minus to this to calculate damage")]
@@ -492,6 +507,7 @@ public struct Attributes
     {
         Attributes result = new Attributes();
         result.hp = hp.Clone();
+        result.mp = mp.Clone();
         result.pAtk = pAtk.Clone();
         result.pDef = pDef.Clone();
         result.pDmgReductionRate = pDmgReductionRate.Clone();
@@ -524,6 +540,7 @@ public struct Attributes
     {
         CalculatedAttributes result = new CalculatedAttributes();
         result.hp = hp.Calculate(currentLevel, maxLevel);
+        result.mp = mp.Calculate(currentLevel, maxLevel);
         result.pAtk = pAtk.Calculate(currentLevel, maxLevel);
         result.pDef = pDef.Calculate(currentLevel, maxLevel);
         result.pDmgReductionRate = pDmgReductionRate.Calculate(currentLevel, maxLevel);
@@ -558,6 +575,10 @@ public struct Attributes
         var hp = this.hp.Clone();
         hp.maxValue = this.hp.Calculate(newMaxLevel, defaultMaxLevel);
         attributes.hp = hp;
+
+        var mp = this.mp.Clone();
+        mp.maxValue = this.mp.Calculate(newMaxLevel, defaultMaxLevel);
+        attributes.mp = mp;
 
         var pAtk = this.pAtk.Clone();
         pAtk.maxValue = this.pAtk.Calculate(newMaxLevel, defaultMaxLevel);
@@ -648,6 +669,7 @@ public struct Attributes
     {
         Attributes result = new Attributes();
         result.hp = a.hp * b;
+        result.mp = a.mp * b;
         result.pAtk = a.pAtk * b;
         result.pDef = a.pDef * b;
         result.pDmgReductionRate = a.pDmgReductionRate * b;
@@ -683,6 +705,8 @@ public struct CalculatedAttributes
     [Header("Fix attributes")]
     [Tooltip("C.hp (C stands for Character) = C.hp + this")]
     public float hp;
+    [Tooltip("C.mp (C stands for Character) = C.mp + this")]
+    public float mp;
     [Tooltip("C.pAtk (C stands for Character) = C.pAtk + this")]
     public float pAtk;
     [Tooltip("C.pDef (C stands for Character) = C.pDef + this")]
@@ -710,6 +734,8 @@ public struct CalculatedAttributes
     [Header("Rate attributes")]
     [Tooltip("C.hp (C stands for Character) = C.hp + (this * C.hp)")]
     public float hpRate;
+    [Tooltip("C.mp (C stands for Character) = C.mp + (this * C.mp)")]
+    public float mpRate;
     [Tooltip("C.pAtk (C stands for Character) = C.pAtk + (this * C.pAtk)")]
     public float pAtkRate;
     [Tooltip("C.pDef (C stands for Character) = C.pDef + (this * C.pDef)")]
@@ -759,6 +785,7 @@ public struct CalculatedAttributes
     {
         CalculatedAttributes result = new CalculatedAttributes();
         result.hp = hp;
+        result.mp = mp;
         result.pAtk = pAtk;
         result.pDef = pDef;
         result.pDmgReductionRate = pDmgReductionRate;
@@ -775,6 +802,7 @@ public struct CalculatedAttributes
 #endif
 
         result.hpRate = hpRate;
+        result.mpRate = mpRate;
         result.pAtkRate = pAtkRate;
         result.pDefRate = pDefRate;
 #if !NO_MAGIC_STATS
@@ -811,6 +839,7 @@ public struct CalculatedAttributes
     {
         CalculatedAttributes result = a.Clone();
         result.hp += b.hp;
+        result.mp += b.mp;
         result.pAtk += b.pAtk;
         result.pDef += b.pDef;
         result.pDmgReductionRate += b.pDmgReductionRate;
@@ -827,6 +856,7 @@ public struct CalculatedAttributes
 #endif
 
         result.hpRate += b.hpRate;
+        result.mpRate += b.mpRate;
         result.pAtkRate += b.pAtkRate;
         result.pDefRate += b.pDefRate;
 #if !NO_MAGIC_STATS
@@ -862,6 +892,7 @@ public struct CalculatedAttributes
     {
         CalculatedAttributes result = a.Clone();
         result.hp -= b.hp;
+        result.mp -= b.mp;
         result.pAtk -= b.pAtk;
         result.pDef -= b.pDef;
         result.pDmgReductionRate -= b.pDmgReductionRate;
@@ -878,6 +909,7 @@ public struct CalculatedAttributes
 #endif
 
         result.hpRate -= b.hpRate;
+        result.mpRate -= b.mpRate;
         result.pAtkRate -= b.pAtkRate;
         result.pDefRate -= b.pDefRate;
 #if !NO_MAGIC_STATS
@@ -913,6 +945,7 @@ public struct CalculatedAttributes
     {
         CalculatedAttributes result = new CalculatedAttributes();
         result.hp = Mathf.CeilToInt(a.hp * b);
+        result.mp = Mathf.CeilToInt(a.mp * b);
         result.pAtk = Mathf.CeilToInt(a.pAtk * b);
         result.pDef = Mathf.CeilToInt(a.pDef * b);
         result.pDmgReductionRate = Mathf.CeilToInt(a.pDmgReductionRate * b);
@@ -929,6 +962,7 @@ public struct CalculatedAttributes
 #endif
 
         result.hpRate = a.hpRate * b;
+        result.mpRate = a.mpRate * b;
         result.pAtkRate = a.pAtkRate * b;
         result.pDefRate = a.pDefRate * b;
 #if !NO_MAGIC_STATS
@@ -968,6 +1002,11 @@ public struct CalculatedAttributes
         if (hp != 0 || bonusAttributes.hp != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_HP, hp, bonusAttributes.hp);
+            result += "\n";
+        }
+        if (mp != 0 || bonusAttributes.mp != 0)
+        {
+            result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_MP, mp, bonusAttributes.mp);
             result += "\n";
         }
         if (pAtk != 0 || bonusAttributes.pAtk != 0)
@@ -1027,6 +1066,11 @@ public struct CalculatedAttributes
         if (hpRate != 0 || bonusAttributes.hpRate != 0)
         {
             result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_HP_RATE, hpRate, bonusAttributes.hpRate, true);
+            result += "\n";
+        }
+        if (mpRate != 0 || bonusAttributes.mpRate != 0)
+        {
+            result += LanguageManager.FormatAttribute(GameText.TITLE_ATTRIBUTE_MP_RATE, mpRate, bonusAttributes.mpRate, true);
             result += "\n";
         }
         if (pAtkRate != 0 || bonusAttributes.pAtkRate != 0)

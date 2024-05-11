@@ -70,7 +70,14 @@ public abstract partial class BaseSkillBuff
 public abstract partial class BaseSkill : BaseGameData
 {
     public bool isPassive;
+    public int mpCost;
+    public float mpCostIncreaseEachLevel = 0;
     public BaseSkillCastAnimationData castAnimation;
+
+    public int GetMpCost(int level = 1)
+    {
+        return mpCost + (int)(mpCostIncreaseEachLevel * level);
+    }
 
     public abstract List<BaseSkillBuff> GetBuffs();
 }

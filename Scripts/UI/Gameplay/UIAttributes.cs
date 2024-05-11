@@ -8,6 +8,8 @@ public class UIAttributes : UIDataItem<CalculatedAttributes>
     [Header("Fix attributes")]
     public GameObject containerHp;
     public Text textHp;
+    public GameObject containerMp;
+    public Text textMp;
     public GameObject containerPAtk;
     public Text textPAtk;
     public GameObject containerPDef;
@@ -31,6 +33,8 @@ public class UIAttributes : UIDataItem<CalculatedAttributes>
     [Header("Rate attributes")]
     public GameObject containerHpRate;
     public Text textHpRate;
+    public GameObject containerMpRate;
+    public Text textMpRate;
     public GameObject containerPAtkRate;
     public Text textPAtkRate;
     public GameObject containerPDefRate;
@@ -83,6 +87,13 @@ public class UIAttributes : UIDataItem<CalculatedAttributes>
             textHp.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_HP, data.hp) : LanguageManager.FormatNumber(data.hp);
             if (hideInfoIfEmpty && containerHp != null)
                 containerHp.SetActive(Mathf.Abs(data.hp) > 0);
+        }
+
+        if (textMp != null)
+        {
+            textMp.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MP, data.mp) : LanguageManager.FormatNumber(data.mp);
+            if (hideInfoIfEmpty && containerMp != null)
+                containerMp.SetActive(Mathf.Abs(data.mp) > 0);
         }
 
         if (textPAtk != null)
@@ -164,6 +175,13 @@ public class UIAttributes : UIDataItem<CalculatedAttributes>
             textHpRate.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_HP_RATE, data.hpRate, true) : LanguageManager.FormatNumber(data.hpRate, true);
             if (hideInfoIfEmpty && containerHpRate != null)
                 containerHpRate.SetActive(Mathf.Abs(data.hpRate) > 0);
+        }
+
+        if (textMpRate != null)
+        {
+            textMpRate.text = useFormatForInfo ? LanguageManager.FormatInfo(GameText.TITLE_ATTRIBUTE_MP_RATE, data.mpRate, true) : LanguageManager.FormatNumber(data.mpRate, true);
+            if (hideInfoIfEmpty && containerMpRate != null)
+                containerMpRate.SetActive(Mathf.Abs(data.mpRate) > 0);
         }
 
         if (textPAtkRate != null)

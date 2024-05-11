@@ -32,6 +32,7 @@ public class GameText
     // Attribute titles
     public const string TITLE_EXP_MAX = TEXT_PREFIX + "TITLE_EXP_MAX";
     public const string TITLE_ATTRIBUTE_HP = TEXT_PREFIX + "TITLE_ATTRIBUTE_HP";
+    public const string TITLE_ATTRIBUTE_MP = TEXT_PREFIX + "TITLE_ATTRIBUTE_MP";
     public const string TITLE_ATTRIBUTE_PATK = TEXT_PREFIX + "TITLE_ATTRIBUTE_PATK";
     public const string TITLE_ATTRIBUTE_PDEF = TEXT_PREFIX + "TITLE_ATTRIBUTE_PDEF";
     public const string TITLE_ATTRIBUTE_PDMG_REDUCTION_RATE = TEXT_PREFIX + "TITLE_ATTRIBUTE_PDMG_REDUCTION_RATE";
@@ -43,6 +44,7 @@ public class GameText
     public const string TITLE_ATTRIBUTE_EVA = TEXT_PREFIX + "TITLE_ATTRIBUTE_EVA";
     public const string TITLE_ATTRIBUTE_ACC = TEXT_PREFIX + "TITLE_ATTRIBUTE_ACC";
     public const string TITLE_ATTRIBUTE_HP_RATE = TEXT_PREFIX + "TITLE_ATTRIBUTE_HP_RATE";
+    public const string TITLE_ATTRIBUTE_MP_RATE = TEXT_PREFIX + "TITLE_ATTRIBUTE_MP_RATE";
     public const string TITLE_ATTRIBUTE_PATK_RATE = TEXT_PREFIX + "TITLE_ATTRIBUTE_PATK_RATE";
     public const string TITLE_ATTRIBUTE_PDEF_RATE = TEXT_PREFIX + "TITLE_ATTRIBUTE_PDEF_RATE";
     public const string TITLE_ATTRIBUTE_MATK_RATE = TEXT_PREFIX + "TITLE_ATTRIBUTE_MATK_RATE";
@@ -115,6 +117,7 @@ public static class DefaultLocale
         // Attributes
         Texts.Add(GameText.TITLE_EXP_MAX, "Max");
         Texts.Add(GameText.TITLE_ATTRIBUTE_HP, "Hp");
+        Texts.Add(GameText.TITLE_ATTRIBUTE_MP, "Mp");
         Texts.Add(GameText.TITLE_ATTRIBUTE_PATK, "P.Atk");
         Texts.Add(GameText.TITLE_ATTRIBUTE_PDEF, "P.Def");
         Texts.Add(GameText.TITLE_ATTRIBUTE_PDMG_REDUCTION_RATE, "P.Dmg Reduction Rate");
@@ -126,6 +129,7 @@ public static class DefaultLocale
         Texts.Add(GameText.TITLE_ATTRIBUTE_EVA, "Evasion");
         Texts.Add(GameText.TITLE_ATTRIBUTE_ACC, "Accuracy");
         Texts.Add(GameText.TITLE_ATTRIBUTE_HP_RATE, "Hp Rate");
+        Texts.Add(GameText.TITLE_ATTRIBUTE_MP_RATE, "Mp Rate");
         Texts.Add(GameText.TITLE_ATTRIBUTE_PATK_RATE, "P.Atk Rate");
         Texts.Add(GameText.TITLE_ATTRIBUTE_PDEF_RATE, "P.Def Rate");
         Texts.Add(GameText.TITLE_ATTRIBUTE_MATK_RATE, "M.Atk Rate");
